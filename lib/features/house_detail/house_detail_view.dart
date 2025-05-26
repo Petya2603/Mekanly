@@ -218,39 +218,41 @@ class HouseDetailView extends StatelessWidget {
                     ),
                   ),
                   10.boxH,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12).w,
-                    child: AppText.s14w400BdM(
-                      'Başga bildirişler',
-                      fontSize: 14.sp,
-                      fontFamily: StringConstants.roboto,
-                      fontWeight: FontWeight.w400,
-                      color: const Color(0xFF000000),
-                    ),
-                  ),
-                  8.boxH,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12).w,
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width - 12.w,
-                      height:
-                          ((MediaQuery.of(context).size.width * 0.35 * 198) /
-                                  131) +
-                              12.h,
-                      child: ListView.separated(
-                        padding: const EdgeInsets.only(
-                          top: 6,
-                          bottom: 6,
-                          left: 6,
-                        ),
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) =>
-                            const NotificationCard(),
-                        separatorBuilder: (context, index) => 7.boxW,
-                        itemCount: 5,
-                      ),
-                    ),
-                  ),
+
+                  ///TODOS: Bayram will add this later
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 12).w,
+                  //   child: AppText.s14w400BdM(
+                  //     'Başga bildirişler',
+                  //     fontSize: 14.sp,
+                  //     fontFamily: StringConstants.roboto,
+                  //     fontWeight: FontWeight.w400,
+                  //     color: const Color(0xFF000000),
+                  //   ),
+                  // ),
+                  // 8.boxH,
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 12).w,
+                  //   child: SizedBox(
+                  //     width: MediaQuery.of(context).size.width - 12.w,
+                  //     height:
+                  //         ((MediaQuery.of(context).size.width * 0.35 * 198) /
+                  //                 131) +
+                  //             12.h,
+                  //     child: ListView.separated(
+                  //       padding: const EdgeInsets.only(
+                  //         top: 6,
+                  //         bottom: 6,
+                  //         left: 6,
+                  //       ),
+                  //       scrollDirection: Axis.horizontal,
+                  //       itemBuilder: (context, index) =>
+                  //           const NotificationCard(),
+                  //       separatorBuilder: (context, index) => 7.boxW,
+                  //       itemCount: 5,
+                  //     ),
+                  //   ),
+                  // ),
                   10.boxH,
                 ],
               ),
