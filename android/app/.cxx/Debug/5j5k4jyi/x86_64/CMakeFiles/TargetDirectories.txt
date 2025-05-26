@@ -1,0 +1,2 @@
+C:/Users/user/Downloads/Mekanly-main/Mekanly-main/android/app/.cxx/Debug/5j5k4jyi/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/user/Downloads/Mekanly-main/Mekanly-main/android/app/.cxx/Debug/5j5k4jyi/x86_64/CMakeFiles/rebuild_cache.dir

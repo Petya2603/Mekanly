@@ -1,0 +1,206 @@
+import 'dart:async';
+
+import 'package:common/common.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gen/gen.dart';
+
+import '../../core/components/adv_card.dart';
+import '../../core/components/announcement_card.dart';
+import '../../core/components/app_btn.dart';
+import '../../core/components/app_text.dart';
+import '../../core/components/horizontal_adv_card.dart';
+import '../../core/components/loading_indicator.dart';
+import '../../core/components/try_again_widget.dart';
+import '../../product/base/base_status/base_status.dart';
+import '../../product/constants/constants.dart';
+import '../../utils/extensions.dart';
+import 'cubit/home_cubit.dart';
+
+class HomeView extends StatefulWidget {
+  const HomeView({super.key});
+
+  static const routePath = '/home-view';
+  static const routeName = 'home-view';
+
+  static Widget builder() {
+    return const HomeView();
+  }
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView>
+    with AutomaticKeepAliveClientMixin {
+  final ScrollController _smallBannersScrollController = ScrollController();
+  Timer? _autoScrollTimer;
+  int _itemCount = 0;
+  int _currentScrollIndex = 0;
+
+  @override
+  void initState() {
+    BaseLogger.warning(' init houses');
+    super.initState();
+  }
+
+  void _startContinuousScrolling({int? count}) {
+    if (_itemCount == 0 && count != null && mounted) {
+      setState(() {
+        _itemCount = count;
+      });
+    }
+
+    _autoScrollTimer?.cancel();
+    _currentScrollIndex = 0;
+
+    _autoScrollTimer = Timer.periodic(const Duration(seconds: 3), (timer) {
+      if (_smallBannersScrollController.hasClients) {
+        _currentScrollIndex = (_currentScrollIndex + 2) % _itemCount;
+        _scrollToIndex(_currentScrollIndex);
+      }
+    });
+  }
+
+  void _scrollToIndex(int index) {
+    final position = index * (157 + (5.w) * 2);
+
+    if (_smallBannersScrollController.hasClients) {
+      _smallBannersScrollController.animateTo(
+        position,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _autoScrollTimer?.cancel();
+    _smallBannersScrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return BlocConsumer<HomeCubit, HomeState>(
+      listener: (context, state) {
+        if (state.smallBanners?.isNotEmpty ?? false) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _startContinuousScrolling(count: state.smallBanners?.length);
+          });
+        }
+      },
+      builder: (context, state) {
+        if (state.status.isLoading) {
+          return LoadingIndicator.circle();
+        }
+
+        if (state.status.isFailure) {
+          return TryAgainWidget(
+            onTryAgain: () async {
+              await context.read<HomeCubit>().getHome();
+            },
+          );
+        }
+
+        final smallBanners = state.smallBanners;
+        final bigBanners = state.bigBanners;
+        final topAds = state.topAds;
+
+        return ListView(
+          physics: const NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.zero,
+          children: [
+            // Small banners section
+            if (smallBanners?.isNotEmpty ?? false)
+              SizedBox(
+                height: 210.w,
+                child: ListView.separated(
+                  controller: _smallBannersScrollController,
+                  itemCount: smallBanners?.length ?? 0,
+                  scrollDirection: Axis.horizontal,
+                  separatorBuilder: (context, index) => 5.boxW,
+                  padding: const EdgeInsets.all(4).w,
+                  itemBuilder: (context, index) {
+                    final banner = smallBanners?[index];
+
+                    ///TODOS: backend dev problem and still testing it??? come one
+                    return HorizontalAdvCard(
+                      imgUrl: 'https://mekanly.com.tm/${banner?.image ?? ''}',
+                      logo: banner?.logo != null && (banner?.logo != 'storage/')
+                          ? 'https://mekanly.com.tm/${banner!.logo ?? ''}'
+                          : null,
+                    );
+                  },
+                ),
+              ),
+
+            // Big banners section
+            if (bigBanners?.isNotEmpty ?? false)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4).w,
+                child: AdvCard(
+                  ///TODOS: backend dev problem and still testing it??? come one
+
+                  imgUrl:
+                      'https://mekanly.com.tm/${bigBanners?.first.image ?? ''}',
+                  logo: bigBanners?.first.logo != null &&
+                          (bigBanners?.first.logo != 'storage/')
+                      ? 'https://mekanly.com.tm/${bigBanners?.first.logo ?? ''}'
+                      : null,
+                ),
+              ),
+
+            // Section header
+            Padding(
+              padding: const EdgeInsets.only(left: 10, top: 17, bottom: 7),
+              child: AppText.s14w400BdM(
+                'Bildirişler',
+                fontFamily: StringConstants.roboto,
+                textAlign: TextAlign.start,
+              ),
+            ),
+
+            // Top ads section
+            if (topAds?.isNotEmpty ?? false)
+              ListView.separated(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                separatorBuilder: (context, index) => 5.boxH,
+                itemCount: topAds?.length ?? 0,
+                itemBuilder: (context, index) {
+                  final ads = topAds?[index];
+                  return AnnouncementCard(topAds: ads);
+                },
+              ),
+
+            // Button section
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 10).w,
+              child: AppBtn(
+                onTap: () {},
+                text: 'Gozgalmaýan emläkler',
+                rgIcon: Assets.icons.icForwardIcon.svg(package: 'gen'),
+                fontWeight: FontWeight.w600,
+                fontSize: 13.sp,
+                fontFamily: StringConstants.roboto,
+                textColor: const Color(0xff3A8BCF),
+                bgColor: const Color(0xffE5F6FE),
+              ),
+            ),
+
+            SizedBox(height: 20.w),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+}
