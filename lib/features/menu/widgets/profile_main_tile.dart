@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../core/components/app_text.dart';
 import '../../../product/constants/constants.dart';
+import '../../../product/transitions/custom_page_route.dart';
 import '../../../utils/extensions.dart';
 import '../../add_house/widgets/dialogs.dart';
 import '../../auth/cubit/auth_cubit.dart';
@@ -59,8 +59,12 @@ class ProfileMainTile extends StatelessWidget {
                           if (Navigator.canPop(context)) {
                             Navigator.pop(context);
                           }
-                          context.pushReplacement(
-                            LoginPhoneNumberView.routePath,
+
+                          Navigator.pushReplacement(
+                            context,
+                            CustomPageRoute.slide(
+                              LoginPhoneNumberView.builder(context),
+                            ),
                           );
                         },
                       );

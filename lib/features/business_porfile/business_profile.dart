@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-import 'package:go_router/go_router.dart';
-
 import '../../core/components/app_text.dart';
 import '../../core/components/buisnes_profile_card.dart';
 import '../../core/components/categories_card.dart';
@@ -22,10 +20,6 @@ class BusinessProfileView extends StatefulWidget {
 
   static const routePath = '/business-profile-view';
   static const routeName = 'business-profile-view';
-
-  static Widget builder(BuildContext context, GoRouterState state) {
-    return const BusinessProfileView();
-  }
 
   @override
   State<BusinessProfileView> createState() => _BusinessProfileViewState();

@@ -12,7 +12,7 @@ class HousesCarouselSlider extends StatefulWidget {
     this.imgUrls,
   });
 
-  final List<ImageUrl>? imgUrls;
+  final List<ImageEntity>? imgUrls;
 
   @override
   State<HousesCarouselSlider> createState() => _HousesCarouselSliderState();

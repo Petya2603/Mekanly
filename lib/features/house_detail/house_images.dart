@@ -77,7 +77,7 @@ class HouseImages extends StatelessWidget {
               builder: (context, constraints) => CustomNetworkImage(
                 imageUrl: houseImagesUrl?[index],
                 memCache: CustomMemCache(
-                  height: constraints.maxHeight.toInt(),
+                  // height: constraints.maxHeight.toInt(),
                   width: constraints.maxWidth.toInt(),
                 ),
               ),
@@ -142,10 +142,14 @@ class _ImageScreenState extends State<ImageScreen> {
     });
   }
 
+  // final ValueNotif
+
+
+
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height * 0.6;
-    var width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height * 0.6;
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: const Color(0xFF000000),
       appBar: AppBar(
@@ -157,7 +161,7 @@ class _ImageScreenState extends State<ImageScreen> {
           icon: Assets.icons.icBackImage.svg(package: 'gen'),
         ),
         title: AppText.s14w400BdM(
-          '${_currentIndex+1}/${widget.imagesUrl?.length}',
+          '${_currentIndex + 1}/${widget.imagesUrl?.length}',
           fontSize: 12.sp,
           fontWeight: FontWeight.w500,
           fontFamily: StringConstants.roboto,
@@ -179,7 +183,7 @@ class _ImageScreenState extends State<ImageScreen> {
           });
         },
         itemCount: widget.imagesUrl?.length,
-        itemBuilder: (context, index){
+        itemBuilder: (context, index) {
           return InteractiveViewer(
             minScale: 0.2,
             maxScale: 3,
@@ -189,7 +193,8 @@ class _ImageScreenState extends State<ImageScreen> {
                 child: Image.network(
                   widget.imagesUrl?[index] ?? '',
                   height: height,
-                  width: width,
+                  cacheWidth: width.toInt().withDevicePixel(context),
+                  cacheHeight: height.toInt().withDevicePixel(context),
                   fit: BoxFit.cover,
                   loadingBuilder: (context, child, loadingProgress) {
                     if (loadingProgress == null) return child;
@@ -197,7 +202,7 @@ class _ImageScreenState extends State<ImageScreen> {
                       child: CircularProgressIndicator(
                         value: loadingProgress.expectedTotalBytes != null
                             ? loadingProgress.cumulativeBytesLoaded /
-                            (loadingProgress.expectedTotalBytes ?? 1)
+                                (loadingProgress.expectedTotalBytes ?? 1)
                             : null,
                         color: Colors.white,
                       ),
@@ -225,6 +230,12 @@ class _ImageScreenState extends State<ImageScreen> {
       ),
     );
   }
+
+  
+
+
+
+
 }
 
 class _AnimatedContainersSheet extends StatefulWidget {

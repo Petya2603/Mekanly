@@ -32,9 +32,9 @@ class AdvLogo extends StatelessWidget {
             imageUrl: imageUrl,
             size: size ?? const Size(30, 30),
             memCache: CustomMemCache(
-              height: (size?.height == null)
-                  ? 30.withDevicePixel(context)
-                  : size!.height.toInt().withDevicePixel(context),
+              // height: (size?.height == null)
+              //     ? 30.withDevicePixel(context)
+              //     : size!.height.toInt().withDevicePixel(context),
               width: (size?.width == null)
                   ? 30.withDevicePixel(context)
                   : size!.width.toInt().withDevicePixel(context),

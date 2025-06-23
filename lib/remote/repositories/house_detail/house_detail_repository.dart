@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../utils/api_end_points.dart';
-import '../../entities/house_detail/house_detail.dart';
+import '../../entities/house_detail/house_detail_response.dart';
 import '../../http_client/dio_http_client.dart';
 import '../../response_error.dart';
 

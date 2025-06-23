@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-import 'package:go_router/go_router.dart';
 import '../../core/components/app_text.dart';
 import '../../product/constants/constants.dart';
 import '../../utils/extensions.dart';
-import '../comments/comments_view.dart';
-import '../contact_us/contact_us_view.dart';
-import '../content/content_view.dart';
 import 'widgets/profile_main_tile.dart';
 import 'widgets/user_business_profile_tile.dart';
 import 'widgets/user_profile_tile.dart';
@@ -17,10 +13,6 @@ class MenuView extends StatelessWidget {
 
   static const routePath = '/menu-view';
   static const routeName = 'menu-view';
-
-  static Widget builder(BuildContext context, GoRouterState state) {
-    return const MenuView();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +30,8 @@ class MenuView extends StatelessWidget {
               title: 'Jay goşmak',
               isAuthNeeded: true,
               icon: Assets.icons.icAddHouse.svg(package: 'gen'),
-              onTap: () => context.push(ContentView.routePath),
+              onTap: () {},
+              // onTap: () => context.push(ContentView.routePath),
             ),
             ProfileMainTile(
               title: 'Dil',
@@ -53,7 +46,7 @@ class MenuView extends StatelessWidget {
               title: 'Teswirler',
               icon: Assets.icons.icChat.svg(package: 'gen'),
               onTap: () {
-                context.push(CommentsView.routePath);
+                // context.push(CommentsView.routePath);
               },
             ),
             ProfileMainTile(
@@ -66,7 +59,8 @@ class MenuView extends StatelessWidget {
               isAuthNeeded: true,
               title: 'Habarlaşmak',
               icon: Assets.icons.icContactUs.svg(package: 'gen'),
-              onTap: () => context.push(ContactUsView.routePath),
+              // onTap: () => context.push(ContactUsView.routePath),
+              onTap: () {},
             ),
             ProfileMainTile(
               isAuthNeeded: false,
@@ -89,8 +83,9 @@ class MenuView extends StatelessWidget {
 }
 
 /// TODOS: Bayram ayyr beyle edilenok!!! -> ChooseLang.show() seyle, please
-void chooseLang(BuildContext context) {
-  showDialog(
+Future<void> chooseLang(BuildContext context) async {
+  // ignore: inference_failure_on_function_invocation
+  await showDialog(
     context: context,
     builder: (BuildContext context) {
       var selectedLang = 'tm';

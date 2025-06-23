@@ -2,7 +2,6 @@ import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../core/components/app_bar/app_bar.dart';
 import '../../core/components/app_btn.dart';
@@ -37,12 +36,6 @@ class HouseFiltersView extends StatefulWidget {
 
   static const routePath = '/house-filter-view';
   static const routeName = 'house-filter-view';
-
-  static Widget builder(BuildContext context, GoRouterState state) {
-    return HouseFiltersView(
-      filter: state.extra! as HouseFilterRoute,
-    );
-  }
 
   final HouseFilterRoute filter;
 
@@ -86,9 +79,6 @@ class _HouseFiltersViewState extends State<HouseFiltersView> {
     onInit();
     super.initState();
   }
-
-
-
 
   /// TODOS: should be optimized later, should take these method to the mixin of HouseFiltersView
   void onInit() {
@@ -167,8 +157,8 @@ class _HouseFiltersViewState extends State<HouseFiltersView> {
 
     bloc.add(HousesEvent.filter(filter));
 
-    if (context.canPop()) {
-      context.pop();
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context);
     }
   }
 

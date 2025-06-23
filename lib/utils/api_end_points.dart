@@ -50,6 +50,20 @@ final class ApiEndpoints {
 
   static String businessCategories = '/v2/business/categories';
   static String businessProfile(int id) => '/v2/business/profile/$id';
+  static String businessProfileProducts({
+    int limit = 10,
+    required int categoryId,
+    required int shopId,
+    int offset = 0,
+  }) =>
+      '/v2/business/profile/$shopId/category/$categoryId/$offset/$limit';
+  static String businessProfileHouses({
+    int limit = 10,
+    int offset = 0,
+    required int categoryId,
+    required int shopId,
+  }) =>
+      '/v2/business/property/all/$offset/$limit?category_ids=$categoryId&shop_ids=$shopId';
 
   static String allBusinessProfiles({int limit = 10, int offset = 0}) =>
       '/v2/business/allProfiles/$offset/$limit';

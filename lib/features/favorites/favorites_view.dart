@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-import 'package:go_router/go_router.dart';
 import '../../core/components/app_text.dart';
 import '../../product/constants/constants.dart';
 import '../../utils/extensions.dart';
@@ -11,10 +10,6 @@ class FavoritesView extends StatelessWidget {
 
   static const routePath = '/favorites-view';
   static const routeName = 'favorites-view';
-
-  static Widget builder(BuildContext context, GoRouterState state) {
-    return const FavoritesView();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +55,7 @@ class _FavoritesButtonState extends State<FavoritesButton> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           GestureDetector(
-            onTap: (){
+            onTap: () {
               setState(() {
                 isSelected = true;
               });
@@ -85,14 +80,15 @@ class _FavoritesButtonState extends State<FavoritesButton> {
                   fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
                   fontSize: 12.sp,
                   fontFamily: StringConstants.roboto,
-                  color:
-                      isSelected ? const Color(0xFF3A8BCF) : const Color(0xFF6A6A6A),
+                  color: isSelected
+                      ? const Color(0xFF3A8BCF)
+                      : const Color(0xFF6A6A6A),
                 ),
               ),
             ),
           ),
           GestureDetector(
-            onTap: (){
+            onTap: () {
               setState(() {
                 isSelected = false;
               });
@@ -117,8 +113,9 @@ class _FavoritesButtonState extends State<FavoritesButton> {
                   fontWeight: !isSelected ? FontWeight.w500 : FontWeight.w400,
                   fontSize: 12.sp,
                   fontFamily: StringConstants.roboto,
-                  color:
-                  !isSelected ? const Color(0xFF3A8BCF) : const Color(0xFF6A6A6A),
+                  color: !isSelected
+                      ? const Color(0xFF3A8BCF)
+                      : const Color(0xFF6A6A6A),
                 ),
               ),
             ),

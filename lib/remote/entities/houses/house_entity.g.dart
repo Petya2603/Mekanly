@@ -12,44 +12,44 @@ _$HouseEntityImpl _$$HouseEntityImplFromJson(Map<String, dynamic> json) =>
       categoryName: json['category_name'] as String?,
       location: json['location'] == null
           ? null
-          : Location.fromJson(json['location'] as Map<String, dynamic>),
+          : LocationEntity.fromJson(json['location'] as Map<String, dynamic>),
       userId: (json['user_id'] as num?)?.toInt(),
       username: json['username'] as String?,
       userPhone: json['user_phone'] as String?,
       name: json['name'] as String?,
       description: json['description'] as String?,
       price: json['price'] as String?,
+      loverPercentage: json['lover_percentage'] as String?,
+      loverPrice: json['lover_price'] as String?,
       viewed: (json['viewed'] as num?)?.toInt(),
-      star: (json['star'] as num?)?.toInt(),
+      star: json['star'] as String?,
       commentCount: (json['comment_count'] as num?)?.toInt(),
       roomNumber: (json['room_number'] as num?)?.toInt(),
       floorNumber: (json['floor_number'] as num?)?.toInt(),
       propertyType: json['property_type'] == null
           ? null
-          : PropertyType.fromJson(
+          : PropertyTypeEntity.fromJson(
               json['property_type'] as Map<String, dynamic>),
       repairType: json['repair_type'] == null
           ? null
-          : RepairType.fromJson(json['repair_type'] as Map<String, dynamic>),
+          : RepairTypeEntity.fromJson(
+              json['repair_type'] as Map<String, dynamic>),
       status: json['status'] as String?,
       luxe: json['luxe'] as bool?,
       luxeStatus: json['luxe_status'] as bool?,
-      luxeExpire: json['luxe_expire'] == null
-          ? null
-          : DateTime.parse(json['luxe_expire'] as String),
+      luxeExpire: json['luxe_expire'] as String?,
       vipStatus: json['vip_status'] as bool?,
-      vipExpire: json['vip_expire'] == null
-          ? null
-          : DateTime.parse(json['vip_expire'] as String),
+      vipExpire: json['vip_expire'] as String?,
       bronNumber: json['bron_number'] as String?,
       images: (json['images'] as List<dynamic>?)
-          ?.map((e) => ImageUrl.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => ImageEntity.fromJson(e as Map<String, dynamic>))
           .toList(),
       possibilities: (json['possibilities'] as List<dynamic>?)
-          ?.map((e) => Possibility.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => PossibilityEntity.fromJson(e as Map<String, dynamic>))
           .toList(),
       comment: (json['comment'] as num?)?.toInt(),
-      isComment: json['is_comment'],
+      isComment: json['is_comment'] as String?,
+      writeComment: json['write_comment'] as String?,
       who: json['who'] as String?,
       area: (json['area'] as num?)?.toInt(),
       exclusisive: (json['exclusisive'] as num?)?.toInt(),
@@ -57,16 +57,14 @@ _$HouseEntityImpl _$$HouseEntityImplFromJson(Map<String, dynamic> json) =>
       levelNumber: (json['level_number'] as num?)?.toInt(),
       favorited: json['favorited'] as bool?,
       liked: json['liked'] as bool?,
-      shop: json['shop'],
+      shop: json['shop'] == null
+          ? null
+          : ShopEntity.fromJson(json['shop'] as Map<String, dynamic>),
       type: json['type'] as String?,
-      date:
-          json['date'] == null ? null : DateTime.parse(json['date'] as String),
-      updatedAt: json['updated_at'] == null
-          ? null
-          : DateTime.parse(json['updated_at'] as String),
-      createdAt: json['created_at'] == null
-          ? null
-          : DateTime.parse(json['created_at'] as String),
+      date: json['date'] as String?,
+      updatedAt: json['updated_at'] as String?,
+      createdAt: json['created_at'] as String?,
+      contact: json['contact'] as bool?,
     );
 
 Map<String, dynamic> _$$HouseEntityImplToJson(_$HouseEntityImpl instance) =>
@@ -80,6 +78,8 @@ Map<String, dynamic> _$$HouseEntityImplToJson(_$HouseEntityImpl instance) =>
       'name': instance.name,
       'description': instance.description,
       'price': instance.price,
+      'lover_percentage': instance.loverPercentage,
+      'lover_price': instance.loverPrice,
       'viewed': instance.viewed,
       'star': instance.star,
       'comment_count': instance.commentCount,
@@ -90,14 +90,15 @@ Map<String, dynamic> _$$HouseEntityImplToJson(_$HouseEntityImpl instance) =>
       'status': instance.status,
       'luxe': instance.luxe,
       'luxe_status': instance.luxeStatus,
-      'luxe_expire': instance.luxeExpire?.toIso8601String(),
+      'luxe_expire': instance.luxeExpire,
       'vip_status': instance.vipStatus,
-      'vip_expire': instance.vipExpire?.toIso8601String(),
+      'vip_expire': instance.vipExpire,
       'bron_number': instance.bronNumber,
       'images': instance.images,
       'possibilities': instance.possibilities,
       'comment': instance.comment,
       'is_comment': instance.isComment,
+      'write_comment': instance.writeComment,
       'who': instance.who,
       'area': instance.area,
       'exclusisive': instance.exclusisive,
@@ -107,80 +108,142 @@ Map<String, dynamic> _$$HouseEntityImplToJson(_$HouseEntityImpl instance) =>
       'liked': instance.liked,
       'shop': instance.shop,
       'type': instance.type,
-      'date': instance.date?.toIso8601String(),
-      'updated_at': instance.updatedAt?.toIso8601String(),
-      'created_at': instance.createdAt?.toIso8601String(),
+      'date': instance.date,
+      'updated_at': instance.updatedAt,
+      'created_at': instance.createdAt,
+      'contact': instance.contact,
     };
 
-_$LocationImpl _$$LocationImplFromJson(Map<String, dynamic> json) =>
-    _$LocationImpl(
+_$LocationEntityImpl _$$LocationEntityImplFromJson(Map<String, dynamic> json) =>
+    _$LocationEntityImpl(
       id: (json['id'] as num?)?.toInt(),
       parentId: (json['parent_id'] as num?)?.toInt(),
       name: json['name'] as String?,
-      createdAt: json['created_at'] == null
-          ? null
-          : DateTime.parse(json['created_at'] as String),
-      updatedAt: json['updated_at'] == null
-          ? null
-          : DateTime.parse(json['updated_at'] as String),
+      createdAt: json['created_at'] as String?,
+      updatedAt: json['updated_at'] as String?,
       parentName: json['parent_name'] as String?,
     );
 
-Map<String, dynamic> _$$LocationImplToJson(_$LocationImpl instance) =>
+Map<String, dynamic> _$$LocationEntityImplToJson(
+        _$LocationEntityImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'parent_id': instance.parentId,
       'name': instance.name,
-      'created_at': instance.createdAt?.toIso8601String(),
-      'updated_at': instance.updatedAt?.toIso8601String(),
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
       'parent_name': instance.parentName,
     };
 
-_$PropertyTypeImpl _$$PropertyTypeImplFromJson(Map<String, dynamic> json) =>
-    _$PropertyTypeImpl(
+_$PropertyTypeEntityImpl _$$PropertyTypeEntityImplFromJson(
+        Map<String, dynamic> json) =>
+    _$PropertyTypeEntityImpl(
       id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String?,
       icon: json['icon'] as String?,
     );
 
-Map<String, dynamic> _$$PropertyTypeImplToJson(_$PropertyTypeImpl instance) =>
+Map<String, dynamic> _$$PropertyTypeEntityImplToJson(
+        _$PropertyTypeEntityImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'icon': instance.icon,
     };
 
-_$RepairTypeImpl _$$RepairTypeImplFromJson(Map<String, dynamic> json) =>
-    _$RepairTypeImpl(
+_$RepairTypeEntityImpl _$$RepairTypeEntityImplFromJson(
+        Map<String, dynamic> json) =>
+    _$RepairTypeEntityImpl(
       id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String?,
       icon: json['icon'] as String?,
     );
 
-Map<String, dynamic> _$$RepairTypeImplToJson(_$RepairTypeImpl instance) =>
+Map<String, dynamic> _$$RepairTypeEntityImplToJson(
+        _$RepairTypeEntityImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'icon': instance.icon,
     };
 
-_$ImageUrlImpl _$$ImageUrlImplFromJson(Map<String, dynamic> json) =>
-    _$ImageUrlImpl(
+_$ImageEntityImpl _$$ImageEntityImplFromJson(Map<String, dynamic> json) =>
+    _$ImageEntityImpl(
       url: json['url'] as String?,
+      original: json['original'] as String?,
+      thumbnail: json['thumbnail'] as String?,
+      watermark: json['watermark'] as String?,
     );
 
-Map<String, dynamic> _$$ImageUrlImplToJson(_$ImageUrlImpl instance) =>
+Map<String, dynamic> _$$ImageEntityImplToJson(_$ImageEntityImpl instance) =>
     <String, dynamic>{
       'url': instance.url,
+      'original': instance.original,
+      'thumbnail': instance.thumbnail,
+      'watermark': instance.watermark,
     };
 
-_$PossibilityImpl _$$PossibilityImplFromJson(Map<String, dynamic> json) =>
-    _$PossibilityImpl(
+_$ShopEntityImpl _$$ShopEntityImplFromJson(Map<String, dynamic> json) =>
+    _$ShopEntityImpl(
+      id: (json['id'] as num?)?.toInt(),
+      brand: json['brand'] as String?,
+      logo: json['logo'] as String?,
+      image: json['image'] as String?,
+      status: json['status'] as String?,
+      description: json['description'] as String?,
+      briefDescription: json['brief_description'] as String?,
+      locationId: (json['location_id'] as num?)?.toInt(),
+      expire: json['expire'] as String?,
+      views: (json['views'] as num?)?.toInt(),
+      coverMedia: json['cover_media'] as String?,
+      rating: (json['rating'] as num?)?.toInt(),
+      locations: json['locations'] as String?,
+      phoneNumbers: json['phone_numbers'] as String?,
+      isVip: (json['is_vip'] as num?)?.toInt(),
+      vipDays: json['vip_days'] as String?,
+      vipExpire: json['vip_expire'] as String?,
+      site: json['site'] as String?,
+      messengers: json['messengers'] as String?,
+      mail: json['mail'] as String?,
+      createdAt: json['created_at'] as String?,
+      updatedAt: json['updated_at'] as String?,
+    );
+
+Map<String, dynamic> _$$ShopEntityImplToJson(_$ShopEntityImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'brand': instance.brand,
+      'logo': instance.logo,
+      'image': instance.image,
+      'status': instance.status,
+      'description': instance.description,
+      'brief_description': instance.briefDescription,
+      'location_id': instance.locationId,
+      'expire': instance.expire,
+      'views': instance.views,
+      'cover_media': instance.coverMedia,
+      'rating': instance.rating,
+      'locations': instance.locations,
+      'phone_numbers': instance.phoneNumbers,
+      'is_vip': instance.isVip,
+      'vip_days': instance.vipDays,
+      'vip_expire': instance.vipExpire,
+      'site': instance.site,
+      'messengers': instance.messengers,
+      'mail': instance.mail,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
+    };
+
+_$PossibilityEntityImpl _$$PossibilityEntityImplFromJson(
+        Map<String, dynamic> json) =>
+    _$PossibilityEntityImpl(
       id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String?,
     );
 
-Map<String, dynamic> _$$PossibilityImplToJson(_$PossibilityImpl instance) =>
+Map<String, dynamic> _$$PossibilityEntityImplToJson(
+        _$PossibilityEntityImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,

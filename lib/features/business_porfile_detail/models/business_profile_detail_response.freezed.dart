@@ -21,7 +21,7 @@ BusinessProfileDetailResponse _$BusinessProfileDetailResponseFromJson(
 
 /// @nodoc
 mixin _$BusinessProfileDetailResponse {
-  BusinessProfileDetail? get data => throw _privateConstructorUsedError;
+  BusinessProfileData? get data => throw _privateConstructorUsedError;
 
   /// Serializes this BusinessProfileDetailResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,9 +41,9 @@ abstract class $BusinessProfileDetailResponseCopyWith<$Res> {
       _$BusinessProfileDetailResponseCopyWithImpl<$Res,
           BusinessProfileDetailResponse>;
   @useResult
-  $Res call({BusinessProfileDetail? data});
+  $Res call({BusinessProfileData? data});
 
-  $BusinessProfileDetailCopyWith<$Res>? get data;
+  $BusinessProfileDataCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -68,7 +68,7 @@ class _$BusinessProfileDetailResponseCopyWithImpl<$Res,
       data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as BusinessProfileDetail?,
+              as BusinessProfileData?,
     ) as $Val);
   }
 
@@ -76,12 +76,12 @@ class _$BusinessProfileDetailResponseCopyWithImpl<$Res,
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $BusinessProfileDetailCopyWith<$Res>? get data {
+  $BusinessProfileDataCopyWith<$Res>? get data {
     if (_value.data == null) {
       return null;
     }
 
-    return $BusinessProfileDetailCopyWith<$Res>(_value.data!, (value) {
+    return $BusinessProfileDataCopyWith<$Res>(_value.data!, (value) {
       return _then(_value.copyWith(data: value) as $Val);
     });
   }
@@ -96,10 +96,10 @@ abstract class _$$BusinessProfileDetailResponseImplCopyWith<$Res>
       __$$BusinessProfileDetailResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({BusinessProfileDetail? data});
+  $Res call({BusinessProfileData? data});
 
   @override
-  $BusinessProfileDetailCopyWith<$Res>? get data;
+  $BusinessProfileDataCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -123,7 +123,7 @@ class __$$BusinessProfileDetailResponseImplCopyWithImpl<$Res>
       data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as BusinessProfileDetail?,
+              as BusinessProfileData?,
     ));
   }
 }
@@ -139,7 +139,7 @@ class _$BusinessProfileDetailResponseImpl
       _$$BusinessProfileDetailResponseImplFromJson(json);
 
   @override
-  final BusinessProfileDetail? data;
+  final BusinessProfileData? data;
 
   @override
   String toString() {
@@ -179,14 +179,13 @@ class _$BusinessProfileDetailResponseImpl
 abstract class _BusinessProfileDetailResponse
     implements BusinessProfileDetailResponse {
   const factory _BusinessProfileDetailResponse(
-          {final BusinessProfileDetail? data}) =
-      _$BusinessProfileDetailResponseImpl;
+      {final BusinessProfileData? data}) = _$BusinessProfileDetailResponseImpl;
 
   factory _BusinessProfileDetailResponse.fromJson(Map<String, dynamic> json) =
       _$BusinessProfileDetailResponseImpl.fromJson;
 
   @override
-  BusinessProfileDetail? get data;
+  BusinessProfileData? get data;
 
   /// Create a copy of BusinessProfileDetailResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -197,100 +196,84 @@ abstract class _BusinessProfileDetailResponse
       get copyWith => throw _privateConstructorUsedError;
 }
 
-BusinessProfileDetail _$BusinessProfileDetailFromJson(
-    Map<String, dynamic> json) {
-  return _BusinessProfileDetail.fromJson(json);
+BusinessProfileData _$BusinessProfileDataFromJson(Map<String, dynamic> json) {
+  return _BusinessProfileData.fromJson(json);
 }
 
 /// @nodoc
-mixin _$BusinessProfileDetail {
-  @JsonKey(name: 'id')
+mixin _$BusinessProfileData {
   int? get id => throw _privateConstructorUsedError;
-  @JsonKey(name: 'brand')
   String? get brand => throw _privateConstructorUsedError;
-  @JsonKey(name: 'logo')
   String? get logo => throw _privateConstructorUsedError;
-  @JsonKey(name: 'image')
   String? get image => throw _privateConstructorUsedError;
-  @JsonKey(name: 'description')
   String? get description => throw _privateConstructorUsedError;
-  @JsonKey(name: 'views')
+  @JsonKey(name: 'brief_description')
+  String? get briefDescription => throw _privateConstructorUsedError;
   int? get views => throw _privateConstructorUsedError;
   @JsonKey(name: 'cover_media')
   String? get coverMedia => throw _privateConstructorUsedError;
   @JsonKey(name: 'phone_numbers')
-  String? get phoneNumbers => throw _privateConstructorUsedError;
-  @JsonKey(name: 'is_vip')
-  int? get isVip => throw _privateConstructorUsedError;
-  @JsonKey(name: 'vip_days')
-  String? get vipDays => throw _privateConstructorUsedError;
-  @JsonKey(name: 'site')
+  List<String>? get phoneNumbers => throw _privateConstructorUsedError;
+  @JsonKey(name: 'vip_status')
+  bool? get vipStatus => throw _privateConstructorUsedError;
   String? get site => throw _privateConstructorUsedError;
-  @JsonKey(name: 'mail')
   String? get mail => throw _privateConstructorUsedError;
   @JsonKey(name: 'social_profiles')
-  List<dynamic>? get socialProfiles => throw _privateConstructorUsedError;
-  @JsonKey(name: 'location')
-  Location? get location => throw _privateConstructorUsedError;
+  List<SocialProfile>? get socialProfiles => throw _privateConstructorUsedError;
+  List<String>? get location => throw _privateConstructorUsedError;
   @JsonKey(name: 'product_count')
   int? get productCount => throw _privateConstructorUsedError;
-  @JsonKey(name: 'products')
-  List<Product>? get products => throw _privateConstructorUsedError;
   @JsonKey(name: 'product_categories')
   List<ProductCategory>? get productCategories =>
       throw _privateConstructorUsedError;
 
-  /// Serializes this BusinessProfileDetail to a JSON map.
+  /// Serializes this BusinessProfileData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of BusinessProfileDetail
+  /// Create a copy of BusinessProfileData
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $BusinessProfileDetailCopyWith<BusinessProfileDetail> get copyWith =>
+  $BusinessProfileDataCopyWith<BusinessProfileData> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $BusinessProfileDetailCopyWith<$Res> {
-  factory $BusinessProfileDetailCopyWith(BusinessProfileDetail value,
-          $Res Function(BusinessProfileDetail) then) =
-      _$BusinessProfileDetailCopyWithImpl<$Res, BusinessProfileDetail>;
+abstract class $BusinessProfileDataCopyWith<$Res> {
+  factory $BusinessProfileDataCopyWith(
+          BusinessProfileData value, $Res Function(BusinessProfileData) then) =
+      _$BusinessProfileDataCopyWithImpl<$Res, BusinessProfileData>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') int? id,
-      @JsonKey(name: 'brand') String? brand,
-      @JsonKey(name: 'logo') String? logo,
-      @JsonKey(name: 'image') String? image,
-      @JsonKey(name: 'description') String? description,
-      @JsonKey(name: 'views') int? views,
+      {int? id,
+      String? brand,
+      String? logo,
+      String? image,
+      String? description,
+      @JsonKey(name: 'brief_description') String? briefDescription,
+      int? views,
       @JsonKey(name: 'cover_media') String? coverMedia,
-      @JsonKey(name: 'phone_numbers') String? phoneNumbers,
-      @JsonKey(name: 'is_vip') int? isVip,
-      @JsonKey(name: 'vip_days') String? vipDays,
-      @JsonKey(name: 'site') String? site,
-      @JsonKey(name: 'mail') String? mail,
-      @JsonKey(name: 'social_profiles') List<dynamic>? socialProfiles,
-      @JsonKey(name: 'location') Location? location,
+      @JsonKey(name: 'phone_numbers') List<String>? phoneNumbers,
+      @JsonKey(name: 'vip_status') bool? vipStatus,
+      String? site,
+      String? mail,
+      @JsonKey(name: 'social_profiles') List<SocialProfile>? socialProfiles,
+      List<String>? location,
       @JsonKey(name: 'product_count') int? productCount,
-      @JsonKey(name: 'products') List<Product>? products,
       @JsonKey(name: 'product_categories')
       List<ProductCategory>? productCategories});
-
-  $LocationCopyWith<$Res>? get location;
 }
 
 /// @nodoc
-class _$BusinessProfileDetailCopyWithImpl<$Res,
-        $Val extends BusinessProfileDetail>
-    implements $BusinessProfileDetailCopyWith<$Res> {
-  _$BusinessProfileDetailCopyWithImpl(this._value, this._then);
+class _$BusinessProfileDataCopyWithImpl<$Res, $Val extends BusinessProfileData>
+    implements $BusinessProfileDataCopyWith<$Res> {
+  _$BusinessProfileDataCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of BusinessProfileDetail
+  /// Create a copy of BusinessProfileData
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -300,17 +283,16 @@ class _$BusinessProfileDetailCopyWithImpl<$Res,
     Object? logo = freezed,
     Object? image = freezed,
     Object? description = freezed,
+    Object? briefDescription = freezed,
     Object? views = freezed,
     Object? coverMedia = freezed,
     Object? phoneNumbers = freezed,
-    Object? isVip = freezed,
-    Object? vipDays = freezed,
+    Object? vipStatus = freezed,
     Object? site = freezed,
     Object? mail = freezed,
     Object? socialProfiles = freezed,
     Object? location = freezed,
     Object? productCount = freezed,
-    Object? products = freezed,
     Object? productCategories = freezed,
   }) {
     return _then(_value.copyWith(
@@ -334,6 +316,10 @@ class _$BusinessProfileDetailCopyWithImpl<$Res,
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
+      briefDescription: freezed == briefDescription
+          ? _value.briefDescription
+          : briefDescription // ignore: cast_nullable_to_non_nullable
+              as String?,
       views: freezed == views
           ? _value.views
           : views // ignore: cast_nullable_to_non_nullable
@@ -345,15 +331,11 @@ class _$BusinessProfileDetailCopyWithImpl<$Res,
       phoneNumbers: freezed == phoneNumbers
           ? _value.phoneNumbers
           : phoneNumbers // ignore: cast_nullable_to_non_nullable
-              as String?,
-      isVip: freezed == isVip
-          ? _value.isVip
-          : isVip // ignore: cast_nullable_to_non_nullable
-              as int?,
-      vipDays: freezed == vipDays
-          ? _value.vipDays
-          : vipDays // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as List<String>?,
+      vipStatus: freezed == vipStatus
+          ? _value.vipStatus
+          : vipStatus // ignore: cast_nullable_to_non_nullable
+              as bool?,
       site: freezed == site
           ? _value.site
           : site // ignore: cast_nullable_to_non_nullable
@@ -365,84 +347,60 @@ class _$BusinessProfileDetailCopyWithImpl<$Res,
       socialProfiles: freezed == socialProfiles
           ? _value.socialProfiles
           : socialProfiles // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>?,
+              as List<SocialProfile>?,
       location: freezed == location
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
-              as Location?,
+              as List<String>?,
       productCount: freezed == productCount
           ? _value.productCount
           : productCount // ignore: cast_nullable_to_non_nullable
               as int?,
-      products: freezed == products
-          ? _value.products
-          : products // ignore: cast_nullable_to_non_nullable
-              as List<Product>?,
       productCategories: freezed == productCategories
           ? _value.productCategories
           : productCategories // ignore: cast_nullable_to_non_nullable
               as List<ProductCategory>?,
     ) as $Val);
   }
-
-  /// Create a copy of BusinessProfileDetail
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $LocationCopyWith<$Res>? get location {
-    if (_value.location == null) {
-      return null;
-    }
-
-    return $LocationCopyWith<$Res>(_value.location!, (value) {
-      return _then(_value.copyWith(location: value) as $Val);
-    });
-  }
 }
 
 /// @nodoc
-abstract class _$$BusinessProfileDetailImplCopyWith<$Res>
-    implements $BusinessProfileDetailCopyWith<$Res> {
-  factory _$$BusinessProfileDetailImplCopyWith(
-          _$BusinessProfileDetailImpl value,
-          $Res Function(_$BusinessProfileDetailImpl) then) =
-      __$$BusinessProfileDetailImplCopyWithImpl<$Res>;
+abstract class _$$BusinessProfileDataImplCopyWith<$Res>
+    implements $BusinessProfileDataCopyWith<$Res> {
+  factory _$$BusinessProfileDataImplCopyWith(_$BusinessProfileDataImpl value,
+          $Res Function(_$BusinessProfileDataImpl) then) =
+      __$$BusinessProfileDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') int? id,
-      @JsonKey(name: 'brand') String? brand,
-      @JsonKey(name: 'logo') String? logo,
-      @JsonKey(name: 'image') String? image,
-      @JsonKey(name: 'description') String? description,
-      @JsonKey(name: 'views') int? views,
+      {int? id,
+      String? brand,
+      String? logo,
+      String? image,
+      String? description,
+      @JsonKey(name: 'brief_description') String? briefDescription,
+      int? views,
       @JsonKey(name: 'cover_media') String? coverMedia,
-      @JsonKey(name: 'phone_numbers') String? phoneNumbers,
-      @JsonKey(name: 'is_vip') int? isVip,
-      @JsonKey(name: 'vip_days') String? vipDays,
-      @JsonKey(name: 'site') String? site,
-      @JsonKey(name: 'mail') String? mail,
-      @JsonKey(name: 'social_profiles') List<dynamic>? socialProfiles,
-      @JsonKey(name: 'location') Location? location,
+      @JsonKey(name: 'phone_numbers') List<String>? phoneNumbers,
+      @JsonKey(name: 'vip_status') bool? vipStatus,
+      String? site,
+      String? mail,
+      @JsonKey(name: 'social_profiles') List<SocialProfile>? socialProfiles,
+      List<String>? location,
       @JsonKey(name: 'product_count') int? productCount,
-      @JsonKey(name: 'products') List<Product>? products,
       @JsonKey(name: 'product_categories')
       List<ProductCategory>? productCategories});
-
-  @override
-  $LocationCopyWith<$Res>? get location;
 }
 
 /// @nodoc
-class __$$BusinessProfileDetailImplCopyWithImpl<$Res>
-    extends _$BusinessProfileDetailCopyWithImpl<$Res,
-        _$BusinessProfileDetailImpl>
-    implements _$$BusinessProfileDetailImplCopyWith<$Res> {
-  __$$BusinessProfileDetailImplCopyWithImpl(_$BusinessProfileDetailImpl _value,
-      $Res Function(_$BusinessProfileDetailImpl) _then)
+class __$$BusinessProfileDataImplCopyWithImpl<$Res>
+    extends _$BusinessProfileDataCopyWithImpl<$Res, _$BusinessProfileDataImpl>
+    implements _$$BusinessProfileDataImplCopyWith<$Res> {
+  __$$BusinessProfileDataImplCopyWithImpl(_$BusinessProfileDataImpl _value,
+      $Res Function(_$BusinessProfileDataImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of BusinessProfileDetail
+  /// Create a copy of BusinessProfileData
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -452,20 +410,19 @@ class __$$BusinessProfileDetailImplCopyWithImpl<$Res>
     Object? logo = freezed,
     Object? image = freezed,
     Object? description = freezed,
+    Object? briefDescription = freezed,
     Object? views = freezed,
     Object? coverMedia = freezed,
     Object? phoneNumbers = freezed,
-    Object? isVip = freezed,
-    Object? vipDays = freezed,
+    Object? vipStatus = freezed,
     Object? site = freezed,
     Object? mail = freezed,
     Object? socialProfiles = freezed,
     Object? location = freezed,
     Object? productCount = freezed,
-    Object? products = freezed,
     Object? productCategories = freezed,
   }) {
-    return _then(_$BusinessProfileDetailImpl(
+    return _then(_$BusinessProfileDataImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -486,6 +443,10 @@ class __$$BusinessProfileDetailImplCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
+      briefDescription: freezed == briefDescription
+          ? _value.briefDescription
+          : briefDescription // ignore: cast_nullable_to_non_nullable
+              as String?,
       views: freezed == views
           ? _value.views
           : views // ignore: cast_nullable_to_non_nullable
@@ -495,17 +456,13 @@ class __$$BusinessProfileDetailImplCopyWithImpl<$Res>
           : coverMedia // ignore: cast_nullable_to_non_nullable
               as String?,
       phoneNumbers: freezed == phoneNumbers
-          ? _value.phoneNumbers
+          ? _value._phoneNumbers
           : phoneNumbers // ignore: cast_nullable_to_non_nullable
-              as String?,
-      isVip: freezed == isVip
-          ? _value.isVip
-          : isVip // ignore: cast_nullable_to_non_nullable
-              as int?,
-      vipDays: freezed == vipDays
-          ? _value.vipDays
-          : vipDays // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as List<String>?,
+      vipStatus: freezed == vipStatus
+          ? _value.vipStatus
+          : vipStatus // ignore: cast_nullable_to_non_nullable
+              as bool?,
       site: freezed == site
           ? _value.site
           : site // ignore: cast_nullable_to_non_nullable
@@ -517,19 +474,15 @@ class __$$BusinessProfileDetailImplCopyWithImpl<$Res>
       socialProfiles: freezed == socialProfiles
           ? _value._socialProfiles
           : socialProfiles // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>?,
+              as List<SocialProfile>?,
       location: freezed == location
-          ? _value.location
+          ? _value._location
           : location // ignore: cast_nullable_to_non_nullable
-              as Location?,
+              as List<String>?,
       productCount: freezed == productCount
           ? _value.productCount
           : productCount // ignore: cast_nullable_to_non_nullable
               as int?,
-      products: freezed == products
-          ? _value._products
-          : products // ignore: cast_nullable_to_non_nullable
-              as List<Product>?,
       productCategories: freezed == productCategories
           ? _value._productCategories
           : productCategories // ignore: cast_nullable_to_non_nullable
@@ -540,73 +493,74 @@ class __$$BusinessProfileDetailImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$BusinessProfileDetailImpl implements _BusinessProfileDetail {
-  const _$BusinessProfileDetailImpl(
-      {@JsonKey(name: 'id') this.id,
-      @JsonKey(name: 'brand') this.brand,
-      @JsonKey(name: 'logo') this.logo,
-      @JsonKey(name: 'image') this.image,
-      @JsonKey(name: 'description') this.description,
-      @JsonKey(name: 'views') this.views,
+class _$BusinessProfileDataImpl implements _BusinessProfileData {
+  const _$BusinessProfileDataImpl(
+      {this.id,
+      this.brand,
+      this.logo,
+      this.image,
+      this.description,
+      @JsonKey(name: 'brief_description') this.briefDescription,
+      this.views,
       @JsonKey(name: 'cover_media') this.coverMedia,
-      @JsonKey(name: 'phone_numbers') this.phoneNumbers,
-      @JsonKey(name: 'is_vip') this.isVip,
-      @JsonKey(name: 'vip_days') this.vipDays,
-      @JsonKey(name: 'site') this.site,
-      @JsonKey(name: 'mail') this.mail,
-      @JsonKey(name: 'social_profiles') final List<dynamic>? socialProfiles,
-      @JsonKey(name: 'location') this.location,
+      @JsonKey(name: 'phone_numbers') final List<String>? phoneNumbers,
+      @JsonKey(name: 'vip_status') this.vipStatus,
+      this.site,
+      this.mail,
+      @JsonKey(name: 'social_profiles')
+      final List<SocialProfile>? socialProfiles,
+      final List<String>? location,
       @JsonKey(name: 'product_count') this.productCount,
-      @JsonKey(name: 'products') final List<Product>? products,
       @JsonKey(name: 'product_categories')
       final List<ProductCategory>? productCategories})
-      : _socialProfiles = socialProfiles,
-        _products = products,
+      : _phoneNumbers = phoneNumbers,
+        _socialProfiles = socialProfiles,
+        _location = location,
         _productCategories = productCategories;
 
-  factory _$BusinessProfileDetailImpl.fromJson(Map<String, dynamic> json) =>
-      _$$BusinessProfileDetailImplFromJson(json);
+  factory _$BusinessProfileDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$BusinessProfileDataImplFromJson(json);
 
   @override
-  @JsonKey(name: 'id')
   final int? id;
   @override
-  @JsonKey(name: 'brand')
   final String? brand;
   @override
-  @JsonKey(name: 'logo')
   final String? logo;
   @override
-  @JsonKey(name: 'image')
   final String? image;
   @override
-  @JsonKey(name: 'description')
   final String? description;
   @override
-  @JsonKey(name: 'views')
+  @JsonKey(name: 'brief_description')
+  final String? briefDescription;
+  @override
   final int? views;
   @override
   @JsonKey(name: 'cover_media')
   final String? coverMedia;
+  final List<String>? _phoneNumbers;
   @override
   @JsonKey(name: 'phone_numbers')
-  final String? phoneNumbers;
+  List<String>? get phoneNumbers {
+    final value = _phoneNumbers;
+    if (value == null) return null;
+    if (_phoneNumbers is EqualUnmodifiableListView) return _phoneNumbers;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
-  @JsonKey(name: 'is_vip')
-  final int? isVip;
+  @JsonKey(name: 'vip_status')
+  final bool? vipStatus;
   @override
-  @JsonKey(name: 'vip_days')
-  final String? vipDays;
-  @override
-  @JsonKey(name: 'site')
   final String? site;
   @override
-  @JsonKey(name: 'mail')
   final String? mail;
-  final List<dynamic>? _socialProfiles;
+  final List<SocialProfile>? _socialProfiles;
   @override
   @JsonKey(name: 'social_profiles')
-  List<dynamic>? get socialProfiles {
+  List<SocialProfile>? get socialProfiles {
     final value = _socialProfiles;
     if (value == null) return null;
     if (_socialProfiles is EqualUnmodifiableListView) return _socialProfiles;
@@ -614,23 +568,19 @@ class _$BusinessProfileDetailImpl implements _BusinessProfileDetail {
     return EqualUnmodifiableListView(value);
   }
 
+  final List<String>? _location;
   @override
-  @JsonKey(name: 'location')
-  final Location? location;
-  @override
-  @JsonKey(name: 'product_count')
-  final int? productCount;
-  final List<Product>? _products;
-  @override
-  @JsonKey(name: 'products')
-  List<Product>? get products {
-    final value = _products;
+  List<String>? get location {
+    final value = _location;
     if (value == null) return null;
-    if (_products is EqualUnmodifiableListView) return _products;
+    if (_location is EqualUnmodifiableListView) return _location;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
 
+  @override
+  @JsonKey(name: 'product_count')
+  final int? productCount;
   final List<ProductCategory>? _productCategories;
   @override
   @JsonKey(name: 'product_categories')
@@ -645,36 +595,36 @@ class _$BusinessProfileDetailImpl implements _BusinessProfileDetail {
 
   @override
   String toString() {
-    return 'BusinessProfileDetail(id: $id, brand: $brand, logo: $logo, image: $image, description: $description, views: $views, coverMedia: $coverMedia, phoneNumbers: $phoneNumbers, isVip: $isVip, vipDays: $vipDays, site: $site, mail: $mail, socialProfiles: $socialProfiles, location: $location, productCount: $productCount, products: $products, productCategories: $productCategories)';
+    return 'BusinessProfileData(id: $id, brand: $brand, logo: $logo, image: $image, description: $description, briefDescription: $briefDescription, views: $views, coverMedia: $coverMedia, phoneNumbers: $phoneNumbers, vipStatus: $vipStatus, site: $site, mail: $mail, socialProfiles: $socialProfiles, location: $location, productCount: $productCount, productCategories: $productCategories)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$BusinessProfileDetailImpl &&
+            other is _$BusinessProfileDataImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.brand, brand) || other.brand == brand) &&
             (identical(other.logo, logo) || other.logo == logo) &&
             (identical(other.image, image) || other.image == image) &&
             (identical(other.description, description) ||
                 other.description == description) &&
+            (identical(other.briefDescription, briefDescription) ||
+                other.briefDescription == briefDescription) &&
             (identical(other.views, views) || other.views == views) &&
             (identical(other.coverMedia, coverMedia) ||
                 other.coverMedia == coverMedia) &&
-            (identical(other.phoneNumbers, phoneNumbers) ||
-                other.phoneNumbers == phoneNumbers) &&
-            (identical(other.isVip, isVip) || other.isVip == isVip) &&
-            (identical(other.vipDays, vipDays) || other.vipDays == vipDays) &&
+            const DeepCollectionEquality()
+                .equals(other._phoneNumbers, _phoneNumbers) &&
+            (identical(other.vipStatus, vipStatus) ||
+                other.vipStatus == vipStatus) &&
             (identical(other.site, site) || other.site == site) &&
             (identical(other.mail, mail) || other.mail == mail) &&
             const DeepCollectionEquality()
                 .equals(other._socialProfiles, _socialProfiles) &&
-            (identical(other.location, location) ||
-                other.location == location) &&
+            const DeepCollectionEquality().equals(other._location, _location) &&
             (identical(other.productCount, productCount) ||
                 other.productCount == productCount) &&
-            const DeepCollectionEquality().equals(other._products, _products) &&
             const DeepCollectionEquality()
                 .equals(other._productCategories, _productCategories));
   }
@@ -688,276 +638,220 @@ class _$BusinessProfileDetailImpl implements _BusinessProfileDetail {
       logo,
       image,
       description,
+      briefDescription,
       views,
       coverMedia,
-      phoneNumbers,
-      isVip,
-      vipDays,
+      const DeepCollectionEquality().hash(_phoneNumbers),
+      vipStatus,
       site,
       mail,
       const DeepCollectionEquality().hash(_socialProfiles),
-      location,
+      const DeepCollectionEquality().hash(_location),
       productCount,
-      const DeepCollectionEquality().hash(_products),
       const DeepCollectionEquality().hash(_productCategories));
 
-  /// Create a copy of BusinessProfileDetail
+  /// Create a copy of BusinessProfileData
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$BusinessProfileDetailImplCopyWith<_$BusinessProfileDetailImpl>
-      get copyWith => __$$BusinessProfileDetailImplCopyWithImpl<
-          _$BusinessProfileDetailImpl>(this, _$identity);
+  _$$BusinessProfileDataImplCopyWith<_$BusinessProfileDataImpl> get copyWith =>
+      __$$BusinessProfileDataImplCopyWithImpl<_$BusinessProfileDataImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$BusinessProfileDetailImplToJson(
+    return _$$BusinessProfileDataImplToJson(
       this,
     );
   }
 }
 
-abstract class _BusinessProfileDetail implements BusinessProfileDetail {
-  const factory _BusinessProfileDetail(
-          {@JsonKey(name: 'id') final int? id,
-          @JsonKey(name: 'brand') final String? brand,
-          @JsonKey(name: 'logo') final String? logo,
-          @JsonKey(name: 'image') final String? image,
-          @JsonKey(name: 'description') final String? description,
-          @JsonKey(name: 'views') final int? views,
+abstract class _BusinessProfileData implements BusinessProfileData {
+  const factory _BusinessProfileData(
+          {final int? id,
+          final String? brand,
+          final String? logo,
+          final String? image,
+          final String? description,
+          @JsonKey(name: 'brief_description') final String? briefDescription,
+          final int? views,
           @JsonKey(name: 'cover_media') final String? coverMedia,
-          @JsonKey(name: 'phone_numbers') final String? phoneNumbers,
-          @JsonKey(name: 'is_vip') final int? isVip,
-          @JsonKey(name: 'vip_days') final String? vipDays,
-          @JsonKey(name: 'site') final String? site,
-          @JsonKey(name: 'mail') final String? mail,
-          @JsonKey(name: 'social_profiles') final List<dynamic>? socialProfiles,
-          @JsonKey(name: 'location') final Location? location,
+          @JsonKey(name: 'phone_numbers') final List<String>? phoneNumbers,
+          @JsonKey(name: 'vip_status') final bool? vipStatus,
+          final String? site,
+          final String? mail,
+          @JsonKey(name: 'social_profiles')
+          final List<SocialProfile>? socialProfiles,
+          final List<String>? location,
           @JsonKey(name: 'product_count') final int? productCount,
-          @JsonKey(name: 'products') final List<Product>? products,
           @JsonKey(name: 'product_categories')
           final List<ProductCategory>? productCategories}) =
-      _$BusinessProfileDetailImpl;
+      _$BusinessProfileDataImpl;
 
-  factory _BusinessProfileDetail.fromJson(Map<String, dynamic> json) =
-      _$BusinessProfileDetailImpl.fromJson;
+  factory _BusinessProfileData.fromJson(Map<String, dynamic> json) =
+      _$BusinessProfileDataImpl.fromJson;
 
   @override
-  @JsonKey(name: 'id')
   int? get id;
   @override
-  @JsonKey(name: 'brand')
   String? get brand;
   @override
-  @JsonKey(name: 'logo')
   String? get logo;
   @override
-  @JsonKey(name: 'image')
   String? get image;
   @override
-  @JsonKey(name: 'description')
   String? get description;
   @override
-  @JsonKey(name: 'views')
+  @JsonKey(name: 'brief_description')
+  String? get briefDescription;
+  @override
   int? get views;
   @override
   @JsonKey(name: 'cover_media')
   String? get coverMedia;
   @override
   @JsonKey(name: 'phone_numbers')
-  String? get phoneNumbers;
+  List<String>? get phoneNumbers;
   @override
-  @JsonKey(name: 'is_vip')
-  int? get isVip;
+  @JsonKey(name: 'vip_status')
+  bool? get vipStatus;
   @override
-  @JsonKey(name: 'vip_days')
-  String? get vipDays;
-  @override
-  @JsonKey(name: 'site')
   String? get site;
   @override
-  @JsonKey(name: 'mail')
   String? get mail;
   @override
   @JsonKey(name: 'social_profiles')
-  List<dynamic>? get socialProfiles;
+  List<SocialProfile>? get socialProfiles;
   @override
-  @JsonKey(name: 'location')
-  Location? get location;
+  List<String>? get location;
   @override
   @JsonKey(name: 'product_count')
   int? get productCount;
   @override
-  @JsonKey(name: 'products')
-  List<Product>? get products;
-  @override
   @JsonKey(name: 'product_categories')
   List<ProductCategory>? get productCategories;
 
-  /// Create a copy of BusinessProfileDetail
+  /// Create a copy of BusinessProfileData
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$BusinessProfileDetailImplCopyWith<_$BusinessProfileDetailImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$BusinessProfileDataImplCopyWith<_$BusinessProfileDataImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
-Location _$LocationFromJson(Map<String, dynamic> json) {
-  return _Location.fromJson(json);
+SocialProfile _$SocialProfileFromJson(Map<String, dynamic> json) {
+  return _SocialProfile.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Location {
-  @JsonKey(name: 'id')
-  int? get id => throw _privateConstructorUsedError;
-  @JsonKey(name: 'parent_id')
-  int? get parentId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'name')
-  String? get name => throw _privateConstructorUsedError;
-  @JsonKey(name: 'created_at')
-  String? get createdAt => throw _privateConstructorUsedError;
-  @JsonKey(name: 'updated_at')
-  String? get updatedAt => throw _privateConstructorUsedError;
-  @JsonKey(name: 'parent_name')
-  String? get parentName => throw _privateConstructorUsedError;
+mixin _$SocialProfile {
+  @JsonKey(name: 'sociable_id')
+  int? get sociableId => throw _privateConstructorUsedError;
+  String? get platform => throw _privateConstructorUsedError;
+  String? get url => throw _privateConstructorUsedError;
 
-  /// Serializes this Location to a JSON map.
+  /// Serializes this SocialProfile to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of Location
+  /// Create a copy of SocialProfile
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $LocationCopyWith<Location> get copyWith =>
+  $SocialProfileCopyWith<SocialProfile> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $LocationCopyWith<$Res> {
-  factory $LocationCopyWith(Location value, $Res Function(Location) then) =
-      _$LocationCopyWithImpl<$Res, Location>;
+abstract class $SocialProfileCopyWith<$Res> {
+  factory $SocialProfileCopyWith(
+          SocialProfile value, $Res Function(SocialProfile) then) =
+      _$SocialProfileCopyWithImpl<$Res, SocialProfile>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') int? id,
-      @JsonKey(name: 'parent_id') int? parentId,
-      @JsonKey(name: 'name') String? name,
-      @JsonKey(name: 'created_at') String? createdAt,
-      @JsonKey(name: 'updated_at') String? updatedAt,
-      @JsonKey(name: 'parent_name') String? parentName});
+      {@JsonKey(name: 'sociable_id') int? sociableId,
+      String? platform,
+      String? url});
 }
 
 /// @nodoc
-class _$LocationCopyWithImpl<$Res, $Val extends Location>
-    implements $LocationCopyWith<$Res> {
-  _$LocationCopyWithImpl(this._value, this._then);
+class _$SocialProfileCopyWithImpl<$Res, $Val extends SocialProfile>
+    implements $SocialProfileCopyWith<$Res> {
+  _$SocialProfileCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Location
+  /// Create a copy of SocialProfile
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? parentId = freezed,
-    Object? name = freezed,
-    Object? createdAt = freezed,
-    Object? updatedAt = freezed,
-    Object? parentName = freezed,
+    Object? sociableId = freezed,
+    Object? platform = freezed,
+    Object? url = freezed,
   }) {
     return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      sociableId: freezed == sociableId
+          ? _value.sociableId
+          : sociableId // ignore: cast_nullable_to_non_nullable
               as int?,
-      parentId: freezed == parentId
-          ? _value.parentId
-          : parentId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      platform: freezed == platform
+          ? _value.platform
+          : platform // ignore: cast_nullable_to_non_nullable
               as String?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as String?,
-      updatedAt: freezed == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as String?,
-      parentName: freezed == parentName
-          ? _value.parentName
-          : parentName // ignore: cast_nullable_to_non_nullable
+      url: freezed == url
+          ? _value.url
+          : url // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$LocationImplCopyWith<$Res>
-    implements $LocationCopyWith<$Res> {
-  factory _$$LocationImplCopyWith(
-          _$LocationImpl value, $Res Function(_$LocationImpl) then) =
-      __$$LocationImplCopyWithImpl<$Res>;
+abstract class _$$SocialProfileImplCopyWith<$Res>
+    implements $SocialProfileCopyWith<$Res> {
+  factory _$$SocialProfileImplCopyWith(
+          _$SocialProfileImpl value, $Res Function(_$SocialProfileImpl) then) =
+      __$$SocialProfileImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') int? id,
-      @JsonKey(name: 'parent_id') int? parentId,
-      @JsonKey(name: 'name') String? name,
-      @JsonKey(name: 'created_at') String? createdAt,
-      @JsonKey(name: 'updated_at') String? updatedAt,
-      @JsonKey(name: 'parent_name') String? parentName});
+      {@JsonKey(name: 'sociable_id') int? sociableId,
+      String? platform,
+      String? url});
 }
 
 /// @nodoc
-class __$$LocationImplCopyWithImpl<$Res>
-    extends _$LocationCopyWithImpl<$Res, _$LocationImpl>
-    implements _$$LocationImplCopyWith<$Res> {
-  __$$LocationImplCopyWithImpl(
-      _$LocationImpl _value, $Res Function(_$LocationImpl) _then)
+class __$$SocialProfileImplCopyWithImpl<$Res>
+    extends _$SocialProfileCopyWithImpl<$Res, _$SocialProfileImpl>
+    implements _$$SocialProfileImplCopyWith<$Res> {
+  __$$SocialProfileImplCopyWithImpl(
+      _$SocialProfileImpl _value, $Res Function(_$SocialProfileImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Location
+  /// Create a copy of SocialProfile
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? parentId = freezed,
-    Object? name = freezed,
-    Object? createdAt = freezed,
-    Object? updatedAt = freezed,
-    Object? parentName = freezed,
+    Object? sociableId = freezed,
+    Object? platform = freezed,
+    Object? url = freezed,
   }) {
-    return _then(_$LocationImpl(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+    return _then(_$SocialProfileImpl(
+      sociableId: freezed == sociableId
+          ? _value.sociableId
+          : sociableId // ignore: cast_nullable_to_non_nullable
               as int?,
-      parentId: freezed == parentId
-          ? _value.parentId
-          : parentId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      platform: freezed == platform
+          ? _value.platform
+          : platform // ignore: cast_nullable_to_non_nullable
               as String?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as String?,
-      updatedAt: freezed == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as String?,
-      parentName: freezed == parentName
-          ? _value.parentName
-          : parentName // ignore: cast_nullable_to_non_nullable
+      url: freezed == url
+          ? _value.url
+          : url // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -965,760 +859,80 @@ class __$$LocationImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$LocationImpl implements _Location {
-  const _$LocationImpl(
-      {@JsonKey(name: 'id') this.id,
-      @JsonKey(name: 'parent_id') this.parentId,
-      @JsonKey(name: 'name') this.name,
-      @JsonKey(name: 'created_at') this.createdAt,
-      @JsonKey(name: 'updated_at') this.updatedAt,
-      @JsonKey(name: 'parent_name') this.parentName});
+class _$SocialProfileImpl implements _SocialProfile {
+  const _$SocialProfileImpl(
+      {@JsonKey(name: 'sociable_id') this.sociableId, this.platform, this.url});
 
-  factory _$LocationImpl.fromJson(Map<String, dynamic> json) =>
-      _$$LocationImplFromJson(json);
+  factory _$SocialProfileImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SocialProfileImplFromJson(json);
 
   @override
-  @JsonKey(name: 'id')
-  final int? id;
+  @JsonKey(name: 'sociable_id')
+  final int? sociableId;
   @override
-  @JsonKey(name: 'parent_id')
-  final int? parentId;
+  final String? platform;
   @override
-  @JsonKey(name: 'name')
-  final String? name;
-  @override
-  @JsonKey(name: 'created_at')
-  final String? createdAt;
-  @override
-  @JsonKey(name: 'updated_at')
-  final String? updatedAt;
-  @override
-  @JsonKey(name: 'parent_name')
-  final String? parentName;
+  final String? url;
 
   @override
   String toString() {
-    return 'Location(id: $id, parentId: $parentId, name: $name, createdAt: $createdAt, updatedAt: $updatedAt, parentName: $parentName)';
+    return 'SocialProfile(sociableId: $sociableId, platform: $platform, url: $url)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LocationImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.parentId, parentId) ||
-                other.parentId == parentId) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt) &&
-            (identical(other.parentName, parentName) ||
-                other.parentName == parentName));
+            other is _$SocialProfileImpl &&
+            (identical(other.sociableId, sociableId) ||
+                other.sociableId == sociableId) &&
+            (identical(other.platform, platform) ||
+                other.platform == platform) &&
+            (identical(other.url, url) || other.url == url));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, parentId, name, createdAt, updatedAt, parentName);
+  int get hashCode => Object.hash(runtimeType, sociableId, platform, url);
 
-  /// Create a copy of Location
+  /// Create a copy of SocialProfile
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$LocationImplCopyWith<_$LocationImpl> get copyWith =>
-      __$$LocationImplCopyWithImpl<_$LocationImpl>(this, _$identity);
+  _$$SocialProfileImplCopyWith<_$SocialProfileImpl> get copyWith =>
+      __$$SocialProfileImplCopyWithImpl<_$SocialProfileImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$LocationImplToJson(
+    return _$$SocialProfileImplToJson(
       this,
     );
   }
 }
 
-abstract class _Location implements Location {
-  const factory _Location(
-      {@JsonKey(name: 'id') final int? id,
-      @JsonKey(name: 'parent_id') final int? parentId,
-      @JsonKey(name: 'name') final String? name,
-      @JsonKey(name: 'created_at') final String? createdAt,
-      @JsonKey(name: 'updated_at') final String? updatedAt,
-      @JsonKey(name: 'parent_name') final String? parentName}) = _$LocationImpl;
+abstract class _SocialProfile implements SocialProfile {
+  const factory _SocialProfile(
+      {@JsonKey(name: 'sociable_id') final int? sociableId,
+      final String? platform,
+      final String? url}) = _$SocialProfileImpl;
 
-  factory _Location.fromJson(Map<String, dynamic> json) =
-      _$LocationImpl.fromJson;
+  factory _SocialProfile.fromJson(Map<String, dynamic> json) =
+      _$SocialProfileImpl.fromJson;
 
   @override
-  @JsonKey(name: 'id')
-  int? get id;
+  @JsonKey(name: 'sociable_id')
+  int? get sociableId;
   @override
-  @JsonKey(name: 'parent_id')
-  int? get parentId;
+  String? get platform;
   @override
-  @JsonKey(name: 'name')
-  String? get name;
-  @override
-  @JsonKey(name: 'created_at')
-  String? get createdAt;
-  @override
-  @JsonKey(name: 'updated_at')
-  String? get updatedAt;
-  @override
-  @JsonKey(name: 'parent_name')
-  String? get parentName;
+  String? get url;
 
-  /// Create a copy of Location
+  /// Create a copy of SocialProfile
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$LocationImplCopyWith<_$LocationImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-Product _$ProductFromJson(Map<String, dynamic> json) {
-  return _Product.fromJson(json);
-}
-
-/// @nodoc
-mixin _$Product {
-  @JsonKey(name: 'id')
-  int? get id => throw _privateConstructorUsedError;
-  @JsonKey(name: 'name')
-  String? get name => throw _privateConstructorUsedError;
-  @JsonKey(name: 'user_id')
-  int? get userId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'shop_id')
-  int? get shopId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'location_id')
-  int? get locationId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'category_id')
-  int? get categoryId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'price')
-  double? get price => throw _privateConstructorUsedError;
-  @JsonKey(name: 'status')
-  String? get status => throw _privateConstructorUsedError;
-  @JsonKey(name: 'expire')
-  String? get expire => throw _privateConstructorUsedError;
-  @JsonKey(name: 'phone')
-  String? get phone => throw _privateConstructorUsedError;
-  @JsonKey(name: 'who')
-  String? get who => throw _privateConstructorUsedError;
-  @JsonKey(name: 'delivery')
-  int? get delivery => throw _privateConstructorUsedError;
-  @JsonKey(name: 'comment')
-  int? get comment => throw _privateConstructorUsedError;
-  @JsonKey(name: 'description')
-  String? get description => throw _privateConstructorUsedError;
-  @JsonKey(name: 'brief_description')
-  String? get briefDescription => throw _privateConstructorUsedError;
-  @JsonKey(name: 'lover_price')
-  double? get loverPrice => throw _privateConstructorUsedError;
-  @JsonKey(name: 'vip')
-  dynamic get vip => throw _privateConstructorUsedError;
-  @JsonKey(name: 'exclusive')
-  int? get exclusive => throw _privateConstructorUsedError;
-  @JsonKey(name: 'hashtag')
-  String? get hashtag => throw _privateConstructorUsedError;
-  @JsonKey(name: 'created_at')
-  String? get createdAt => throw _privateConstructorUsedError;
-  @JsonKey(name: 'updated_at')
-  String? get updatedAt => throw _privateConstructorUsedError;
-
-  /// Serializes this Product to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Product
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $ProductCopyWith<Product> get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ProductCopyWith<$Res> {
-  factory $ProductCopyWith(Product value, $Res Function(Product) then) =
-      _$ProductCopyWithImpl<$Res, Product>;
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'id') int? id,
-      @JsonKey(name: 'name') String? name,
-      @JsonKey(name: 'user_id') int? userId,
-      @JsonKey(name: 'shop_id') int? shopId,
-      @JsonKey(name: 'location_id') int? locationId,
-      @JsonKey(name: 'category_id') int? categoryId,
-      @JsonKey(name: 'price') double? price,
-      @JsonKey(name: 'status') String? status,
-      @JsonKey(name: 'expire') String? expire,
-      @JsonKey(name: 'phone') String? phone,
-      @JsonKey(name: 'who') String? who,
-      @JsonKey(name: 'delivery') int? delivery,
-      @JsonKey(name: 'comment') int? comment,
-      @JsonKey(name: 'description') String? description,
-      @JsonKey(name: 'brief_description') String? briefDescription,
-      @JsonKey(name: 'lover_price') double? loverPrice,
-      @JsonKey(name: 'vip') dynamic vip,
-      @JsonKey(name: 'exclusive') int? exclusive,
-      @JsonKey(name: 'hashtag') String? hashtag,
-      @JsonKey(name: 'created_at') String? createdAt,
-      @JsonKey(name: 'updated_at') String? updatedAt});
-}
-
-/// @nodoc
-class _$ProductCopyWithImpl<$Res, $Val extends Product>
-    implements $ProductCopyWith<$Res> {
-  _$ProductCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of Product
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = freezed,
-    Object? name = freezed,
-    Object? userId = freezed,
-    Object? shopId = freezed,
-    Object? locationId = freezed,
-    Object? categoryId = freezed,
-    Object? price = freezed,
-    Object? status = freezed,
-    Object? expire = freezed,
-    Object? phone = freezed,
-    Object? who = freezed,
-    Object? delivery = freezed,
-    Object? comment = freezed,
-    Object? description = freezed,
-    Object? briefDescription = freezed,
-    Object? loverPrice = freezed,
-    Object? vip = freezed,
-    Object? exclusive = freezed,
-    Object? hashtag = freezed,
-    Object? createdAt = freezed,
-    Object? updatedAt = freezed,
-  }) {
-    return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      userId: freezed == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      shopId: freezed == shopId
-          ? _value.shopId
-          : shopId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      locationId: freezed == locationId
-          ? _value.locationId
-          : locationId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      categoryId: freezed == categoryId
-          ? _value.categoryId
-          : categoryId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      price: freezed == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
-              as double?,
-      status: freezed == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as String?,
-      expire: freezed == expire
-          ? _value.expire
-          : expire // ignore: cast_nullable_to_non_nullable
-              as String?,
-      phone: freezed == phone
-          ? _value.phone
-          : phone // ignore: cast_nullable_to_non_nullable
-              as String?,
-      who: freezed == who
-          ? _value.who
-          : who // ignore: cast_nullable_to_non_nullable
-              as String?,
-      delivery: freezed == delivery
-          ? _value.delivery
-          : delivery // ignore: cast_nullable_to_non_nullable
-              as int?,
-      comment: freezed == comment
-          ? _value.comment
-          : comment // ignore: cast_nullable_to_non_nullable
-              as int?,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-      briefDescription: freezed == briefDescription
-          ? _value.briefDescription
-          : briefDescription // ignore: cast_nullable_to_non_nullable
-              as String?,
-      loverPrice: freezed == loverPrice
-          ? _value.loverPrice
-          : loverPrice // ignore: cast_nullable_to_non_nullable
-              as double?,
-      vip: freezed == vip
-          ? _value.vip
-          : vip // ignore: cast_nullable_to_non_nullable
-              as dynamic,
-      exclusive: freezed == exclusive
-          ? _value.exclusive
-          : exclusive // ignore: cast_nullable_to_non_nullable
-              as int?,
-      hashtag: freezed == hashtag
-          ? _value.hashtag
-          : hashtag // ignore: cast_nullable_to_non_nullable
-              as String?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as String?,
-      updatedAt: freezed == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
-  factory _$$ProductImplCopyWith(
-          _$ProductImpl value, $Res Function(_$ProductImpl) then) =
-      __$$ProductImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'id') int? id,
-      @JsonKey(name: 'name') String? name,
-      @JsonKey(name: 'user_id') int? userId,
-      @JsonKey(name: 'shop_id') int? shopId,
-      @JsonKey(name: 'location_id') int? locationId,
-      @JsonKey(name: 'category_id') int? categoryId,
-      @JsonKey(name: 'price') double? price,
-      @JsonKey(name: 'status') String? status,
-      @JsonKey(name: 'expire') String? expire,
-      @JsonKey(name: 'phone') String? phone,
-      @JsonKey(name: 'who') String? who,
-      @JsonKey(name: 'delivery') int? delivery,
-      @JsonKey(name: 'comment') int? comment,
-      @JsonKey(name: 'description') String? description,
-      @JsonKey(name: 'brief_description') String? briefDescription,
-      @JsonKey(name: 'lover_price') double? loverPrice,
-      @JsonKey(name: 'vip') dynamic vip,
-      @JsonKey(name: 'exclusive') int? exclusive,
-      @JsonKey(name: 'hashtag') String? hashtag,
-      @JsonKey(name: 'created_at') String? createdAt,
-      @JsonKey(name: 'updated_at') String? updatedAt});
-}
-
-/// @nodoc
-class __$$ProductImplCopyWithImpl<$Res>
-    extends _$ProductCopyWithImpl<$Res, _$ProductImpl>
-    implements _$$ProductImplCopyWith<$Res> {
-  __$$ProductImplCopyWithImpl(
-      _$ProductImpl _value, $Res Function(_$ProductImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of Product
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = freezed,
-    Object? name = freezed,
-    Object? userId = freezed,
-    Object? shopId = freezed,
-    Object? locationId = freezed,
-    Object? categoryId = freezed,
-    Object? price = freezed,
-    Object? status = freezed,
-    Object? expire = freezed,
-    Object? phone = freezed,
-    Object? who = freezed,
-    Object? delivery = freezed,
-    Object? comment = freezed,
-    Object? description = freezed,
-    Object? briefDescription = freezed,
-    Object? loverPrice = freezed,
-    Object? vip = freezed,
-    Object? exclusive = freezed,
-    Object? hashtag = freezed,
-    Object? createdAt = freezed,
-    Object? updatedAt = freezed,
-  }) {
-    return _then(_$ProductImpl(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      userId: freezed == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      shopId: freezed == shopId
-          ? _value.shopId
-          : shopId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      locationId: freezed == locationId
-          ? _value.locationId
-          : locationId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      categoryId: freezed == categoryId
-          ? _value.categoryId
-          : categoryId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      price: freezed == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
-              as double?,
-      status: freezed == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as String?,
-      expire: freezed == expire
-          ? _value.expire
-          : expire // ignore: cast_nullable_to_non_nullable
-              as String?,
-      phone: freezed == phone
-          ? _value.phone
-          : phone // ignore: cast_nullable_to_non_nullable
-              as String?,
-      who: freezed == who
-          ? _value.who
-          : who // ignore: cast_nullable_to_non_nullable
-              as String?,
-      delivery: freezed == delivery
-          ? _value.delivery
-          : delivery // ignore: cast_nullable_to_non_nullable
-              as int?,
-      comment: freezed == comment
-          ? _value.comment
-          : comment // ignore: cast_nullable_to_non_nullable
-              as int?,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-      briefDescription: freezed == briefDescription
-          ? _value.briefDescription
-          : briefDescription // ignore: cast_nullable_to_non_nullable
-              as String?,
-      loverPrice: freezed == loverPrice
-          ? _value.loverPrice
-          : loverPrice // ignore: cast_nullable_to_non_nullable
-              as double?,
-      vip: freezed == vip
-          ? _value.vip
-          : vip // ignore: cast_nullable_to_non_nullable
-              as dynamic,
-      exclusive: freezed == exclusive
-          ? _value.exclusive
-          : exclusive // ignore: cast_nullable_to_non_nullable
-              as int?,
-      hashtag: freezed == hashtag
-          ? _value.hashtag
-          : hashtag // ignore: cast_nullable_to_non_nullable
-              as String?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as String?,
-      updatedAt: freezed == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$ProductImpl implements _Product {
-  const _$ProductImpl(
-      {@JsonKey(name: 'id') this.id,
-      @JsonKey(name: 'name') this.name,
-      @JsonKey(name: 'user_id') this.userId,
-      @JsonKey(name: 'shop_id') this.shopId,
-      @JsonKey(name: 'location_id') this.locationId,
-      @JsonKey(name: 'category_id') this.categoryId,
-      @JsonKey(name: 'price') this.price,
-      @JsonKey(name: 'status') this.status,
-      @JsonKey(name: 'expire') this.expire,
-      @JsonKey(name: 'phone') this.phone,
-      @JsonKey(name: 'who') this.who,
-      @JsonKey(name: 'delivery') this.delivery,
-      @JsonKey(name: 'comment') this.comment,
-      @JsonKey(name: 'description') this.description,
-      @JsonKey(name: 'brief_description') this.briefDescription,
-      @JsonKey(name: 'lover_price') this.loverPrice,
-      @JsonKey(name: 'vip') this.vip,
-      @JsonKey(name: 'exclusive') this.exclusive,
-      @JsonKey(name: 'hashtag') this.hashtag,
-      @JsonKey(name: 'created_at') this.createdAt,
-      @JsonKey(name: 'updated_at') this.updatedAt});
-
-  factory _$ProductImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ProductImplFromJson(json);
-
-  @override
-  @JsonKey(name: 'id')
-  final int? id;
-  @override
-  @JsonKey(name: 'name')
-  final String? name;
-  @override
-  @JsonKey(name: 'user_id')
-  final int? userId;
-  @override
-  @JsonKey(name: 'shop_id')
-  final int? shopId;
-  @override
-  @JsonKey(name: 'location_id')
-  final int? locationId;
-  @override
-  @JsonKey(name: 'category_id')
-  final int? categoryId;
-  @override
-  @JsonKey(name: 'price')
-  final double? price;
-  @override
-  @JsonKey(name: 'status')
-  final String? status;
-  @override
-  @JsonKey(name: 'expire')
-  final String? expire;
-  @override
-  @JsonKey(name: 'phone')
-  final String? phone;
-  @override
-  @JsonKey(name: 'who')
-  final String? who;
-  @override
-  @JsonKey(name: 'delivery')
-  final int? delivery;
-  @override
-  @JsonKey(name: 'comment')
-  final int? comment;
-  @override
-  @JsonKey(name: 'description')
-  final String? description;
-  @override
-  @JsonKey(name: 'brief_description')
-  final String? briefDescription;
-  @override
-  @JsonKey(name: 'lover_price')
-  final double? loverPrice;
-  @override
-  @JsonKey(name: 'vip')
-  final dynamic vip;
-  @override
-  @JsonKey(name: 'exclusive')
-  final int? exclusive;
-  @override
-  @JsonKey(name: 'hashtag')
-  final String? hashtag;
-  @override
-  @JsonKey(name: 'created_at')
-  final String? createdAt;
-  @override
-  @JsonKey(name: 'updated_at')
-  final String? updatedAt;
-
-  @override
-  String toString() {
-    return 'Product(id: $id, name: $name, userId: $userId, shopId: $shopId, locationId: $locationId, categoryId: $categoryId, price: $price, status: $status, expire: $expire, phone: $phone, who: $who, delivery: $delivery, comment: $comment, description: $description, briefDescription: $briefDescription, loverPrice: $loverPrice, vip: $vip, exclusive: $exclusive, hashtag: $hashtag, createdAt: $createdAt, updatedAt: $updatedAt)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ProductImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.shopId, shopId) || other.shopId == shopId) &&
-            (identical(other.locationId, locationId) ||
-                other.locationId == locationId) &&
-            (identical(other.categoryId, categoryId) ||
-                other.categoryId == categoryId) &&
-            (identical(other.price, price) || other.price == price) &&
-            (identical(other.status, status) || other.status == status) &&
-            (identical(other.expire, expire) || other.expire == expire) &&
-            (identical(other.phone, phone) || other.phone == phone) &&
-            (identical(other.who, who) || other.who == who) &&
-            (identical(other.delivery, delivery) ||
-                other.delivery == delivery) &&
-            (identical(other.comment, comment) || other.comment == comment) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.briefDescription, briefDescription) ||
-                other.briefDescription == briefDescription) &&
-            (identical(other.loverPrice, loverPrice) ||
-                other.loverPrice == loverPrice) &&
-            const DeepCollectionEquality().equals(other.vip, vip) &&
-            (identical(other.exclusive, exclusive) ||
-                other.exclusive == exclusive) &&
-            (identical(other.hashtag, hashtag) || other.hashtag == hashtag) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
-  }
-
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hashAll([
-        runtimeType,
-        id,
-        name,
-        userId,
-        shopId,
-        locationId,
-        categoryId,
-        price,
-        status,
-        expire,
-        phone,
-        who,
-        delivery,
-        comment,
-        description,
-        briefDescription,
-        loverPrice,
-        const DeepCollectionEquality().hash(vip),
-        exclusive,
-        hashtag,
-        createdAt,
-        updatedAt
-      ]);
-
-  /// Create a copy of Product
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>
-      __$$ProductImplCopyWithImpl<_$ProductImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$ProductImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _Product implements Product {
-  const factory _Product(
-      {@JsonKey(name: 'id') final int? id,
-      @JsonKey(name: 'name') final String? name,
-      @JsonKey(name: 'user_id') final int? userId,
-      @JsonKey(name: 'shop_id') final int? shopId,
-      @JsonKey(name: 'location_id') final int? locationId,
-      @JsonKey(name: 'category_id') final int? categoryId,
-      @JsonKey(name: 'price') final double? price,
-      @JsonKey(name: 'status') final String? status,
-      @JsonKey(name: 'expire') final String? expire,
-      @JsonKey(name: 'phone') final String? phone,
-      @JsonKey(name: 'who') final String? who,
-      @JsonKey(name: 'delivery') final int? delivery,
-      @JsonKey(name: 'comment') final int? comment,
-      @JsonKey(name: 'description') final String? description,
-      @JsonKey(name: 'brief_description') final String? briefDescription,
-      @JsonKey(name: 'lover_price') final double? loverPrice,
-      @JsonKey(name: 'vip') final dynamic vip,
-      @JsonKey(name: 'exclusive') final int? exclusive,
-      @JsonKey(name: 'hashtag') final String? hashtag,
-      @JsonKey(name: 'created_at') final String? createdAt,
-      @JsonKey(name: 'updated_at') final String? updatedAt}) = _$ProductImpl;
-
-  factory _Product.fromJson(Map<String, dynamic> json) = _$ProductImpl.fromJson;
-
-  @override
-  @JsonKey(name: 'id')
-  int? get id;
-  @override
-  @JsonKey(name: 'name')
-  String? get name;
-  @override
-  @JsonKey(name: 'user_id')
-  int? get userId;
-  @override
-  @JsonKey(name: 'shop_id')
-  int? get shopId;
-  @override
-  @JsonKey(name: 'location_id')
-  int? get locationId;
-  @override
-  @JsonKey(name: 'category_id')
-  int? get categoryId;
-  @override
-  @JsonKey(name: 'price')
-  double? get price;
-  @override
-  @JsonKey(name: 'status')
-  String? get status;
-  @override
-  @JsonKey(name: 'expire')
-  String? get expire;
-  @override
-  @JsonKey(name: 'phone')
-  String? get phone;
-  @override
-  @JsonKey(name: 'who')
-  String? get who;
-  @override
-  @JsonKey(name: 'delivery')
-  int? get delivery;
-  @override
-  @JsonKey(name: 'comment')
-  int? get comment;
-  @override
-  @JsonKey(name: 'description')
-  String? get description;
-  @override
-  @JsonKey(name: 'brief_description')
-  String? get briefDescription;
-  @override
-  @JsonKey(name: 'lover_price')
-  double? get loverPrice;
-  @override
-  @JsonKey(name: 'vip')
-  dynamic get vip;
-  @override
-  @JsonKey(name: 'exclusive')
-  int? get exclusive;
-  @override
-  @JsonKey(name: 'hashtag')
-  String? get hashtag;
-  @override
-  @JsonKey(name: 'created_at')
-  String? get createdAt;
-  @override
-  @JsonKey(name: 'updated_at')
-  String? get updatedAt;
-
-  /// Create a copy of Product
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>
+  _$$SocialProfileImplCopyWith<_$SocialProfileImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1728,16 +942,21 @@ ProductCategory _$ProductCategoryFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ProductCategory {
-  @JsonKey(name: 'id')
   int? get id => throw _privateConstructorUsedError;
-  @JsonKey(name: 'title')
   String? get title => throw _privateConstructorUsedError;
-  @JsonKey(name: 'image')
   String? get image => throw _privateConstructorUsedError;
-  @JsonKey(name: 'parent')
-  List<ParentCategory>? get parent => throw _privateConstructorUsedError;
-  @JsonKey(name: 'description')
+  ProductCategoryParent? get parent => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
+  @JsonKey(name: 'products_count')
+  int? get productsCount => throw _privateConstructorUsedError;
+  String? get type => throw _privateConstructorUsedError;
+  @JsonKey(name: 'parent_id')
+  int? get parentId => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at')
+  String? get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'updated_at')
+  String? get updatedAt => throw _privateConstructorUsedError;
 
   /// Serializes this ProductCategory to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1756,11 +975,19 @@ abstract class $ProductCategoryCopyWith<$Res> {
       _$ProductCategoryCopyWithImpl<$Res, ProductCategory>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') int? id,
-      @JsonKey(name: 'title') String? title,
-      @JsonKey(name: 'image') String? image,
-      @JsonKey(name: 'parent') List<ParentCategory>? parent,
-      @JsonKey(name: 'description') String? description});
+      {int? id,
+      String? title,
+      String? image,
+      ProductCategoryParent? parent,
+      String? description,
+      @JsonKey(name: 'products_count') int? productsCount,
+      String? type,
+      @JsonKey(name: 'parent_id') int? parentId,
+      String? name,
+      @JsonKey(name: 'created_at') String? createdAt,
+      @JsonKey(name: 'updated_at') String? updatedAt});
+
+  $ProductCategoryParentCopyWith<$Res>? get parent;
 }
 
 /// @nodoc
@@ -1783,6 +1010,12 @@ class _$ProductCategoryCopyWithImpl<$Res, $Val extends ProductCategory>
     Object? image = freezed,
     Object? parent = freezed,
     Object? description = freezed,
+    Object? productsCount = freezed,
+    Object? type = freezed,
+    Object? parentId = freezed,
+    Object? name = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -1800,12 +1033,50 @@ class _$ProductCategoryCopyWithImpl<$Res, $Val extends ProductCategory>
       parent: freezed == parent
           ? _value.parent
           : parent // ignore: cast_nullable_to_non_nullable
-              as List<ParentCategory>?,
+              as ProductCategoryParent?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
+      productsCount: freezed == productsCount
+          ? _value.productsCount
+          : productsCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String?,
+      parentId: freezed == parentId
+          ? _value.parentId
+          : parentId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
+  }
+
+  /// Create a copy of ProductCategory
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ProductCategoryParentCopyWith<$Res>? get parent {
+    if (_value.parent == null) {
+      return null;
+    }
+
+    return $ProductCategoryParentCopyWith<$Res>(_value.parent!, (value) {
+      return _then(_value.copyWith(parent: value) as $Val);
+    });
   }
 }
 
@@ -1818,11 +1089,20 @@ abstract class _$$ProductCategoryImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') int? id,
-      @JsonKey(name: 'title') String? title,
-      @JsonKey(name: 'image') String? image,
-      @JsonKey(name: 'parent') List<ParentCategory>? parent,
-      @JsonKey(name: 'description') String? description});
+      {int? id,
+      String? title,
+      String? image,
+      ProductCategoryParent? parent,
+      String? description,
+      @JsonKey(name: 'products_count') int? productsCount,
+      String? type,
+      @JsonKey(name: 'parent_id') int? parentId,
+      String? name,
+      @JsonKey(name: 'created_at') String? createdAt,
+      @JsonKey(name: 'updated_at') String? updatedAt});
+
+  @override
+  $ProductCategoryParentCopyWith<$Res>? get parent;
 }
 
 /// @nodoc
@@ -1843,6 +1123,12 @@ class __$$ProductCategoryImplCopyWithImpl<$Res>
     Object? image = freezed,
     Object? parent = freezed,
     Object? description = freezed,
+    Object? productsCount = freezed,
+    Object? type = freezed,
+    Object? parentId = freezed,
+    Object? name = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
   }) {
     return _then(_$ProductCategoryImpl(
       id: freezed == id
@@ -1858,12 +1144,36 @@ class __$$ProductCategoryImplCopyWithImpl<$Res>
           : image // ignore: cast_nullable_to_non_nullable
               as String?,
       parent: freezed == parent
-          ? _value._parent
+          ? _value.parent
           : parent // ignore: cast_nullable_to_non_nullable
-              as List<ParentCategory>?,
+              as ProductCategoryParent?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      productsCount: freezed == productsCount
+          ? _value.productsCount
+          : productsCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String?,
+      parentId: freezed == parentId
+          ? _value.parentId
+          : parentId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -1873,43 +1183,51 @@ class __$$ProductCategoryImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ProductCategoryImpl implements _ProductCategory {
   const _$ProductCategoryImpl(
-      {@JsonKey(name: 'id') this.id,
-      @JsonKey(name: 'title') this.title,
-      @JsonKey(name: 'image') this.image,
-      @JsonKey(name: 'parent') final List<ParentCategory>? parent,
-      @JsonKey(name: 'description') this.description})
-      : _parent = parent;
+      {this.id,
+      this.title,
+      this.image,
+      this.parent,
+      this.description,
+      @JsonKey(name: 'products_count') this.productsCount,
+      this.type,
+      @JsonKey(name: 'parent_id') this.parentId,
+      this.name,
+      @JsonKey(name: 'created_at') this.createdAt,
+      @JsonKey(name: 'updated_at') this.updatedAt});
 
   factory _$ProductCategoryImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProductCategoryImplFromJson(json);
 
   @override
-  @JsonKey(name: 'id')
   final int? id;
   @override
-  @JsonKey(name: 'title')
   final String? title;
   @override
-  @JsonKey(name: 'image')
   final String? image;
-  final List<ParentCategory>? _parent;
   @override
-  @JsonKey(name: 'parent')
-  List<ParentCategory>? get parent {
-    final value = _parent;
-    if (value == null) return null;
-    if (_parent is EqualUnmodifiableListView) return _parent;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
+  final ProductCategoryParent? parent;
   @override
-  @JsonKey(name: 'description')
   final String? description;
+  @override
+  @JsonKey(name: 'products_count')
+  final int? productsCount;
+  @override
+  final String? type;
+  @override
+  @JsonKey(name: 'parent_id')
+  final int? parentId;
+  @override
+  final String? name;
+  @override
+  @JsonKey(name: 'created_at')
+  final String? createdAt;
+  @override
+  @JsonKey(name: 'updated_at')
+  final String? updatedAt;
 
   @override
   String toString() {
-    return 'ProductCategory(id: $id, title: $title, image: $image, parent: $parent, description: $description)';
+    return 'ProductCategory(id: $id, title: $title, image: $image, parent: $parent, description: $description, productsCount: $productsCount, type: $type, parentId: $parentId, name: $name, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -1920,15 +1238,25 @@ class _$ProductCategoryImpl implements _ProductCategory {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.image, image) || other.image == image) &&
-            const DeepCollectionEquality().equals(other._parent, _parent) &&
+            (identical(other.parent, parent) || other.parent == parent) &&
             (identical(other.description, description) ||
-                other.description == description));
+                other.description == description) &&
+            (identical(other.productsCount, productsCount) ||
+                other.productsCount == productsCount) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.parentId, parentId) ||
+                other.parentId == parentId) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, image,
-      const DeepCollectionEquality().hash(_parent), description);
+  int get hashCode => Object.hash(runtimeType, id, title, image, parent,
+      description, productsCount, type, parentId, name, createdAt, updatedAt);
 
   /// Create a copy of ProductCategory
   /// with the given fields replaced by the non-null parameter values.
@@ -1949,31 +1277,48 @@ class _$ProductCategoryImpl implements _ProductCategory {
 
 abstract class _ProductCategory implements ProductCategory {
   const factory _ProductCategory(
-          {@JsonKey(name: 'id') final int? id,
-          @JsonKey(name: 'title') final String? title,
-          @JsonKey(name: 'image') final String? image,
-          @JsonKey(name: 'parent') final List<ParentCategory>? parent,
-          @JsonKey(name: 'description') final String? description}) =
+          {final int? id,
+          final String? title,
+          final String? image,
+          final ProductCategoryParent? parent,
+          final String? description,
+          @JsonKey(name: 'products_count') final int? productsCount,
+          final String? type,
+          @JsonKey(name: 'parent_id') final int? parentId,
+          final String? name,
+          @JsonKey(name: 'created_at') final String? createdAt,
+          @JsonKey(name: 'updated_at') final String? updatedAt}) =
       _$ProductCategoryImpl;
 
   factory _ProductCategory.fromJson(Map<String, dynamic> json) =
       _$ProductCategoryImpl.fromJson;
 
   @override
-  @JsonKey(name: 'id')
   int? get id;
   @override
-  @JsonKey(name: 'title')
   String? get title;
   @override
-  @JsonKey(name: 'image')
   String? get image;
   @override
-  @JsonKey(name: 'parent')
-  List<ParentCategory>? get parent;
+  ProductCategoryParent? get parent;
   @override
-  @JsonKey(name: 'description')
   String? get description;
+  @override
+  @JsonKey(name: 'products_count')
+  int? get productsCount;
+  @override
+  String? get type;
+  @override
+  @JsonKey(name: 'parent_id')
+  int? get parentId;
+  @override
+  String? get name;
+  @override
+  @JsonKey(name: 'created_at')
+  String? get createdAt;
+  @override
+  @JsonKey(name: 'updated_at')
+  String? get updatedAt;
 
   /// Create a copy of ProductCategory
   /// with the given fields replaced by the non-null parameter values.
@@ -1983,58 +1328,57 @@ abstract class _ProductCategory implements ProductCategory {
       throw _privateConstructorUsedError;
 }
 
-ParentCategory _$ParentCategoryFromJson(Map<String, dynamic> json) {
-  return _ParentCategory.fromJson(json);
+ProductCategoryParent _$ProductCategoryParentFromJson(
+    Map<String, dynamic> json) {
+  return _ProductCategoryParent.fromJson(json);
 }
 
 /// @nodoc
-mixin _$ParentCategory {
-  @JsonKey(name: 'id')
+mixin _$ProductCategoryParent {
   int? get id => throw _privateConstructorUsedError;
-  @JsonKey(name: 'title')
   String? get title => throw _privateConstructorUsedError;
-  @JsonKey(name: 'image')
   String? get image => throw _privateConstructorUsedError;
-  @JsonKey(name: 'parent')
-  dynamic get parent => throw _privateConstructorUsedError;
-  @JsonKey(name: 'description')
+  ProductCategoryParent? get parent => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
 
-  /// Serializes this ParentCategory to a JSON map.
+  /// Serializes this ProductCategoryParent to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of ParentCategory
+  /// Create a copy of ProductCategoryParent
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ParentCategoryCopyWith<ParentCategory> get copyWith =>
+  $ProductCategoryParentCopyWith<ProductCategoryParent> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ParentCategoryCopyWith<$Res> {
-  factory $ParentCategoryCopyWith(
-          ParentCategory value, $Res Function(ParentCategory) then) =
-      _$ParentCategoryCopyWithImpl<$Res, ParentCategory>;
+abstract class $ProductCategoryParentCopyWith<$Res> {
+  factory $ProductCategoryParentCopyWith(ProductCategoryParent value,
+          $Res Function(ProductCategoryParent) then) =
+      _$ProductCategoryParentCopyWithImpl<$Res, ProductCategoryParent>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') int? id,
-      @JsonKey(name: 'title') String? title,
-      @JsonKey(name: 'image') String? image,
-      @JsonKey(name: 'parent') dynamic parent,
-      @JsonKey(name: 'description') String? description});
+      {int? id,
+      String? title,
+      String? image,
+      ProductCategoryParent? parent,
+      String? description});
+
+  $ProductCategoryParentCopyWith<$Res>? get parent;
 }
 
 /// @nodoc
-class _$ParentCategoryCopyWithImpl<$Res, $Val extends ParentCategory>
-    implements $ParentCategoryCopyWith<$Res> {
-  _$ParentCategoryCopyWithImpl(this._value, this._then);
+class _$ProductCategoryParentCopyWithImpl<$Res,
+        $Val extends ProductCategoryParent>
+    implements $ProductCategoryParentCopyWith<$Res> {
+  _$ProductCategoryParentCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of ParentCategory
+  /// Create a copy of ProductCategoryParent
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -2061,40 +1405,59 @@ class _$ParentCategoryCopyWithImpl<$Res, $Val extends ParentCategory>
       parent: freezed == parent
           ? _value.parent
           : parent // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as ProductCategoryParent?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
+
+  /// Create a copy of ProductCategoryParent
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ProductCategoryParentCopyWith<$Res>? get parent {
+    if (_value.parent == null) {
+      return null;
+    }
+
+    return $ProductCategoryParentCopyWith<$Res>(_value.parent!, (value) {
+      return _then(_value.copyWith(parent: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
-abstract class _$$ParentCategoryImplCopyWith<$Res>
-    implements $ParentCategoryCopyWith<$Res> {
-  factory _$$ParentCategoryImplCopyWith(_$ParentCategoryImpl value,
-          $Res Function(_$ParentCategoryImpl) then) =
-      __$$ParentCategoryImplCopyWithImpl<$Res>;
+abstract class _$$ProductCategoryParentImplCopyWith<$Res>
+    implements $ProductCategoryParentCopyWith<$Res> {
+  factory _$$ProductCategoryParentImplCopyWith(
+          _$ProductCategoryParentImpl value,
+          $Res Function(_$ProductCategoryParentImpl) then) =
+      __$$ProductCategoryParentImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') int? id,
-      @JsonKey(name: 'title') String? title,
-      @JsonKey(name: 'image') String? image,
-      @JsonKey(name: 'parent') dynamic parent,
-      @JsonKey(name: 'description') String? description});
+      {int? id,
+      String? title,
+      String? image,
+      ProductCategoryParent? parent,
+      String? description});
+
+  @override
+  $ProductCategoryParentCopyWith<$Res>? get parent;
 }
 
 /// @nodoc
-class __$$ParentCategoryImplCopyWithImpl<$Res>
-    extends _$ParentCategoryCopyWithImpl<$Res, _$ParentCategoryImpl>
-    implements _$$ParentCategoryImplCopyWith<$Res> {
-  __$$ParentCategoryImplCopyWithImpl(
-      _$ParentCategoryImpl _value, $Res Function(_$ParentCategoryImpl) _then)
+class __$$ProductCategoryParentImplCopyWithImpl<$Res>
+    extends _$ProductCategoryParentCopyWithImpl<$Res,
+        _$ProductCategoryParentImpl>
+    implements _$$ProductCategoryParentImplCopyWith<$Res> {
+  __$$ProductCategoryParentImplCopyWithImpl(_$ProductCategoryParentImpl _value,
+      $Res Function(_$ProductCategoryParentImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ParentCategory
+  /// Create a copy of ProductCategoryParent
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -2105,7 +1468,7 @@ class __$$ParentCategoryImplCopyWithImpl<$Res>
     Object? parent = freezed,
     Object? description = freezed,
   }) {
-    return _then(_$ParentCategoryImpl(
+    return _then(_$ProductCategoryParentImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -2121,7 +1484,7 @@ class __$$ParentCategoryImplCopyWithImpl<$Res>
       parent: freezed == parent
           ? _value.parent
           : parent // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as ProductCategoryParent?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -2132,105 +1495,90 @@ class __$$ParentCategoryImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ParentCategoryImpl implements _ParentCategory {
-  const _$ParentCategoryImpl(
-      {@JsonKey(name: 'id') this.id,
-      @JsonKey(name: 'title') this.title,
-      @JsonKey(name: 'image') this.image,
-      @JsonKey(name: 'parent') this.parent,
-      @JsonKey(name: 'description') this.description});
+class _$ProductCategoryParentImpl implements _ProductCategoryParent {
+  const _$ProductCategoryParentImpl(
+      {this.id, this.title, this.image, this.parent, this.description});
 
-  factory _$ParentCategoryImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ParentCategoryImplFromJson(json);
+  factory _$ProductCategoryParentImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ProductCategoryParentImplFromJson(json);
 
   @override
-  @JsonKey(name: 'id')
   final int? id;
   @override
-  @JsonKey(name: 'title')
   final String? title;
   @override
-  @JsonKey(name: 'image')
   final String? image;
   @override
-  @JsonKey(name: 'parent')
-  final dynamic parent;
+  final ProductCategoryParent? parent;
   @override
-  @JsonKey(name: 'description')
   final String? description;
 
   @override
   String toString() {
-    return 'ParentCategory(id: $id, title: $title, image: $image, parent: $parent, description: $description)';
+    return 'ProductCategoryParent(id: $id, title: $title, image: $image, parent: $parent, description: $description)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ParentCategoryImpl &&
+            other is _$ProductCategoryParentImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.image, image) || other.image == image) &&
-            const DeepCollectionEquality().equals(other.parent, parent) &&
+            (identical(other.parent, parent) || other.parent == parent) &&
             (identical(other.description, description) ||
                 other.description == description));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, image,
-      const DeepCollectionEquality().hash(parent), description);
+  int get hashCode =>
+      Object.hash(runtimeType, id, title, image, parent, description);
 
-  /// Create a copy of ParentCategory
+  /// Create a copy of ProductCategoryParent
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ParentCategoryImplCopyWith<_$ParentCategoryImpl> get copyWith =>
-      __$$ParentCategoryImplCopyWithImpl<_$ParentCategoryImpl>(
-          this, _$identity);
+  _$$ProductCategoryParentImplCopyWith<_$ProductCategoryParentImpl>
+      get copyWith => __$$ProductCategoryParentImplCopyWithImpl<
+          _$ProductCategoryParentImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ParentCategoryImplToJson(
+    return _$$ProductCategoryParentImplToJson(
       this,
     );
   }
 }
 
-abstract class _ParentCategory implements ParentCategory {
-  const factory _ParentCategory(
-          {@JsonKey(name: 'id') final int? id,
-          @JsonKey(name: 'title') final String? title,
-          @JsonKey(name: 'image') final String? image,
-          @JsonKey(name: 'parent') final dynamic parent,
-          @JsonKey(name: 'description') final String? description}) =
-      _$ParentCategoryImpl;
+abstract class _ProductCategoryParent implements ProductCategoryParent {
+  const factory _ProductCategoryParent(
+      {final int? id,
+      final String? title,
+      final String? image,
+      final ProductCategoryParent? parent,
+      final String? description}) = _$ProductCategoryParentImpl;
 
-  factory _ParentCategory.fromJson(Map<String, dynamic> json) =
-      _$ParentCategoryImpl.fromJson;
+  factory _ProductCategoryParent.fromJson(Map<String, dynamic> json) =
+      _$ProductCategoryParentImpl.fromJson;
 
   @override
-  @JsonKey(name: 'id')
   int? get id;
   @override
-  @JsonKey(name: 'title')
   String? get title;
   @override
-  @JsonKey(name: 'image')
   String? get image;
   @override
-  @JsonKey(name: 'parent')
-  dynamic get parent;
+  ProductCategoryParent? get parent;
   @override
-  @JsonKey(name: 'description')
   String? get description;
 
-  /// Create a copy of ParentCategory
+  /// Create a copy of ProductCategoryParent
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ParentCategoryImplCopyWith<_$ParentCategoryImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$ProductCategoryParentImplCopyWith<_$ProductCategoryParentImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

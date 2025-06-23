@@ -4,14 +4,14 @@ import 'package:gen/gen.dart';
 
 import '../../../core/components/app_text.dart';
 import '../../../product/constants/constants.dart';
-import '../../../remote/entities/house_detail/house_detail.dart';
+import '../../../remote/entities/house_detail/house_detail_response.dart';
 import '../../../utils/extensions.dart';
 import '../../../utils/helpers.dart';
 
 class RowMainInfoTile extends StatelessWidget {
   const RowMainInfoTile({super.key, this.typeOfHouseIcon, this.data});
   final Widget? typeOfHouseIcon;
-  final HouseDetail? data;
+  final HouseData? data;
 
   @override
   Widget build(BuildContext context) {

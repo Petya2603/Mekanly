@@ -2,11 +2,9 @@ import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-import 'package:go_router/go_router.dart';
-
 import '../../features/business_porfile_detail/business_porfile_detail_view.dart';
-import '../../features/business_porfile_detail/models/business_profile_detail_response.dart';
 import '../../product/constants/constants.dart';
+import '../../product/transitions/custom_page_route.dart';
 import '../../remote/entities/business_profile/business_profile_entity.dart';
 import '../../utils/extensions.dart';
 import 'app_text.dart';
@@ -21,9 +19,12 @@ class BusinessProfileCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         if (profile?.id == null) return;
-        context.push(
-          BusinessProfileDetailView.routePath,
-          extra: profile!.id,
+
+        Navigator.push(
+          context,
+          CustomPageRoute.slide(
+            BusinessProfileDetailView.builder(context, profile!.id!),
+          ),
         );
       },
       child: Container(
@@ -52,7 +53,6 @@ class BusinessProfileCard extends StatelessWidget {
                     imageUrl: profile?.logo,
                     memCache: CustomMemCache(
                       height: 86.w.toInt().withDevicePixel(context),
-                      width: 84.w.toInt().withDevicePixel(context),
                     ),
                   ),
                 ),

@@ -12,11 +12,9 @@ part 'app_state.dart';
 
 @injectable
 class AppCubit extends Cubit<AppState> {
-  AppCubit(this._appRouterConfig) : super(const AppState()) {
+  AppCubit() : super(const AppState()) {
     init();
   }
-
-  final AppRouterConfig _appRouterConfig;
 
   Future<void> init() async {
     final currentLang = ConfigPreference.loadLangCode();

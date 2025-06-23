@@ -13,7 +13,6 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
 import '../../app/cubit/app_cubit.dart' as _i1026;
-import '../../app/router_config.dart' as _i838;
 import '../../features/add_house/cubit/add_house_cubit.dart' as _i362;
 import '../../features/auth/cubit/auth_cubit.dart' as _i698;
 import '../../features/auth/login/otp/cubit/otp_cubit.dart' as _i886;
@@ -26,11 +25,15 @@ import '../../features/content/bloc/content_bloc.dart' as _i267;
 import '../../features/home/cubit/home_cubit.dart' as _i1032;
 import '../../features/house_detail/cubit/house_detail_cubit.dart' as _i350;
 import '../../features/houses/bloc/houses_bloc.dart' as _i531;
+import '../../features/user_business_profile/bloc/user_business_profile_bloc.dart'
+    as _i499;
 import '../../remote/http_client/dio_http_client.dart' as _i75;
 import '../../remote/repositories/add_house/add_house_repository.dart' as _i537;
 import '../../remote/repositories/auth/auth_repository.dart' as _i743;
 import '../../remote/repositories/auth/auth_repository_impl.dart' as _i273;
 import '../../remote/repositories/banner/banners_repository.dart' as _i318;
+import '../../remote/repositories/business_profile/business_profile_detail_products_repository.dart'
+    as _i1066;
 import '../../remote/repositories/business_profile/business_profile_detail_repository.dart'
     as _i932;
 import '../../remote/repositories/business_profile/business_profile_repository.dart'
@@ -53,15 +56,16 @@ _i174.GetIt $initGetIt(
     environment,
     environmentFilter,
   );
-  gh.singleton<_i838.AppRouterConfig>(() => _i838.AppRouterConfig());
-  gh.factory<_i1026.AppCubit>(
-      () => _i1026.AppCubit(gh<_i838.AppRouterConfig>()));
+  gh.factory<_i1026.AppCubit>(() => _i1026.AppCubit());
   gh.factory<_i743.IAuthRepository>(
       () => _i273.AuthRepositoryImpl(client: gh<_i75.DioHttpClient>()));
   gh.factory<_i571.TopAdsRepository>(
       () => _i571.TopAdsRepository(client: gh<_i75.DioHttpClient>()));
   gh.factory<_i188.HousesRepository>(
       () => _i188.HousesRepository(client: gh<_i75.DioHttpClient>()));
+  gh.factory<_i1066.BusinessProfileDetailProductsRepository>(() =>
+      _i1066.BusinessProfileDetailProductsRepository(
+          client: gh<_i75.DioHttpClient>()));
   gh.factory<_i592.BusinessProfileRepository>(
       () => _i592.BusinessProfileRepository(client: gh<_i75.DioHttpClient>()));
   gh.factory<_i592.BusinessProfileCategoryRepository>(() =>
@@ -103,6 +107,10 @@ _i174.GetIt $initGetIt(
         gh<_i652.UserHousesRepository>(),
         gh<_i188.HousesRepository>(),
         gh<_i743.IAuthRepository>(),
+      ));
+  gh.factory<_i499.UserBusinessProfileBloc>(() => _i499.UserBusinessProfileBloc(
+        gh<_i932.BusinessProfileDetailRepository>(),
+        gh<_i1066.BusinessProfileDetailProductsRepository>(),
       ));
   gh.factory<_i456.BusinessProfileDetailBloc>(() =>
       _i456.BusinessProfileDetailBloc(

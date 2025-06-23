@@ -5,6 +5,7 @@ import 'package:gen/gen.dart';
 
 import '../../../core/components/app_text.dart';
 import '../../../product/constants/constants.dart';
+import '../../../remote/entities/house_detail/house_detail_response.dart';
 import '../../../remote/entities/houses/house_entity.dart';
 import '../../../utils/extensions.dart';
 
@@ -140,7 +141,7 @@ class HousesNotCarouselSlider extends StatefulWidget {
     this.imgUrls,
   });
 
-  final List<ImageUrl>? imgUrls;
+  final List<HouseImage>? imgUrls;
 
   @override
   State<HousesNotCarouselSlider> createState() => _HousesCarouselSliderState();

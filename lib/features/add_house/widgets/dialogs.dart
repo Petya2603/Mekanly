@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../app/router_config.dart';
 import '../../../core/components/app_btn.dart';
@@ -154,8 +153,8 @@ class _ToNotifyUserState extends State<ToNotifyUser> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (context.canPop()) {
-          context.pop();
+        if (Navigator.canPop(context)) {
+          Navigator.pop(context);
         }
         return Future.value(false);
       },

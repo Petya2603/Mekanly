@@ -26,13 +26,15 @@ class _BaseAppBarWidget extends StatelessWidget {
         automaticallyImplyLeading: false,
         leading: GestureDetector(
           onTap: () {
-            context.pop();
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            }
           },
           child: SizedBox(
             height: 24.w,
             width: 24.w,
-            child: Assets.icons.icBack.svg(package:
-              'gen',
+            child: Assets.icons.icBack.svg(
+              package: 'gen',
               colorFilter: const ColorFilter.mode(
                 Colors.white,
                 BlendMode.srcIn,

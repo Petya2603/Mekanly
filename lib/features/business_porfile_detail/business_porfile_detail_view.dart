@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../core/components/app_text.dart';
 import '../../core/components/loading_indicator.dart';
@@ -11,10 +10,12 @@ import '../../core/components/try_again_widget.dart';
 import '../../product/base/base_status/base_status.dart';
 import '../../product/constants/constants.dart';
 import '../../product/injection/injector.dart';
+import '../../product/transitions/custom_page_route.dart';
 import '../../remote/entities/houses/house_entity.dart';
 import '../../utils/extensions.dart';
 import '../house_detail/house_detail_view.dart';
 import 'bloc/business_profile_detail_bloc.dart';
+import 'models/business_profile_detail_response.dart';
 import 'widgets/business_detail_app_bar.dart';
 
 class BusinessProfileDetailView extends StatefulWidget {
@@ -25,12 +26,12 @@ class BusinessProfileDetailView extends StatefulWidget {
 
   final int? id;
 
-  static Widget builder(BuildContext context, GoRouterState state) {
+  static Widget builder(BuildContext context, int id) {
     final bloc = injector<BusinessProfileDetailBloc>();
     return BlocProvider(
       create: (context) => bloc,
       child: BusinessProfileDetailView(
-        id: state.extra as int?,
+        id: id,
       ),
     );
   }
@@ -43,12 +44,12 @@ class BusinessProfileDetailView extends StatefulWidget {
 class _BusinessProfileDetailViewState extends State<BusinessProfileDetailView> {
   @override
   void initState() {
-    super.initState();
     if (widget.id != null) {
       context
           .read<BusinessProfileDetailBloc>()
           .add(BusinessProfileDetailEvent.init(widget.id!));
     }
+    super.initState();
   }
 
   @override
@@ -67,6 +68,20 @@ class _BusinessProfileDetailViewState extends State<BusinessProfileDetailView> {
           }
           final detail =
               (state.response?.data != null) ? state.response?.data : null;
+          // if (detail?.coverMedia != null) {
+          //   return Column(
+          //     children: [
+          //       24.boxH,
+          //       AspectRatio(
+          //         aspectRatio: 16 / 9,
+          //         child: HeaderVideoPlayer(
+          //           videoUrl: detail?.coverMedia ?? '',
+          //         ),
+          //       ),
+          //     ],
+          //   );
+          // }
+
           return DefaultTabController(
             length: 2,
             child: NestedScrollView(
@@ -74,14 +89,7 @@ class _BusinessProfileDetailViewState extends State<BusinessProfileDetailView> {
                 return [
                   SliverPersistentHeader(
                     pinned: true,
-                    delegate: CollapsibleImageHeader(
-                      bgUrl: detail?.image,
-                      logoUrl: detail?.logo,
-                      viewCount: detail?.views,
-                      time: DateTime.now(),
-                      subTitle: detail?.description,
-                      title: detail?.brand,
-                    ),
+                    delegate: buildHeader(detail),
                   ),
                   SliverToBoxAdapter(
                     child: 2.boxH,
@@ -125,20 +133,45 @@ class _BusinessProfileDetailViewState extends State<BusinessProfileDetailView> {
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 8,
                   shrinkWrap: true,
-                  childAspectRatio:
-                      ((context.mediaQuery.size.width - 24.w) * 0.5) / 235,
-                  children: List.generate(2, (index) {
-                    // final house = houses?[index];
-                    return const MainBusinessProfileItem(
-                        // house: house,
-                        );
-                  }),
+                  childAspectRatio: 167 / 255,
                 ),
               ),
             ),
           );
         },
       ),
+    );
+  }
+
+  SliverPersistentHeaderDelegate buildHeader(BusinessProfileData? detail) {
+    if (detail?.coverMedia != null) {
+      return CollapsibleVideoHeader(
+        logoUrl: detail?.logo,
+        videoUrl: detail?.coverMedia,
+        viewCount: detail?.views,
+        time: DateTime.now(),
+        subTitle: detail?.description,
+        title: detail?.brand,
+      );
+    }
+
+    if (detail?.image != null) {
+      return CollapsibleImageHeader(
+        bgUrl: detail?.image,
+        logoUrl: detail?.logo,
+        viewCount: detail?.views,
+        time: DateTime.now(),
+        subTitle: detail?.description,
+        title: detail?.brand,
+      );
+    }
+
+    return CollapsibleLogoHeader(
+      logoUrl: detail?.logo,
+      viewCount: detail?.views,
+      time: DateTime.now(),
+      subTitle: detail?.description,
+      title: detail?.brand,
     );
   }
 }
@@ -167,7 +200,13 @@ class _MainBusinessProfileItemState extends State<MainBusinessProfileItem> {
         }
         final imgs = widget.house?.images?.map((e) => e.url).toList();
         final data = HouseDetailRoute(imgUrl: imgs, id: widget.house!.id);
-        context.push(HouseDetailView.routePath, extra: data);
+        // context.push(HouseDetailView.routePath, extra: data);
+        Navigator.push(
+          context,
+          CustomPageRoute.slide(
+            HouseDetailView.builder(context, data),
+          ),
+        );
       },
       borderRadius: BorderRadius.circular(11).r,
       child: Container(
@@ -211,10 +250,7 @@ class _MainBusinessProfileItemState extends State<MainBusinessProfileItem> {
                       child: SizedBox(
                         height: 20.w,
                         width: 20.w,
-                        child: Image.asset(
-                          'assets/vip.png',
-                          fit: BoxFit.cover,
-                        ),
+                        child: Assets.icons.icLux.svg(package: 'gen'),
                       ),
                     )
                   else
@@ -329,7 +365,7 @@ class _MainBusinessProfileItemState extends State<MainBusinessProfileItem> {
 
 class BusinessProfileCarouselSlider extends StatefulWidget {
   const BusinessProfileCarouselSlider({super.key, this.imgUrls});
-  final List<ImageUrl>? imgUrls;
+  final List<ImageEntity>? imgUrls;
 
   @override
   State<BusinessProfileCarouselSlider> createState() =>

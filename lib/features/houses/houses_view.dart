@@ -4,12 +4,12 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../core/components/loading_indicator.dart';
 import '../../core/components/search_field.dart';
 import '../../core/components/try_again_widget.dart';
 import '../../product/base/base_status/base_status.dart';
+import '../../product/transitions/custom_page_route.dart';
 import '../../utils/extensions.dart';
 import '../house_filters/house_filters_view.dart';
 import 'bloc/houses_bloc.dart';
@@ -21,10 +21,6 @@ class HousesView extends StatefulWidget {
 
   static const routePath = '/houses-view';
   static const routeName = 'houses-view';
-
-  static Widget builder() {
-    return const HousesView();
-  }
 
   @override
   State<HousesView> createState() => _HousesViewState();
@@ -134,11 +130,16 @@ class _HousesViewState extends State<HousesView>
                           GestureDetector(
                             onTap: () {
                               if (filter?.data != null) {
-                                context.push(
-                                  HouseFiltersView.routePath,
-                                  extra: HouseFilterRoute(
-                                    globalOptions: filter!.data,
-                                    bloc: context.read<HousesBloc>(),
+                                final data = HouseFilterRoute(
+                                  globalOptions: filter!.data,
+                                  bloc: context.read<HousesBloc>(),
+                                );
+                                Navigator.push(
+                                  context,
+                                  CustomPageRoute.slide(
+                                    HouseFiltersView(
+                                      filter: data,
+                                    ),
                                   ),
                                 );
                               }

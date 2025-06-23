@@ -5,8 +5,10 @@ import 'package:gen/gen.dart';
 
 import '../../../core/components/app_text.dart';
 import '../../../product/constants/constants.dart';
+import '../../../product/transitions/custom_page_route.dart';
 import '../../../utils/extensions.dart';
 import '../../auth/cubit/auth_cubit.dart';
+import '../../user_business_profile/view/user_business_profile_view.dart';
 
 class UserBusinessProfileTile extends StatelessWidget {
   const UserBusinessProfileTile({super.key, this.onTap});
@@ -23,7 +25,18 @@ class UserBusinessProfileTile extends StatelessWidget {
               return const SizedBox.shrink();
             }
             return InkWell(
-              onTap: onTap,
+              onTap: () {
+                final id = user?.shopId;
+                if (id != null) {
+                  // context.push(UserBusinessProfileView.routePath, extra: id);
+                  Navigator.push(
+                    context,
+                    CustomPageRoute.slide(
+                      UserBusinessProfileView(id: id),
+                    ),
+                  );
+                }
+              },
               child: Container(
                 padding: const EdgeInsets.symmetric(
                   vertical: 14,

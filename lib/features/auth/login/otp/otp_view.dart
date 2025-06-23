@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../core/components/app_btn.dart';
 import '../../../../core/components/app_text.dart';
@@ -10,11 +9,10 @@ import '../../../../core/components/inputs/otp_field.dart';
 import '../../../../product/base/base_status/base_status.dart';
 import '../../../../product/helpers/helpers.dart';
 import '../../../../product/injection/injector.dart';
+import '../../../../product/transitions/custom_page_route.dart';
 import '../../../../remote/payloads/otp_payload.dart';
 import '../../../../remote/response_error.dart';
 import '../../../../utils/extensions.dart';
-import '../../../../utils/toast_service.dart';
-import '../../../home/home_view.dart';
 import '../../../root/view/root_view.dart';
 import '../../cubit/auth_cubit.dart';
 import '../widgets/base_login_view.dart';
@@ -28,11 +26,11 @@ class OtpView extends StatefulWidget {
   static const routePath = '/otp-view';
   static const routeName = 'otp-view';
 
-  static Widget builder(BuildContext context, GoRouterState state) {
+  static Widget builder(BuildContext context, OtpPayload payload) {
     return BlocProvider(
       create: (context) => injector<OtpCubit>(),
       child: OtpView(
-        payload: state.extra! as OtpPayload,
+        payload: payload,
       ),
     );
   }
@@ -125,8 +123,14 @@ class _OtpViewState extends State<OtpView> {
                                 context,
                                 'User is logged in',
                               );
-                              context.pushReplacementNamed(
-                                RootView.routeName,
+                              // context.pushReplacementNamed(
+                              //   RootView.routeName,
+                              // );
+
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                CustomPageRoute.slide(const RootView()),
+                                (route) => false,
                               );
                             }
                           },

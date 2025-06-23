@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-import 'package:go_router/go_router.dart';
 import '../../core/components/app_text.dart';
 import '../../product/constants/constants.dart';
 import '../../utils/extensions.dart';
@@ -11,10 +10,6 @@ class CommentsView extends StatelessWidget {
 
   static const routePath = '/comments-view';
   static const routeName = 'comments-view';
-
-  static Widget builder(BuildContext context, GoRouterState state) {
-    return const CommentsView();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,19 +35,6 @@ class CommentsView extends StatelessWidget {
         child: Column(
           children: [
             const CommentsButton(),
-            // Column(
-            //   children: [
-            //     Assets.icons.icFavorite.svg(package: 'gen'),
-            //     6.boxH,
-            //     AppText.s14w400BdM(
-            //       'Halanlarym bölüminde bildiriş ýok',
-            //       fontFamily: StringConstants.roboto,
-            //       fontSize: 12.sp,
-            //       fontWeight: FontWeight.w400,
-            //       color: const Color(0xFF6A6A6A),
-            //     ),
-            //   ],
-            // ),
             const MessageCard(),
             10.boxH,
             const MessageCard(),

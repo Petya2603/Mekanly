@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../product/base/base_status/base_status.dart';
 import '../../../product/base/bloc/base_bloc.dart';
-import '../../../remote/entities/house_detail/house_detail.dart';
+import '../../../remote/entities/house_detail/house_detail_response.dart';
 import '../../../remote/repositories/house_detail/house_detail_repository.dart';
 
 part 'house_detail_state.dart';

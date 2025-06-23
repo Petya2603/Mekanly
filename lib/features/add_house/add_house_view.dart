@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../core/components/app_bar/app_bar.dart';
@@ -46,12 +45,12 @@ class AddHouseView extends StatefulWidget {
   static const routePath = '/add-house-view';
   static const routeName = 'add-house-view';
 
-  static Widget builder(BuildContext context, GoRouterState state) {
+  static Widget builder(BuildContext context, GlobalOptions? options) {
     final bloc = injector<AddHouseCubit>();
     return BlocProvider(
       create: (context) => bloc,
       child: AddHouseView(
-        options: state.extra as GlobalOptions?,
+        options: options,
       ),
     );
   }
@@ -170,7 +169,7 @@ class _AddHouseViewState extends State<AddHouseView> {
           }
           final ok = await ToNotifyUser.show(context);
           if ((ok ?? false) && context.mounted) {
-            context.pop(true);
+            Navigator.pop(context, true);
           }
         }
       },

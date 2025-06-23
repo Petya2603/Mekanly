@@ -12,31 +12,34 @@ class HouseEntity with _$HouseEntity {
   const factory HouseEntity({
     int? id,
     @JsonKey(name: 'category_name') String? categoryName,
-    Location? location,
+    LocationEntity? location,
     @JsonKey(name: 'user_id') int? userId,
     String? username,
     @JsonKey(name: 'user_phone') String? userPhone,
     String? name,
     String? description,
     String? price,
+    @JsonKey(name: 'lover_percentage') String? loverPercentage,
+    @JsonKey(name: 'lover_price') String? loverPrice,
     int? viewed,
-    int? star,
+    String? star,
     @JsonKey(name: 'comment_count') int? commentCount,
     @JsonKey(name: 'room_number') int? roomNumber,
     @JsonKey(name: 'floor_number') int? floorNumber,
-    @JsonKey(name: 'property_type') PropertyType? propertyType,
-    @JsonKey(name: 'repair_type') RepairType? repairType,
+    @JsonKey(name: 'property_type') PropertyTypeEntity? propertyType,
+    @JsonKey(name: 'repair_type') RepairTypeEntity? repairType,
     String? status,
     bool? luxe,
     @JsonKey(name: 'luxe_status') bool? luxeStatus,
-    @JsonKey(name: 'luxe_expire') DateTime? luxeExpire,
+    @JsonKey(name: 'luxe_expire') String? luxeExpire,
     @JsonKey(name: 'vip_status') bool? vipStatus,
-    @JsonKey(name: 'vip_expire') DateTime? vipExpire,
+    @JsonKey(name: 'vip_expire') String? vipExpire,
     @JsonKey(name: 'bron_number') String? bronNumber,
-    List<ImageUrl>? images,
-    List<Possibility>? possibilities,
+    List<ImageEntity>? images,
+    List<PossibilityEntity>? possibilities,
     int? comment,
-    @JsonKey(name: 'is_comment') dynamic isComment,
+    @JsonKey(name: 'is_comment') String? isComment,
+    @JsonKey(name: 'write_comment') String? writeComment,
     String? who,
     int? area,
     int? exclusisive,
@@ -44,11 +47,12 @@ class HouseEntity with _$HouseEntity {
     @JsonKey(name: 'level_number') int? levelNumber,
     bool? favorited,
     bool? liked,
-    dynamic shop,
+    ShopEntity? shop,
     String? type,
-    DateTime? date,
-    @JsonKey(name: 'updated_at') DateTime? updatedAt,
-    @JsonKey(name: 'created_at') DateTime? createdAt,
+    String? date,
+    @JsonKey(name: 'updated_at') String? updatedAt,
+    @JsonKey(name: 'created_at') String? createdAt,
+    bool? contact,
   }) = _HouseEntity;
 
   factory HouseEntity.fromJson(Map<String, dynamic> json) =>
@@ -56,65 +60,100 @@ class HouseEntity with _$HouseEntity {
 }
 
 @freezed
-class Location with _$Location {
-  const factory Location({
+class LocationEntity with _$LocationEntity {
+  const factory LocationEntity({
     int? id,
     @JsonKey(name: 'parent_id') int? parentId,
     String? name,
-    @JsonKey(name: 'created_at') DateTime? createdAt,
-    @JsonKey(name: 'updated_at') DateTime? updatedAt,
+    @JsonKey(name: 'created_at') String? createdAt,
+    @JsonKey(name: 'updated_at') String? updatedAt,
     @JsonKey(name: 'parent_name') String? parentName,
-  }) = _Location;
+  }) = _LocationEntity;
 
-  factory Location.fromJson(Map<String, dynamic> json) =>
-      _$LocationFromJson(json);
+  factory LocationEntity.fromJson(Map<String, dynamic> json) =>
+      _$LocationEntityFromJson(json);
 }
 
 @freezed
-class PropertyType with _$PropertyType {
-  const factory PropertyType({
+class PropertyTypeEntity with _$PropertyTypeEntity {
+  const factory PropertyTypeEntity({
     int? id,
     String? name,
     String? icon,
-  }) = _PropertyType;
+  }) = _PropertyTypeEntity;
 
-  factory PropertyType.fromJson(Map<String, dynamic> json) =>
-      _$PropertyTypeFromJson(json);
+  factory PropertyTypeEntity.fromJson(Map<String, dynamic> json) =>
+      _$PropertyTypeEntityFromJson(json);
 }
 
 @freezed
-class RepairType with _$RepairType {
-  const factory RepairType({
+class RepairTypeEntity with _$RepairTypeEntity {
+  const factory RepairTypeEntity({
     int? id,
     String? name,
     String? icon,
-  }) = _RepairType;
+  }) = _RepairTypeEntity;
 
-  factory RepairType.fromJson(Map<String, dynamic> json) =>
-      _$RepairTypeFromJson(json);
+  factory RepairTypeEntity.fromJson(Map<String, dynamic> json) =>
+      _$RepairTypeEntityFromJson(json);
 }
 
 @freezed
-class ImageUrl with _$ImageUrl {
-  const factory ImageUrl({
+class ImageEntity with _$ImageEntity {
+  const factory ImageEntity({
     String? url,
-  }) = _ImageUrl;
+    String? original,
+    String? thumbnail,
+    String? watermark,
+  }) = _ImageEntity;
 
-  factory ImageUrl.fromJson(Map<String, dynamic> json) =>
-      _$ImageUrlFromJson(json);
+  factory ImageEntity.fromJson(Map<String, dynamic> json) =>
+      _$ImageEntityFromJson(json);
 }
 
 @freezed
-class Possibility with _$Possibility {
-  const factory Possibility({
+class ShopEntity with _$ShopEntity {
+  const factory ShopEntity({
+    int? id,
+    String? brand,
+    String? logo,
+    String? image,
+    String? status,
+    String? description,
+    @JsonKey(name: 'brief_description') String? briefDescription,
+    @JsonKey(name: 'location_id') int? locationId,
+    String? expire,
+    int? views,
+    @JsonKey(name: 'cover_media') String? coverMedia,
+    int? rating,
+    String? locations,
+    @JsonKey(name: 'phone_numbers') String? phoneNumbers,
+    @JsonKey(name: 'is_vip') int? isVip,
+    @JsonKey(name: 'vip_days') String? vipDays,
+    @JsonKey(name: 'vip_expire') String? vipExpire,
+    String? site,
+    String? messengers,
+    String? mail,
+    @JsonKey(name: 'created_at') String? createdAt,
+    @JsonKey(name: 'updated_at') String? updatedAt,
+  }) = _ShopEntity;
+
+  factory ShopEntity.fromJson(Map<String, dynamic> json) =>
+      _$ShopEntityFromJson(json);
+}
+
+@freezed
+class PossibilityEntity with _$PossibilityEntity {
+  const factory PossibilityEntity({
     int? id,
     String? name,
-  }) = _Possibility;
+  }) = _PossibilityEntity;
 
-  factory Possibility.fromJson(Map<String, dynamic> json) =>
-      _$PossibilityFromJson(json);
+  factory PossibilityEntity.fromJson(Map<String, dynamic> json) =>
+      _$PossibilityEntityFromJson(json);
 }
-extension PossibilityIcon on Possibility {
+
+extension PossibilityIcon on PossibilityEntity {
   Widget buildIcon() {
     switch (name) {
       case 'wifi':

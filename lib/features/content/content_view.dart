@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../core/components/app_text.dart';
 import '../../core/components/loading_indicator.dart';
@@ -11,13 +10,12 @@ import '../../core/components/try_again_widget.dart';
 import '../../product/base/base_status/base_status.dart';
 import '../../product/constants/constants.dart';
 import '../../product/injection/injector.dart';
-import '../../remote/entities/user_house/user_houses_response.dart';
+import '../../product/transitions/custom_page_route.dart';
 import '../../remote/entities/user_profile/user_profile_info_response.dart';
 import '../../utils/extensions.dart';
 import '../add_house/add_house_view.dart';
 import 'bloc/content_bloc.dart';
-
-
+import 'widgets/content_card_widget.dart';
 
 /// TODOS: can not find enough time to separate components
 
@@ -27,7 +25,7 @@ class ContentView extends StatelessWidget {
   static const routePath = '/content-view';
   static const routeName = 'content-view';
 
-  static Widget builder(BuildContext context, GoRouterState state) {
+  static Widget builder(BuildContext context) {
     final bloc = injector<ContentBloc>();
     return BlocProvider(
       create: (context) => bloc..add(const ContentEvent.init()),
@@ -43,8 +41,8 @@ class ContentView extends StatelessWidget {
         backgroundColor: const Color(0xFF4D8BBF),
         leading: IconButton(
           onPressed: () {
-            if (context.canPop()) {
-              context.pop();
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
             }
           },
           icon: Assets.icons.icBackImage.svg(package: 'gen'),
@@ -69,9 +67,11 @@ class ContentView extends StatelessWidget {
             elevation: 0,
             shape: const CircleBorder(),
             onPressed: () async {
-              final isAdded = await context.push<bool?>(
-                AddHouseView.routePath,
-                extra: options,
+              final isAdded = await Navigator.push<bool?>(
+                context,
+                CustomPageRoute.slide(
+                  AddHouseView.builder(context, options),
+                ),
               );
 
               if ((isAdded ?? false) && context.mounted) {
@@ -143,8 +143,14 @@ class ContentView extends StatelessWidget {
                     itemCount: houses.length,
                     itemBuilder: (context, index) {
                       final house = houses[index];
-                      return ContentHouseCard(
-                        house: house,
+                      final images = house.images?.map((m) => m.url).toList();
+                      return ContentCardWidget(
+                        description: house.description,
+                        title: house.name,
+                        imgUrls: images ?? [],
+                        price: house.price,
+                        status: house.statusText,
+                        statusColor: house.statusColor,
                       );
                     },
                   ),
@@ -158,9 +164,7 @@ class ContentView extends StatelessWidget {
   }
 }
 
-
 /// TODOS: can not find enough time to separate components
-
 
 class ContentButtons extends StatefulWidget {
   const ContentButtons({super.key, this.categories});
@@ -224,151 +228,6 @@ class _RoundedBlueBorderedButtonState extends State<RoundedBlueBorderedButton> {
             fontWeight: FontWeight.w400,
             fontSize: 12.sp,
             color: _isSelected ? Colors.white : const Color(0xFF555555),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class ContentHouseCard extends StatefulWidget {
-  const ContentHouseCard({super.key, this.house});
-  final UserHouse? house;
-
-  @override
-  State<ContentHouseCard> createState() => _ContentHouseCardState();
-}
-
-class _ContentHouseCardState extends State<ContentHouseCard> {
-  @override
-  Widget build(BuildContext context) {
-    final house = widget.house;
-    final images = house?.images?.map((image) => image.url).toList() ?? [];
-    return InkWell(
-      onTap: () {},
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8).r,
-          color: const Color(0xFFFFFFFF),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 3.2,
-              color: const Color(0xFF000000).withOpacity(0.25),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              flex: 69,
-              child: Stack(
-                children: [
-                  ContentHouseImageCarousel(
-                    imgUrls: images,
-                  ),
-                  _houseStatus(house),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 30,
-              child: Padding(
-                padding: const EdgeInsets.all(8).w,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: AppText.s14w400BdM(
-                        house?.name ?? '',
-                        fontFamily: StringConstants.roboto,
-                        fontWeight: FontWeight.w400,
-                        maxLines: 1,
-                        fontSize: 12.sp,
-                        overflow: TextOverflow.ellipsis,
-                        color: const Color(0xFF222222),
-                      ),
-                    ),
-                    2.boxH,
-                    Expanded(
-                      child: AppText.s14w400BdM(
-                        '${house?.description} ${house?.description} ${house?.description}',
-                        fontFamily: StringConstants.roboto,
-                        fontWeight: FontWeight.w400,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        fontSize: 11.sp,
-                        color: const Color(0xFF757575),
-                      ),
-                    ),
-                    2.boxH,
-                    Expanded(
-                      child: AppText.s14w400BdM(
-                        '${house?.price ?? ''} TMT',
-                        fontFamily: StringConstants.roboto,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12.sp,
-                        color: const Color(0xFF222222),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Positioned _houseStatus(UserHouse? house) {
-    return Positioned(
-      top: 8,
-      left: 6,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(40).r,
-          border: Border.all(
-            color: const Color(0xFFFFFFFF),
-            width: 1.sp,
-          ),
-          gradient: const LinearGradient(
-            colors: [
-              Color(0xFFF1F1F1),
-              Color(0xFFFFFFFF),
-              Color(0xFFFFFFFF),
-              Color(0xFFF1F1F1),
-            ],
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 6,
-            vertical: 2,
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 6.sp,
-                height: 6.sp,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: house?.statusColor,
-                ),
-              ),
-              4.boxW,
-              AppText.s14w400BdM(
-                house?.statusText ?? '',
-                fontSize: 10.sp,
-                fontWeight: FontWeight.w400,
-                fontFamily: StringConstants.roboto,
-                color: const Color(0xFF222222),
-              ),
-            ],
           ),
         ),
       ),
@@ -441,7 +300,7 @@ class _ContentHouseImageCarouselState extends State<ContentHouseImageCarousel> {
                 child: CustomNetworkImage(
                   imageUrl: img,
                   memCache: CustomMemCache(
-                    height: 155.withDevicePixel(context),
+                    // height: 155.withDevicePixel(context),
                     width: 167.withDevicePixel(context),
                   ),
                 ),

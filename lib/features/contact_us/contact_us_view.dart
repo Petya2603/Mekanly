@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../core/components/app_text.dart';
 import '../../product/constants/constants.dart';
@@ -12,9 +11,6 @@ class ContactUsView extends StatefulWidget {
   static const routePath = '/contactUs-view';
   static const routeName = 'contactUs-view';
 
-  static Widget builder(BuildContext context, GoRouterState state) {
-    return const ContactUsView();
-  }
 
   @override
   State<ContactUsView> createState() => _ContactUsViewState();

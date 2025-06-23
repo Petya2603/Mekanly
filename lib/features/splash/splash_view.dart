@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../core/components/loading_indicator.dart';
 import '../../product/helpers/helpers.dart';
+import '../../product/transitions/custom_page_route.dart';
 import '../../utils/extensions.dart';
 import '../auth/cubit/auth_cubit.dart';
 import '../home/cubit/home_cubit.dart';
-import '../home/home_view.dart';
 import '../root/view/root_view.dart';
 
 class SplashView extends StatefulWidget {
@@ -17,10 +16,6 @@ class SplashView extends StatefulWidget {
 
   static const routePath = '/splash-view';
   static const routeName = 'splash-view';
-
-  static Widget builder(BuildContext context, GoRouterState state) {
-    return const SplashView();
-  }
 
   @override
   State<SplashView> createState() => _SplashViewState();
@@ -52,7 +47,13 @@ class _SplashViewState extends State<SplashView> {
                   onBigBanners: bigBanners,
                   onTopAds: topAds,
                 );
-            context.pushReplacement(RootView.routePath);
+            Navigator.pushAndRemoveUntil(
+              context,
+              CustomPageRoute.slide(
+                const RootView(),
+              ),
+              (r) => false,
+            );
           }
 
           if (state is AuthCheckingFailure) {

@@ -1,12 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../core/components/app_text.dart';
 import '../../../core/components/common_porduct_card_widget.dart';
 import '../../../product/constants/constants.dart';
+import '../../../product/transitions/custom_page_route.dart';
 import '../../../remote/entities/houses/house_entity.dart';
 import '../../../utils/extensions.dart';
 import '../../house_detail/house_detail_view.dart';
@@ -26,9 +25,10 @@ class MainHouseItem extends StatelessWidget {
       onTap: () {
         if (house?.id == null) return;
         final imgs = house?.images?.map((e) => e.url).toList();
-        context.push(
-          HouseDetailView.routePath,
-          extra: HouseDetailRoute(imgUrl: imgs, id: house?.id),
+        final data = HouseDetailRoute(imgUrl: imgs, id: house?.id);
+        Navigator.push(
+          context,
+          CustomPageRoute.slide(HouseDetailView.builder(context, data)),
         );
       },
       child: Container(
@@ -73,7 +73,6 @@ class MainHouseItem extends StatelessWidget {
             child: HousesCarouselSlider(imgUrls: house?.images),
           ),
         ),
-
         Positioned(
           top: 12,
           left: 12,
@@ -97,7 +96,6 @@ class MainHouseItem extends StatelessWidget {
             ),
           ),
         ),
-
         Positioned(
           right: 12,
           top: 12,
@@ -135,7 +133,6 @@ class MainHouseItem extends StatelessWidget {
             ),
           ],
         ),
-
         if (house?.possibilities?.isNotEmpty ?? false) ...[
           SizedBox(height: 10.h),
           Row(
@@ -145,7 +142,6 @@ class MainHouseItem extends StatelessWidget {
             ],
           ),
         ],
-
         SizedBox(height: 10.h),
         AppText.s12w400BdS(
           '${house?.location?.parentName}/${house?.location?.name} 02.08.2024',
@@ -153,7 +149,6 @@ class MainHouseItem extends StatelessWidget {
           fontSize: 12.sp,
           color: ColorName.addressDate,
         ),
-
         SizedBox(height: 5.h),
         AppText.s12w400BdS(
           house?.description ?? '',
@@ -163,7 +158,6 @@ class MainHouseItem extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           color: ColorName.addressDate,
         ),
-
         SizedBox(height: 8.h),
         Row(
           children: [

@@ -18,13 +18,10 @@ class _CommonProductCardWidgetState extends State<CommonProductCardWidget> {
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 167 / 225,
-      child: Container(
-      ),
+      child: Container(),
     );
   }
 }
-
-
 
 class HousesCarouselSlider extends StatefulWidget {
   const HousesCarouselSlider({
@@ -32,7 +29,7 @@ class HousesCarouselSlider extends StatefulWidget {
     this.imgUrls,
   });
 
-  final List<ImageUrl>? imgUrls;
+  final List<ImageEntity>? imgUrls;
 
   @override
   State<HousesCarouselSlider> createState() => _HousesCarouselSliderState();
@@ -56,7 +53,7 @@ class _HousesCarouselSliderState extends State<HousesCarouselSlider> {
             final img = widget.imgUrls?[index];
             return CustomNetworkImage(
               memCache: CustomMemCache(
-                height: 235.withDevicePixel(context),
+                // height: 235.withDevicePixel(context),
                 width: width.toInt().withDevicePixel(context),
               ),
               imageUrl: img?.url,

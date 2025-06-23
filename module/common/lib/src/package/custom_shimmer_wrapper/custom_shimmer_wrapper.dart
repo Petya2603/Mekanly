@@ -24,6 +24,11 @@ class ShimmerWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Container(
+      color: _shimmerBaseColor,
+      width: size.width,
+      height: size.height,
+    );
     return Shimmer.fromColors(
       baseColor: baseColor ?? _shimmerBaseColor,
       highlightColor:

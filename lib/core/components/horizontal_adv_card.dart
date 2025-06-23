@@ -37,7 +37,7 @@ class HorizontalAdvCard extends StatelessWidget {
                           imageUrl: imgUrl,
                           memCache: CustomMemCache(
                             height: 200.withDevicePixel(context),
-                            width: 157.withDevicePixel(context),
+                            // width: 157.withDevicePixel(context),
                           ),
                         ),
                       ),

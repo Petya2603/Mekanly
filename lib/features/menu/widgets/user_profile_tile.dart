@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../core/components/app_text.dart';
 import '../../../product/constants/constants.dart';
+import '../../../product/transitions/custom_page_route.dart';
 import '../../../utils/extensions.dart';
 import '../../auth/cubit/auth_cubit.dart';
 import '../../auth/login/phone_number/login_phone_number_view.dart';
@@ -53,9 +53,14 @@ class UserProfileTile extends StatelessWidget {
                           ),
                           2.boxH,
                           InkWell(
-                            onTap: () => context.pushReplacement(
-                              LoginPhoneNumberView.routePath,
-                            ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                CustomPageRoute.slide(
+                                  LoginPhoneNumberView.builder(context),
+                                ),
+                              );
+                            },
                             child: AppText.underLined(
                               'Ulgama girmek',
                               fontWeight: FontWeight.w500,

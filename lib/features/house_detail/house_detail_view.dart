@@ -1,15 +1,9 @@
-import 'dart:io';
-import 'dart:math';
 import 'package:common/common.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
-import '../../core/components/adv_card.dart';
-import '../../core/components/app_bar/app_bar.dart';
 import '../../core/components/app_btn.dart';
 import '../../core/components/app_text.dart';
 import '../../core/components/loading_indicator.dart';
@@ -17,14 +11,14 @@ import '../../core/components/try_again_widget.dart';
 import '../../product/base/base_status/base_status.dart';
 import '../../product/constants/constants.dart';
 import '../../product/injection/injector.dart';
-import '../../remote/entities/house_detail/house_detail.dart';
+import '../../product/transitions/custom_page_route.dart';
+import '../../remote/entities/house_detail/house_detail_response.dart';
 import '../../utils/extensions.dart';
 import '../../utils/helpers.dart';
 import 'cubit/house_detail_cubit.dart';
 import 'house_images.dart';
 import 'widgets/circled_icon_btn.dart';
 import 'widgets/gradient_bg_container.dart';
-import 'widgets/notification_card.dart';
 import 'widgets/row_main_info_tile.dart';
 
 class HouseDetailRoute {
@@ -43,13 +37,15 @@ class HouseDetailView extends StatelessWidget {
   static const routePath = '/house-detail-view';
   static const routeName = 'house-detail-view';
 
-  static Widget builder(BuildContext context, GoRouterState state) {
+  static Widget builder(BuildContext context, HouseDetailRoute data) {
     final bloc = injector<HouseDetailCubit>();
     return BlocProvider(
-      create: (context) =>
-          bloc..getHouseDetail((state.extra! as HouseDetailRoute).id ?? 0),
+      create: (context) => bloc
+        ..getHouseDetail(
+          data.id ?? 0,
+        ),
       child: HouseDetailView(
-        data: state.extra! as HouseDetailRoute,
+        data: data,
       ),
     );
   }
@@ -64,19 +60,24 @@ class HouseDetailView extends StatelessWidget {
       body: ExtendedNestedScrollView(
         headerSliverBuilder: (BuildContext c, bool f) {
           return <Widget>[
+            // ImageH
             SliverAppBar(
               pinned: true,
               foregroundColor: Colors.white,
               surfaceTintColor: Colors.white,
               expandedHeight: 320,
-              leadingWidth: 34.w,
               backgroundColor: const Color(0xFF4D8BBF),
               automaticallyImplyLeading: false,
-              leading: CircledIconBtn(
-                icon: Assets.icons.icBack.svg(package: 'gen'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
+              leading: Row(
+                children: [
+                  14.boxW,
+                  CircledIconBtn(
+                    icon: Assets.icons.icBack.svg(package: 'gen'),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
               ),
               actions: [
                 CircledIconBtn(
@@ -90,8 +91,9 @@ class HouseDetailView extends StatelessWidget {
                   icon: Assets.icons.icHeartHouse.svg(package: 'gen'),
                   onTap: () {},
                 ),
-                12.boxW,
+                14.boxW,
               ],
+              //TODO: Bayram it is not good usecase as I see
               flexibleSpace: LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
                   final currentHeight = constraints.biggest.height;
@@ -105,10 +107,6 @@ class HouseDetailView extends StatelessWidget {
                   return Stack(
                     fit: StackFit.expand,
                     children: [
-                      Opacity(
-                        opacity: 1.0 - scrollPercentage,
-                        child: _HouseDetailImgSlider(data: data),
-                      ),
                       Opacity(
                         opacity: 1.0 - scrollPercentage * 0.7,
                         child: Container(
@@ -124,31 +122,31 @@ class HouseDetailView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Container(
-                          padding: const EdgeInsets.only(bottom: 16, left: 50),
-                          child: Opacity(
-                            opacity: scrollPercentage,
-                            child: const Text(
-                              'Gyssagly satlyk jay',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                        ),
+                      // Align(
+                      //   alignment: Alignment.bottomLeft,
+                      //   child: Container(
+                      //     padding: const EdgeInsets.only(: 14, bottom: 16),
+                      //     child: Opacity(
+                      //       opacity: scrollPercentage,
+                      //       child: const Text(
+                      //         'Gyssagly satlyk jay',
+                      //         style: TextStyle(
+                      //           color: Colors.white,
+                      //           fontSize: 18,
+                      //           fontWeight: FontWeight.w400,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      Opacity(
+                        opacity: 1.0 - scrollPercentage,
+                        child: _HouseDetailImgSlider(data: data),
                       ),
                     ],
                   );
                 },
               ),
-              // FlexibleSpaceBar(
-              //   collapseMode: CollapseMode.pin,
-              //   background: _HouseDetailImgSlider(data: data),
-              // ),
             ),
           ];
         },
@@ -341,7 +339,7 @@ class _Description extends StatelessWidget {
 
 class _HouseDetailInfo extends StatefulWidget {
   const _HouseDetailInfo({this.house});
-  final HouseDetail? house;
+  final HouseData? house;
 
   @override
   State<_HouseDetailInfo> createState() => _HouseDetailInfoState();
@@ -455,7 +453,7 @@ class _HouseDetailInfoState extends State<_HouseDetailInfo> {
 
 class _HouseDetailPossibility extends StatefulWidget {
   const _HouseDetailPossibility({this.house});
-  final HouseDetail? house;
+  final HouseData? house;
 
   @override
   State<_HouseDetailPossibility> createState() =>
@@ -487,9 +485,9 @@ class _HouseDetailPossibilityState extends State<_HouseDetailPossibility> {
             ),
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: widget.house?.possibilities.length,
+            itemCount: widget.house?.possibilities?.length,
             itemBuilder: (context, index) {
-              final possibility = widget.house?.possibilities[index];
+              final possibility = widget.house?.possibilities?[index];
               return _HousePossibilityGridItem(possibility: possibility);
             },
           ),
@@ -612,7 +610,7 @@ class _HeaderInfos extends StatelessWidget {
     required this.house,
   });
 
-  final HouseDetail? house;
+  final HouseData? house;
 
   @override
   Widget build(BuildContext context) {
@@ -686,11 +684,10 @@ class _HouseDetailImgSliderState extends State<_HouseDetailImgSlider> {
           itemBuilder: (context, index) {
             return InkWell(
               onTap: () {
-                ///TODOS: WTF we used go_router
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => HouseImages(
+                  CustomPageRoute.slide(
+                    HouseImages(
                       houseImagesUrl: widget.data.imgUrl,
                     ),
                   ),
@@ -699,7 +696,6 @@ class _HouseDetailImgSliderState extends State<_HouseDetailImgSlider> {
               child: CustomNetworkImage(
                 imageUrl: widget.data.imgUrl?[index],
                 memCache: CustomMemCache(
-                  height: 320.withDevicePixel(context),
                   width: width.toInt().withDevicePixel(context),
                 ),
               ),

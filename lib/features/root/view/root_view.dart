@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-import 'package:go_router/go_router.dart';
 import '../../../core/components/app_text.dart';
 import '../../../product/constants/constants.dart';
 import '../../../utils/extensions.dart';
@@ -22,14 +21,6 @@ class RootView extends StatefulWidget {
 
   static const routePath = '/root-view';
   static const routeName = 'root-view';
-
-  static Widget builder(
-    BuildContext context,
-    GoRouterState state,
-    // StatefulNavigationShell navigationShell,
-  ) {
-    return const RootView();
-  }
 
   @override
   State<RootView> createState() => _RootViewState();

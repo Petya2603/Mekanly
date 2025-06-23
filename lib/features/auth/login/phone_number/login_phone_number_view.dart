@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../core/components/app_btn.dart';
 import '../../../../core/components/app_text.dart';
@@ -24,7 +23,7 @@ class LoginPhoneNumberView extends StatelessWidget {
   static const routePath = '/login-phone-number-view';
   static const routeName = 'login-phone-number-view';
 
-  static Widget builder(BuildContext context, GoRouterState state) {
+  static Widget builder(BuildContext context) {
     final bloc = injector<LoginCubit>();
 
     return BlocProvider(
@@ -90,10 +89,10 @@ class LoginPhoneNumberView extends StatelessWidget {
                               token: state.response?.user.token ?? '',
                               code: '',
                             );
-                            context.pushReplacement(
-                              OtpView.routePath,
-                              extra: data,
-                            );
+                            // context.pushReplacement(
+                            //   OtpView.routePath,
+                            //   extra: data,
+                            // );
                           },
                           failure: (error) {
                             Helpers.showToastInfo(
