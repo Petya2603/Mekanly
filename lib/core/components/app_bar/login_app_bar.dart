@@ -10,8 +10,10 @@ class _LoginAppBarWidget extends StatelessWidget {
       centerTitle: true,
       backgroundColor: ColorName.main,
       elevation: 0,
-      automaticallyImplyLeading: false,
-      leading: const SizedBox.shrink(),
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back, color: Colors.white),
+        onPressed: () => Navigator.of(context).pop(),
+      ),
       title: AppText.s20w500TtL(
         title,
         fontWeight: FontWeight.w400,

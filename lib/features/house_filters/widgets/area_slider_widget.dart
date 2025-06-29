@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
 
 import '../../../core/components/app_text.dart';
+import '../../../localization/extensions.dart';
 import '../../../product/constants/constants.dart';
 import '../../../utils/extensions.dart';
 
@@ -29,7 +30,7 @@ class AreaSliderWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppText.s14w400BdM(
-            'Umumy meýdany',
+            context.translation.total_area,
             fontFamily: StringConstants.roboto,
             fontSize: 15.sp,
           ),
@@ -61,7 +62,7 @@ class AreaSliderWidget extends StatelessWidget {
               Column(
                 children: [
                   AppText.s10w400LbS(
-                    'Mininum',
+                    context.translation.min,
                     fontFamily: StringConstants.roboto,
                     color: const Color(0xff6A6A6A),
                     fontWeight: FontWeight.w500,
@@ -75,7 +76,7 @@ class AreaSliderWidget extends StatelessWidget {
               Column(
                 children: [
                   AppText.s10w400LbS(
-                    'Maksimum',
+                    context.translation.max,
                     fontFamily: StringConstants.roboto,
                     color: const Color(0xff6A6A6A),
                     fontWeight: FontWeight.w500,

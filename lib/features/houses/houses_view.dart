@@ -4,15 +4,20 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-
 import '../../core/components/loading_indicator.dart';
 import '../../core/components/search_field.dart';
 import '../../core/components/try_again_widget.dart';
+import '../../localization/extensions.dart';
 import '../../product/base/base_status/base_status.dart';
 import '../../product/transitions/custom_page_route.dart';
+import '../../remote/entities/global_options/global_options.dart'
+    show CategoryHouse, Location, SubLocations;
 import '../../utils/extensions.dart';
 import '../house_filters/house_filters_view.dart';
+import '../house_filters/widgets/option_categories_modal_sheet.dart';
+import '../house_filters/widgets/option_locations_modal_sheet.dart';
 import 'bloc/houses_bloc.dart';
+import 'widgets/bottom_sheet_price.dart';
 import 'widgets/main_house_item.dart';
 import 'widgets/rounded_blue_bordered_chip_btn.dart';
 
@@ -33,11 +38,19 @@ class _HousesViewState extends State<HousesView>
   final TextEditingController inArzanController = TextEditingController();
   final TextEditingController inGymmatController = TextEditingController();
   bool _showScrollToTopButton = false;
+  List<Location> locations = [];
+  List<CategoryHouse> categories = [];
+  List<SubLocations>? currentLoc;
+  List<CategoryHouse>? currentCategory;
+  bool justShowWithImage = false;
+  bool justShowNewAdded = false;
+  bool fromHolder = false;
 
   @override
   void initState() {
     BaseLogger.warning(' init houses');
     init();
+
     super.initState();
   }
 
@@ -136,6 +149,7 @@ class _HousesViewState extends State<HousesView>
                                 );
                                 Navigator.push(
                                   context,
+                                  // ignore: inference_failure_on_function_invocation
                                   CustomPageRoute.slide(
                                     HouseFiltersView(
                                       filter: data,
@@ -166,22 +180,69 @@ class _HousesViewState extends State<HousesView>
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               RoundedBlueBorderedChipBtn(
-                                onTap: () {},
-                                title: 'Ýerleşýän ýeri',
+                                onTap: () async {
+                                  final updated = await OptionModalBottomSheet
+                                      .showOptionModal(
+                                    context,
+                                    locations: locations,
+                                  );
+
+                                  if (updated != null) {
+                                    setState(() {
+                                      locations = List.of(updated);
+                                      currentLoc =
+                                          List.of(updated.getAllSelected ?? []);
+                                    });
+                                  }
+                                },
+                                title: (currentLoc?.nameAll?.isEmpty ?? true)
+                                    ? context.translation.location
+                                    : currentLoc?.nameAll ?? '',
                                 icon:
                                     Assets.icons.icLocation.svg(package: 'gen'),
                               ),
                               6.boxW,
                               RoundedBlueBorderedChipBtn(
-                                onTap: () {},
+                                onTap: () async {
+                                  final updated =
+                                      await OptionCategoryModalBottomSheet.show(
+                                    context,
+                                    categories: categories,
+                                  );
+
+                                  if (updated != null) {
+                                    setState(() {
+                                      categories =
+                                          List<CategoryHouse>.from(updated);
+                                      currentCategory =
+                                          List.of(updated.getAllSelected ?? []);
+                                    });
+                                  }
+                                },
                                 icon:
                                     Assets.icons.icCategory.svg(package: 'gen'),
-                                title: 'Kategoriýa',
+                                title: (currentCategory?.isEmpty ?? true)
+                                    ? context.translation.category
+                                    : currentCategory?.nameAll ?? '',
                               ),
                               6.boxW,
                               RoundedBlueBorderedChipBtn(
-                                onTap: () {},
-                                title: 'Bahasy',
+                                onTap: () {
+                                  // ignore: inference_failure_on_function_invocation
+                                  showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    enableDrag: false,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(24),
+                                      ),
+                                    ),
+                                    builder: (context) =>
+                                        const BottomPriceSelectorSheet(),
+                                  );
+                                },
+                                title: context.translation.price,
                                 icon: Assets.icons.icCost.svg(package: 'gen'),
                               ),
                             ],

@@ -1,11 +1,11 @@
 import 'dart:async';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-
 import '../../core/components/adv_card.dart';
 import '../../core/components/announcement_card.dart';
 import '../../core/components/app_btn.dart';
@@ -13,6 +13,7 @@ import '../../core/components/app_text.dart';
 import '../../core/components/horizontal_adv_card.dart';
 import '../../core/components/loading_indicator.dart';
 import '../../core/components/try_again_widget.dart';
+import '../../localization/extensions.dart';
 import '../../product/base/base_status/base_status.dart';
 import '../../product/constants/constants.dart';
 import '../../utils/extensions.dart';
@@ -114,27 +115,29 @@ class _HomeViewState extends State<HomeView>
           physics: const NeverScrollableScrollPhysics(),
           padding: EdgeInsets.zero,
           children: [
-            // Small banners section
-            if (smallBanners?.isNotEmpty ?? false)
-              SizedBox(
-                height: 210.w,
-                child: ListView.separated(
-                  controller: _smallBannersScrollController,
-                  itemCount: smallBanners?.length ?? 0,
-                  scrollDirection: Axis.horizontal,
-                  separatorBuilder: (context, index) => 5.boxW,
-                  padding: const EdgeInsets.all(4).w,
-                  itemBuilder: (context, index) {
-                    final banner = smallBanners?[index];
+            //small banners section
 
-                    ///TODOS: backend dev problem and still testing it??? come one
-                    return HorizontalAdvCard(
-                      imgUrl: 'https://mekanly.com.tm/${banner?.image ?? ''}',
-                      logo: banner?.logo != null && (banner?.logo != 'storage/')
-                          ? 'https://mekanly.com.tm/${banner!.logo ?? ''}'
+            if (smallBanners?.isNotEmpty ?? false)
+              CarouselSlider.builder(
+                itemCount: smallBanners!.length,
+                itemBuilder: (context, index, realIndex) {
+                  final banner = smallBanners[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 3, bottom: 3),
+                    child: HorizontalAdvCard(
+                      imgUrl: 'https://mekanly.com.tm/${banner.image ?? ''}',
+                      logo: banner.logo != null && banner.logo != 'storage/'
+                          ? 'https://mekanly.com.tm/${banner.logo ?? ''}'
                           : null,
-                    );
-                  },
+                    ),
+                  );
+                },
+                options: CarouselOptions(
+                  height: 210.w,
+                  autoPlay: true,
+                  autoPlayInterval: const Duration(seconds: 3),
+                  viewportFraction: 0.45,
+                  scrollPhysics: const BouncingScrollPhysics(),
                 ),
               ),
 
@@ -142,23 +145,35 @@ class _HomeViewState extends State<HomeView>
             if (bigBanners?.isNotEmpty ?? false)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 4).w,
-                child: AdvCard(
-                  ///TODOS: backend dev problem and still testing it??? come one
-
-                  imgUrl:
-                      'https://mekanly.com.tm/${bigBanners?.first.image ?? ''}',
-                  logo: bigBanners?.first.logo != null &&
-                          (bigBanners?.first.logo != 'storage/')
-                      ? 'https://mekanly.com.tm/${bigBanners?.first.logo ?? ''}'
-                      : null,
+                child: CarouselSlider.builder(
+                  itemCount: bigBanners!.length,
+                  itemBuilder: (context, index, realIndex) {
+                    final banner = bigBanners[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: AdvCard(
+                        imgUrl: 'https://mekanly.com.tm/${banner.image ?? ''}',
+                        logo: banner.logo != null && banner.logo != 'storage/'
+                            ? 'https://mekanly.com.tm/${banner.logo ?? ''}'
+                            : null,
+                      ),
+                    );
+                  },
+                  options: CarouselOptions(
+                    height: 210.w,
+                    autoPlay: true,
+                    autoPlayInterval: const Duration(seconds: 10),
+                    viewportFraction: 1,
+                    scrollPhysics: const BouncingScrollPhysics(),
+                  ),
                 ),
               ),
 
-            // Section header
+            // Section header translation.home
             Padding(
               padding: const EdgeInsets.only(left: 10, top: 17, bottom: 7),
               child: AppText.s14w400BdM(
-                'Bildirişler',
+                context.translation.announcements,
                 fontFamily: StringConstants.roboto,
                 textAlign: TextAlign.start,
               ),
@@ -180,11 +195,13 @@ class _HomeViewState extends State<HomeView>
 
             // Button section
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 10).w,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 10,
+              ).w,
               child: AppBtn(
                 onTap: () {},
-                text: 'Gozgalmaýan emläkler',
+                text: context.translation.real_estate1,
                 rgIcon: Assets.icons.icForwardIcon.svg(package: 'gen'),
                 fontWeight: FontWeight.w600,
                 fontSize: 13.sp,

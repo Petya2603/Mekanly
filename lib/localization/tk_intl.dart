@@ -180,7 +180,12 @@ class _TkMaterialLocalizationsDelegate
 
   @override
   Future<MaterialLocalizations> load(Locale locale) async {
-    final localeName = intl.Intl.canonicalizedLocale(locale.toString());
+    final safeLocale =
+        (locale.languageCode == 'tk' || locale.languageCode == 'ru')
+            ? locale.languageCode
+            : 'tk';
+
+    final localeName = intl.Intl.canonicalizedLocale(safeLocale);
 
     // The locale (in this case `nn`) needs to be initialized into the custom
     // date symbols and patterns setup that Flutter uses.
@@ -971,4 +976,12 @@ class CupertinoLocalizationTk extends GlobalCupertinoLocalizations {
 
   @override
   String get shareButtonLabel => 'shareButtonLabel';
+
+  @override
+  // TODO: implement backButtonLabel
+  String get backButtonLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement cancelButtonLabel
+  String get cancelButtonLabel => throw UnimplementedError();
 }

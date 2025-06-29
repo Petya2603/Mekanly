@@ -1,9 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../core/components/app_text.dart';
 import '../../../product/constants/constants.dart';
 import '../../../remote/entities/global_options/global_options.dart';
@@ -60,16 +57,18 @@ class TitledSelectorView extends StatelessWidget {
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(horizontal: 19).w,
                   decoration: BoxDecoration(
-                    color: item.isSelected ? const Color(0xffE5F6FE) : null,
+                    color: item.isSelected
+                        ? const Color.fromARGB(255, 34, 34, 34)
+                        : null,
                     borderRadius: BorderRadius.circular(100).r,
                     border: Border.all(
                       color: item.isSelected
-                          ? const Color(0xffE5F6FE)
+                          ? const Color.fromARGB(255, 34, 34, 34)
                           : const Color(0xffDFDFDF),
                     ),
                   ),
                   child: AppText.s14w400BdM(
-                    color: item.isSelected ? const Color(0xFF3A8BCF) : null,
+                    color: item.isSelected ? const Color(0xffDFDFDF) : null,
                     item.count,
                     fontFamily: StringConstants.roboto,
                     fontWeight:

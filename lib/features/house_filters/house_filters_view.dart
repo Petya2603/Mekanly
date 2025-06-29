@@ -1,4 +1,3 @@
-import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
@@ -6,6 +5,7 @@ import 'package:gen/gen.dart';
 import '../../core/components/app_bar/app_bar.dart';
 import '../../core/components/app_btn.dart';
 import '../../core/components/app_text.dart';
+import '../../localization/extensions.dart';
 import '../../product/constants/constants.dart';
 import '../../remote/entities/global_options/global_options.dart';
 import '../../utils/extensions.dart';
@@ -193,7 +193,7 @@ class _HouseFiltersViewState extends State<HouseFiltersView> {
                 onTap: onApply,
                 fontSize: 14.sp,
                 textColor: Colors.white,
-                text: 'GÖZLE',
+                text: context.translation.search,
                 fontWeight: FontWeight.w500,
                 fontFamily: StringConstants.roboto,
                 bgColor: ColorName.main,
@@ -204,11 +204,11 @@ class _HouseFiltersViewState extends State<HouseFiltersView> {
         ),
       ),
       appBar: CustomAppBar.base(
-        title: 'Filterler',
+        title: context.translation.filtr,
         actions: [
           TextBtn(
             child: AppText.s14w400BdM(
-              'Arassala',
+              context.translation.clean,
               color: Colors.white,
             ),
             onTap: () {},
@@ -225,13 +225,13 @@ class _HouseFiltersViewState extends State<HouseFiltersView> {
               dense: true,
               minVerticalPadding: 0,
               title: AppText.s14w400BdM(
-                'Bölüm',
+                context.translation.section,
                 fontSize: 15.sp,
                 fontFamily: StringConstants.roboto,
               ),
               subtitle: AppText.s10w400LbS(
                 (currentCategory?.nameAll?.isEmpty ?? true)
-                    ? 'Saýlanmadyk'
+                    ? context.translation.unselected
                     : currentCategory?.nameAll ?? '',
                 color: const Color(0xff717171),
                 fontFamily: StringConstants.roboto,
@@ -267,13 +267,13 @@ class _HouseFiltersViewState extends State<HouseFiltersView> {
               dense: true,
               minVerticalPadding: 0,
               title: AppText.s14w400BdM(
-                'Ýerleşýän ýeri',
+                context.translation.location,
                 fontSize: 15.sp,
                 fontFamily: StringConstants.roboto,
               ),
               subtitle: AppText.s10w400LbS(
                 (currentLoc?.nameAll?.isEmpty ?? true)
-                    ? 'Saýlanmadyk'
+                    ? context.translation.unselected
                     : currentLoc?.nameAll ?? '',
                 color: const Color(0xff717171),
                 fontFamily: StringConstants.roboto,
@@ -306,7 +306,7 @@ class _HouseFiltersViewState extends State<HouseFiltersView> {
             ),
             8.boxH,
             TitledSelectorView(
-              title: 'Otag sany',
+              title: context.translation.room_number,
               list: roomCounts ?? [],
               valueChanged: (value) {
                 final updated =
@@ -322,7 +322,7 @@ class _HouseFiltersViewState extends State<HouseFiltersView> {
             ),
             20.boxH,
             TitledSelectorView(
-              title: 'Gat sany',
+              title: context.translation.floor_number,
               list: floorCounts ?? [],
               valueChanged: (value) {
                 final updated =
@@ -343,7 +343,7 @@ class _HouseFiltersViewState extends State<HouseFiltersView> {
                   justShowWithImage = value;
                 });
               },
-              title: 'Diňe  suratly jaýlary görkez',
+              title: context.translation.show_places_with_pictures,
               accepted: justShowWithImage,
             ),
             20.boxH,
@@ -353,7 +353,7 @@ class _HouseFiltersViewState extends State<HouseFiltersView> {
                   justShowNewAdded = value;
                 });
               },
-              title: 'Täze goşulan emläklery görkez',
+              title: context.translation.show_newly_added_house,
               accepted: justShowNewAdded,
             ),
             20.boxH,
@@ -365,12 +365,12 @@ class _HouseFiltersViewState extends State<HouseFiltersView> {
             TypeSelectorWidget(
               padding:
                   const EdgeInsets.symmetric(vertical: 4, horizontal: 14).w,
-              title: 'Emläk görnüşi',
+              title: context.translation.house_type,
               onTap: () async {
                 if (propertyOptionModel == null) return;
                 final updated = await showModalOptions(
                   context,
-                  text: 'Emläk görnüşi',
+                  text: context.translation.house_type,
                   model: propertyOptionModel!,
                 );
 
@@ -391,12 +391,12 @@ class _HouseFiltersViewState extends State<HouseFiltersView> {
             TypeSelectorWidget(
               padding:
                   const EdgeInsets.symmetric(vertical: 4, horizontal: 14).w,
-              title: 'Remont',
+              title: context.translation.remont,
               onTap: () async {
                 if (repairOptionModel == null) return;
                 final updated = await showModalOptions(
                   context,
-                  text: 'Remont görnüşi',
+                  text: context.translation.remont_gorn,
                   model: repairOptionModel!,
                 );
 
@@ -415,7 +415,7 @@ class _HouseFiltersViewState extends State<HouseFiltersView> {
             TypeSelectorWidget(
               padding:
                   const EdgeInsets.symmetric(vertical: 4, horizontal: 14).w,
-              title: 'Mümkinçilikler',
+              title: context.translation.mumkincilikler,
               selectedItems:
                   possibilityOptionModel?.selectedPossibilities?.map((p) {
                 return OptionChipWidget(
@@ -427,7 +427,7 @@ class _HouseFiltersViewState extends State<HouseFiltersView> {
                 if (possibilityOptionModel == null) return;
                 final updated = await showModalOptions(
                   context,
-                  text: 'Mümkinçilikler',
+                  text: context.translation.mumkincilikler,
                   model: possibilityOptionModel!,
                 );
 

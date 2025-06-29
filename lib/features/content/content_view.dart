@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-
 import '../../core/components/app_text.dart';
 import '../../core/components/loading_indicator.dart';
 import '../../core/components/try_again_widget.dart';
+import '../../localization/extensions.dart';
 import '../../product/base/base_status/base_status.dart';
 import '../../product/constants/constants.dart';
 import '../../product/injection/injector.dart';
@@ -48,7 +48,7 @@ class ContentView extends StatelessWidget {
           icon: Assets.icons.icBackImage.svg(package: 'gen'),
         ),
         title: AppText.s14w400BdM(
-          'Bildirişlerim',
+          context.translation.my_announcements,
           fontSize: 14.sp,
           color: Colors.white,
           fontFamily: StringConstants.roboto,
@@ -106,7 +106,7 @@ class ContentView extends StatelessWidget {
           if (houses == null || houses.isEmpty) {
             return Center(
               child: AppText.s14w400BdM(
-                'Häzirki wagtda hiç hili maglumat ýok',
+                context.translation.no_commentss,
                 fontSize: 14,
                 color: const Color(0xFF555555),
               ),

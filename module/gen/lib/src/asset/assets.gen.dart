@@ -56,7 +56,7 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/ic_add_house.svg
   SvgGenImage get icAddHouse =>
-      const SvgGenImage('assets/icons/ic_add_house.svg');
+      const SvgGenImage('assets/icons/ic_addhome.svg');
 
   /// File path: assets/icons/ic_add_house_main.svg
   SvgGenImage get icAddHouseMain =>
@@ -103,10 +103,13 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/ic_calendar.svg
   SvgGenImage get icCalendar =>
-      const SvgGenImage('assets/icons/ic_calendar.svg');
+      const SvgGenImage('assets/icons/calendar_t.svg');
 
   /// File path: assets/icons/ic_call.svg
   SvgGenImage get icCall => const SvgGenImage('assets/icons/ic_call.svg');
+
+  /// File path: assets/icons/ic_call.svg
+  SvgGenImage get icCalll => const SvgGenImage('assets/icons/is_calll.svg');
 
   /// File path: assets/icons/ic_camera.svg
   SvgGenImage get icCamera => const SvgGenImage('assets/icons/ic_camera.svg');
@@ -134,6 +137,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/ic_comment.svg
   SvgGenImage get icComment => const SvgGenImage('assets/icons/ic_comment.svg');
+
+  /// File path: assets/icons/ic_comment.svg
+  SvgGenImage get sms => const SvgGenImage('assets/icons/smss.svg');
 
   /// File path: assets/icons/ic_confused.svg
   SvgGenImage get icConfused =>
@@ -263,7 +269,7 @@ class $AssetsIconsGen {
       const SvgGenImage('assets/icons/ic_img_count.svg');
 
   /// File path: assets/icons/ic_info.svg
-  SvgGenImage get icInfo => const SvgGenImage('assets/icons/ic_info.svg');
+  SvgGenImage get icInfo => const SvgGenImage('assets/icons/maglumatlar.svg');
 
   /// File path: assets/icons/ic_just_in_app_info.svg
   SvgGenImage get icJustInAppInfo =>
@@ -310,6 +316,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/ic_map.svg
   SvgGenImage get icMap => const SvgGenImage('assets/icons/ic_map.svg');
+
+  /// File path: assets/icons/ic_map.svg
+  SvgGenImage get isremont => const SvgGenImage('assets/icons/remont.svg');
 
   /// File path: assets/icons/ic_mebel.svg
   SvgGenImage get icMebel => const SvgGenImage('assets/icons/ic_mebel.svg');
@@ -461,122 +470,124 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<dynamic> get values => [
-    icAddBusinnes,
-    icAddEmptyImg,
-    icAddHouse,
-    icAddHouseMain,
-    icAdded,
-    icBack,
-    icBackImage,
-    icBalcon,
-    icBath,
-    icBbq,
-    icBusinessProfile,
-    icBusinessProfileNew,
-    icBusinessProfileSelectedNew,
-    icBussinesProfile,
-    icBussinesProfileSelected,
-    icCalendar,
-    icCall,
-    icCamera,
-    icCategory,
-    icCategoryDetail,
-    icChat,
-    icChecked,
-    icClear,
-    icClearBlack,
-    icComment,
-    icConfused,
-    icConnection,
-    icContactUs,
-    icCost,
-    icDacha,
-    icDishes,
-    icDislike,
-    icDotsVertical,
-    icDownloadImage,
-    icEmptyHouseDetail,
-    icEye,
-    icFavorite,
-    icFavoriteDarkFill,
-    icFavoriteNew,
-    icFavoriteSelected,
-    icFilter,
-    icFireInApp,
-    icFloorCount,
-    icForwardIcon,
-    icFreez,
-    icGurlusykMain,
-    icHalfLux,
-    icHash,
-    icHeart,
-    icHeartHouse,
-    icHeatWater,
-    icHeating,
-    icHeatingAirConditioning,
-    icHelp,
-    icHome,
-    icHomeSelected,
-    icHousePlaceholder,
-    icHouses,
-    icHousesSelected,
-    icImgCount,
-    icInfo,
-    icJustInAppInfo,
-    icKitchenFurniture,
-    icKottezh,
-    icLang,
-    icLike,
-    icLocation,
-    icLocationBlack,
-    icLogOut,
-    icLogoAppbar,
-    icLogoLogin,
-    icLux,
-    icLyustraMain,
-    icMap,
-    icMebel,
-    icMebelMain,
-    icMenu,
-    icMenuProfile,
-    icMenuSelected,
-    icMessageSend,
-    icMyBusiness,
-    icNoConnection,
-    icNotif,
-    icOtherChanderilerGridView,
-    icOtherEquipmentGridView,
-    icOyHojalyk,
-    icPerson,
-    icPlanHouse,
-    icPool,
-    icPrice,
-    icPrivacy,
-    icProfileCirled,
-    icRefresh,
-    icRefrigerator,
-    icRemove,
-    icReport,
-    icRotateImage,
-    icSearch,
-    icSearchDark,
-    icSearchHouse,
-    icSelectedDislike,
-    icSelectedLike,
-    icSendMessage,
-    icShare,
-    icShareHome,
-    icShower,
-    icSimpleHouse,
-    icSpalny,
-    icSquare,
-    icStairsFloor,
-    icTv,
-    icUpElevator,
-    icVerified,
-    icWashingMachine,
-    icWorkingDesk,
-  ];
+        icAddBusinnes,
+        icAddEmptyImg,
+        icAddHouse,
+        icAddHouseMain,
+        icAdded,
+        icBack,
+        icBackImage,
+        icBalcon,
+        icBath,
+        icBbq,
+        icBusinessProfile,
+        icBusinessProfileNew,
+        icBusinessProfileSelectedNew,
+        icBussinesProfile,
+        icBussinesProfileSelected,
+        icCalendar,
+        icCall,
+        icCamera,
+        icCategory,
+        icCategoryDetail,
+        icChat,
+        icChecked,
+        icClear,
+        icClearBlack,
+        icComment,
+        icConfused,
+        icConnection,
+        icContactUs,
+        icCost,
+        icDacha,
+        icDishes,
+        icDislike,
+        icDotsVertical,
+        icDownloadImage,
+        icEmptyHouseDetail,
+        icEye,
+        icFavorite,
+        icFavoriteDarkFill,
+        icFavoriteNew,
+        icFavoriteSelected,
+        icFilter,
+        icFireInApp,
+        icFloorCount,
+        icForwardIcon,
+        icFreez,
+        icGurlusykMain,
+        icHalfLux,
+        icHash,
+        icHeart,
+        icHeartHouse,
+        icHeatWater,
+        icHeating,
+        icHeatingAirConditioning,
+        icHelp,
+        icHome,
+        icHomeSelected,
+        icHousePlaceholder,
+        icHouses,
+        icHousesSelected,
+        icImgCount,
+        icInfo,
+        icJustInAppInfo,
+        icKitchenFurniture,
+        icKottezh,
+        icLang,
+        icLike,
+        icLocation,
+        icLocationBlack,
+        icLogOut,
+        icLogoAppbar,
+        icLogoLogin,
+        icLux,
+        icLyustraMain,
+        icMap,
+        icMebel,
+        icMebelMain,
+        icMenu,
+        icMenuProfile,
+        icMenuSelected,
+        icMessageSend,
+        icMyBusiness,
+        icNoConnection,
+        icNotif,
+        icOtherChanderilerGridView,
+        icOtherEquipmentGridView,
+        icOyHojalyk,
+        icPerson,
+        icPlanHouse,
+        icPool,
+        icPrice,
+        icPrivacy,
+        icProfileCirled,
+        icRefresh,
+        icRefrigerator,
+        icRemove,
+        icReport,
+        icRotateImage,
+        icSearch,
+        icSearchDark,
+        icSearchHouse,
+        icSelectedDislike,
+        icSelectedLike,
+        icSendMessage,
+        icShare,
+        icShareHome,
+        icShower,
+        icSimpleHouse,
+        icSpalny,
+        icSquare,
+        icStairsFloor,
+        icTv,
+        icUpElevator,
+        icVerified,
+        icWashingMachine,
+        icWorkingDesk,
+        sms,
+        isremont
+      ];
 }
 
 class $AssetsImagesGen {
@@ -595,8 +606,8 @@ class $AssetsIconsBusinessProfilesGen {
 
   /// File path: assets/icons/business_profiles/biznes_profil_tema.webp
   AssetGenImage get biznesProfilTema => const AssetGenImage(
-    'assets/icons/business_profiles/biznes_profil_tema.webp',
-  );
+        'assets/icons/business_profiles/biznes_profil_tema.webp',
+      );
 
   /// File path: assets/icons/business_profiles/ic_carpet.png
   AssetGenImage get icCarpet =>
@@ -608,8 +619,8 @@ class $AssetsIconsBusinessProfilesGen {
 
   /// File path: assets/icons/business_profiles/ic_construction.webp
   AssetGenImage get icConstruction => const AssetGenImage(
-    'assets/icons/business_profiles/ic_construction.webp',
-  );
+        'assets/icons/business_profiles/ic_construction.webp',
+      );
 
   /// File path: assets/icons/business_profiles/ic_furniture.webp
   AssetGenImage get icFurniture =>
@@ -621,19 +632,19 @@ class $AssetsIconsBusinessProfilesGen {
 
   /// File path: assets/icons/business_profiles/ic_household_appliances_grid_view.webp
   AssetGenImage get icHouseholdAppliancesGridView => const AssetGenImage(
-    'assets/icons/business_profiles/ic_household_appliances_grid_view.webp',
-  );
+        'assets/icons/business_profiles/ic_household_appliances_grid_view.webp',
+      );
 
   /// List of all assets
   List<AssetGenImage> get values => [
-    biznesProfilTema,
-    icCarpet,
-    icChandeliers,
-    icConstruction,
-    icFurniture,
-    icHouse,
-    icHouseholdAppliancesGridView,
-  ];
+        biznesProfilTema,
+        icCarpet,
+        icChandeliers,
+        icConstruction,
+        icFurniture,
+        icHouse,
+        icHouseholdAppliancesGridView,
+      ];
 }
 
 class $AssetsIconsCarpetsGen {
@@ -649,13 +660,13 @@ class $AssetsIconsCarpetsGen {
 
   /// File path: assets/icons/carpets/ic_dokma_product_grid_view.webp
   AssetGenImage get icDokmaProductGridView => const AssetGenImage(
-    'assets/icons/carpets/ic_dokma_product_grid_view.webp',
-  );
+        'assets/icons/carpets/ic_dokma_product_grid_view.webp',
+      );
 
   /// File path: assets/icons/carpets/ic_flower_carpet_grid_view.webp
   AssetGenImage get icFlowerCarpetGridView => const AssetGenImage(
-    'assets/icons/carpets/ic_flower_carpet_grid_view.webp',
-  );
+        'assets/icons/carpets/ic_flower_carpet_grid_view.webp',
+      );
 
   /// File path: assets/icons/carpets/ic_hand_carpet_grid_view.webp
   AssetGenImage get icHandCarpetGridView =>
@@ -667,8 +678,8 @@ class $AssetsIconsCarpetsGen {
 
   /// File path: assets/icons/carpets/ic_turkmen_carpet_grid_view.webp
   AssetGenImage get icTurkmenCarpetGridView => const AssetGenImage(
-    'assets/icons/carpets/ic_turkmen_carpet_grid_view.webp',
-  );
+        'assets/icons/carpets/ic_turkmen_carpet_grid_view.webp',
+      );
 
   /// File path: assets/icons/carpets/ic_wall_carpet_grid_view.webp
   AssetGenImage get icWallCarpetGridView =>
@@ -676,15 +687,15 @@ class $AssetsIconsCarpetsGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
-    icAwtoCarpetGridView,
-    icBagCarpetGridView,
-    icDokmaProductGridView,
-    icFlowerCarpetGridView,
-    icHandCarpetGridView,
-    icNamazlykGridView,
-    icTurkmenCarpetGridView,
-    icWallCarpetGridView,
-  ];
+        icAwtoCarpetGridView,
+        icBagCarpetGridView,
+        icDokmaProductGridView,
+        icFlowerCarpetGridView,
+        icHandCarpetGridView,
+        icNamazlykGridView,
+        icTurkmenCarpetGridView,
+        icWallCarpetGridView,
+      ];
 }
 
 class $AssetsIconsChandelierGen {
@@ -692,55 +703,55 @@ class $AssetsIconsChandelierGen {
 
   /// File path: assets/icons/chandelier/ic_candle_chanderiler_grid_view.webp
   AssetGenImage get icCandleChanderilerGridView => const AssetGenImage(
-    'assets/icons/chandelier/ic_candle_chanderiler_grid_view.webp',
-  );
+        'assets/icons/chandelier/ic_candle_chanderiler_grid_view.webp',
+      );
 
   /// File path: assets/icons/chandelier/ic_classic_chanderiler_grid_view.webp
   AssetGenImage get icClassicChanderilerGridView => const AssetGenImage(
-    'assets/icons/chandelier/ic_classic_chanderiler_grid_view.webp',
-  );
+        'assets/icons/chandelier/ic_classic_chanderiler_grid_view.webp',
+      );
 
   /// File path: assets/icons/chandelier/ic_cristal_chanderiler_grid_view.webp
   AssetGenImage get icCristalChanderilerGridView => const AssetGenImage(
-    'assets/icons/chandelier/ic_cristal_chanderiler_grid_view.webp',
-  );
+        'assets/icons/chandelier/ic_cristal_chanderiler_grid_view.webp',
+      );
 
   /// File path: assets/icons/chandelier/ic_led_chanderiler_grid_view.webp
   AssetGenImage get icLedChanderilerGridView => const AssetGenImage(
-    'assets/icons/chandelier/ic_led_chanderiler_grid_view.webp',
-  );
+        'assets/icons/chandelier/ic_led_chanderiler_grid_view.webp',
+      );
 
   /// File path: assets/icons/chandelier/ic_sferik_chanderiler_grid_view.webp
   AssetGenImage get icSferikChanderilerGridView => const AssetGenImage(
-    'assets/icons/chandelier/ic_sferik_chanderiler_grid_view.webp',
-  );
+        'assets/icons/chandelier/ic_sferik_chanderiler_grid_view.webp',
+      );
 
   /// File path: assets/icons/chandelier/ic_smart_chanderiler_grid_view.webp
   AssetGenImage get icSmartChanderilerGridView => const AssetGenImage(
-    'assets/icons/chandelier/ic_smart_chanderiler_grid_view.webp',
-  );
+        'assets/icons/chandelier/ic_smart_chanderiler_grid_view.webp',
+      );
 
   /// File path: assets/icons/chandelier/ic_wall_chanderiler_grid_view.webp
   AssetGenImage get icWallChanderilerGridView => const AssetGenImage(
-    'assets/icons/chandelier/ic_wall_chanderiler_grid_view.webp',
-  );
+        'assets/icons/chandelier/ic_wall_chanderiler_grid_view.webp',
+      );
 
   /// File path: assets/icons/chandelier/ic_wentil_chanderiler_grid_view.webp
   AssetGenImage get icWentilChanderilerGridView => const AssetGenImage(
-    'assets/icons/chandelier/ic_wentil_chanderiler_grid_view.webp',
-  );
+        'assets/icons/chandelier/ic_wentil_chanderiler_grid_view.webp',
+      );
 
   /// List of all assets
   List<AssetGenImage> get values => [
-    icCandleChanderilerGridView,
-    icClassicChanderilerGridView,
-    icCristalChanderilerGridView,
-    icLedChanderilerGridView,
-    icSferikChanderilerGridView,
-    icSmartChanderilerGridView,
-    icWallChanderilerGridView,
-    icWentilChanderilerGridView,
-  ];
+        icCandleChanderilerGridView,
+        icClassicChanderilerGridView,
+        icCristalChanderilerGridView,
+        icLedChanderilerGridView,
+        icSferikChanderilerGridView,
+        icSmartChanderilerGridView,
+        icWallChanderilerGridView,
+        icWentilChanderilerGridView,
+      ];
 }
 
 class $AssetsIconsConstructionsGen {
@@ -748,18 +759,18 @@ class $AssetsIconsConstructionsGen {
 
   /// File path: assets/icons/constructions/ic_ceiling_grid_view.webp
   AssetGenImage get icCeilingGridView => const AssetGenImage(
-    'assets/icons/constructions/ic_ceiling_grid_view.webp',
-  );
+        'assets/icons/constructions/ic_ceiling_grid_view.webp',
+      );
 
   /// File path: assets/icons/constructions/ic_conditioning_equipment_grid_view.webp
   AssetGenImage get icConditioningEquipmentGridView => const AssetGenImage(
-    'assets/icons/constructions/ic_conditioning_equipment_grid_view.webp',
-  );
+        'assets/icons/constructions/ic_conditioning_equipment_grid_view.webp',
+      );
 
   /// File path: assets/icons/constructions/ic_construction_helmet_grid_view.webp
   AssetGenImage get icConstructionHelmetGridView => const AssetGenImage(
-    'assets/icons/constructions/ic_construction_helmet_grid_view.webp',
-  );
+        'assets/icons/constructions/ic_construction_helmet_grid_view.webp',
+      );
 
   /// File path: assets/icons/constructions/ic_door_grid_view.webp
   AssetGenImage get icDoorGridView =>
@@ -767,18 +778,18 @@ class $AssetsIconsConstructionsGen {
 
   /// File path: assets/icons/constructions/ic_metal_texture_pattern_grid_view.webp
   AssetGenImage get icMetalTexturePatternGridView => const AssetGenImage(
-    'assets/icons/constructions/ic_metal_texture_pattern_grid_view.webp',
-  );
+        'assets/icons/constructions/ic_metal_texture_pattern_grid_view.webp',
+      );
 
   /// File path: assets/icons/constructions/ic_stainless_silver_water_grid_view.webp
   AssetGenImage get icStainlessSilverWaterGridView => const AssetGenImage(
-    'assets/icons/constructions/ic_stainless_silver_water_grid_view.webp',
-  );
+        'assets/icons/constructions/ic_stainless_silver_water_grid_view.webp',
+      );
 
   /// File path: assets/icons/constructions/ic_table_top_isolate_grid_view.webp
   AssetGenImage get icTableTopIsolateGridView => const AssetGenImage(
-    'assets/icons/constructions/ic_table_top_isolate_grid_view.webp',
-  );
+        'assets/icons/constructions/ic_table_top_isolate_grid_view.webp',
+      );
 
   /// File path: assets/icons/constructions/ic_tools_grid_view.webp
   AssetGenImage get icToolsGridView =>
@@ -786,33 +797,33 @@ class $AssetsIconsConstructionsGen {
 
   /// File path: assets/icons/constructions/ic_view_paint_grid_view.webp
   AssetGenImage get icViewPaintGridView => const AssetGenImage(
-    'assets/icons/constructions/ic_view_paint_grid_view.webp',
-  );
+        'assets/icons/constructions/ic_view_paint_grid_view.webp',
+      );
 
   /// File path: assets/icons/constructions/ic_wallpaper_grid_view.webp
   AssetGenImage get icWallpaperGridView => const AssetGenImage(
-    'assets/icons/constructions/ic_wallpaper_grid_view.webp',
-  );
+        'assets/icons/constructions/ic_wallpaper_grid_view.webp',
+      );
 
   /// File path: assets/icons/constructions/ic_windows_grid_view.webp
   AssetGenImage get icWindowsGridView => const AssetGenImage(
-    'assets/icons/constructions/ic_windows_grid_view.webp',
-  );
+        'assets/icons/constructions/ic_windows_grid_view.webp',
+      );
 
   /// List of all assets
   List<AssetGenImage> get values => [
-    icCeilingGridView,
-    icConditioningEquipmentGridView,
-    icConstructionHelmetGridView,
-    icDoorGridView,
-    icMetalTexturePatternGridView,
-    icStainlessSilverWaterGridView,
-    icTableTopIsolateGridView,
-    icToolsGridView,
-    icViewPaintGridView,
-    icWallpaperGridView,
-    icWindowsGridView,
-  ];
+        icCeilingGridView,
+        icConditioningEquipmentGridView,
+        icConstructionHelmetGridView,
+        icDoorGridView,
+        icMetalTexturePatternGridView,
+        icStainlessSilverWaterGridView,
+        icTableTopIsolateGridView,
+        icToolsGridView,
+        icViewPaintGridView,
+        icWallpaperGridView,
+        icWindowsGridView,
+      ];
 }
 
 class $AssetsIconsFurnitureGen {
@@ -824,13 +835,13 @@ class $AssetsIconsFurnitureGen {
 
   /// File path: assets/icons/furniture/ic_children_furniture_grid_view.webp
   AssetGenImage get icChildrenFurnitureGridView => const AssetGenImage(
-    'assets/icons/furniture/ic_children_furniture_grid_view.webp',
-  );
+        'assets/icons/furniture/ic_children_furniture_grid_view.webp',
+      );
 
   /// File path: assets/icons/furniture/ic_interior_predmets_grid_view.webp
   AssetGenImage get icInteriorPredmetsGridView => const AssetGenImage(
-    'assets/icons/furniture/ic_interior_predmets_grid_view.webp',
-  );
+        'assets/icons/furniture/ic_interior_predmets_grid_view.webp',
+      );
 
   /// File path: assets/icons/furniture/ic_kitchen_grid_view.webp
   AssetGenImage get icKitchenGridView =>
@@ -854,15 +865,15 @@ class $AssetsIconsFurnitureGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
-    icBedGridView,
-    icChildrenFurnitureGridView,
-    icInteriorPredmetsGridView,
-    icKitchenGridView,
-    icPerdelerGridView,
-    icShkafGridView,
-    icStolGridView,
-    icStulGridView,
-  ];
+        icBedGridView,
+        icChildrenFurnitureGridView,
+        icInteriorPredmetsGridView,
+        icKitchenGridView,
+        icPerdelerGridView,
+        icShkafGridView,
+        icStolGridView,
+        icStulGridView,
+      ];
 }
 
 class $AssetsIconsHouseEquipmentsGen {
@@ -870,43 +881,43 @@ class $AssetsIconsHouseEquipmentsGen {
 
   /// File path: assets/icons/house_equipments/ic_air_conditioner_grid_view.webp
   AssetGenImage get icAirConditionerGridView => const AssetGenImage(
-    'assets/icons/house_equipments/ic_air_conditioner_grid_view.webp',
-  );
+        'assets/icons/house_equipments/ic_air_conditioner_grid_view.webp',
+      );
 
   /// File path: assets/icons/house_equipments/ic_blender_grid_view.webp
   AssetGenImage get icBlenderGridView => const AssetGenImage(
-    'assets/icons/house_equipments/ic_blender_grid_view.webp',
-  );
+        'assets/icons/house_equipments/ic_blender_grid_view.webp',
+      );
 
   /// File path: assets/icons/house_equipments/ic_fridge_grid_view.webp
   AssetGenImage get icFridgeGridView => const AssetGenImage(
-    'assets/icons/house_equipments/ic_fridge_grid_view.webp',
-  );
+        'assets/icons/house_equipments/ic_fridge_grid_view.webp',
+      );
 
   /// File path: assets/icons/house_equipments/ic_gas _tove_grid_view.webp
   AssetGenImage get icGasToveGridView => const AssetGenImage(
-    'assets/icons/house_equipments/ic_gas _tove_grid_view.webp',
-  );
+        'assets/icons/house_equipments/ic_gas _tove_grid_view.webp',
+      );
 
   /// File path: assets/icons/house_equipments/ic_iron_grid_view.webp
   AssetGenImage get icIronGridView => const AssetGenImage(
-    'assets/icons/house_equipments/ic_iron_grid_view.webp',
-  );
+        'assets/icons/house_equipments/ic_iron_grid_view.webp',
+      );
 
   /// File path: assets/icons/house_equipments/ic_lubricating_equipment_grid_view.webp
   AssetGenImage get icLubricatingEquipmentGridView => const AssetGenImage(
-    'assets/icons/house_equipments/ic_lubricating_equipment_grid_view.webp',
-  );
+        'assets/icons/house_equipments/ic_lubricating_equipment_grid_view.webp',
+      );
 
   /// File path: assets/icons/house_equipments/ic_realistic_dishwasher_grid_view.webp
   AssetGenImage get icRealisticDishwasherGridView => const AssetGenImage(
-    'assets/icons/house_equipments/ic_realistic_dishwasher_grid_view.webp',
-  );
+        'assets/icons/house_equipments/ic_realistic_dishwasher_grid_view.webp',
+      );
 
   /// File path: assets/icons/house_equipments/ic_tuner_other_electronic_grid_view.webp
   AssetGenImage get icTunerOtherElectronicGridView => const AssetGenImage(
-    'assets/icons/house_equipments/ic_tuner_other_electronic_grid_view.webp',
-  );
+        'assets/icons/house_equipments/ic_tuner_other_electronic_grid_view.webp',
+      );
 
   /// File path: assets/icons/house_equipments/ic_tv_grid_view.webp
   AssetGenImage get icTvGridView =>
@@ -914,28 +925,28 @@ class $AssetsIconsHouseEquipmentsGen {
 
   /// File path: assets/icons/house_equipments/ic_vacuum_cleaner_grid_view.webp
   AssetGenImage get icVacuumCleanerGridView => const AssetGenImage(
-    'assets/icons/house_equipments/ic_vacuum_cleaner_grid_view.webp',
-  );
+        'assets/icons/house_equipments/ic_vacuum_cleaner_grid_view.webp',
+      );
 
   /// File path: assets/icons/house_equipments/ic_washing_machine_grid_view.webp
   AssetGenImage get icWashingMachineGridView => const AssetGenImage(
-    'assets/icons/house_equipments/ic_washing_machine_grid_view.webp',
-  );
+        'assets/icons/house_equipments/ic_washing_machine_grid_view.webp',
+      );
 
   /// List of all assets
   List<AssetGenImage> get values => [
-    icAirConditionerGridView,
-    icBlenderGridView,
-    icFridgeGridView,
-    icGasToveGridView,
-    icIronGridView,
-    icLubricatingEquipmentGridView,
-    icRealisticDishwasherGridView,
-    icTunerOtherElectronicGridView,
-    icTvGridView,
-    icVacuumCleanerGridView,
-    icWashingMachineGridView,
-  ];
+        icAirConditionerGridView,
+        icBlenderGridView,
+        icFridgeGridView,
+        icGasToveGridView,
+        icIronGridView,
+        icLubricatingEquipmentGridView,
+        icRealisticDishwasherGridView,
+        icTunerOtherElectronicGridView,
+        icTvGridView,
+        icVacuumCleanerGridView,
+        icWashingMachineGridView,
+      ];
 }
 
 class Assets {
@@ -1018,10 +1029,10 @@ class AssetGenImage {
 
 class SvgGenImage {
   const SvgGenImage(this._assetName, {this.size, this.flavors = const {}})
-    : _isVecFormat = false;
+      : _isVecFormat = false;
 
   const SvgGenImage.vec(this._assetName, {this.size, this.flavors = const {}})
-    : _isVecFormat = true;
+      : _isVecFormat = true;
 
   final String _assetName;
   final Size? size;
@@ -1075,8 +1086,7 @@ class SvgGenImage {
       placeholderBuilder: placeholderBuilder,
       semanticsLabel: semanticsLabel,
       excludeFromSemantics: excludeFromSemantics,
-      colorFilter:
-          colorFilter ??
+      colorFilter: colorFilter ??
           (color == null ? null : ColorFilter.mode(color, colorBlendMode)),
       clipBehavior: clipBehavior,
       cacheColorFilter: cacheColorFilter,

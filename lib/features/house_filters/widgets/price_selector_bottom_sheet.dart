@@ -1,20 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../../core/components/app_text.dart';
 import '../../../core/components/inputs/app_input.dart';
 import '../../../localization/extensions.dart';
-import '../../../product/constants/constants.dart';
-import '../../../utils/extensions.dart';
 
-class PriceSelectorWidget extends StatelessWidget {
-  const PriceSelectorWidget({
+class BottomPriceSelectorSheett extends StatefulWidget {
+  const BottomPriceSelectorSheett({
     super.key,
     required this.minPriceController,
     required this.maxPriceController,
   });
+
   final TextEditingController minPriceController;
   final TextEditingController maxPriceController;
+
+  @override
+  BottomPriceSelectorSheetState createState() =>
+      BottomPriceSelectorSheetState();
+}
+
+class BottomPriceSelectorSheetState extends State<BottomPriceSelectorSheett> {
+  void clear() {
+    widget.minPriceController.clear();
+    widget.maxPriceController.clear();
+  }
+
+  String? get minPrice => widget.minPriceController.text.isNotEmpty
+      ? widget.minPriceController.text
+      : null;
+
+  String? get maxPrice => widget.maxPriceController.text.isNotEmpty
+      ? widget.maxPriceController.text
+      : null;
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +39,6 @@ class PriceSelectorWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppText.s14w400BdM(
-            context.translation.price,
-            fontFamily: StringConstants.roboto,
-            fontSize: 15.sp,
-          ),
-          16.boxH,
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -38,7 +48,7 @@ class PriceSelectorWidget extends StatelessWidget {
                 flex: 2,
                 child: AppInput(
                   hintText: context.translation.the_cheapest,
-                  controller: minPriceController,
+                  controller: widget.minPriceController,
                 ),
               ),
               Container(
@@ -51,7 +61,7 @@ class PriceSelectorWidget extends StatelessWidget {
                 flex: 2,
                 child: AppInput(
                   hintText: context.translation.the_most_expensive,
-                  controller: maxPriceController,
+                  controller: widget.maxPriceController,
                 ),
               ),
               const Spacer(),

@@ -18,40 +18,55 @@ class RowMainInfoTile extends StatelessWidget {
     return Row(
       children: [
         SizedBox(
-          height: 16.w,
-          width: 16.w,
+          height: 20.w,
+          width: 20.w,
           child: typeOfHouseIcon ?? Assets.icons.icLux.svg(package: 'gen'),
         ),
         10.boxW,
-        AppText.s10w400LbS(
+        Text(
           'Elitka',
-          fontFamily: StringConstants.roboto,
+          style: TextStyle(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w400,
+            fontFamily: StringConstants.roboto,
+            color: const Color(0xff555555),
+          ),
         ),
         10.boxW,
         _divider(),
         10.boxW,
         SizedBox(
-          height: 16.w,
-          width: 16.w,
+          height: 20.w,
+          width: 20.w,
           child: Assets.icons.icCalendar.svg(package: 'gen'),
         ),
         10.boxW,
-        AppText.s10w400LbS(
+        Text(
           Helpers.formatDateAsMMDDYYYY(data?.updatedAt),
-          fontFamily: StringConstants.roboto,
+          style: TextStyle(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w400,
+            fontFamily: StringConstants.roboto,
+            color: const Color(0xff555555),
+          ),
         ),
         10.boxW,
         _divider(),
         10.boxW,
         SizedBox(
-          height: 16.w,
-          width: 16.w,
+          height: 20.w,
+          width: 20.w,
           child: Assets.icons.icEye.svg(package: 'gen'),
         ),
         10.boxW,
-        AppText.s10w400LbS(
+        Text(
           data?.viewed.toString() ?? '0',
-          fontFamily: StringConstants.roboto,
+          style: TextStyle(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w400,
+            fontFamily: StringConstants.roboto,
+            color: const Color(0xff555555),
+          ),
         ),
       ],
     );
@@ -61,7 +76,7 @@ class RowMainInfoTile extends StatelessWidget {
     return SizedBox(
       height: 16.w,
       child: VerticalDivider(
-        width: 3.w,
+        width: 5.w,
         indent: 1,
         endIndent: 1,
         color: const Color(0xffB3CFF4),

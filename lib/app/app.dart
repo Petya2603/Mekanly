@@ -55,7 +55,7 @@ class _MekanlyAppState extends State<MekanlyApp> {
             return KeyedSubtree(
               key: state.key,
               child: MaterialApp(
-                locale: const Locale('en'),
+                locale: const Locale('tk'),
                 debugShowCheckedModeBanner: false,
                 supportedLocales: LocalizationService.supportedLocales,
                 localizationsDelegates: LocalizationService.delegates,
@@ -65,7 +65,7 @@ class _MekanlyAppState extends State<MekanlyApp> {
                 builder: (context, child) => MediaQuery(
                   ///Setting font does not change with system font size
                   data: MediaQuery.of(context)
-                      .copyWith(textScaler: const TextScaler.linear(1)),
+                      .copyWith(textScaler: TextScaler.noScaling),
                   child: LocalizationOverride(
                     builder: (context) {
                       return child!;

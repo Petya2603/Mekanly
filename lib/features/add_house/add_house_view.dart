@@ -13,6 +13,7 @@ import '../../core/components/app_text.dart';
 import '../../core/components/inputs/app_input.dart';
 import '../../core/components/inputs/phone_filed.dart';
 import '../../core/components/loader.dart';
+import '../../localization/extensions.dart';
 import '../../product/base/base_status/base_status.dart';
 import '../../product/constants/constants.dart';
 import '../../product/helpers/helpers.dart';
@@ -180,7 +181,7 @@ class _AddHouseViewState extends State<AddHouseView> {
           children: [
             Scaffold(
               backgroundColor: Colors.white,
-              appBar: CustomAppBar.base(title: 'Jaý goşmak'),
+              appBar: CustomAppBar.base(title: context.translation.add_house),
               body: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -191,13 +192,14 @@ class _AddHouseViewState extends State<AddHouseView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       AppText.s14w400BdM(
-                        'Ady',
+                        context.translation.name,
                         fontSize: 15.sp,
                         fontFamily: StringConstants.roboto,
                       ),
                       AppInput(
                         controller: nameController,
-                        hintText: 'Emlägiňiziň gysgaça adyny ýazyň',
+                        hintText:
+                            context.translation.write_short_name_of_your_house,
                       ),
                       8.boxH,
                       ListTile(
@@ -206,13 +208,13 @@ class _AddHouseViewState extends State<AddHouseView> {
                             const EdgeInsets.symmetric(horizontal: 4).w,
                         minVerticalPadding: 0,
                         title: AppText.s14w400BdM(
-                          'Bölüm',
+                          context.translation.section,
                           fontSize: 15.sp,
                           fontFamily: StringConstants.roboto,
                         ),
                         subtitle: AppText.s10w400LbS(
                           (currentCategory?.nameAll?.isEmpty ?? true)
-                              ? 'Saýlanmadyk'
+                              ? context.translation.unselected
                               : currentCategory?.nameAll ?? '',
                           color: const Color(0xff717171),
                           fontFamily: StringConstants.roboto,
@@ -258,13 +260,13 @@ class _AddHouseViewState extends State<AddHouseView> {
                         contentPadding:
                             const EdgeInsets.symmetric(horizontal: 4).w,
                         title: AppText.s14w400BdM(
-                          'Ýerleşýän ýeri',
+                          context.translation.location,
                           fontSize: 15.sp,
                           fontFamily: StringConstants.roboto,
                         ),
                         subtitle: AppText.s10w400LbS(
                           (currentLoc?.nameAll?.isEmpty ?? true)
-                              ? 'Saýlanmadyk'
+                              ? context.translation.unselected
                               : currentLoc?.nameAll ?? '',
                           color: const Color(0xff717171),
                           fontFamily: StringConstants.roboto,
@@ -300,7 +302,7 @@ class _AddHouseViewState extends State<AddHouseView> {
                       ),
                       8.boxH,
                       TitledSelectorView(
-                        title: 'Binanyň gat sany',
+                        title: context.translation.floor_number_of_the_building,
                         padding: EdgeInsets.zero,
                         list: levelCounts ?? [],
                         valueChanged: (value) {
@@ -322,7 +324,7 @@ class _AddHouseViewState extends State<AddHouseView> {
                       ),
                       6.boxH,
                       TitledSelectorView(
-                        title: 'Otag sany',
+                        title: context.translation.room_number,
                         padding: EdgeInsets.zero,
                         list: roomCounts ?? [],
                         valueChanged: (value) {
@@ -345,7 +347,7 @@ class _AddHouseViewState extends State<AddHouseView> {
                       6.boxH,
                       TitledSelectorView(
                         padding: EdgeInsets.zero,
-                        title: 'Gat sany',
+                        title: context.translation.floor_number,
                         list: floorCounts ?? [],
                         valueChanged: (value) {
                           final list =
@@ -395,7 +397,7 @@ class _AddHouseViewState extends State<AddHouseView> {
                           vertical: 4,
                           horizontal: 14,
                         ).w,
-                        title: 'Mümkinçilikler',
+                        title: context.translation.mumkincilikler,
                         selectedItems: possibilityOptionModel
                             ?.selectedPossibilities
                             ?.map((p) {
@@ -408,7 +410,7 @@ class _AddHouseViewState extends State<AddHouseView> {
                           if (possibilityOptionModel == null) return;
                           final updated = await showModalOptions(
                             context,
-                            text: 'Mümkinçilikler',
+                            text: context.translation.mumkincilikler,
                             model: possibilityOptionModel!,
                             isSingle: true,
                           );
@@ -426,12 +428,12 @@ class _AddHouseViewState extends State<AddHouseView> {
                             vertical: 4,
                             horizontal: 14,
                           ).w,
-                          title: 'Remont',
+                          title: context.translation.remont,
                           onTap: () async {
                             if (repairOptionModel == null) return;
                             final updated = await showModalOptions(
                               context,
-                              text: 'Remont görnüşi',
+                              text: context.translation.remont_gorn,
                               model: repairOptionModel!,
                               isSingle: true,
                             );
@@ -454,12 +456,12 @@ class _AddHouseViewState extends State<AddHouseView> {
                             vertical: 4,
                             horizontal: 14,
                           ).w,
-                          title: 'Emläk görnüşi',
+                          title: context.translation.house_type,
                           onTap: () async {
                             if (propertyOptionModel == null) return;
                             final updated = await showModalOptions(
                               context,
-                              text: 'Emläk görnüşi',
+                              text: context.translation.house_type,
                               model: propertyOptionModel!,
                               isSingle: true,
                             );
@@ -481,8 +483,7 @@ class _AddHouseViewState extends State<AddHouseView> {
                       ],
                       10.boxH,
                       AppInput(
-                        hintText:
-                            'Doly ady, aýratynlygy, ýagdaýy we ş.m maglmat ',
+                        hintText: context.translation.house_discription,
                         controller: descriptionController,
                       ),
                       10.boxH,
@@ -500,7 +501,7 @@ class _AddHouseViewState extends State<AddHouseView> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           AppText.s14w400BdM(
-                            'Meýdany:',
+                            context.translation.area,
                             fontSize: 16.sp,
                             fontFamily: StringConstants.roboto,
                           ),
@@ -525,7 +526,7 @@ class _AddHouseViewState extends State<AddHouseView> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           AppText.s14w400BdM(
-                            'Bahasy:',
+                            context.translation.price,
                             fontSize: 16.sp,
                             fontFamily: StringConstants.roboto,
                           ),
@@ -550,7 +551,7 @@ class _AddHouseViewState extends State<AddHouseView> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           AppText.s14w400BdM(
-                            'Telefon Belgiňiz:',
+                            context.translation.your_phone_number,
                             fontSize: 16.sp,
                             fontFamily: StringConstants.roboto,
                           ),
@@ -599,7 +600,7 @@ class _AddHouseViewState extends State<AddHouseView> {
                             acceptedPrivacy = value;
                           });
                         },
-                        title: 'Dügünnamany okadym kabul etdim',
+                        title: context.translation.read_and_accepted_terms,
                         accepted: acceptedPrivacy,
                       ),
                       10.boxH,
@@ -610,13 +611,13 @@ class _AddHouseViewState extends State<AddHouseView> {
                             canWriteComment = value ? 1 : 0;
                           });
                         },
-                        title: 'Ulanyjylar teswir ýazyp bilýärler',
+                        title: context.translation.users_can_write_comments,
                         accepted: canWriteComment == 1,
                       ),
                       24.boxH,
                       AppBtn(
                         onTap: () => checkIfValidate(state.pickedImages),
-                        text: 'Tassyklamak',
+                        text: context.translation.verify,
                         bgColor: ColorName.black,
                       ),
                       24.boxH,
@@ -659,51 +660,54 @@ class _AddHouseViewState extends State<AddHouseView> {
     final levelNumber = levelCounts?.where((f) => f.isSelected).firstOrNull;
 
     if (nameController.text.isEmpty) {
-      Helpers.showToastInfo(context, 'Emlagin adyny girizin');
+      Helpers.showToastInfo(
+          context, context.translation.write_short_name_of_your_house);
       return;
     }
 
     if (currentCategory == null) {
-      Helpers.showToastInfo(context, 'Bolum saylan');
+      Helpers.showToastInfo(context, context.translation.bol_say);
       return;
     }
 
     if (locationId == null) {
-      Helpers.showToastInfo(context, 'Ýerleşýän ýeri saylan');
+      Helpers.showToastInfo(context, context.translation.yer_say);
       return;
     }
 
     if (possibilities?.isEmpty ?? true) {
-      Helpers.showToastInfo(context, 'Mümkinçilikleri saylan');
+      Helpers.showToastInfo(context, context.translation.mum_sayla);
       return;
     }
     if (descriptionController.text.isEmpty) {
-      Helpers.showToastInfo(context, 'Maglumat girizn');
+      Helpers.showToastInfo(context, context.translation.mag_giriz);
       return;
     }
 
     if (fromHolder == null) {
-      Helpers.showToastInfo(context, 'Eýesi/Rieltor girizin');
+      Helpers.showToastInfo(context, context.translation.eye_gir);
       return;
     }
 
     if (areaController.text.isEmpty) {
-      Helpers.showToastInfo(context, 'Meýdany girizn');
+      Helpers.showToastInfo(context, context.translation.meydany_girizn);
       return;
     }
 
     if (priceController.text.isEmpty) {
-      Helpers.showToastInfo(context, 'Bahasyny girizn');
+      Helpers.showToastInfo(context, context.translation.bahasyny_girizn);
       return;
     }
 
     if (phoneController.text.length < 9) {
-      Helpers.showToastInfo(context, 'Telefon Belgiňizi girizin');
+      Helpers.showToastInfo(
+          context, context.translation.telefon_belginizi_girizin);
       return;
     }
 
     if (!acceptedPrivacy) {
-      Helpers.showToastInfo(context, 'Dügünnama bilen tanysyn');
+      Helpers.showToastInfo(
+          context, context.translation.dugunama_bilen_tanysyn);
       return;
     }
 
@@ -802,12 +806,12 @@ class JustInOurAppWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AppText.s12w400BdS(
-                    'Diňe mekanly.com-da',
+                    context.translation.only_on_mekanly,
                     fontFamily: StringConstants.roboto,
                   ),
                   8.boxH,
                   AppText.s10w400LbS(
-                    'Bu funksiýa öz tanyşlaryňdan ýagny mekanly.com-a agza bolan tanyşlaryňdan platformadaky hereketiňi gizlemek üçin niýetlenendir. Bu funksiýany açsaňyz siziň kontaktyňyzdaky mekanly.com-a agza bolan ulanjylardan gizlener.',
+                    context.translation.exclusive_push,
                     fontFamily: StringConstants.roboto,
                     color: const Color(0xff717171),
                   ),

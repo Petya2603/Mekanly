@@ -5,8 +5,8 @@ import 'package:gen/gen.dart';
 
 import '../../../../core/components/app_btn.dart';
 import '../../../../core/components/app_text.dart';
-import '../../../../core/components/inputs/otp_field.dart';
 import '../../../../product/base/base_status/base_status.dart';
+import '../../../../product/constants/constants.dart';
 import '../../../../product/helpers/helpers.dart';
 import '../../../../product/injection/injector.dart';
 import '../../../../product/transitions/custom_page_route.dart';
@@ -28,10 +28,8 @@ class OtpView extends StatefulWidget {
 
   static Widget builder(BuildContext context, OtpPayload payload) {
     return BlocProvider(
-      create: (context) => injector<OtpCubit>(),
-      child: OtpView(
-        payload: payload,
-      ),
+      create: (_) => injector<OtpCubit>(),
+      child: OtpView(payload: payload),
     );
   }
 
@@ -49,6 +47,7 @@ class _OtpViewState extends State<OtpView> {
   @override
   void dispose() {
     _controller.dispose();
+    canTryAgain.dispose();
     super.dispose();
   }
 
@@ -71,17 +70,43 @@ class _OtpViewState extends State<OtpView> {
                 ),
               ),
               35.boxH,
-              AppText.s14w400BdM(
-                'Telefon belgiňize gelen paroly ýazyň',
-                textAlign: TextAlign.left,
-              ),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Text(
+                  'Telefon belgiňize gelen paroly ýazyň',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                    fontFamily: StringConstants.roboto,
+                    color: const Color.fromARGB(255, 25, 105, 227),
+                  ),
+                ),
+              ]),
+              10.boxH,
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Text(
+                  widget.payload.phone,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontFamily: StringConstants.roboto,
+                    color: const Color.fromARGB(255, 55, 65, 81),
+                  ),
+                ),
+              ]),
+              2.boxH,
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Text(
+                  'Nomeriňize 5 belgili kod ugradyldy',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontFamily: StringConstants.roboto,
+                    color: const Color.fromARGB(255, 55, 65, 81),
+                  ),
+                ),
+              ]),
               26.boxH,
-              // OtpFiled(
-              //   controller: _controller,
-              //   onTapOutside: () {
-              //     FocusScope.of(context).unfocus();
-              //   },
-              // ),
               PinPutWidget(
                 controller: _controller,
                 onCompleted: (value) {
@@ -129,7 +154,7 @@ class _OtpViewState extends State<OtpView> {
 
                               Navigator.pushAndRemoveUntil(
                                 context,
-                                CustomPageRoute.slide(const RootView()),
+                                CustomPageRoute.slide(RootView()),
                                 (route) => false,
                               );
                             }

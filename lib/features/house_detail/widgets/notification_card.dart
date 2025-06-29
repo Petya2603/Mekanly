@@ -54,21 +54,22 @@ class _NotificationCardState extends State<NotificationCard> {
                   child: Stack(
                     children: [
                       AspectRatio(
-                        aspectRatio: 131/121,
+                        aspectRatio: 131 / 121,
                         child: ClipRRect(
                           borderRadius: BorderRadius.only(
                             topLeft: const Radius.circular(8).r,
                             topRight: const Radius.circular(8).r,
                           ),
-                          child:const HousesNotCarouselSlider(
-                            //imgUrls: widget.house!.images,
-                          ),
+                          child: const HousesNotCarouselSlider(
+                              //imgUrls: widget.house!.images,
+                              ),
                         ),
                       ),
                       Positioned(
                         top: 8,
                         right: 8,
-                        child: Assets.icons.icFavoriteDarkFill.svg(package: 'gen'),
+                        child:
+                            Assets.icons.icFavoriteDarkFill.svg(package: 'gen'),
                       ),
                     ],
                   ),

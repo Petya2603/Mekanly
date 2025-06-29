@@ -1,23 +1,32 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/components/app_btn.dart';
 import '../../../core/components/app_text.dart';
 import '../../../core/components/check_box/custom_check_box.dart';
+import '../../../localization/extensions.dart';
 import '../../../product/constants/constants.dart';
 import '../../../product/helpers/helpers.dart';
 import '../../../remote/entities/global_options/global_options.dart';
 import '../../../utils/extensions.dart';
 
 enum OptionTypes {
-  property(title: 'Emläk görnüşi'),
-  repair(title: 'Remont görnüşi'),
-  possibility(title: 'Mümkinçilikler');
+  property,
+  repair,
+  possibility,
+}
 
-  final String title;
-
-  const OptionTypes({required this.title});
+extension OptionTypesLocalization on OptionTypes {
+  String localizedTitle(BuildContext context) {
+    switch (this) {
+      case OptionTypes.property:
+        return context.translation.house_type;
+      case OptionTypes.repair:
+        return context.translation.remont_gorn;
+      case OptionTypes.possibility:
+        return context.translation.mumkincilikler;
+    }
+  }
 }
 
 class BaseOptionModel {
@@ -192,7 +201,7 @@ class _OptionModalDialogWidgetState extends State<OptionModalDialogWidget> {
         _currentPropertyTypes?.where((p) => p.selected).toList().isEmpty ??
             true;
     if (isEmptyTypes) {
-      _showIfEmpty(context, 'Emlak sayla');
+      _showIfEmpty(context, context.translation.emlak);
       return true;
     }
     return isEmptyTypes;
@@ -203,7 +212,7 @@ class _OptionModalDialogWidgetState extends State<OptionModalDialogWidget> {
         _currentPossibilityTypes?.where((p) => p.selected).toList().isEmpty ??
             true;
     if (isEmptyTypes) {
-      _showIfEmpty(context, 'Mumkincilik sayla');
+      _showIfEmpty(context, context.translation.mum_sayla);
       return true;
     }
     return isEmptyTypes;
@@ -253,7 +262,7 @@ class _OptionModalDialogWidgetState extends State<OptionModalDialogWidget> {
     final isEmptyTypes =
         _currentRepairTypes?.where((p) => p.selected).toList().isEmpty ?? true;
     if (isEmptyTypes) {
-      _showIfEmpty(context, 'Remont gornusi sayla');
+      _showIfEmpty(context, context.translation.rem_sayla);
       return true;
     }
     return isEmptyTypes;
@@ -311,178 +320,180 @@ class _OptionModalDialogWidgetState extends State<OptionModalDialogWidget> {
       decoration: const BoxDecoration(
         color: Colors.white,
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AppText.s14w400BdM(
-            widget.model.type.title,
-            fontFamily: StringConstants.roboto,
-            fontSize: 16.sp,
-          ),
-          6.boxH,
-          if ((widget.isSingle &&
-                  widget.model.type == OptionTypes.possibility) ||
-              !widget.isSingle)
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AppText.s14w400BdM(
+              widget.model.type.localizedTitle(context),
+              fontFamily: StringConstants.roboto,
+              fontSize: 16.sp,
+            ),
+            6.boxH,
+            if ((widget.isSingle &&
+                    widget.model.type == OptionTypes.possibility) ||
+                !widget.isSingle)
+              Row(
+                children: [
+                  AppText.s14w400BdM(
+                    context.translation.all,
+                    fontFamily: StringConstants.roboto,
+                    fontSize: 12.sp,
+                  ),
+                  4.boxW,
+                  CustomCheckBox(
+                    isSelected: selectedAll,
+                    onTap: () {
+                      switch (widget.model.type) {
+                        case OptionTypes.property:
+                          _selectAllPropertyTypes();
+                        case OptionTypes.repair:
+                          _selectAllRepairTypes();
+                        case OptionTypes.possibility:
+                          _selectAllPossibilities();
+                      }
+                    },
+                  ),
+                ],
+              ),
+            4.boxH,
+            Padding(
+              padding: const EdgeInsets.all(8).w,
+              child: () {
+                switch (widget.model.type) {
+                  case OptionTypes.possibility:
+                    return SingleChildScrollView(
+                      child: Wrap(
+                        spacing: 8.w,
+                        runSpacing: 8.w,
+                        children: List.generate(
+                          _currentPossibilityTypes?.length ?? 0,
+                          (index) {
+                            final type = _currentPossibilityTypes?[index];
+                            return _PossibilityTypeChip(
+                              key: Key('possibility_option_$index'),
+                              onChanged: (value) =>
+                                  _selectPossibility(value, index),
+                              type: type,
+                              icon: type?.buildIcon,
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  case OptionTypes.repair:
+                    return SingleChildScrollView(
+                      child: Wrap(
+                        spacing: 8.w,
+                        runSpacing: 8.w,
+                        children: List.generate(
+                          _currentRepairTypes?.length ?? 0,
+                          (index) {
+                            final type = _currentRepairTypes?[index];
+                            return _RepairTypeChip(
+                              key: Key('repair_option_$index'),
+                              onChanged: (value) {
+                                if (widget.isSingle) {
+                                  _selectSingleRepairType(value, index);
+                                  return;
+                                }
+                                _selectRepairType(value, index);
+                              },
+                              type: type,
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  case OptionTypes.property:
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      itemCount: _currentPropertyTypes?.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 107 / 65,
+                        mainAxisSpacing: 8,
+                        crossAxisSpacing: 8,
+                      ),
+                      itemBuilder: (context, index) {
+                        final property = _currentPropertyTypes?[index];
+                        return _PropertyTypeChip(
+                          key: Key('property_option_$index'),
+                          type: property,
+                          onChanged: (value) {
+                            if (widget.isSingle) {
+                              _selectSinglePropertyType(value, index);
+                              return;
+                            }
+                            _selectPropertyType(value, index);
+                          },
+                        );
+                      },
+                    );
+                  // return SingleChildScrollView(
+                  //   child: Wrap(
+                  //     spacing: 8.w,
+                  //     runSpacing: 8.w,
+                  //     children: List.generate(
+                  //       _currentPropertyTypes?.length ?? 0,
+                  //       (index) {
+                  //         final property = _currentPropertyTypes?[index];
+                  //         return _PropertyTypeChip(
+                  //           key: Key('property_option_$index'),
+                  //           type: property,
+                  //           onChanged: (value) {
+                  //             if (widget.isSingle) {
+                  //               _selectSinglePropertyType(value, index);
+                  //               return;
+                  //             }
+                  //             _selectPropertyType(value, index);
+                  //           },
+                  //         );
+                  //       },
+                  //     ),
+                  //   ),
+                  // );
+                }
+              }(),
+            ),
+            // 6.boxH,
             Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                AppText.s14w400BdM(
-                  'Hemmesi',
-                  fontFamily: StringConstants.roboto,
-                  fontSize: 12.sp,
+                TextBtn(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: AppText.s12w400BdS(
+                    context.translation.cancel,
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-                4.boxW,
-                CustomCheckBox(
-                  isSelected: selectedAll,
+                14.boxW,
+                TextBtn(
                   onTap: () {
                     switch (widget.model.type) {
                       case OptionTypes.property:
-                        _selectAllPropertyTypes();
+                        _acceptClosePropertyTypes();
                       case OptionTypes.repair:
-                        _selectAllRepairTypes();
+                        _acceptCloseRepairTypes();
                       case OptionTypes.possibility:
-                        _selectAllPossibilities();
+                        _acceptClosePossibilities();
                     }
                   },
+                  child: AppText.s12w400BdS(
+                    context.translation.accept,
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ],
             ),
-          4.boxH,
-          Padding(
-            padding: const EdgeInsets.all(8).w,
-            child: () {
-              switch (widget.model.type) {
-                case OptionTypes.possibility:
-                  return SingleChildScrollView(
-                    child: Wrap(
-                      spacing: 8.w,
-                      runSpacing: 8.w,
-                      children: List.generate(
-                        _currentPossibilityTypes?.length ?? 0,
-                        (index) {
-                          final type = _currentPossibilityTypes?[index];
-                          return _PossibilityTypeChip(
-                            key: Key('possibility_option_$index'),
-                            onChanged: (value) =>
-                                _selectPossibility(value, index),
-                            type: type,
-                            icon: type?.buildIcon,
-                          );
-                        },
-                      ),
-                    ),
-                  );
-                case OptionTypes.repair:
-                  return SingleChildScrollView(
-                    child: Wrap(
-                      spacing: 8.w,
-                      runSpacing: 8.w,
-                      children: List.generate(
-                        _currentRepairTypes?.length ?? 0,
-                        (index) {
-                          final type = _currentRepairTypes?[index];
-                          return _RepairTypeChip(
-                            key: Key('repair_option_$index'),
-                            onChanged: (value) {
-                              if (widget.isSingle) {
-                                _selectSingleRepairType(value, index);
-                                return;
-                              }
-                              _selectRepairType(value, index);
-                            },
-                            type: type,
-                          );
-                        },
-                      ),
-                    ),
-                  );
-                case OptionTypes.property:
-                  return GridView.builder(
-                    shrinkWrap: true,
-                    itemCount: _currentPropertyTypes?.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 107 / 65,
-                      mainAxisSpacing: 8,
-                      crossAxisSpacing: 8,
-                    ),
-                    itemBuilder: (context, index) {
-                      final property = _currentPropertyTypes?[index];
-                      return _PropertyTypeChip(
-                        key: Key('property_option_$index'),
-                        type: property,
-                        onChanged: (value) {
-                          if (widget.isSingle) {
-                            _selectSinglePropertyType(value, index);
-                            return;
-                          }
-                          _selectPropertyType(value, index);
-                        },
-                      );
-                    },
-                  );
-                // return SingleChildScrollView(
-                //   child: Wrap(
-                //     spacing: 8.w,
-                //     runSpacing: 8.w,
-                //     children: List.generate(
-                //       _currentPropertyTypes?.length ?? 0,
-                //       (index) {
-                //         final property = _currentPropertyTypes?[index];
-                //         return _PropertyTypeChip(
-                //           key: Key('property_option_$index'),
-                //           type: property,
-                //           onChanged: (value) {
-                //             if (widget.isSingle) {
-                //               _selectSinglePropertyType(value, index);
-                //               return;
-                //             }
-                //             _selectPropertyType(value, index);
-                //           },
-                //         );
-                //       },
-                //     ),
-                //   ),
-                // );
-              }
-            }(),
-          ),
-          // 6.boxH,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextBtn(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: AppText.s12w400BdS(
-                  'GOÝBOLSUN',
-                  fontSize: 13.sp,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              14.boxW,
-              TextBtn(
-                onTap: () {
-                  switch (widget.model.type) {
-                    case OptionTypes.property:
-                      _acceptClosePropertyTypes();
-                    case OptionTypes.repair:
-                      _acceptCloseRepairTypes();
-                    case OptionTypes.possibility:
-                      _acceptClosePossibilities();
-                  }
-                },
-                child: AppText.s12w400BdS(
-                  'KABUL ET',
-                  fontSize: 13.sp,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

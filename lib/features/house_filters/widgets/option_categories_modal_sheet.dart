@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/components/app_text.dart';
+import '../../../localization/extensions.dart';
 import '../../../product/helpers/helpers.dart';
 import '../../../remote/entities/global_options/global_options.dart';
 import '../../../utils/extensions.dart';
@@ -47,21 +48,21 @@ class _OptionCategoryModalBottomSheetState
     _currentCategories = List.of(widget.categories);
   }
 
-  void _closeAndSelectCtg() {
-    final isEmpty = checkIfEmpty();
-    if (isEmpty) {
-      return;
-    }
-    if (Navigator.canPop(context)) {
-      Navigator.pop(context, _currentCategories);
-    }
-  }
+  // void _closeAndSelectCtg() {
+  //   final isEmpty = checkIfEmpty();
+  //   if (isEmpty) {
+  //     return;
+  //   }
+  //   if (Navigator.canPop(context)) {
+  //     Navigator.pop(context, _currentCategories);
+  //   }
+  // }
 
   bool checkIfEmpty() {
     final isEmpty = _currentCategories.getAllSelected?.isEmpty;
 
     if (isEmpty ?? true) {
-      Helpers.showToastInfo(context, 'Bolum sayla');
+      Helpers.showToastInfo(context, context.translation.bol_say);
     }
 
     return isEmpty ?? true;
@@ -112,41 +113,32 @@ class _OptionCategoryModalBottomSheetState
                 ),
               ),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: 30.w,
-                  height: 30.w,
-                  child: IconButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(
-                      Icons.close,
-                    ),
-                  ),
-                ),
-                AppText.s14w400BdM(
-                  'Bolumi',
-                ).toCenter(),
-                Builder(
-                  builder: (context) {
-                    return SizedBox(
+            child: SizedBox(
+              height: 30.w,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: SizedBox(
                       width: 30.w,
                       height: 30.w,
                       child: IconButton(
                         padding: EdgeInsets.zero,
-                        onPressed: _closeAndSelectCtg,
-                        icon: const Icon(
-                          Icons.check,
-                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(Icons.close),
                       ),
-                    );
-                  },
-                ),
-              ],
+                    ),
+                  ),
+                  Center(
+                    child: AppText.s14w400BdM(
+                      context.translation.section,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           Expanded(

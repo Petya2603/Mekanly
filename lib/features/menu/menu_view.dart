@@ -1,94 +1,165 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
+import '../../app/cubit/app_cubit.dart';
 import '../../core/components/app_text.dart';
+import '../../localization/extensions.dart';
 import '../../product/constants/constants.dart';
 import '../../utils/extensions.dart';
+import '../comments/comments_view.dart';
+import '../contact_us/contact_us_view.dart';
+import '../content/content_view.dart';
 import 'widgets/profile_main_tile.dart';
 import 'widgets/user_business_profile_tile.dart';
 import 'widgets/user_profile_tile.dart';
+import 'widgets/web_view_screen.dart';
 
-class MenuView extends StatelessWidget {
+class MenuView extends StatefulWidget {
   const MenuView({super.key});
 
   static const routePath = '/menu-view';
   static const routeName = 'menu-view';
 
   @override
+  State<MenuView> createState() => _MenuViewState();
+}
+
+class _MenuViewState extends State<MenuView> {
+  late final AppCubit appCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    appCubit = context.read<AppCubit>();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 18).w,
-        child: Column(
-          children: [
-            const UserProfileTile(),
-            4.boxH,
-            UserBusinessProfileTile(
-              onTap: () {},
+    return BlocBuilder<AppCubit, AppState>(
+        buildWhen: (previous, current) => previous.locale != current.locale,
+        builder: (context, state) {
+          return SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 18).w,
+              child: Column(
+                children: [
+                  const UserProfileTile(),
+                  4.boxH,
+                  UserBusinessProfileTile(
+                    onTap: () {},
+                  ),
+                  ProfileMainTile(
+                    title: context.translation.add_house,
+                    isAuthNeeded: true,
+                    icon: Assets.icons.icAddHouse.svg(package: 'gen'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        // ignore: inference_failure_on_instance_creation
+                        MaterialPageRoute(
+                          builder: ContentView.builder,
+                        ),
+                      );
+                    },
+                  ),
+                  ProfileMainTile(
+                    title: context.translation.language,
+                    isAuthNeeded: false,
+                    icon: Assets.icons.icLang.svg(package: 'gen'),
+                    onTap: () {
+                      chooseLang(context);
+                    },
+                  ),
+                  ProfileMainTile(
+                    isAuthNeeded: true,
+                    title: context.translation.comments,
+                    icon: Assets.icons.icChat.svg(package: 'gen'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        // ignore: inference_failure_on_instance_creation
+                        MaterialPageRoute(
+                          builder: (context) => const CommentsView(),
+                        ),
+                      );
+                    },
+                  ),
+                  ProfileMainTile(
+                    isAuthNeeded: false,
+                    title: context.translation.rules,
+                    icon: Assets.icons.icPrivacy.svg(package: 'gen'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        // ignore: inference_failure_on_instance_creation
+                        MaterialPageRoute(
+                          builder: (context) => WebViewScreen(
+                            url:
+                                'https://mekanly.com.tm/rules/${Localizations.localeOf(context).languageCode}',
+                            title: context.translation.rules,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  ProfileMainTile(
+                    isAuthNeeded: true,
+                    title: context.translation.contact,
+                    icon: Assets.icons.icContactUs.svg(package: 'gen'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        // ignore: inference_failure_on_instance_creation
+                        MaterialPageRoute(
+                          builder: (context) => const ContactUsView(),
+                        ),
+                      );
+                    },
+                  ),
+                  ProfileMainTile(
+                    isAuthNeeded: false,
+                    title: context.translation.accistant,
+                    icon: Assets.icons.icHelp.svg(package: 'gen'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        // ignore: inference_failure_on_instance_creation
+                        MaterialPageRoute(
+                          builder: (context) => WebViewScreen(
+                            url:
+                                'https://mekanly.com.tm/help/${Localizations.localeOf(context).languageCode}',
+                            title: context.translation.accistant,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  ProfileMainTile(
+                    isLogOut: true,
+                    isAuthNeeded: true,
+                    title: context.translation.log_out,
+                    icon: Assets.icons.icLogOut.svg(package: 'gen'),
+                    onTap: () {
+                      // context.read<AuthCubit>().logOut();
+                    },
+                  ),
+                ],
+              ),
             ),
-            ProfileMainTile(
-              title: 'Jay goşmak',
-              isAuthNeeded: true,
-              icon: Assets.icons.icAddHouse.svg(package: 'gen'),
-              onTap: () {},
-              // onTap: () => context.push(ContentView.routePath),
-            ),
-            ProfileMainTile(
-              title: 'Dil',
-              isAuthNeeded: false,
-              icon: Assets.icons.icLang.svg(package: 'gen'),
-              onTap: () {
-                chooseLang(context);
-              },
-            ),
-            ProfileMainTile(
-              isAuthNeeded: true,
-              title: 'Teswirler',
-              icon: Assets.icons.icChat.svg(package: 'gen'),
-              onTap: () {
-                // context.push(CommentsView.routePath);
-              },
-            ),
-            ProfileMainTile(
-              isAuthNeeded: false,
-              title: 'Düzgünnama',
-              icon: Assets.icons.icPrivacy.svg(package: 'gen'),
-              onTap: () {},
-            ),
-            ProfileMainTile(
-              isAuthNeeded: true,
-              title: 'Habarlaşmak',
-              icon: Assets.icons.icContactUs.svg(package: 'gen'),
-              // onTap: () => context.push(ContactUsView.routePath),
-              onTap: () {},
-            ),
-            ProfileMainTile(
-              isAuthNeeded: false,
-              title: 'Kömekçi',
-              icon: Assets.icons.icHelp.svg(package: 'gen'),
-              onTap: () {},
-            ),
-            ProfileMainTile(
-              isLogOut: true,
-              isAuthNeeded: true,
-              title: 'Ulgamdan çykmak',
-              icon: Assets.icons.icLogOut.svg(package: 'gen'),
-              onTap: () {},
-            ),
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
 }
 
 /// TODOS: Bayram ayyr beyle edilenok!!! -> ChooseLang.show() seyle, please
 Future<void> chooseLang(BuildContext context) async {
-  // ignore: inference_failure_on_function_invocation
+  final appCubit = context.read<AppCubit>();
+  var selectedLang = appCubit.state.locale?.languageCode ?? 'tk';
+
   await showDialog(
     context: context,
     builder: (BuildContext context) {
-      var selectedLang = 'tm';
       return StatefulBuilder(
         builder: (context, setState) {
           return Dialog(
@@ -97,64 +168,71 @@ Future<void> chooseLang(BuildContext context) async {
             child: Container(
               height: MediaQuery.of(context).size.height * 0.2,
               width: MediaQuery.of(context).size.width * 0.96,
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(5),
                 color: const Color(0xFFFFFFFF),
               ),
               child: Column(
-                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Row(
-                    children: [
-                      // Assets.icons.icLang.svg(package: 'gen'),
-                      10.boxW,
-                      AppText.s14w400BdM(
-                        'Dil saýlaň',
-                        fontSize: 18.sp,
-                        fontFamily: StringConstants.roboto,
-                        color: const Color(0xFF252525),
-                      ),
-                    ],
+                  10.boxW,
+                  AppText.s14w400BdM(
+                    context.translation.select_language,
+                    fontSize: 15.sp,
+                    fontFamily: StringConstants.roboto,
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xFF252525),
                   ),
-                  RadioListTile(
-                    autofocus: selectedLang == 'tm',
+                  RadioListTile<String>(
+                    autofocus: selectedLang == 'tk',
                     activeColor: Colors.lightBlue,
-                    value: 'tm',
+                    controlAffinity: ListTileControlAffinity.trailing,
+                    value: 'tk',
                     groupValue: selectedLang,
                     contentPadding: EdgeInsets.zero,
                     onChanged: (value) {
+                      if (value == null) return;
                       setState(() {
-                        selectedLang = value!;
+                        selectedLang = value;
+                      });
+                      appCubit.changeLang(Locale(value));
+                      Future.delayed(const Duration(milliseconds: 100), () {
+                        Navigator.of(context).pop();
                       });
                     },
                     title: AppText.s14w400BdM(
                       'Türkmen dili',
                       color: const Color(0xFF252525),
                       fontSize: 14.sp,
-                      fontWeight: FontWeight.w300,
+                      fontWeight: FontWeight.w500,
                       fontFamily: StringConstants.roboto,
                     ),
                   ),
-                  //SizedBox(height: 4),
-                  RadioListTile(
+                  RadioListTile<String>(
                     autofocus: selectedLang == 'ru',
                     activeColor: Colors.lightBlue,
                     value: 'ru',
                     groupValue: selectedLang,
                     contentPadding: EdgeInsets.zero,
+                    controlAffinity: ListTileControlAffinity.trailing,
                     onChanged: (value) {
+                      if (value == null) return;
                       setState(() {
-                        selectedLang = value!;
+                        selectedLang = value;
+                        appCubit.changeLang(Locale(value));
+                      });
+
+                      Future.delayed(const Duration(milliseconds: 100), () {
+                        Navigator.of(context).pop();
                       });
                     },
                     title: AppText.s14w400BdM(
                       'Rus dili',
                       color: const Color(0xFF252525),
                       fontSize: 14.sp,
-                      fontWeight: FontWeight.w300,
+                      fontWeight: FontWeight.w500,
                       fontFamily: StringConstants.roboto,
                     ),
                   ),
@@ -169,6 +247,7 @@ Future<void> chooseLang(BuildContext context) async {
 }
 
 void notification(BuildContext context) {
+  // ignore: inference_failure_on_function_invocation
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -189,16 +268,16 @@ void notification(BuildContext context) {
               Align(
                 alignment: Alignment.topLeft,
                 child: AppText.s14w400BdM(
-                  'Habarnama',
+                  context.translation.notification,
                   color: const Color(0xFF252525),
-                  fontSize: 16.sp,
+                  fontSize: 15.sp,
                   fontWeight: FontWeight.w400,
                   fontFamily: StringConstants.roboto,
                 ),
               ),
               10.boxH,
               AppText.s14w400BdM(
-                'Siz ulgama girmänsiňiz! Bildirişi halanlaryma goşmak we halan bildirişleriňizi görüp bilmek üçin ulgama girmegiňiz gerek!',
+                context.translation.not_logged_in_push,
                 color: const Color(0xFF252525),
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w400,
@@ -214,9 +293,9 @@ void notification(BuildContext context) {
                       Navigator.pop(context);
                     },
                     child: AppText.s14w400BdM(
-                      'Goý bolsun',
+                      context.translation.cancel,
                       color: const Color(0xFF252525),
-                      fontSize: 14.sp,
+                      fontSize: 13.sp,
                       fontWeight: FontWeight.w400,
                       fontFamily: StringConstants.roboto,
                     ),
@@ -225,7 +304,7 @@ void notification(BuildContext context) {
                   TextButton(
                     onPressed: () {},
                     child: AppText.s14w400BdM(
-                      'Ulgama girmek',
+                      context.translation.log_in,
                       color: const Color(0xFF252525),
                       fontSize: 13.sp,
                       fontWeight: FontWeight.w400,

@@ -13,11 +13,13 @@ import '../widgets/custom_scroll_controller.dart';
 import 'root_view_handler.dart';
 
 class RootView extends StatefulWidget {
-  const RootView({
+  RootView({
     super.key,
   });
 
   // final StatefulNavigationShell navigationShell;
+  // ignore: library_private_types_in_public_api
+  final GlobalKey<_RootViewState> rootKey = GlobalKey<_RootViewState>();
 
   static const routePath = '/root-view';
   static const routeName = 'root-view';
@@ -155,7 +157,7 @@ class _RootViewState extends State<RootView>
 
   Widget _buildBottomNavigation() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10).w,
+      padding: const EdgeInsets.symmetric(horizontal: 8).w,
       child: Row(
         children: List.generate(
           navigationPages(context).length,
@@ -167,6 +169,7 @@ class _RootViewState extends State<RootView>
                 child: Container(
                   padding: const EdgeInsets.only(bottom: 6).w,
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       AnimatedContainer(
@@ -177,18 +180,20 @@ class _RootViewState extends State<RootView>
                             ? page.activeIcon.svg(package: 'gen')
                             : page.icon.svg(package: 'gen'),
                       ),
-                      4.boxH,
-                      AppText.s12w400BdS(
-                        page.label,
-                        fontSize: 9.sp,
-                        textAlign: TextAlign.center,
-                        color: page.index == _currentIndex
-                            ? ColorName.white
-                            : ColorName.cardShadow,
-                        fontWeight: page.index == _currentIndex
-                            ? FontWeight.bold
-                            : FontWeight.w500,
-                        fontFamily: StringConstants.roboto,
+                      const SizedBox(height: 4),
+                      Flexible(
+                        child: AppText.s12w400BdS(page.label,
+                            fontSize: 9.sp,
+                            textAlign: TextAlign.center,
+                            color: page.index == _currentIndex
+                                ? ColorName.white
+                                : ColorName.cardShadow,
+                            fontWeight: page.index == _currentIndex
+                                ? FontWeight.bold
+                                : FontWeight.w500,
+                            fontFamily: StringConstants.roboto,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis),
                       ),
                     ],
                   ),

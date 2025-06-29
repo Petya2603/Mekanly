@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-
-import '../../../app/router_config.dart';
 import '../../../core/components/app_btn.dart';
 import '../../../core/components/app_text.dart';
 import '../../../core/components/loading_indicator.dart';
 import '../../../product/constants/constants.dart';
 import '../../../utils/extensions.dart';
-import '../../home/home_view.dart';
-import '../../root/view/root_view.dart';
 
 class BaseRoundedDialogContainer extends StatelessWidget {
   const BaseRoundedDialogContainer({super.key, required this.child});

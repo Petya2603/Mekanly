@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gen/gen.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../../../product/helpers/input_validators.dart';
@@ -17,42 +16,53 @@ class PinPutWidget extends StatelessWidget {
 
   final void Function(String)? onCompleted;
   final void Function(String)? onSubmitted;
-
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
       width: 42,
-      height: 35,
-      textStyle: context.textTheme.bodyMedium,
-      decoration: BoxDecoration(
-        color: ColorName.white,
-        border: Border.all(
-          color: const Color(0xff717171),
+      height: 50,
+      textStyle: context.textTheme.bodyLarge?.copyWith(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Color.fromARGB(255, 85, 85, 85),
+            width: 2,
+          ),
         ),
-        borderRadius: BorderRadius.circular(4),
       ),
     );
 
     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
-      border: Border.all(color: ColorName.black),
+      border: const Border(
+        bottom: BorderSide(
+          color: Color.fromARGB(255, 80, 80, 80),
+          width: 2.5,
+        ),
+      ),
     );
 
-    final submittedPinTheme = defaultPinTheme.copyWith(
-      decoration: defaultPinTheme.decoration,
-    );
+    final submittedPinTheme = defaultPinTheme;
 
     final errorPinTheme = defaultPinTheme.copyDecorationWith(
-      border: Border.all(color: Colors.red),
+      border: const Border(
+        bottom: BorderSide(
+          color: Colors.red,
+          width: 2,
+        ),
+      ),
     );
+
     final errorTextStyle = context.textTheme.bodySmall?.copyWith(
       color: Colors.red,
     );
 
     return Pinput(
-      separatorBuilder: (index) => 10.boxW,
       length: 5,
       controller: controller,
-      
+      separatorBuilder: (index) => 12.boxW,
       defaultPinTheme: defaultPinTheme,
       focusedPinTheme: focusedPinTheme,
       submittedPinTheme: submittedPinTheme,
@@ -61,6 +71,7 @@ class PinPutWidget extends StatelessWidget {
       errorPinTheme: errorPinTheme,
       onCompleted: onCompleted,
       onSubmitted: onSubmitted,
+      showCursor: true,
     );
   }
 }

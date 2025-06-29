@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-
 import '../../product/local/config_preference.dart';
 import '../../utils/extensions.dart';
-import '../router_config.dart';
-
 part 'app_cubit.freezed.dart';
 part 'app_state.dart';
 

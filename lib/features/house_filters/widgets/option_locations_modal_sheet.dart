@@ -3,11 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/components/app_text.dart';
 import '../../../core/components/check_box/custom_check_box.dart';
+import '../../../localization/extensions.dart';
 import '../../../product/constants/constants.dart';
 import '../../../product/helpers/helpers.dart';
 import '../../../remote/entities/global_options/global_options.dart';
 import '../../../utils/extensions.dart';
-import '../../../utils/toast_service.dart';
 
 extension LocationFinder on List<Location>? {
   SubLocations? get getSelected {
@@ -171,7 +171,7 @@ class _OptionModalBottomSheetState extends State<OptionModalBottomSheet> {
   bool _checkIfEmpty(BuildContext context) {
     final selects = _currentSubLocations.where((l) => l.selected).toList();
     if (selects.isEmpty) {
-      Helpers.showToastInfo(context, 'Saher sayla');
+      Helpers.showToastInfo(context, context.translation.sah_sayla);
     }
     return selects.isEmpty;
   }
@@ -252,7 +252,7 @@ class _OptionModalBottomSheetState extends State<OptionModalBottomSheet> {
                   ),
                 ),
                 AppText.s14w400BdM(
-                  'Ýerleşýän ýeri',
+                  context.translation.location,
                 ).toCenter(),
                 if (_showingChildren)
                   Builder(
@@ -281,7 +281,7 @@ class _OptionModalBottomSheetState extends State<OptionModalBottomSheet> {
             child: PageView.builder(
               controller: _pageController,
               physics:
-                  const NeverScrollableScrollPhysics(), // Disable manual swipe
+                  const NeverScrollableScrollPhysics(), 
               itemCount: 2,
               itemBuilder: (context, pageIndex) {
                 if (pageIndex == 0) {
@@ -409,6 +409,7 @@ class NestedBottomSheet extends StatefulWidget {
   final List<MenuItem> items;
 
   @override
+  // ignore: library_private_types_in_public_api
   _NestedBottomSheetState createState() => _NestedBottomSheetState();
 }
 
@@ -565,6 +566,7 @@ class _NestedBottomSheetState extends State<NestedBottomSheet> {
 
 // Example usage
 void showNestedMenuBottomSheet(BuildContext context, List<MenuItem> items) {
+  // ignore: inference_failure_on_function_invocation
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,

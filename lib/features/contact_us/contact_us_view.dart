@@ -11,7 +11,6 @@ class ContactUsView extends StatefulWidget {
   static const routePath = '/contactUs-view';
   static const routeName = 'contactUs-view';
 
-
   @override
   State<ContactUsView> createState() => _ContactUsViewState();
 }
@@ -49,39 +48,58 @@ class _ContactUsViewState extends State<ContactUsView> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: List.generate(
-            _messages.length,
-            (index) => Messages(message: _messages[index],),
-          ),
-        ),
-      ),
-      bottomNavigationBar: TextField(
-        controller: _controller,
-        decoration: InputDecoration(
-          hintText: 'Siziň hatyňyz',
-          hintStyle: TextStyle(
-            color: const Color(0xFF6A6A6A),
-            fontWeight: FontWeight.w400,
-            fontSize: 12.sp,
-            fontFamily: StringConstants.roboto,
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(4).r,
-            borderSide: const BorderSide(
-              color: Color(0xFFF6F6F6),
+          children: [
+            Expanded(
+              child: ListView.builder(
+                reverse: false,
+                padding: const EdgeInsets.only(top: 16),
+                itemCount: _messages.length,
+                itemBuilder: (context, index) {
+                  return Messages(
+                    message: _messages[_messages.length - index - 1],
+                  );
+                },
+              ),
             ),
-          ),
-          filled: true,
-          fillColor: const Color(0xFFF6F6F6),
-          suffixIcon: IconButton(
-            onPressed: _sendMessage,
-            icon: Assets.icons.icMessageSend.svg(package: 'gen'),
-          ),
+            const SizedBox(height: 10),
+            Padding(
+              padding: EdgeInsets.only(
+                bottom: 2.h,
+              ),
+              child: TextField(
+                controller: _controller,
+                decoration: InputDecoration(
+                  hintText: 'Siziň hatyňyz...',
+                  hintStyle: TextStyle(
+                    color: const Color(0xFF6A6A6A),
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12.sp,
+                    fontFamily: StringConstants.roboto,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(75).r,
+                    borderSide: const BorderSide(
+                      color: Color(0xFFF6F6F6),
+                    ),
+                  ),
+                  filled: true,
+                  fillColor: const Color(0xFFF6F6F6),
+                  suffixIcon: IconButton(
+                    onPressed: _sendMessage,
+                    icon: Assets.icons.icMessageSend.svg(
+                      package: 'gen',
+                      width: 28,
+                      height: 28,
+                    ),
+                  ),
+                ),
+                onSubmitted: (_) => _sendMessage(),
+              ),
+            ),
+          ],
         ),
-        onSubmitted: (_) => _sendMessage(),
       ),
     );
   }

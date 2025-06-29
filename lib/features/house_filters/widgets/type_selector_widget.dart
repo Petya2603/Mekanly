@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/components/app_text.dart';
+import '../../../localization/extensions.dart';
 import '../../../product/constants/constants.dart';
 import '../../../utils/extensions.dart';
 
@@ -38,8 +39,8 @@ class TypeSelectorWidget extends StatelessWidget {
                 ),
                 AppText.s12w400BdS(
                   (selectedItems?.isNotEmpty ?? false)
-                      ? 'Saýlanan'
-                      : 'Saýlanmadyk',
+                      ? context.translation.selected
+                      : context.translation.unselected,
                   fontFamily: StringConstants.roboto,
                 ),
                 3.boxW,

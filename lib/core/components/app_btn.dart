@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-import 'package:gradient_elevated_button/gradient_elevated_button.dart';
-
 import '../../product/constants/constants.dart';
 import '../../utils/extensions.dart';
 import 'app_text.dart';
@@ -117,6 +115,7 @@ class GradientBtn extends StatelessWidget {
     this.spaceHorizontal,
     this.isLoading = false,
   });
+
   final VoidCallback onTap;
   final String? text;
   final Color? txtColor;
@@ -128,46 +127,43 @@ class GradientBtn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [
+            Color(0xff384CFF),
+            Color(0xff00A3FF),
+          ],
+        ),
         borderRadius: BorderRadius.circular(15).r,
         boxShadow: [
           BoxShadow(
             blurRadius: 9,
             offset: const Offset(0, 4),
-            color: const Color(0xff384CFF).withValues(alpha: .5),
+            color: const Color(0xff384CFF).withOpacity(0.5),
           ),
         ],
       ),
-      child: GradientElevatedButton(
-        onPressed: () {
-          if (isLoading) return;
-          onTap.call();
-        },
-        style: GradientElevatedButton.styleFrom(
-          padding: EdgeInsets.symmetric(
-            vertical: 12.w,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15).r,
-          ),
-          shadowColor: const Color(0xff384CFF),
-          backgroundGradient: const LinearGradient(
-            colors: [
-              Color(0xff384CFF),
-              Color(0xff00A3FF),
-            ],
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(15).r,
+        child: InkWell(
+          onTap: isLoading ? null : onTap,
+          borderRadius: BorderRadius.circular(15).r,
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 12.w),
+            alignment: Alignment.center,
+            child: isLoading
+                ? LoadingIndicator.basic(
+                    size: Size(18.w, 18.w),
+                    color: ColorName.white,
+                  )
+                : AppText.s14w400BdM(
+                    text ?? 'text',
+                    fontWeight: FontWeight.w500,
+                    color: txtColor ?? Colors.white,
+                    fontFamily: StringConstants.roboto,
+                  ),
           ),
         ),
-        child: isLoading
-            ? LoadingIndicator.basic(
-                size: Size(18.w, 18.w),
-                color: ColorName.white,
-              )
-            : AppText.s14w400BdM(
-                text ?? 'text',
-                fontWeight: FontWeight.w500,
-                color: txtColor,
-                fontFamily: StringConstants.roboto,
-              ),
       ),
     );
   }

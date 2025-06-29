@@ -59,28 +59,28 @@ _i174.GetIt $initGetIt(
   gh.factory<_i1026.AppCubit>(() => _i1026.AppCubit());
   gh.factory<_i743.IAuthRepository>(
       () => _i273.AuthRepositoryImpl(client: gh<_i75.DioHttpClient>()));
-  gh.factory<_i571.TopAdsRepository>(
-      () => _i571.TopAdsRepository(client: gh<_i75.DioHttpClient>()));
-  gh.factory<_i188.HousesRepository>(
-      () => _i188.HousesRepository(client: gh<_i75.DioHttpClient>()));
+  gh.factory<_i537.AddHouseRepository>(
+      () => _i537.AddHouseRepository(client: gh<_i75.DioHttpClient>()));
+  gh.factory<_i318.BannersRepository>(
+      () => _i318.BannersRepository(client: gh<_i75.DioHttpClient>()));
   gh.factory<_i1066.BusinessProfileDetailProductsRepository>(() =>
       _i1066.BusinessProfileDetailProductsRepository(
           client: gh<_i75.DioHttpClient>()));
+  gh.factory<_i932.BusinessProfileDetailRepository>(() =>
+      _i932.BusinessProfileDetailRepository(client: gh<_i75.DioHttpClient>()));
   gh.factory<_i592.BusinessProfileRepository>(
       () => _i592.BusinessProfileRepository(client: gh<_i75.DioHttpClient>()));
   gh.factory<_i592.BusinessProfileCategoryRepository>(() =>
       _i592.BusinessProfileCategoryRepository(
           client: gh<_i75.DioHttpClient>()));
-  gh.factory<_i932.BusinessProfileDetailRepository>(() =>
-      _i932.BusinessProfileDetailRepository(client: gh<_i75.DioHttpClient>()));
-  gh.factory<_i652.UserHousesRepository>(
-      () => _i652.UserHousesRepository(client: gh<_i75.DioHttpClient>()));
-  gh.factory<_i537.AddHouseRepository>(
-      () => _i537.AddHouseRepository(client: gh<_i75.DioHttpClient>()));
+  gh.factory<_i188.HousesRepository>(
+      () => _i188.HousesRepository(client: gh<_i75.DioHttpClient>()));
   gh.factory<_i159.HouseDetailRepository>(
       () => _i159.HouseDetailRepository(client: gh<_i75.DioHttpClient>()));
-  gh.factory<_i318.BannersRepository>(
-      () => _i318.BannersRepository(client: gh<_i75.DioHttpClient>()));
+  gh.factory<_i571.TopAdsRepository>(
+      () => _i571.TopAdsRepository(client: gh<_i75.DioHttpClient>()));
+  gh.factory<_i652.UserHousesRepository>(
+      () => _i652.UserHousesRepository(client: gh<_i75.DioHttpClient>()));
   gh.factory<_i89.BusinessProfileCubit>(() => _i89.BusinessProfileCubit(
         gh<_i592.BusinessProfileRepository>(),
         gh<_i592.BusinessProfileCategoryRepository>(),

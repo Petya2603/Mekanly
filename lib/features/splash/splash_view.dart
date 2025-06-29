@@ -50,7 +50,7 @@ class _SplashViewState extends State<SplashView> {
             Navigator.pushAndRemoveUntil(
               context,
               CustomPageRoute.slide(
-                const RootView(),
+                 RootView(),
               ),
               (r) => false,
             );

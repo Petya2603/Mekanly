@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
 
+import '../../localization/extensions.dart';
 import '../../product/constants/constants.dart';
 import '../../utils/extensions.dart';
 
@@ -31,7 +32,7 @@ class SearchField extends StatelessWidget {
               top: 10,
               right: 10,
             ),
-            hintText: 'Gözleg',
+            hintText: context.translation.search,
             hintStyle: context.textTheme.bodyMedium?.copyWith(
               fontFamily: StringConstants.roboto,
               fontWeight: FontWeight.w400,
@@ -40,8 +41,8 @@ class SearchField extends StatelessWidget {
             ),
             suffixIcon: Padding(
               padding: const EdgeInsets.all(10),
-              child: Assets.icons.icSearchDark.svg(package:
-                'gen',
+              child: Assets.icons.icSearchDark.svg(
+                package: 'gen',
               ),
             ),
             suffixIconConstraints: const BoxConstraints(

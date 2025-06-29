@@ -1,11 +1,13 @@
 import 'dart:math' show pi;
 
 import 'package:common/common.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:gallery_saver_plus/gallery_saver.dart';
 import 'package:gen/gen.dart';
-
+import 'package:permission_handler/permission_handler.dart';
 import '../../core/components/app_btn.dart';
 import '../../core/components/app_text.dart';
 import '../../product/constants/constants.dart';
@@ -65,6 +67,7 @@ class HouseImages extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
+                // ignore: inference_failure_on_instance_creation
                 MaterialPageRoute(
                   builder: (BuildContext context) => ImageScreen(
                     imagesUrl: houseImagesUrl,
@@ -143,8 +146,6 @@ class _ImageScreenState extends State<ImageScreen> {
   }
 
   // final ValueNotif
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -225,17 +226,36 @@ class _ImageScreenState extends State<ImageScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color(0xFF000000),
-        onPressed: () {},
+        onPressed: () async {
+          final url = widget.imagesUrl?[_currentIndex];
+
+          if (url == null || url.isEmpty) return;
+          final status = await Permission.photos.request();
+          final storageStatus = await Permission.storage.request();
+
+          if (status.isGranted || storageStatus.isGranted) {
+            final success = await GallerySaver.saveImage(url);
+
+            // ignore: use_if_null_to_convert_nulls_to_bools
+            if (success == true) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Surat ýüklendi")),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Surat ýuklenmedi")),
+              );
+            }
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Rugsat berilmedi")),
+            );
+          }
+        },
         child: Assets.icons.icDownloadImage.svg(package: 'gen'),
       ),
     );
   }
-
-  
-
-
-
-
 }
 
 class _AnimatedContainersSheet extends StatefulWidget {

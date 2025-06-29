@@ -1,8 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gen/gen.dart';
-
 import '../../../core/components/app_text.dart';
 import '../../../product/constants/constants.dart';
 import '../../../utils/extensions.dart';

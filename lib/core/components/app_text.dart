@@ -251,7 +251,8 @@ class AppText extends StatelessWidget {
         fontSize: fontSize,
         height: height,
         decoration: underline ? TextDecoration.underline : null,
-        decorationColor: underline ? const Color(0xFF6A6A6A) : null,
+        decorationColor:
+            underline ? const Color.fromARGB(0, 106, 106, 106) : null,
       ),
       key: key,
       data: data,
@@ -494,4 +495,6 @@ class AppText extends StatelessWidget {
       softWrap: softWrap,
     );
   }
+
+  static s16w600BdS(String s, {required String fontFamily}) {}
 }

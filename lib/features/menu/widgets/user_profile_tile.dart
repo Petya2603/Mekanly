@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
 
 import '../../../core/components/app_text.dart';
+import '../../../localization/extensions.dart';
 import '../../../product/constants/constants.dart';
 import '../../../product/transitions/custom_page_route.dart';
 import '../../../utils/extensions.dart';
@@ -47,7 +48,7 @@ class UserProfileTile extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           AppText.s12w400BdS(
-                            'Akkaunt',
+                            context.translation.account,
                             fontFamily: StringConstants.roboto,
                             color: const Color(0xff222222),
                           ),
@@ -62,7 +63,7 @@ class UserProfileTile extends StatelessWidget {
                               );
                             },
                             child: AppText.underLined(
-                              'Ulgama girmek',
+                              context.translation.log_in,
                               fontWeight: FontWeight.w500,
                               underlined: true,
                               color: const Color(0xff0D95E9),
@@ -99,7 +100,7 @@ class UserProfileTile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         AppText.s12w400BdS(
-                          'Akkaunt',
+                          context.translation.account,
                           fontFamily: StringConstants.roboto,
                           color: const Color(0xff222222),
                         ),

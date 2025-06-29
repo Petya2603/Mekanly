@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
 
 import '../../../core/components/app_text.dart';
+import '../../../localization/extensions.dart';
 import '../../../product/constants/constants.dart';
 
 class OptionHolderSwitcher extends StatefulWidget {
@@ -53,7 +54,7 @@ class _OptionHolderSwitcherState extends State<OptionHolderSwitcher> {
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 8).w,
                 child: AppText.s12w400BdS(
-                  'Eýesi',
+                  context.translation.eyesi,
                   color: widget.isOwner ?? false ? Colors.white : null,
                   fontFamily: StringConstants.roboto,
                 ),
@@ -84,7 +85,7 @@ class _OptionHolderSwitcherState extends State<OptionHolderSwitcher> {
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 8).w,
                 child: AppText.s12w400BdS(
-                  'Reiltor',
+                  context.translation.reiltor,
                   color: !(widget.isOwner ?? true) ? Colors.white : null,
                   fontFamily: StringConstants.roboto,
                 ),

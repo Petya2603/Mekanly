@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:gen/gen.dart';
-
 import '../../../core/components/small_icon_wrapper.dart';
-import '../../../features/house_filters/widgets/titled_selector_widget.dart';
-
+import '../../../localization/extensions.dart';
 part 'global_options.freezed.dart';
 part 'global_options.g.dart';
 
@@ -314,46 +312,46 @@ extension PossibilityIcon on OptionsPossibility {
 }
 
 extension PossibilityTitle on OptionsPossibility {
-  String get title {
+  String getTitle(BuildContext context) {
     switch (id) {
       case 1:
-        return 'Wi-Fi';
+        return context.translation.possibility_1;
       case 2:
-        return 'Kir maşyn';
+        return context.translation.possibility_2;
       case 3:
-        return 'Telewizor';
+        return context.translation.possibility_3;
       case 4:
-        return 'Kondisioner';
+        return context.translation.possibility_4;
       case 5:
-        return 'Mebel-şkaf';
+        return context.translation.possibility_5;
       case 6:
-        return 'Spalny';
+        return context.translation.possibility_6;
       case 7:
-        return 'Peç';
+        return context.translation.possibility_7;
       case 8:
-        return 'Sowadyjy';
+        return context.translation.possibility_8;
       case 9:
-        return 'Duş';
+        return context.translation.possibility_9;
       case 10:
-        return 'Aşhana';
+        return context.translation.possibility_10;
       case 11:
-        return 'Mangal';
+        return context.translation.possibility_11;
       case 12:
-        return 'Basseýn';
+        return context.translation.possibility_12;
       case 13:
-        return 'Aşhana mebel';
+        return context.translation.possibility_13;
       case 14:
-        return 'Balkon';
+        return context.translation.possibility_14;
       case 15:
-        return 'Iş stoly';
+        return context.translation.possibility_15;
       case 16:
-        return 'Lift';
+        return context.translation.possibility_16;
       case 17:
-        return 'Peç';
+        return context.translation.possibility_17;
       case 19:
-        return 'Gyzgyn suw';
+        return context.translation.possibility_19;
       default:
-        return 'No)';
+        return '';
     }
   }
 }
