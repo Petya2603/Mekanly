@@ -28,7 +28,7 @@ abstract class LocalizationService {
 
   static const tkLocaleCode = 'tk';
 
-  static const ruLocaleCode = 'ru';
+  static const ruLocaleCode = 'ru'; 
 
   static const tkLocale = Locale(tkLocaleCode);
   static const ruLocale = Locale(ruLocaleCode);

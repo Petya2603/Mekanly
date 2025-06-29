@@ -55,7 +55,7 @@ class _MekanlyAppState extends State<MekanlyApp> {
             return KeyedSubtree(
               key: state.key,
               child: MaterialApp(
-                locale: const Locale('tk'),
+                locale: const Locale('en'),
                 debugShowCheckedModeBanner: false,
                 supportedLocales: LocalizationService.supportedLocales,
                 localizationsDelegates: LocalizationService.delegates,
