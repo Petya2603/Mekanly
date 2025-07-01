@@ -52,6 +52,8 @@ class HouseEntity with _$HouseEntity {
     String? date,
     @JsonKey(name: 'updated_at') String? updatedAt,
     @JsonKey(name: 'created_at') String? createdAt,
+    @JsonKey(name: 'contacted') bool? contacted,
+    @JsonKey(name: 'has_seen') bool? hasSeen,
     bool? contact,
   }) = _HouseEntity;
 

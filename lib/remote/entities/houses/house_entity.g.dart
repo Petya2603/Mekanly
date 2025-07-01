@@ -64,6 +64,8 @@ _$HouseEntityImpl _$$HouseEntityImplFromJson(Map<String, dynamic> json) =>
       date: json['date'] as String?,
       updatedAt: json['updated_at'] as String?,
       createdAt: json['created_at'] as String?,
+      contacted: json['contacted'] as bool?,
+      hasSeen: json['has_seen'] as bool?,
       contact: json['contact'] as bool?,
     );
 
@@ -111,6 +113,8 @@ Map<String, dynamic> _$$HouseEntityImplToJson(_$HouseEntityImpl instance) =>
       'date': instance.date,
       'updated_at': instance.updatedAt,
       'created_at': instance.createdAt,
+      'contacted': instance.contacted,
+      'has_seen': instance.hasSeen,
       'contact': instance.contact,
     };
 

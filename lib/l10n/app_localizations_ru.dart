@@ -229,6 +229,15 @@ class AppLocalizationsRu extends AppLocalizations {
   String get sah_sayla => 'Выберите город';
 
   @override
+  String get ul_duz => 'Правила использования';
+
+  @override
+  String get seen => 'Просмотрено';
+
+  @override
+  String get contacted => 'Связались';
+
+  @override
   String get rem_sayla => 'Выбрать тип ремонта';
 
   @override
@@ -321,6 +330,19 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get users_can_write_comments =>
       'Пользователи могут писать комментарии';
+
+  @override
+  String get dow_et => 'Продолжить';
+
+  @override
+  String get dow_et_bn =>
+      'Продолжая, я подтверждаю, что предоставленная выше информация является полной и достоверной, а также ';
+
+  @override
+  String get dow_et_bn_dowam => ' ознакомился и принимаю';
+
+  @override
+  String get we => ' и ';
 
   @override
   String get are_you_sure_you_want_to_add_this_announcement =>

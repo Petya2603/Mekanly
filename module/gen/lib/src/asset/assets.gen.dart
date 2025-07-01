@@ -153,6 +153,8 @@ class $AssetsIconsGen {
   SvgGenImage get icContactUs =>
       const SvgGenImage('assets/icons/ic_contact_us.svg');
 
+  SvgGenImage get duzg => const SvgGenImage('assets/icons/duzg.svg');
+
   /// File path: assets/icons/ic_cost.svg
   SvgGenImage get icCost => const SvgGenImage('assets/icons/ic_cost.svg');
 
@@ -225,6 +227,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_hash.svg
   SvgGenImage get icHash => const SvgGenImage('assets/icons/ic_hash.svg');
 
+  /// File path: assets/icons/ic_hash.svg
+  SvgGenImage get duzgun => const SvgGenImage('assets/icons/duzgun.svg');
+
   /// File path: assets/icons/ic_heart.svg
   SvgGenImage get icHeart => const SvgGenImage('assets/icons/ic_heart.svg');
 
@@ -287,6 +292,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/ic_like.svg
   SvgGenImage get icLike => const SvgGenImage('assets/icons/ic_like.svg');
+
+  /// File path: assets/icons/ic_like.svg
+  SvgGenImage get click => const SvgGenImage('assets/icons/click.svg');
 
   /// File path: assets/icons/ic_location.svg
   SvgGenImage get icLocation =>
@@ -586,7 +594,10 @@ class $AssetsIconsGen {
         icWashingMachine,
         icWorkingDesk,
         sms,
-        isremont
+        isremont,
+        duzg,
+        click,
+        duzgun
       ];
 }
 

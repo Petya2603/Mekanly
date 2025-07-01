@@ -2,7 +2,6 @@ import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-
 import '../../features/business_porfile/sub_category/mebel_we_interier_grid_view.dart';
 import '../../remote/entities/business_profile/business_profile_category_entity.dart';
 import '../../utils/extensions.dart';

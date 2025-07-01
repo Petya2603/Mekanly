@@ -13,13 +13,10 @@ import '../widgets/custom_scroll_controller.dart';
 import 'root_view_handler.dart';
 
 class RootView extends StatefulWidget {
-  RootView({
-    super.key,
-  });
-
-  // final StatefulNavigationShell navigationShell;
+  RootView({Key? key}) : super(key: rootKey);
   // ignore: library_private_types_in_public_api
-  final GlobalKey<_RootViewState> rootKey = GlobalKey<_RootViewState>();
+  static final GlobalKey<_RootViewState> rootKey = GlobalKey<_RootViewState>();
+
 
   static const routePath = '/root-view';
   static const routeName = 'root-view';
@@ -33,6 +30,9 @@ class _RootViewState extends State<RootView>
   final CustomScrollController _scrollController = CustomScrollController();
   late TabController _tabController;
   int _currentIndex = 0;
+  void goToTab(int index) {
+    _tabController.animateTo(index);
+  }
 
   @override
   void initState() {

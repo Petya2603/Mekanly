@@ -83,6 +83,10 @@ mixin _$HouseEntity {
   String? get updatedAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
   String? get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'contacted')
+  bool? get contacted => throw _privateConstructorUsedError;
+  @JsonKey(name: 'has_seen')
+  bool? get hasSeen => throw _privateConstructorUsedError;
   bool? get contact => throw _privateConstructorUsedError;
 
   /// Serializes this HouseEntity to a JSON map.
@@ -144,6 +148,8 @@ abstract class $HouseEntityCopyWith<$Res> {
       String? date,
       @JsonKey(name: 'updated_at') String? updatedAt,
       @JsonKey(name: 'created_at') String? createdAt,
+      @JsonKey(name: 'contacted') bool? contacted,
+      @JsonKey(name: 'has_seen') bool? hasSeen,
       bool? contact});
 
   $LocationEntityCopyWith<$Res>? get location;
@@ -209,6 +215,8 @@ class _$HouseEntityCopyWithImpl<$Res, $Val extends HouseEntity>
     Object? date = freezed,
     Object? updatedAt = freezed,
     Object? createdAt = freezed,
+    Object? contacted = freezed,
+    Object? hasSeen = freezed,
     Object? contact = freezed,
   }) {
     return _then(_value.copyWith(
@@ -380,6 +388,14 @@ class _$HouseEntityCopyWithImpl<$Res, $Val extends HouseEntity>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as String?,
+      contacted: freezed == contacted
+          ? _value.contacted
+          : contacted // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      hasSeen: freezed == hasSeen
+          ? _value.hasSeen
+          : hasSeen // ignore: cast_nullable_to_non_nullable
+              as bool?,
       contact: freezed == contact
           ? _value.contact
           : contact // ignore: cast_nullable_to_non_nullable
@@ -495,6 +511,8 @@ abstract class _$$HouseEntityImplCopyWith<$Res>
       String? date,
       @JsonKey(name: 'updated_at') String? updatedAt,
       @JsonKey(name: 'created_at') String? createdAt,
+      @JsonKey(name: 'contacted') bool? contacted,
+      @JsonKey(name: 'has_seen') bool? hasSeen,
       bool? contact});
 
   @override
@@ -562,6 +580,8 @@ class __$$HouseEntityImplCopyWithImpl<$Res>
     Object? date = freezed,
     Object? updatedAt = freezed,
     Object? createdAt = freezed,
+    Object? contacted = freezed,
+    Object? hasSeen = freezed,
     Object? contact = freezed,
   }) {
     return _then(_$HouseEntityImpl(
@@ -733,6 +753,14 @@ class __$$HouseEntityImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as String?,
+      contacted: freezed == contacted
+          ? _value.contacted
+          : contacted // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      hasSeen: freezed == hasSeen
+          ? _value.hasSeen
+          : hasSeen // ignore: cast_nullable_to_non_nullable
+              as bool?,
       contact: freezed == contact
           ? _value.contact
           : contact // ignore: cast_nullable_to_non_nullable
@@ -787,6 +815,8 @@ class _$HouseEntityImpl implements _HouseEntity {
       this.date,
       @JsonKey(name: 'updated_at') this.updatedAt,
       @JsonKey(name: 'created_at') this.createdAt,
+      @JsonKey(name: 'contacted') this.contacted,
+      @JsonKey(name: 'has_seen') this.hasSeen,
       this.contact})
       : _images = images,
         _possibilities = possibilities;
@@ -915,11 +945,17 @@ class _$HouseEntityImpl implements _HouseEntity {
   @JsonKey(name: 'created_at')
   final String? createdAt;
   @override
+  @JsonKey(name: 'contacted')
+  final bool? contacted;
+  @override
+  @JsonKey(name: 'has_seen')
+  final bool? hasSeen;
+  @override
   final bool? contact;
 
   @override
   String toString() {
-    return 'HouseEntity(id: $id, categoryName: $categoryName, location: $location, userId: $userId, username: $username, userPhone: $userPhone, name: $name, description: $description, price: $price, loverPercentage: $loverPercentage, loverPrice: $loverPrice, viewed: $viewed, star: $star, commentCount: $commentCount, roomNumber: $roomNumber, floorNumber: $floorNumber, propertyType: $propertyType, repairType: $repairType, status: $status, luxe: $luxe, luxeStatus: $luxeStatus, luxeExpire: $luxeExpire, vipStatus: $vipStatus, vipExpire: $vipExpire, bronNumber: $bronNumber, images: $images, possibilities: $possibilities, comment: $comment, isComment: $isComment, writeComment: $writeComment, who: $who, area: $area, exclusisive: $exclusisive, hashtag: $hashtag, levelNumber: $levelNumber, favorited: $favorited, liked: $liked, shop: $shop, type: $type, date: $date, updatedAt: $updatedAt, createdAt: $createdAt, contact: $contact)';
+    return 'HouseEntity(id: $id, categoryName: $categoryName, location: $location, userId: $userId, username: $username, userPhone: $userPhone, name: $name, description: $description, price: $price, loverPercentage: $loverPercentage, loverPrice: $loverPrice, viewed: $viewed, star: $star, commentCount: $commentCount, roomNumber: $roomNumber, floorNumber: $floorNumber, propertyType: $propertyType, repairType: $repairType, status: $status, luxe: $luxe, luxeStatus: $luxeStatus, luxeExpire: $luxeExpire, vipStatus: $vipStatus, vipExpire: $vipExpire, bronNumber: $bronNumber, images: $images, possibilities: $possibilities, comment: $comment, isComment: $isComment, writeComment: $writeComment, who: $who, area: $area, exclusisive: $exclusisive, hashtag: $hashtag, levelNumber: $levelNumber, favorited: $favorited, liked: $liked, shop: $shop, type: $type, date: $date, updatedAt: $updatedAt, createdAt: $createdAt, contacted: $contacted, hasSeen: $hasSeen, contact: $contact)';
   }
 
   @override
@@ -994,6 +1030,9 @@ class _$HouseEntityImpl implements _HouseEntity {
                 other.updatedAt == updatedAt) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
+            (identical(other.contacted, contacted) ||
+                other.contacted == contacted) &&
+            (identical(other.hasSeen, hasSeen) || other.hasSeen == hasSeen) &&
             (identical(other.contact, contact) || other.contact == contact));
   }
 
@@ -1043,6 +1082,8 @@ class _$HouseEntityImpl implements _HouseEntity {
         date,
         updatedAt,
         createdAt,
+        contacted,
+        hasSeen,
         contact
       ]);
 
@@ -1106,6 +1147,8 @@ abstract class _HouseEntity implements HouseEntity {
       final String? date,
       @JsonKey(name: 'updated_at') final String? updatedAt,
       @JsonKey(name: 'created_at') final String? createdAt,
+      @JsonKey(name: 'contacted') final bool? contacted,
+      @JsonKey(name: 'has_seen') final bool? hasSeen,
       final bool? contact}) = _$HouseEntityImpl;
 
   factory _HouseEntity.fromJson(Map<String, dynamic> json) =
@@ -1215,6 +1258,12 @@ abstract class _HouseEntity implements HouseEntity {
   @override
   @JsonKey(name: 'created_at')
   String? get createdAt;
+  @override
+  @JsonKey(name: 'contacted')
+  bool? get contacted;
+  @override
+  @JsonKey(name: 'has_seen')
+  bool? get hasSeen;
   @override
   bool? get contact;
 

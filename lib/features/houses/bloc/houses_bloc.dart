@@ -36,6 +36,7 @@ class HousesBloc extends BaseBloc<HousesEvent, HousesState> {
     result.fold(
       (l) => emit(state.copyWith(status: BaseStatus.failure(l))),
       (r) async {
+        print(' ${r.houses}');
         final houses = r.houses;
         final filter = state.globalOptions?.data;
         final globalFilter = BaseGlobalData.instance.filter;

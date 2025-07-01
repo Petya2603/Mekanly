@@ -9,6 +9,7 @@ import '../../core/components/categories_card.dart';
 import '../../core/components/loading_indicator.dart';
 import '../../core/components/search_field.dart';
 import '../../core/components/try_again_widget.dart';
+import '../../localization/extensions.dart';
 import '../../product/base/base_status/base_status.dart';
 import '../../product/constants/constants.dart';
 import '../../utils/constants.dart';
@@ -94,7 +95,7 @@ class _BusinessProfileViewState extends State<BusinessProfileView>
                   padding:
                       const EdgeInsets.symmetric(horizontal: 13, vertical: 12),
                   child: AppText.s14w400BdM(
-                    'Biznes profiller',
+                    context.translation.business_profiles,
                     fontFamily: StringConstants.roboto,
                     color: ColorName.black,
                   ),

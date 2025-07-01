@@ -183,7 +183,7 @@ class _TkMaterialLocalizationsDelegate
     final safeLocale =
         (locale.languageCode == 'tk' || locale.languageCode == 'ru')
             ? locale.languageCode
-            : 'tk';
+            : 'tk'; // fallback
 
     final localeName = intl.Intl.canonicalizedLocale(safeLocale);
 

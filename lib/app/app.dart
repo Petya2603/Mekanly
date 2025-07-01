@@ -11,7 +11,6 @@ import '../localization/localization_service.dart';
 import '../product/init/theme/theme.dart';
 import '../product/injection/injector.dart';
 import 'cubit/app_cubit.dart';
-import 'router_config.dart';
 
 /// Init app
 class MekanlyApp extends StatefulWidget {
@@ -55,7 +54,16 @@ class _MekanlyAppState extends State<MekanlyApp> {
             return KeyedSubtree(
               key: state.key,
               child: MaterialApp(
-                locale: const Locale('en'),
+                locale: const Locale('ru'),
+                localeResolutionCallback: (locale, supportedLocales) {
+                  if (locale == null) return const Locale('ru');
+                  for (final supportedLocale in supportedLocales) {
+                    if (supportedLocale.languageCode == locale.languageCode) {
+                      return supportedLocale;
+                    }
+                  }
+                  return const Locale('ru');
+                },
                 debugShowCheckedModeBanner: false,
                 supportedLocales: LocalizationService.supportedLocales,
                 localizationsDelegates: LocalizationService.delegates,

@@ -29,10 +29,12 @@ import '../house_filters/widgets/options_modal_dialog.dart';
 import '../house_filters/widgets/titled_selector_widget.dart';
 import '../house_filters/widgets/titled_switcher.dart';
 import '../house_filters/widgets/type_selector_widget.dart';
+import '../menu/widgets/web_view_screen.dart';
 import 'cubit/add_house_cubit.dart';
 import 'model/add_house_payload.dart';
 import 'widgets/dialogs.dart';
 import 'widgets/image_picker_widget.dart';
+import 'widgets/privice_widget.dart';
 import 'widgets/selected_images_widget.dart';
 
 enum AddHouseType {
@@ -588,11 +590,10 @@ class _AddHouseViewState extends State<AddHouseView> {
                         ),
                       ),
                       16.boxH,
-                      JustInOurAppWidget(
-                        onChanged: (value) {},
-                        value: false,
-                      ),
-                      16.boxH,
+                      // JustInOurAppWidget(
+                      //   onChanged: (value) {},
+                      //   value: false,
+                      // ),
                       TitledSwitcherWidget(
                         padding: EdgeInsets.zero,
                         onChanged: (value) {
@@ -600,7 +601,7 @@ class _AddHouseViewState extends State<AddHouseView> {
                             acceptedPrivacy = value;
                           });
                         },
-                        title: context.translation.read_and_accepted_terms,
+                        title: context.translation.only_on_mekanly,
                         accepted: acceptedPrivacy,
                       ),
                       10.boxH,
@@ -614,11 +615,38 @@ class _AddHouseViewState extends State<AddHouseView> {
                         title: context.translation.users_can_write_comments,
                         accepted: canWriteComment == 1,
                       ),
+                      10.boxH,
+                      PrivacyNoticeBox(
+                        onTermsTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WebViewScreen(
+                                url:
+                                    'https://mekanly.com.tm/rules/${Localizations.localeOf(context).languageCode}',
+                                title: context.translation.ul_duz,
+                              ),
+                            ),
+                          );
+                        },
+                        onPrivacyTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WebViewScreen(
+                                url:
+                                    'https://mekanly.com.tm/privacypolicy/${Localizations.localeOf(context).languageCode}',
+                                title: context.translation.privacy_policy,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                       24.boxH,
                       AppBtn(
                         onTap: () => checkIfValidate(state.pickedImages),
-                        text: context.translation.verify,
-                        bgColor: ColorName.black,
+                        text: context.translation.dow_et,
+                        bgColor: const Color.fromARGB(255, 16, 100, 188),
                       ),
                       24.boxH,
                     ],

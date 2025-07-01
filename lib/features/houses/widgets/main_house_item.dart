@@ -96,6 +96,7 @@ class MainHouseItem extends StatelessWidget {
             ),
           ),
         ),
+        // HALANLARYM
         Positioned(
           right: 12,
           top: 12,
@@ -106,6 +107,43 @@ class MainHouseItem extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget checkCircleIcon({Color color = Colors.white, double size = 14}) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: color,
+      ),
+      child: Assets.icons.click.svg(package: 'gen'),
+    );
+  }
+
+  Widget statusBadge(String text) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 243, 243, 243),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          checkCircleIcon(),
+          const SizedBox(width: 6),
+          Text(
+            text,
+            style: const TextStyle(
+              color: Color.fromARGB(255, 113, 113, 113),
+              fontSize: 12,
+              fontFamily: StringConstants.roboto,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -133,15 +171,33 @@ class MainHouseItem extends StatelessWidget {
             ),
           ],
         ),
+        //SUTAYDA duzettmeli goruldi gorulmedi
+
         if (house?.possibilities?.isNotEmpty ?? false) ...[
           SizedBox(height: 10.h),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              for (var i = 0; i < (house?.possibilities?.length ?? 0); i++)
-                house?.possibilities?[i].buildIcon() ?? const SizedBox.shrink(),
+              Row(
+                children: [
+                  for (var i = 0; i < (house?.possibilities?.length ?? 0); i++)
+                    house?.possibilities?[i].buildIcon() ??
+                        const SizedBox.shrink(),
+                ],
+              ),
+              Row(
+                children: [
+                  if (house?.hasSeen == true) statusBadge('Görüldi'),
+                  // ignore: use_if_null_to_convert_nulls_to_bools
+                  if (house?.hasSeen == true && house?.contacted == true)
+                    SizedBox(width: 8.w),
+                  if (house?.contacted == true) statusBadge('Habarlaşyldy'),
+                ],
+              ),
             ],
           ),
         ],
+
         SizedBox(height: 10.h),
         AppText.s12w400BdS(
           '${house?.location?.parentName}/${house?.location?.name} 02.08.2024',

@@ -63,7 +63,7 @@ import 'app_localizations_tk.dart';
 /// property.
 abstract class AppLocalizations {
   AppLocalizations(String locale)
-      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -86,16 +86,16 @@ abstract class AppLocalizations {
   /// of delegates is preferred or required.
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
       <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('ru'),
-    Locale('tk')
+    Locale('tk'),
   ];
 
   /// No description provided for @title.
@@ -530,6 +530,24 @@ abstract class AppLocalizations {
   /// **'Выберите город'**
   String get sah_sayla;
 
+  /// No description provided for @ul_duz.
+  ///
+  /// In ru, this message translates to:
+  /// **'Правила использования'**
+  String get ul_duz;
+
+  /// No description provided for @seen.
+  ///
+  /// In ru, this message translates to:
+  /// **'Просмотрено'**
+  String get seen;
+
+  /// No description provided for @contacted.
+  ///
+  /// In ru, this message translates to:
+  /// **'Связались'**
+  String get contacted;
+
   /// No description provided for @rem_sayla.
   ///
   /// In ru, this message translates to:
@@ -703,6 +721,30 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'Пользователи могут писать комментарии'**
   String get users_can_write_comments;
+
+  /// No description provided for @dow_et.
+  ///
+  /// In ru, this message translates to:
+  /// **'Продолжить'**
+  String get dow_et;
+
+  /// No description provided for @dow_et_bn.
+  ///
+  /// In ru, this message translates to:
+  /// **'Продолжая, я подтверждаю, что предоставленная выше информация является полной и достоверной, а также '**
+  String get dow_et_bn;
+
+  /// No description provided for @dow_et_bn_dowam.
+  ///
+  /// In ru, this message translates to:
+  /// **' ознакомился и принимаю'**
+  String get dow_et_bn_dowam;
+
+  /// No description provided for @we.
+  ///
+  /// In ru, this message translates to:
+  /// **' и '**
+  String get we;
 
   /// No description provided for @are_you_sure_you_want_to_add_this_announcement.
   ///
@@ -1926,8 +1968,9 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   }
 
   throw FlutterError(
-      'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-      'an issue with the localizations generation tool. Please file an issue '
-      'on GitHub with a reproducible sample app and the gen-l10n configuration '
-      'that was used.');
+    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
 }

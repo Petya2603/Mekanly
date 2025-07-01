@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
 import '../../core/components/app_text.dart';
+import '../../localization/extensions.dart';
 import '../../product/constants/constants.dart';
 import '../../utils/extensions.dart';
 
@@ -20,12 +21,17 @@ class FavoritesView extends StatelessWidget {
           const FavoritesButton(),
           Column(
             children: [
-              Assets.icons.icFavorite.svg(package: 'gen'),
+              Assets.icons.icFavorite.svg(
+                package: 'gen',
+                width: 52,
+                height: 52,
+                color: const Color(0xFF6A6A6A),
+              ),
               6.boxH,
               AppText.s14w400BdM(
-                'Halanlarym bölüminde bildiriş ýok',
+                context.translation.no_announcements_in_my_favorites_section,
                 fontFamily: StringConstants.roboto,
-                fontSize: 12.sp,
+                fontSize: 16.sp,
                 fontWeight: FontWeight.w400,
                 color: const Color(0xFF6A6A6A),
               ),

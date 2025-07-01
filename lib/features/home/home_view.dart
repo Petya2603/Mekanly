@@ -17,6 +17,7 @@ import '../../localization/extensions.dart';
 import '../../product/base/base_status/base_status.dart';
 import '../../product/constants/constants.dart';
 import '../../utils/extensions.dart';
+import '../root/view/root_view.dart';
 import 'cubit/home_cubit.dart';
 
 class HomeView extends StatefulWidget {
@@ -200,7 +201,9 @@ class _HomeViewState extends State<HomeView>
                 vertical: 10,
               ).w,
               child: AppBtn(
-                onTap: () {},
+                onTap: () {
+                  RootView.rootKey.currentState?.goToTab(1);
+                },
                 text: context.translation.real_estate1,
                 rgIcon: Assets.icons.icForwardIcon.svg(package: 'gen'),
                 fontWeight: FontWeight.w600,

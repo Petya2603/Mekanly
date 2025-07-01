@@ -9,6 +9,7 @@ import 'tk_intl.dart';
 abstract class LocalizationService {
   static AppLocalizations? _testLocalizations;
 
+  // ignore: strict_raw_type
   static const delegates = <LocalizationsDelegate>[
     AppLocalizations.delegate,
     GlobalWidgetsLocalizations.delegate,
@@ -28,7 +29,7 @@ abstract class LocalizationService {
 
   static const tkLocaleCode = 'tk';
 
-  static const ruLocaleCode = 'ru'; 
+  static const ruLocaleCode = 'ru';
 
   static const tkLocale = Locale(tkLocaleCode);
   static const ruLocale = Locale(ruLocaleCode);

@@ -10,6 +10,7 @@ import '../../utils/extensions.dart';
 import '../comments/comments_view.dart';
 import '../contact_us/contact_us_view.dart';
 import '../content/content_view.dart';
+import 'duzgunname_view.dart';
 import 'widgets/profile_main_tile.dart';
 import 'widgets/user_business_profile_tile.dart';
 import 'widgets/user_profile_tile.dart';
@@ -94,11 +95,7 @@ class _MenuViewState extends State<MenuView> {
                         context,
                         // ignore: inference_failure_on_instance_creation
                         MaterialPageRoute(
-                          builder: (context) => WebViewScreen(
-                            url:
-                                'https://mekanly.com.tm/rules/${Localizations.localeOf(context).languageCode}',
-                            title: context.translation.rules,
-                          ),
+                          builder: (context) => const DuzgunnameView(),
                         ),
                       );
                     },
@@ -119,7 +116,7 @@ class _MenuViewState extends State<MenuView> {
                   ),
                   ProfileMainTile(
                     isAuthNeeded: false,
-                    title: context.translation.accistant,
+                    title: context.translation.about_us,
                     icon: Assets.icons.icHelp.svg(package: 'gen'),
                     onTap: () {
                       Navigator.push(
@@ -128,8 +125,8 @@ class _MenuViewState extends State<MenuView> {
                         MaterialPageRoute(
                           builder: (context) => WebViewScreen(
                             url:
-                                'https://mekanly.com.tm/help/${Localizations.localeOf(context).languageCode}',
-                            title: context.translation.accistant,
+                                'https://mekanly.com.tm/aboutus/${Localizations.localeOf(context).languageCode}',
+                            title: context.translation.about_us,
                           ),
                         ),
                       );

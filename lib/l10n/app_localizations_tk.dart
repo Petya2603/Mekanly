@@ -229,6 +229,15 @@ class AppLocalizationsTk extends AppLocalizations {
   String get sah_sayla => 'Şäher saýla';
 
   @override
+  String get ul_duz => 'Ulanyş düzgünleri';
+
+  @override
+  String get seen => 'Görüldi';
+
+  @override
+  String get contacted => 'Habarlaşyldy';
+
+  @override
   String get rem_sayla => 'Remont görnuşi saýla';
 
   @override
@@ -318,8 +327,20 @@ class AppLocalizationsTk extends AppLocalizations {
       'Heşteg funksiýasy arkaly ulanyjylar gözleýän jaýlaryny aňsatlyk bilen tapyp biler. Siz bildirişiňizi isleýän müşderiňize satmak üçin heştegleri ulanyň. Iň köp 5 sany heşteg ulanyp bolýar.';
 
   @override
-  String get users_can_write_comments =>
-      'Пользователи могут писать комментарии';
+  String get users_can_write_comments => 'Ulanyjylar teswir ýazyp bilýärler';
+
+  @override
+  String get dow_et => 'Dowam et';
+
+  @override
+  String get dow_et_bn =>
+      'Dowam etmek bilen, ýokarda görkezilen maglumatlaryň doly we dogrydygyny tassyklaýaryn hem-de ';
+
+  @override
+  String get dow_et_bn_dowam => ' okap we kabul edýärin';
+
+  @override
+  String get we => ' we ';
 
   @override
   String get are_you_sure_you_want_to_add_this_announcement =>
