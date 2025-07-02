@@ -9,4 +9,5 @@ class HousesState with _$HousesState {
   }) = _HousesState;
 
   const HousesState._();
+  bool get hasActiveFilters => globalOptions?.data?.hasActiveFilters ?? false;
 }

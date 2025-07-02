@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
 
 import '../../../core/components/app_text.dart';
+import '../../../localization/extensions.dart';
 import '../../../product/constants/constants.dart';
 import '../../../product/transitions/custom_page_route.dart';
 import '../../../utils/extensions.dart';
@@ -59,7 +60,7 @@ class UserBusinessProfileTile extends StatelessWidget {
                     ),
                     14.boxW,
                     AppText.s14w400BdM(
-                      'Biznes hasabym',
+                      context.translation.my_business_account,
                       fontWeight: FontWeight.w500,
                       fontFamily: StringConstants.manrope,
                     ),

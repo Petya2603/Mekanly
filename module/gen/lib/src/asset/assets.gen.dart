@@ -68,6 +68,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_back.svg
   SvgGenImage get icBack => const SvgGenImage('assets/icons/ic_back.svg');
 
+  /// File path: assets/icons/ic_back.svg
+  SvgGenImage get close => const SvgGenImage('assets/icons/close.svg');
+
   /// File path: assets/icons/ic_back_image.svg
   SvgGenImage get icBackImage =>
       const SvgGenImage('assets/icons/ic_back_image.svg');
@@ -141,6 +144,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_comment.svg
   SvgGenImage get sms => const SvgGenImage('assets/icons/smss.svg');
 
+  /// File path: assets/icons/fire_station.svg
+  SvgGenImage get fire => const SvgGenImage('assets/icons/fire_station.svg');
+
   /// File path: assets/icons/ic_confused.svg
   SvgGenImage get icConfused =>
       const SvgGenImage('assets/icons/ic_confused.svg');
@@ -201,6 +207,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_filter.svg
   SvgGenImage get icFilter => const SvgGenImage('assets/icons/ic_filter.svg');
 
+  /// File path: assets/icons/ic_filter.svg
+  SvgGenImage get icFilterselected =>
+      const SvgGenImage('assets/icons/filtr_selected.svg');
+
   /// File path: assets/icons/ic_fire_in_app.svg
   SvgGenImage get icFireInApp =>
       const SvgGenImage('assets/icons/ic_fire_in_app.svg');
@@ -208,6 +218,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_floor_count.svg
   SvgGenImage get icFloorCount =>
       const SvgGenImage('assets/icons/ic_floor_count.svg');
+
+  /// File path: assets/icons/ic_floor_count.svg
+  SvgGenImage get ot_san => const SvgGenImage('assets/icons/ot_san.svg');
 
   /// File path: assets/icons/ic_forward_icon.svg
   SvgGenImage get icForwardIcon =>
@@ -317,6 +330,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/ic_lux.svg
   SvgGenImage get icLux => const SvgGenImage('assets/icons/ic_lux.svg');
+
+  /// File path: assets/icons/ic_lux.svg
+  SvgGenImage get luxx => const SvgGenImage('assets/icons/luxx.svg');
 
   /// File path: assets/icons/ic_lyustra_main.svg
   SvgGenImage get icLyustraMain =>
@@ -519,6 +535,7 @@ class $AssetsIconsGen {
         icFavoriteNew,
         icFavoriteSelected,
         icFilter,
+        icFilterselected,
         icFireInApp,
         icFloorCount,
         icForwardIcon,
@@ -597,7 +614,11 @@ class $AssetsIconsGen {
         isremont,
         duzg,
         click,
-        duzgun
+        duzgun,
+        fire,
+        close,
+        luxx,
+        ot_san
       ];
 }
 

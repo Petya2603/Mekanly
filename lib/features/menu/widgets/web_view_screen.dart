@@ -94,13 +94,13 @@ class _WebViewScreenState extends State<WebViewScreen> {
               size: const Size(32, 32),
             ),
           if (_hasError)
-            ColoredBox(
-              color: Colors.red.shade100,
+            const ColoredBox(
+              color: Colors.white,
               child: Center(
                 child: Text(
                   'Web sahypasyna girilende ýalňyşlyk ýüze çykdy.',
                   style: TextStyle(
-                    color: Colors.red.shade700,
+                    color: Colors.black,
                     fontSize: 16,
                   ),
                 ),

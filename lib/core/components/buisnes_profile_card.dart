@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,10 +17,13 @@ class BusinessProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (profile == null || profile?.id == null) return const SizedBox.shrink();
+    final brand = profile?.brand ?? '';
+    final desc = profile?.description?.tk ?? '';
+    final logoUrl = profile?.logo ?? '';
+
     return InkWell(
       onTap: () {
-        if (profile?.id == null) return;
-
         Navigator.push(
           context,
           CustomPageRoute.slide(
@@ -49,11 +53,32 @@ class BusinessProfileCard extends StatelessWidget {
                 child: SizedBox(
                   width: 84.w,
                   height: 86.w,
-                  child: CustomNetworkImage(
-                    imageUrl: profile?.logo,
-                    memCache: CustomMemCache(
-                      height: 86.w.toInt().withDevicePixel(context),
+                  // child: CustomNetworkImage(
+                  //   imageUrl: logoUrl,
+                  //   memCache: CustomMemCache(
+                  //     height: 86.w.toInt().withDevicePixel(context),
+                  //   ),
+                  // ),
+                  child: CachedNetworkImage(
+                    imageUrl: logoUrl,
+                    width: 84.w,
+                    height: 86.w,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      width: 84.w,
+                      height: 86.w,
+                      alignment: Alignment.center,
+                      child: const CircularProgressIndicator(strokeWidth: 1),
                     ),
+                    errorWidget: (context, url, error) => Container(
+                      width: 84.w,
+                      height: 86.w,
+                      color: Colors.grey.shade200,
+                      alignment: Alignment.center,
+                      child: const Icon(Icons.error, color: Colors.red),
+                    ),
+                    memCacheHeight: 86.w.toInt(),
+                    cacheKey: logoUrl,
                   ),
                 ),
               ),
@@ -67,13 +92,13 @@ class BusinessProfileCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       AppText.s12w400BdS(
-                        profile?.brand ?? '',
+                        brand,
                         color: ColorName.darkGrey,
                         fontFamily: StringConstants.roboto,
                       ),
                       8.boxH,
                       AppText.s10w400LbS(
-                        profile?.description?.tk ?? '',
+                        desc,
                         color: const Color(0xff717171),
                         fontFamily: StringConstants.roboto,
                         maxLines: 2,

@@ -343,6 +343,10 @@ class AppLocalizationsTk extends AppLocalizations {
   String get we => ' we ';
 
   @override
+  String get ul_gir =>
+      'Siz ulagama girmänsiňizi! Bu hereket üçin ulgama girmegiňiz gerek';
+
+  @override
   String get are_you_sure_you_want_to_add_this_announcement =>
       'Siz hakykatdanam şu bildirişi goşmakçymy';
 
@@ -391,7 +395,7 @@ class AppLocalizationsTk extends AppLocalizations {
   String get enter => 'Gir';
 
   @override
-  String get share_with_friends => 'Поделитесь с друзьями';
+  String get share_with_friends => 'Halanlaryňy dostlaryň bilen paýlaş';
 
   @override
   String get share_link => 'Link paýlaş';

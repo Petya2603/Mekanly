@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-
-import '../../../core/components/app_text.dart';
 import '../../../product/constants/constants.dart';
 import '../../../remote/entities/house_detail/house_detail_response.dart';
 import '../../../utils/extensions.dart';
@@ -24,12 +22,12 @@ class RowMainInfoTile extends StatelessWidget {
         ),
         10.boxW,
         Text(
-          'Elitka',
+          '${data?.categoryName}',
           style: TextStyle(
-            fontSize: 16.sp,
+            fontSize: 12.sp,
             fontWeight: FontWeight.w400,
             fontFamily: StringConstants.roboto,
-            color: const Color(0xff555555),
+            color: const Color.fromARGB(255, 35, 38, 43),
           ),
         ),
         10.boxW,
@@ -38,16 +36,20 @@ class RowMainInfoTile extends StatelessWidget {
         SizedBox(
           height: 20.w,
           width: 20.w,
-          child: Assets.icons.icCalendar.svg(package: 'gen'),
+          child: SizedBox(
+            width: 12.w,
+            height: 12.w,
+            child: Assets.icons.icCalendar.svg(package: 'gen'),
+          ),
         ),
         10.boxW,
         Text(
           Helpers.formatDateAsMMDDYYYY(data?.updatedAt),
           style: TextStyle(
-            fontSize: 16.sp,
+            fontSize: 12.sp,
             fontWeight: FontWeight.w400,
             fontFamily: StringConstants.roboto,
-            color: const Color(0xff555555),
+            color: const Color.fromARGB(255, 35, 38, 43),
           ),
         ),
         10.boxW,
@@ -56,16 +58,19 @@ class RowMainInfoTile extends StatelessWidget {
         SizedBox(
           height: 20.w,
           width: 20.w,
-          child: Assets.icons.icEye.svg(package: 'gen'),
+          child: SizedBox(
+              width: 12.w,
+              height: 12.w,
+              child: Assets.icons.icEye.svg(package: 'gen')),
         ),
         10.boxW,
         Text(
           data?.viewed.toString() ?? '0',
           style: TextStyle(
-            fontSize: 16.sp,
+            fontSize: 12.sp,
             fontWeight: FontWeight.w400,
             fontFamily: StringConstants.roboto,
-            color: const Color(0xff555555),
+            color: const Color.fromARGB(255, 35, 38, 43),
           ),
         ),
       ],

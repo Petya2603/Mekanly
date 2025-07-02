@@ -8,11 +8,11 @@ import 'package:gen/gen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../core/components/adv_card.dart';
 import '../../core/components/app_btn.dart';
 import '../../core/components/app_text.dart';
 import '../../core/components/loading_indicator.dart';
 import '../../core/components/try_again_widget.dart';
+import '../../localization/extensions.dart';
 import '../../product/base/base_status/base_status.dart';
 import '../../product/constants/constants.dart';
 import '../../product/injection/injector.dart';
@@ -24,7 +24,7 @@ import 'cubit/house_detail_cubit.dart';
 import 'house_images.dart';
 import 'widgets/circled_icon_btn.dart';
 import 'widgets/gradient_bg_container.dart';
-import 'widgets/notification_card.dart' show NotificationCard;
+import 'widgets/pop_up.dart';
 import 'widgets/row_main_info_tile.dart';
 
 class HouseDetailRoute {
@@ -64,41 +64,280 @@ class HouseDetailView extends StatefulWidget {
 
 class _HouseDetailViewState extends State<HouseDetailView> {
   double _scrollPercentage = 0.0;
+  bool shareLink = false;
+  bool shareImage = true;
 
-  Future<void> shareImageWithDio(String imageUrl) async {
-    if (imageUrl.isEmpty) {
-      print('Paylaşılacak görsel yok.');
-      return;
+  late String link;
+  late List<String> imageUrls;
+
+  @override
+  void initState() {
+    super.initState();
+
+    final rawImageUrl = widget.data.imgUrl?.toString() ?? '';
+
+    if (rawImageUrl.startsWith('[') && rawImageUrl.endsWith(']')) {
+      final cleanStr = rawImageUrl.substring(1, rawImageUrl.length - 1);
+      imageUrls = cleanStr.split(',').map((e) => e.trim()).toList();
+    } else if (rawImageUrl.isNotEmpty) {
+      imageUrls = [rawImageUrl];
+    } else {
+      imageUrls = [];
     }
 
-    //Share image with Dio
-    var firstImageUrl = imageUrl;
-    if (imageUrl.startsWith('[') && imageUrl.endsWith(']')) {
-      final cleanStr = imageUrl.substring(1, imageUrl.length - 1);
-      final urls = cleanStr.split(',').map((e) => e.trim()).toList();
-      firstImageUrl = urls.isNotEmpty ? urls.first : '';
+    while (imageUrls.length < 3) {
+      imageUrls.add('');
     }
 
-    if (firstImageUrl.isEmpty) {
-      print('URL si yok.');
-      return;
-    }
+    link = 'https://mekanly.com/house/${widget.data.imgUrl}';
+  }
 
+  Future<void> shareImagesWithDio(List<String> imageUrls,
+      {String? text}) async {
     try {
       final tempDir = await getTemporaryDirectory();
-      final filePath = '${tempDir.path}/shared_image.jpg';
+      var files = <XFile>[];
 
-      final dio = Dio();
-      await dio.download(firstImageUrl, filePath);
+      for (int i = 0; i < imageUrls.length; i++) {
+        final imageUrl = imageUrls[i];
+        if (imageUrl.isEmpty) continue;
 
-      // ignore: deprecated_member_use
-      await Share.shareXFiles(
-        [XFile(filePath)],
-        // text: firstImageUrl,
-      );
+        final filePath = '${tempDir.path}/shared_image_$i.jpg';
+
+        final dio = Dio();
+        await dio.download(imageUrl, filePath);
+
+        files.add(XFile(filePath));
+      }
+
+      if (files.isNotEmpty) {
+        await Share.shareXFiles(files, text: text);
+      } else if (text != null) {
+        await Share.share(text);
+      } else {
+        print('surat yok.');
+      }
     } catch (e) {
-      print(' $e');
+      print('Error sharing images: $e');
     }
+  }
+
+  void _showShareBottomSheet(BuildContext context, List<String> imageUrls) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: const Color.fromARGB(255, 245, 240, 234),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            final isRTL = Directionality.of(context) == TextDirection.rtl;
+
+            const double stackWidth = 180;
+            const double imageSize = 140;
+            const baseOffset = (stackWidth - imageSize) / 2;
+
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: IconButton(
+                      icon: Assets.icons.close.svg(package: 'gen'),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Center(
+                    child: SizedBox(
+                      width: stackWidth,
+                      height: stackWidth,
+                      child: Stack(
+                        children: List.generate(
+                          imageUrls.length.clamp(0, 3),
+                          (index) {
+                            final verticalOffset = index * 12.0;
+                            final scale = 1.0 - (index * 0.04);
+                            const offsetAmount = 12.0;
+                            double horizontalOffset;
+                            switch (index) {
+                              case 0:
+                                horizontalOffset = offsetAmount;
+                                break;
+                              case 1:
+                                horizontalOffset = 0;
+                                break;
+                              case 2:
+                                horizontalOffset = -offsetAmount;
+                                break;
+                              default:
+                                horizontalOffset = index * 12.0;
+                            }
+
+                            return TweenAnimationBuilder<double>(
+                              duration:
+                                  Duration(milliseconds: 400 + (index * 100)),
+                              curve: Curves.easeOutBack,
+                              tween: Tween<double>(begin: 0.0, end: 1),
+                              builder: (context, value, child) {
+                                return Positioned(
+                                  left: isRTL
+                                      ? null
+                                      : baseOffset + horizontalOffset,
+                                  right: isRTL
+                                      ? baseOffset + horizontalOffset
+                                      : null,
+                                  top: verticalOffset,
+                                  child: Transform.scale(
+                                    scale: (scale * value).clamp(0.0, 1.0),
+                                    child: Opacity(
+                                      opacity: value.clamp(0.0, 1.0),
+                                      child: Container(
+                                        width: imageSize,
+                                        height: imageSize,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(24),
+                                          border: Border.all(
+                                              color: Colors.white, width: 6),
+                                          boxShadow: const [
+                                            BoxShadow(
+                                              color: Colors.black26,
+                                              blurRadius: 6,
+                                              offset: Offset(2, 2),
+                                            ),
+                                          ],
+                                        ),
+                                        clipBehavior: Clip.hardEdge,
+                                        child: imageUrls[index].isNotEmpty
+                                            ? Image.network(
+                                                imageUrls[index],
+                                                fit: BoxFit.contain,
+                                              )
+                                            : const SizedBox(),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    context.translation.share_with_friends,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: Color.fromARGB(255, 34, 34, 34),
+                      fontFamily: StringConstants.roboto,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: shareLink,
+                        activeColor: Colors.white,
+                        checkColor: Colors.black,
+                        onChanged: (value) {
+                          setState(() {
+                            shareLink = value!;
+                            if (value) shareImage = false;
+                          });
+                        },
+                      ),
+                      Text(
+                        context.translation.share_link,
+                        style: const TextStyle(
+                          fontFamily: StringConstants.roboto,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                          color: Color.fromARGB(255, 34, 34, 34),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: shareImage,
+                        activeColor: Colors.white,
+                        checkColor: Colors.black,
+                        onChanged: (value) {
+                          setState(() {
+                            shareImage = value!;
+                            if (value) shareLink = false;
+                          });
+                        },
+                      ),
+                      Text(
+                        context.translation.share_photo,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: StringConstants.roboto,
+                          color: Color.fromARGB(255, 34, 34, 34),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 34, 34, 34),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: () async {
+                        Navigator.pop(context);
+
+                        if (shareLink) {
+                          final urlText =
+                              imageUrls.where((e) => e.isNotEmpty).join('\n');
+                          await Share.share(urlText);
+                        }
+                        if (shareImage) {
+                          await shareImagesWithDio(imageUrls);
+                        }
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.share, color: Colors.white),
+                          const SizedBox(width: 8),
+                          Text(
+                            context.translation.share,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: StringConstants.roboto,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -113,7 +352,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
               : kToolbarHeight;
           const maxHeight = 320;
           final minHeight = kToolbarHeight + MediaQuery.of(context).padding.top;
-          double scrollPercentage =
+          var scrollPercentage =
               1.0 - ((currentHeight - minHeight) / (maxHeight - minHeight));
           scrollPercentage = scrollPercentage.clamp(0.0, 1.0);
           return <Widget>[
@@ -145,16 +384,27 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                     CircledIconBtn(
                       icon: Assets.icons.icShare.svg(package: 'gen'),
                       onTap: () {
-                        var imageUrl = widget.data.imgUrl?.toString() ?? '';
-                        if (imageUrl.startsWith('[') &&
-                            imageUrl.endsWith(']')) {
+                        final rawImageUrl =
+                            widget.data.imgUrl?.toString() ?? '';
+
+                        List<String> imageUrls;
+
+                        if (rawImageUrl.startsWith('[') &&
+                            rawImageUrl.endsWith(']')) {
                           final cleanStr =
-                              imageUrl.substring(1, imageUrl.length - 1);
-                          final urls =
+                              rawImageUrl.substring(1, rawImageUrl.length - 1);
+                          imageUrls =
                               cleanStr.split(',').map((e) => e.trim()).toList();
-                          imageUrl = urls.isNotEmpty ? urls.first : '';
+                        } else if (rawImageUrl.isNotEmpty) {
+                          imageUrls = [rawImageUrl];
+                        } else {
+                          imageUrls = [];
                         }
-                        shareImageWithDio(imageUrl);
+                        while (imageUrls.length < 3) {
+                          imageUrls.add('');
+                        }
+
+                        _showShareBottomSheet(context, imageUrls);
                       },
                     ),
                     12.boxW,
@@ -169,22 +419,35 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                     children: [
                       IconButton(
                         icon: Assets.icons.icShare.svg(
-                          color: Colors.white,
                           package: 'gen',
+                          color: Colors.white,
+                          width: 25,
+                          height: 25,
                         ),
                         onPressed: () {
-                          var imageUrl = widget.data.imgUrl?.toString() ?? '';
-                          if (imageUrl.startsWith('[') &&
-                              imageUrl.endsWith(']')) {
-                            final cleanStr =
-                                imageUrl.substring(1, imageUrl.length - 1);
-                            final urls = cleanStr
+                          final rawImageUrl =
+                              widget.data.imgUrl?.toString() ?? '';
+                          List<String> imageUrls;
+                          if (rawImageUrl.startsWith('[') &&
+                              rawImageUrl.endsWith(']')) {
+                            final cleanStr = rawImageUrl.substring(
+                              1,
+                              rawImageUrl.length - 1,
+                            );
+                            imageUrls = cleanStr
                                 .split(',')
                                 .map((e) => e.trim())
                                 .toList();
-                            imageUrl = urls.isNotEmpty ? urls.first : '';
+                          } else if (rawImageUrl.isNotEmpty) {
+                            imageUrls = [rawImageUrl];
+                          } else {
+                            imageUrls = [];
                           }
-                          shareImageWithDio(imageUrl);
+                          while (imageUrls.length < 5) {
+                            imageUrls.add('');
+                          }
+
+                          _showShareBottomSheet(context, imageUrls);
                         },
                       ),
                       12.boxW,
@@ -212,8 +475,6 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                   var scrollPercentage = 1.0 -
                       ((currentHeight - minHeight) / (maxHeight - minHeight));
 
-                  var scrollPercentagee = 1.0 -
-                      ((currentHeight - minHeight) / (maxHeight - minHeight));
                   scrollPercentage = scrollPercentage.clamp(0.0, 1.0);
 
                   if (scrollPercentage != _scrollPercentage) {
@@ -307,6 +568,12 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _HeaderInfos(house: house),
+                  12.boxH,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12).w,
+                    child: const ClickableBanner(),
+                  ),
+                  12.boxH,
                   const _Comments(),
                   12.boxH,
                   _HouseDetailInfo(
@@ -338,7 +605,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                         GestureDetector(
                           onTap: () {},
                           child: AppText.s14w400BdM(
-                            'Nägilelik bildirmek',
+                            context.translation.report,
                             fontFamily: StringConstants.roboto,
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w500,
@@ -427,7 +694,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                     },
                     fontSize: 12.sp,
                     textColor: const Color(0xFF009688),
-                    text: 'SMS UGRATMAK',
+                    text: context.translation.send_sms,
                     fontWeight: FontWeight.w500,
                     fontFamily: StringConstants.roboto,
                     bgColor: const Color(0xffE9F7F0),
@@ -435,11 +702,6 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                       height: 18.w,
                       child: Assets.icons.sms.svg(
                         package: 'gen',
-                        height: 22.w,
-                        colorFilter: const ColorFilter.mode(
-                          Color(0xFF009688),
-                          BlendMode.srcIn,
-                        ),
                       ),
                     ),
                   ),
@@ -462,7 +724,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                         print('Nomeri tapylmady.');
                       }
                     },
-                    text: 'JAŇ ETMEK',
+                    text: context.translation.call,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w500,
                     fontFamily: StringConstants.roboto,
@@ -472,11 +734,6 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                       height: 18.w,
                       child: Assets.icons.icCalll.svg(
                         package: 'gen',
-                        height: 22.w,
-                        colorFilter: const ColorFilter.mode(
-                          Color(0xFF006169),
-                          BlendMode.srcIn,
-                        ),
                       ),
                     ),
                   ),
@@ -540,17 +797,24 @@ class _HouseDetailInfoState extends State<_HouseDetailInfo> {
   @override
   void initState() {
     super.initState();
+    // Burada context ile işlem yapma
+  }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Burada context'i güvenle kullanabilirsin
     _items = [
       _HouseInfoGridItem(
         icon: Assets.icons.icCategoryDetail.svg(package: 'gen'),
-        title: 'Bölümi',
-        value: widget.house?.categoryName,
+        title: context.translation.section,
+        value: widget.house?.categoryName ?? '',
       ),
       _HouseInfoGridItem(
         icon: Assets.icons.icCall.svg(package: 'gen'),
-        title: 'Telefon nomeri',
-        value: widget.house?.bronNumber.toString(),
+        title: context.translation.phone_number,
+        value: widget.house?.bronNumber?.toString() ?? '',
       ),
       _HouseInfoGridItem(
         icon: Assets.icons.icCalendar.svg(package: 'gen'),
@@ -559,38 +823,47 @@ class _HouseDetailInfoState extends State<_HouseDetailInfo> {
       ),
       _HouseInfoGridItem(
         icon: Assets.icons.icPerson.svg(package: 'gen'),
-        title: 'Satyjy görnüşi',
-        value: widget.house?.who.toString() ?? 'Eýesi',
+        title: context.translation.salesman_type,
+        value: widget.house?.who?.toString() ?? 'Eýesi',
       ),
       _HouseInfoGridItem(
-        icon: Assets.icons.icLux.svg(package: 'gen'),
-        title: 'Emläk görnüşi',
+        icon: SizedBox(
+          width: 24.w,
+          height: 24.w,
+          child: Assets.icons.luxx.svg(package: 'gen'),
+        ),
+        title: context.translation.house_type,
         value: 'Elitga',
       ),
       _HouseInfoGridItem(
-        icon: Assets.icons.icFloorCount.svg(package: 'gen'),
-        title: 'Otag sany',
-        value: widget.house?.roomNumber.toString(),
+        icon: SizedBox(
+          width: 24.w,
+          height: 24.w,
+          child: Assets.icons.icFloorCount.svg(package: 'gen'),
+        ),
+        title: context.translation.room_number,
+        value: widget.house?.roomNumber?.toString() ?? '',
       ),
       _HouseInfoGridItem(
         icon: Assets.icons.isremont.svg(package: 'gen'),
-        title: 'Remont görnüşi',
+        title: context.translation.remont_gorn,
         value: 'Ýewroremont',
       ),
       _HouseInfoGridItem(
         icon: Assets.icons.icSquare.svg(package: 'gen'),
-        title: 'Umumy meýdany',
-        value: '${widget.house?.area} m²',
+        title: context.translation.total_area,
+        value: widget.house?.area != null ? '${widget.house?.area} m²' : '',
       ),
       _HouseInfoGridItem(
         icon: Assets.icons.icStairsFloor.svg(package: 'gen'),
-        title: 'Gat sany',
-        value: widget.house?.floorNumber.toString(),
+        title: context.translation.floor_number,
+        value: widget.house?.floorNumber?.toString() ?? '',
       ),
       _HouseInfoGridItem(
         icon: Assets.icons.icPrice.svg(package: 'gen'),
-        title: 'Bahasy',
-        value: '${widget.house?.price} TMT',
+        title: context.translation.price,
+        value: widget.house?.price != null ? '${widget.house?.price} TMT' : '',
+        isBold: true,
       ),
     ];
   }
@@ -605,7 +878,7 @@ class _HouseDetailInfoState extends State<_HouseDetailInfo> {
           Row(
             children: [
               AppText.s14w400BdM(
-                'Maglumatlar',
+                context.translation.informations,
                 fontFamily: StringConstants.roboto,
                 fontSize: 16.sp,
               ),
@@ -625,7 +898,6 @@ class _HouseDetailInfoState extends State<_HouseDetailInfo> {
               crossAxisCount: 2,
               crossAxisSpacing: 13,
               childAspectRatio: 130 / 64,
-              // c
             ),
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -658,7 +930,7 @@ class _HouseDetailPossibilityState extends State<_HouseDetailPossibility> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppText.s14w400BdM(
-            'Mümkinçilikler',
+            context.translation.mumkincilikler,
             fontFamily: StringConstants.roboto,
             fontSize: 18.sp,
           ),
@@ -691,11 +963,13 @@ class _HouseInfoGridItem extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.value,
+    this.isBold = false,
   });
 
   final Widget icon;
   final String title;
-  final String? value;
+  final String value;
+  final bool isBold;
 
   @override
   Widget build(BuildContext context) {
@@ -706,6 +980,15 @@ class _HouseInfoGridItem extends StatelessWidget {
           width: 1.w,
         ),
         borderRadius: BorderRadius.circular(6.w),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFFEEEEEE),
+            blurRadius: 4.w,
+            spreadRadius: 1.w,
+            offset: Offset(0, 2.w),
+          ),
+        ],
       ),
       padding: const EdgeInsets.all(12).w,
       child: Column(
@@ -722,7 +1005,7 @@ class _HouseInfoGridItem extends StatelessWidget {
               AppText.s12w400BdS(
                 title,
                 fontFamily: StringConstants.roboto,
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.w500,
                 color: const Color(0xFF222222),
                 fontSize: 13.sp,
               ),
@@ -730,9 +1013,9 @@ class _HouseInfoGridItem extends StatelessWidget {
           ),
           16.boxH,
           AppText.s12w400BdS(
-            value ?? '',
+            value,
             fontFamily: StringConstants.roboto,
-            fontWeight: FontWeight.w400,
+            fontWeight: isBold ? FontWeight.bold : FontWeight.w400,
             fontSize: 13.sp,
             color: const Color(0xFF374151),
           ),
@@ -775,7 +1058,7 @@ class _Comments extends StatelessWidget {
       child: AppBtn(
         onTap: () {},
         fontSize: 13.sp,
-        text: 'Teswirler  (0)',
+        text: '${context.translation.comments}  (0)',
         textColor: const Color(0xff555555),
         ltIcon: SizedBox(
           height: 18.w,

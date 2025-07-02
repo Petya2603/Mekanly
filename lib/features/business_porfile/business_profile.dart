@@ -67,6 +67,7 @@ class _BusinessProfileViewState extends State<BusinessProfileView>
             slivers: [
               SliverToBoxAdapter(
                 child: Container(
+                  color: ColorName.main,
                   padding:
                       const EdgeInsets.symmetric(vertical: 14, horizontal: 18)
                           .w,
@@ -85,9 +86,7 @@ class _BusinessProfileViewState extends State<BusinessProfileView>
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: CategoriesCard(
-                    categories: categories,
-                  ),
+                  child: CategoriesCard(categories: categories ?? []),
                 ),
               ),
               SliverToBoxAdapter(
@@ -105,12 +104,11 @@ class _BusinessProfileViewState extends State<BusinessProfileView>
                 key: const Key('business_profile_card'),
                 itemBuilder: (context, index) {
                   final profile = profiles?[index];
-                  return BusinessProfileCard(
-                    profile: profile,
-                  );
+                  if (profile == null) return const SizedBox.shrink();
+                  return BusinessProfileCard(profile: profile);
                 },
                 separatorBuilder: (context, index) => 5.boxH,
-                itemCount: profiles?.length,
+                itemCount: profiles?.length ?? 0,
               ),
               24.boxH.toSliver,
             ],

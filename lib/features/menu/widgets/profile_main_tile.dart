@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/components/app_text.dart';
+import '../../../localization/extensions.dart';
 import '../../../product/constants/constants.dart';
 import '../../../product/transitions/custom_page_route.dart';
 import '../../../utils/extensions.dart';
@@ -18,23 +19,22 @@ class ProfileMainTile extends StatelessWidget {
     required this.onTap,
     required this.isAuthNeeded,
     this.isLogOut = false,
+    this.trailingWidget,
   });
 
   final String title;
   final Widget icon;
   final VoidCallback onTap;
-
   final bool isAuthNeeded;
   final bool isLogOut;
+  final Widget? trailingWidget;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
         return state.maybeWhen(
-          orElse: () {
-            return const SizedBox.shrink();
-          },
+          orElse: () => const SizedBox.shrink(),
           authCheckingDone: (smallBanners, bigBanners, topAds, user) {
             if (user?.id == null && isLogOut) {
               return const SizedBox.shrink();
@@ -49,17 +49,11 @@ class ProfileMainTile extends StatelessWidget {
                       ToNotifyUser.show(
                         context,
                         message:
-                            'Siz ulagama girmänsiňzi! Bu hereket üçin ulgama girmegiňiz gerek.',
-                        onCancel: () {
-                          if (Navigator.canPop(context)) {
-                            Navigator.pop(context);
-                          }
-                        },
+                            // ignore: lines_longer_than_80_chars
+                            context.translation.ul_gir,
+                        onCancel: () => Navigator.pop(context),
                         onOk: () {
-                          if (Navigator.canPop(context)) {
-                            Navigator.pop(context);
-                          }
-
+                          Navigator.pop(context);
                           Navigator.pushReplacement(
                             context,
                             CustomPageRoute.slide(
@@ -71,30 +65,22 @@ class ProfileMainTile extends StatelessWidget {
                       return;
                     }
                     onTap.call();
-                    return;
                   },
                 );
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 14,
-                  horizontal: 20,
-                ).w,
+                padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 20.w),
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
                       color: const Color(0xffBDBDBD),
-                      width: .5.w,
+                      width: 0.5.w,
                     ),
                   ),
                 ),
                 child: Row(
                   children: [
-                    SizedBox(
-                      width: 22.w,
-                      height: 22.w,
-                      child: icon,
-                    ),
+                    SizedBox(width: 22.w, height: 22.w, child: icon),
                     14.boxW,
                     AppText.s14w400BdM(
                       title,
@@ -102,10 +88,7 @@ class ProfileMainTile extends StatelessWidget {
                       fontFamily: StringConstants.manrope,
                     ),
                     const Spacer(),
-                    Icon(
-                      Icons.chevron_right,
-                      size: 20.w,
-                    ),
+                    trailingWidget ?? Icon(Icons.chevron_right, size: 20.w),
                   ],
                 ),
               ),

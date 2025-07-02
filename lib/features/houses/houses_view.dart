@@ -140,30 +140,35 @@ class _HousesViewState extends State<HousesView>
                             ),
                           ),
                           10.boxW,
-                          GestureDetector(
-                            onTap: () {
-                              if (filter?.data != null) {
-                                final data = HouseFilterRoute(
-                                  globalOptions: filter!.data,
-                                  bloc: context.read<HousesBloc>(),
-                                );
-                                Navigator.push(
-                                  context,
-                                  // ignore: inference_failure_on_function_invocation
-                                  CustomPageRoute.slide(
-                                    HouseFiltersView(
-                                      filter: data,
-                                    ),
-                                  ),
-                                );
-                              }
+                          BlocBuilder<HousesBloc, HousesState>(
+                            builder: (context, state) {
+                              return GestureDetector(
+                                onTap: () {
+                                  if (filter?.data != null) {
+                                    final data = HouseFilterRoute(
+                                      globalOptions: filter!.data,
+                                      bloc: context.read<HousesBloc>(),
+                                    );
+                                    Navigator.push(
+                                      context,
+                                      CustomPageRoute.slide(
+                                        HouseFiltersView(filter: data),
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: SizedBox(
+                                  width: 35.w,
+                                  height: 35.w,
+                                  child: state.hasActiveFilters
+                                      ? Assets.icons.icFilterselected
+                                          .svg(package: 'gen')
+                                      : Assets.icons.icFilter
+                                          .svg(package: 'gen'),
+                                ),
+                              );
                             },
-                            child: SizedBox(
-                              width: 35.w,
-                              height: 35.w,
-                              child: Assets.icons.icFilter.svg(package: 'gen'),
-                            ),
-                          ),
+                          )
                         ],
                       ),
                     ),

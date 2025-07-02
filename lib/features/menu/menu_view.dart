@@ -10,6 +10,7 @@ import '../../utils/extensions.dart';
 import '../comments/comments_view.dart';
 import '../contact_us/contact_us_view.dart';
 import '../content/content_view.dart';
+import '../root/view/root_view.dart';
 import 'duzgunname_view.dart';
 import 'widgets/profile_main_tile.dart';
 import 'widgets/user_business_profile_tile.dart';
@@ -53,7 +54,9 @@ class _MenuViewState extends State<MenuView> {
                   ProfileMainTile(
                     title: context.translation.add_house,
                     isAuthNeeded: true,
-                    icon: Assets.icons.icAddHouse.svg(package: 'gen'),
+                    icon: Assets.icons.icAddHouse.svg(
+                      package: 'gen',
+                    ),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -67,15 +70,50 @@ class _MenuViewState extends State<MenuView> {
                   ProfileMainTile(
                     title: context.translation.language,
                     isAuthNeeded: false,
-                    icon: Assets.icons.icLang.svg(package: 'gen'),
+                    icon: Assets.icons.icLang.svg(
+                        package: 'gen',
+                        color: const Color.fromARGB(255, 34, 34, 34)),
                     onTap: () {
                       chooseLang(context);
+                    },
+                    trailingWidget: BlocBuilder<AppCubit, AppState>(
+                      builder: (context, state) {
+                        final currentLang = state.locale?.languageCode ?? 'tk';
+                        return Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            AppText.s14w400BdM(
+                              currentLang == 'tk' ? 'Türkmen dili' : 'Rus dili',
+                              fontWeight: FontWeight.w400,
+                              fontFamily: StringConstants.manrope,
+                              color: const Color.fromARGB(255, 106, 106, 106),
+                            ),
+                            8.boxW,
+                            Icon(
+                              Icons.chevron_right,
+                              size: 20.w,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                  ProfileMainTile(
+                    isAuthNeeded: true,
+                    title: context.translation.favorites,
+                    icon: Assets.icons.icFavoriteNew.svg(
+                        package: 'gen',
+                        color: const Color.fromARGB(255, 34, 34, 34)),
+                    onTap: () {
+                      RootView.rootKey.currentState?.goToTab(3);
                     },
                   ),
                   ProfileMainTile(
                     isAuthNeeded: true,
                     title: context.translation.comments,
-                    icon: Assets.icons.icChat.svg(package: 'gen'),
+                    icon: Assets.icons.icChat.svg(
+                      package: 'gen',
+                    ),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -89,7 +127,9 @@ class _MenuViewState extends State<MenuView> {
                   ProfileMainTile(
                     isAuthNeeded: false,
                     title: context.translation.rules,
-                    icon: Assets.icons.icPrivacy.svg(package: 'gen'),
+                    icon: Assets.icons.icPrivacy.svg(
+                      package: 'gen',
+                    ),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -103,7 +143,9 @@ class _MenuViewState extends State<MenuView> {
                   ProfileMainTile(
                     isAuthNeeded: true,
                     title: context.translation.contact,
-                    icon: Assets.icons.icContactUs.svg(package: 'gen'),
+                    icon: Assets.icons.icContactUs.svg(
+                        package: 'gen',
+                        color: const Color.fromARGB(255, 34, 34, 34)),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -117,7 +159,9 @@ class _MenuViewState extends State<MenuView> {
                   ProfileMainTile(
                     isAuthNeeded: false,
                     title: context.translation.about_us,
-                    icon: Assets.icons.icHelp.svg(package: 'gen'),
+                    icon: Assets.icons.icHelp.svg(
+                        package: 'gen',
+                        color: const Color.fromARGB(255, 34, 34, 34)),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -136,7 +180,9 @@ class _MenuViewState extends State<MenuView> {
                     isLogOut: true,
                     isAuthNeeded: true,
                     title: context.translation.log_out,
-                    icon: Assets.icons.icLogOut.svg(package: 'gen'),
+                    icon: Assets.icons.icLogOut.svg(
+                        package: 'gen',
+                        color: const Color.fromARGB(255, 34, 34, 34)),
                     onTap: () {
                       // context.read<AuthCubit>().logOut();
                     },
@@ -162,78 +208,94 @@ Future<void> chooseLang(BuildContext context) async {
           return Dialog(
             alignment: Alignment.center,
             backgroundColor: Colors.white,
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.2,
-              width: MediaQuery.of(context).size.width * 0.96,
-              margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: const Color(0xFFFFFFFF),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height * 0.25,
+                maxWidth: MediaQuery.of(context).size.width * 0.96,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  10.boxW,
-                  AppText.s14w400BdM(
-                    context.translation.select_language,
-                    fontSize: 15.sp,
-                    fontFamily: StringConstants.roboto,
-                    fontWeight: FontWeight.w500,
-                    color: const Color(0xFF252525),
-                  ),
-                  RadioListTile<String>(
-                    autofocus: selectedLang == 'tk',
-                    activeColor: Colors.lightBlue,
-                    controlAffinity: ListTileControlAffinity.trailing,
-                    value: 'tk',
-                    groupValue: selectedLang,
-                    contentPadding: EdgeInsets.zero,
-                    onChanged: (value) {
-                      if (value == null) return;
-                      setState(() {
-                        selectedLang = value;
-                      });
-                      appCubit.changeLang(Locale(value));
-                      Future.delayed(const Duration(milliseconds: 100), () {
-                        Navigator.of(context).pop();
-                      });
-                    },
-                    title: AppText.s14w400BdM(
-                      'Türkmen dili',
-                      color: const Color(0xFF252525),
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      fontFamily: StringConstants.roboto,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(25, 15, 5, 15),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: const Color(0xFFFFFFFF),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: AppText.s14w400BdM(
+                        context.translation.select_language,
+                        fontSize: 15.sp,
+                        fontFamily: StringConstants.roboto,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xFF252525),
+                      ),
                     ),
-                  ),
-                  RadioListTile<String>(
-                    autofocus: selectedLang == 'ru',
-                    activeColor: Colors.lightBlue,
-                    value: 'ru',
-                    groupValue: selectedLang,
-                    contentPadding: EdgeInsets.zero,
-                    controlAffinity: ListTileControlAffinity.trailing,
-                    onChanged: (value) {
-                      if (value == null) return;
-                      setState(() {
-                        selectedLang = value;
-                        appCubit.changeLang(Locale(value));
-                      });
-
-                      Future.delayed(const Duration(milliseconds: 100), () {
-                        Navigator.of(context).pop();
-                      });
-                    },
-                    title: AppText.s14w400BdM(
-                      'Rus dili',
-                      color: const Color(0xFF252525),
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      fontFamily: StringConstants.roboto,
+                    const SizedBox(height: 8),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        RadioListTile<String>(
+                          dense: true,
+                          visualDensity: VisualDensity.compact,
+                          autofocus: selectedLang == 'tk',
+                          activeColor: Colors.lightBlue,
+                          controlAffinity: ListTileControlAffinity.trailing,
+                          value: 'tk',
+                          groupValue: selectedLang,
+                          contentPadding: EdgeInsets.zero,
+                          onChanged: (value) {
+                            if (value == null) return;
+                            setState(() {
+                              selectedLang = value;
+                            });
+                            appCubit.changeLang(Locale(value));
+                            Future.delayed(const Duration(milliseconds: 100),
+                                () {
+                              Navigator.of(context).pop();
+                            });
+                          },
+                          title: AppText.s14w400BdM(
+                            'Türkmen dili',
+                            color: const Color(0xFF252525),
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: StringConstants.roboto,
+                          ),
+                        ),
+                        RadioListTile<String>(
+                          dense: true,
+                          visualDensity: VisualDensity.compact,
+                          autofocus: selectedLang == 'ru',
+                          activeColor: Colors.lightBlue,
+                          value: 'ru',
+                          groupValue: selectedLang,
+                          contentPadding: EdgeInsets.zero,
+                          controlAffinity: ListTileControlAffinity.trailing,
+                          onChanged: (value) {
+                            if (value == null) return;
+                            setState(() {
+                              selectedLang = value;
+                              appCubit.changeLang(Locale(value));
+                            });
+                            Future.delayed(const Duration(milliseconds: 100),
+                                () {
+                              Navigator.of(context).pop();
+                            });
+                          },
+                          title: AppText.s14w400BdM(
+                            'Rus dili',
+                            color: const Color(0xFF252525),
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: StringConstants.roboto,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );
@@ -254,7 +316,7 @@ void notification(BuildContext context) {
         child: Container(
           height: MediaQuery.of(context).size.height * 0.25,
           width: MediaQuery.of(context).size.width * 0.96,
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 15),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: const Color(0xFFFFFFFF),

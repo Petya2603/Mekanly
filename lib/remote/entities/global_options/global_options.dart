@@ -197,6 +197,23 @@ extension CategoryTypeIcon on CategoryHouse {
   }
 }
 
+extension GlobalOptionsExtensions on GlobalOptions {
+  bool get hasActiveFilters {
+    return (selectedCategoryHouses?.isNotEmpty ?? false) ||
+        (selectedSubLocations?.isNotEmpty ?? false) ||
+        (selectedFloorCount?.isNotEmpty ?? false) ||
+        (selectedRoomCount?.isNotEmpty ?? false) ||
+        (selectedPropertyType?.isNotEmpty ?? false) ||
+        (selectedRepairType?.isNotEmpty ?? false) ||
+        (selectedPossibility?.isNotEmpty ?? false) ||
+        (minPrice != null) ||
+        (maxPrice != null) ||
+        (fromHolder != null && fromHolder!) ||
+        (justShowNewAdded != null && justShowNewAdded!) ||
+        (justShowWithImage != null && justShowWithImage!);
+  }
+}
+
 extension PropertyTypesIcon on PropertyType {
   Widget get buildIcon {
     switch (id) {

@@ -345,6 +345,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get we => ' и ';
 
   @override
+  String get ul_gir =>
+      'Вы не вошли в систему! Для этого действия необходимо войти в систему';
+
+  @override
   String get are_you_sure_you_want_to_add_this_announcement =>
       'Вы действительно хотите добавить это объявление?';
 
