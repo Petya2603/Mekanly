@@ -340,6 +340,101 @@ class _HouseDetailViewState extends State<HouseDetailView> {
     );
   }
 
+  void _showReportBottomSheet(BuildContext context) {
+    String? selectedReason;
+
+    // ignore: inference_failure_on_function_invocation
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      isScrollControlled: true,
+      builder: (BuildContext ctx) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      AppText.s14w400BdM(
+                        '',
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      const Spacer(),
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ],
+                  ),
+                  const Divider(),
+                  ...[
+                    'Satylan',
+                    'Bildirş hakyk däl',
+                    'Habarlaşyp bolanok',
+                    'Suraty ýok',
+                    'Hakyký eýesi däl',
+                    'Başga sebäp'
+                  ].map((reason) {
+                    return RadioListTile<String>(
+                      title: Text(reason),
+                      value: reason,
+                      groupValue: selectedReason,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedReason = value;
+                        });
+                      },
+                    );
+                  }),
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: selectedReason == null
+                          ? null
+                          : () {
+                              Navigator.pop(context);
+                              _showConfirmationDialog(context);
+                            },
+                      child: Text(context.translation.send), // Mesela: "Ugrat"
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext ctx) {
+        return AlertDialog(
+          title: Text(context.translation.notification), // Mesela: "Habarname"
+          content: Text(
+            'Kabul edildi, biz bu bildirşi gözden geçireris.',
+          ), // "Kabul edildi, biz bu bildirşi gözden geçireris."
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: Text(context.translation.ok), // "OK"
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final statusBarHeight = MediaQuery.of(context).padding.top;
@@ -603,7 +698,9 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                         Assets.icons.icReport.svg(package: 'gen'),
                         8.boxW,
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            _showReportBottomSheet(context);
+                          },
                           child: AppText.s14w400BdM(
                             context.translation.report,
                             fontFamily: StringConstants.roboto,

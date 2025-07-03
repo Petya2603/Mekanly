@@ -14,6 +14,7 @@ class OptionCategoryModalBottomSheet extends StatefulWidget {
     required this.categories,
     this.isSingle = false,
   });
+
   final List<CategoryHouse> categories;
   final bool isSingle;
 
@@ -24,6 +25,8 @@ class OptionCategoryModalBottomSheet extends StatefulWidget {
   }) async {
     return showModalBottomSheet<List<CategoryHouse>?>(
       context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
       builder: (context) {
         return OptionCategoryModalBottomSheet(
           categories: categories,
@@ -48,15 +51,14 @@ class _OptionCategoryModalBottomSheetState
     _currentCategories = List.of(widget.categories);
   }
 
-  // void _closeAndSelectCtg() {
-  //   final isEmpty = checkIfEmpty();
-  //   if (isEmpty) {
-  //     return;
-  //   }
-  //   if (Navigator.canPop(context)) {
-  //     Navigator.pop(context, _currentCategories);
-  //   }
-  // }
+  void _closeAndSelectCtg() {
+    final isEmpty = checkIfEmpty();
+    if (isEmpty) return;
+
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context, _currentCategories);
+    }
+  }
 
   bool checkIfEmpty() {
     final isEmpty = _currentCategories.getAllSelected?.isEmpty;
@@ -73,7 +75,6 @@ class _OptionCategoryModalBottomSheetState
       index,
       ctg,
     );
-
     setState(() {});
   }
 
@@ -89,28 +90,17 @@ class _OptionCategoryModalBottomSheetState
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: const Radius.circular(12).r,
-          topRight: const Radius.circular(12).r,
-        ),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(12).r),
       ),
-      constraints: BoxConstraints(
-        maxHeight: 1.sh * .6,
-      ),
+      constraints: BoxConstraints(maxHeight: 1.sh * 0.6),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 12,
-              vertical: 10,
-            ).w,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10).w,
             decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(
-                  width: 1.w,
-                  color: const Color(0xffDDDDDD),
-                ),
+                bottom: BorderSide(width: 1.w, color: const Color(0xffDDDDDD)),
               ),
             ),
             child: SizedBox(
@@ -125,18 +115,26 @@ class _OptionCategoryModalBottomSheetState
                       height: 30.w,
                       child: IconButton(
                         padding: EdgeInsets.zero,
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
+                        onPressed: () => Navigator.pop(context),
                         icon: const Icon(Icons.close),
                       ),
                     ),
                   ),
                   Center(
-                    child: AppText.s14w400BdM(
-                      context.translation.section,
-                    ),
+                    child: AppText.s14w400BdM(context.translation.section),
                   ),
+                  // Align(
+                  //   alignment: Alignment.centerRight,
+                  //   child: SizedBox(
+                  //     width: 30.w,
+                  //     height: 30.w,
+                  //     child: IconButton(
+                  //       padding: EdgeInsets.zero,
+                  //       onPressed: _closeAndSelectCtg,
+                  //       icon: const Icon(Icons.check),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -153,9 +151,10 @@ class _OptionCategoryModalBottomSheetState
                     final updated = ctg.copyWith(selected: !ctg.selected);
                     if (widget.isSingle) {
                       _addSingle(updated, index);
-                      return;
+                      _closeAndSelectCtg();
+                    } else {
+                      _addToSelectedItems(updated, index);
                     }
-                    _addToSelectedItems(updated, index);
                   },
                 );
               },

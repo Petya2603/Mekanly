@@ -13,6 +13,10 @@ _$BusinessProfileCategoryEntityImpl
           title: json['title'] as String?,
           image: json['image'] as String?,
           businessProfiles: (json['business_profiles'] as num?)?.toInt(),
+          subcategories: (json['subcategories'] as List<dynamic>?)
+              ?.map((e) => BusinessProfileCategoryEntity.fromJson(
+                  e as Map<String, dynamic>))
+              .toList(),
         );
 
 Map<String, dynamic> _$$BusinessProfileCategoryEntityImplToJson(
@@ -22,4 +26,5 @@ Map<String, dynamic> _$$BusinessProfileCategoryEntityImplToJson(
       'title': instance.title,
       'image': instance.image,
       'business_profiles': instance.businessProfiles,
+      'subcategories': instance.subcategories,
     };

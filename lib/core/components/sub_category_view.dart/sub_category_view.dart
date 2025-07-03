@@ -3,30 +3,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-import '../../core/components/app_text.dart';
-import '../../core/components/buisnes_profile_card.dart';
-import '../../core/components/categories_card.dart';
-import '../../core/components/loading_indicator.dart';
-import '../../core/components/search_field.dart';
-import '../../core/components/try_again_widget.dart';
-import '../../localization/extensions.dart';
-import '../../product/base/base_status/base_status.dart';
-import '../../product/constants/constants.dart';
-import '../../utils/constants.dart';
-import '../../utils/extensions.dart';
-import 'cubit/business_profile_cubit.dart';
+import '../../../features/business_porfile/cubit/business_profile_cubit.dart';
+import '../../../localization/extensions.dart';
+import '../../../product/base/base_status/base_status.dart';
+import '../../../product/constants/constants.dart';
+import '../../../remote/entities/business_profile/business_profile_category_entity.dart';
+import '../../../utils/extensions.dart';
+import '../app_text.dart';
+import '../buisnes_profile_card.dart';
+import '../categories_card.dart';
+import '../loading_indicator.dart';
+import '../search_field.dart';
+import '../try_again_widget.dart';
 
-class BusinessProfileView extends StatefulWidget {
-  const BusinessProfileView({super.key});
+class BusinessProfileViewSubcategory extends StatefulWidget {
+  const BusinessProfileViewSubcategory({
+    super.key,
+    this.subcategories = const [],
+    this.categoryName = '',
+  });
+
+  final List<BusinessProfileCategoryEntity> subcategories;
+  final String categoryName;
 
   static const routePath = '/business-profile-view';
   static const routeName = 'business-profile-view';
 
   @override
-  State<BusinessProfileView> createState() => _BusinessProfileViewState();
+  State<BusinessProfileViewSubcategory> createState() =>
+      _BusinessProfileViewState();
 }
 
-class _BusinessProfileViewState extends State<BusinessProfileView>
+class _BusinessProfileViewState extends State<BusinessProfileViewSubcategory>
     with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
 
@@ -35,12 +43,6 @@ class _BusinessProfileViewState extends State<BusinessProfileView>
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await context.read<BusinessProfileCubit>().init();
     });
-  }
-
-  @override
-  void didChangeDependencies() {
-    precacheImage(const AssetImage(AppConstants.businessProfileImg), context);
-    super.didChangeDependencies();
   }
 
   @override
@@ -66,7 +68,6 @@ class _BusinessProfileViewState extends State<BusinessProfileView>
               },
             );
           }
-          final categories = state.categoryResponse?.data;
           final profiles = state.response?.data;
           return CustomScrollView(
             controller: _scrollController,
@@ -75,26 +76,43 @@ class _BusinessProfileViewState extends State<BusinessProfileView>
                 child: Container(
                   color: ColorName.main,
                   padding:
-                      const EdgeInsets.symmetric(vertical: 14, horizontal: 18)
-                          .w,
-                  child: SearchField(
-                    onTap: () {},
+                      EdgeInsets.symmetric(vertical: 14.h, horizontal: 18.w),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 10.w),
+                          child: SearchField(
+                            onTap: () {},
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          child: Assets.icons.icFilter.svg(
+                            package: 'gen',
+                            width: 35.w,
+                            height: 35.w,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 238.w,
-                  width: double.infinity,
-                  child: Image.asset(AppConstants.businessProfileImg),
+              if (widget.subcategories.isNotEmpty)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SubCategoriesCard(subcategories: widget.subcategories),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: CategoriesCard(categories: categories ?? []),
-                ),
-              ),
               SliverToBoxAdapter(
                 child: Padding(
                   padding:

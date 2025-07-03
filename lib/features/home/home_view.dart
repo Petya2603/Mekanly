@@ -71,8 +71,8 @@ class _HomeViewState extends State<HomeView>
     if (_smallBannersScrollController.hasClients) {
       _smallBannersScrollController.animateTo(
         position,
-        duration: const Duration(milliseconds: 500),
-        curve: Curves.easeInOut,
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeOut,
       );
     }
   }

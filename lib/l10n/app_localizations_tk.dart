@@ -590,7 +590,7 @@ class AppLocalizationsTk extends AppLocalizations {
   String get your_imo_page => 'Imo sahypaňyz';
 
   @override
-  String get my_announcements => 'Мои объявления';
+  String get my_announcements => 'Meniň bildirişlerim';
 
   @override
   String get about_us => 'Biz barada';

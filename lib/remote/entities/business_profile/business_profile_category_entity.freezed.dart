@@ -26,6 +26,8 @@ mixin _$BusinessProfileCategoryEntity {
   String? get image => throw _privateConstructorUsedError;
   @JsonKey(name: 'business_profiles')
   int? get businessProfiles => throw _privateConstructorUsedError;
+  List<BusinessProfileCategoryEntity>? get subcategories =>
+      throw _privateConstructorUsedError;
 
   /// Serializes this BusinessProfileCategoryEntity to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -49,7 +51,8 @@ abstract class $BusinessProfileCategoryEntityCopyWith<$Res> {
       {int id,
       String? title,
       String? image,
-      @JsonKey(name: 'business_profiles') int? businessProfiles});
+      @JsonKey(name: 'business_profiles') int? businessProfiles,
+      List<BusinessProfileCategoryEntity>? subcategories});
 }
 
 /// @nodoc
@@ -72,6 +75,7 @@ class _$BusinessProfileCategoryEntityCopyWithImpl<$Res,
     Object? title = freezed,
     Object? image = freezed,
     Object? businessProfiles = freezed,
+    Object? subcategories = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -90,6 +94,10 @@ class _$BusinessProfileCategoryEntityCopyWithImpl<$Res,
           ? _value.businessProfiles
           : businessProfiles // ignore: cast_nullable_to_non_nullable
               as int?,
+      subcategories: freezed == subcategories
+          ? _value.subcategories
+          : subcategories // ignore: cast_nullable_to_non_nullable
+              as List<BusinessProfileCategoryEntity>?,
     ) as $Val);
   }
 }
@@ -107,7 +115,8 @@ abstract class _$$BusinessProfileCategoryEntityImplCopyWith<$Res>
       {int id,
       String? title,
       String? image,
-      @JsonKey(name: 'business_profiles') int? businessProfiles});
+      @JsonKey(name: 'business_profiles') int? businessProfiles,
+      List<BusinessProfileCategoryEntity>? subcategories});
 }
 
 /// @nodoc
@@ -129,6 +138,7 @@ class __$$BusinessProfileCategoryEntityImplCopyWithImpl<$Res>
     Object? title = freezed,
     Object? image = freezed,
     Object? businessProfiles = freezed,
+    Object? subcategories = freezed,
   }) {
     return _then(_$BusinessProfileCategoryEntityImpl(
       id: null == id
@@ -147,6 +157,10 @@ class __$$BusinessProfileCategoryEntityImplCopyWithImpl<$Res>
           ? _value.businessProfiles
           : businessProfiles // ignore: cast_nullable_to_non_nullable
               as int?,
+      subcategories: freezed == subcategories
+          ? _value._subcategories
+          : subcategories // ignore: cast_nullable_to_non_nullable
+              as List<BusinessProfileCategoryEntity>?,
     ));
   }
 }
@@ -159,7 +173,9 @@ class _$BusinessProfileCategoryEntityImpl
       {required this.id,
       this.title,
       this.image,
-      @JsonKey(name: 'business_profiles') this.businessProfiles});
+      @JsonKey(name: 'business_profiles') this.businessProfiles,
+      final List<BusinessProfileCategoryEntity>? subcategories})
+      : _subcategories = subcategories;
 
   factory _$BusinessProfileCategoryEntityImpl.fromJson(
           Map<String, dynamic> json) =>
@@ -174,10 +190,19 @@ class _$BusinessProfileCategoryEntityImpl
   @override
   @JsonKey(name: 'business_profiles')
   final int? businessProfiles;
+  final List<BusinessProfileCategoryEntity>? _subcategories;
+  @override
+  List<BusinessProfileCategoryEntity>? get subcategories {
+    final value = _subcategories;
+    if (value == null) return null;
+    if (_subcategories is EqualUnmodifiableListView) return _subcategories;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'BusinessProfileCategoryEntity(id: $id, title: $title, image: $image, businessProfiles: $businessProfiles)';
+    return 'BusinessProfileCategoryEntity(id: $id, title: $title, image: $image, businessProfiles: $businessProfiles, subcategories: $subcategories)';
   }
 
   @override
@@ -189,13 +214,15 @@ class _$BusinessProfileCategoryEntityImpl
             (identical(other.title, title) || other.title == title) &&
             (identical(other.image, image) || other.image == image) &&
             (identical(other.businessProfiles, businessProfiles) ||
-                other.businessProfiles == businessProfiles));
+                other.businessProfiles == businessProfiles) &&
+            const DeepCollectionEquality()
+                .equals(other._subcategories, _subcategories));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, title, image, businessProfiles);
+  int get hashCode => Object.hash(runtimeType, id, title, image,
+      businessProfiles, const DeepCollectionEquality().hash(_subcategories));
 
   /// Create a copy of BusinessProfileCategoryEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -221,7 +248,8 @@ abstract class _BusinessProfileCategoryEntity
           {required final int id,
           final String? title,
           final String? image,
-          @JsonKey(name: 'business_profiles') final int? businessProfiles}) =
+          @JsonKey(name: 'business_profiles') final int? businessProfiles,
+          final List<BusinessProfileCategoryEntity>? subcategories}) =
       _$BusinessProfileCategoryEntityImpl;
 
   factory _BusinessProfileCategoryEntity.fromJson(Map<String, dynamic> json) =
@@ -236,6 +264,8 @@ abstract class _BusinessProfileCategoryEntity
   @override
   @JsonKey(name: 'business_profiles')
   int? get businessProfiles;
+  @override
+  List<BusinessProfileCategoryEntity>? get subcategories;
 
   /// Create a copy of BusinessProfileCategoryEntity
   /// with the given fields replaced by the non-null parameter values.

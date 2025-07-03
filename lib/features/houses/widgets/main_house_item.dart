@@ -187,10 +187,12 @@ class MainHouseItem extends StatelessWidget {
               ),
               Row(
                 children: [
+                  // ignore: use_if_null_to_convert_nulls_to_bools
                   if (house?.hasSeen == true) statusBadge('Görüldi'),
                   // ignore: use_if_null_to_convert_nulls_to_bools
                   if (house?.hasSeen == true && house?.contacted == true)
                     SizedBox(width: 8.w),
+                  // ignore: use_if_null_to_convert_nulls_to_bools
                   if (house?.contacted == true) statusBadge('Habarlaşyldy'),
                 ],
               ),

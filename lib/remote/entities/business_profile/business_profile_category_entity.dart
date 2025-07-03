@@ -13,6 +13,7 @@ class BusinessProfileCategoryEntity with _$BusinessProfileCategoryEntity {
     String? title,
     String? image,
     @JsonKey(name: 'business_profiles') int? businessProfiles,
+    List<BusinessProfileCategoryEntity>? subcategories,
   }) = _BusinessProfileCategoryEntity;
 
   @JsonSerializable(explicitToJson: true)

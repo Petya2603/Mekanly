@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../core/components/app_text.dart';
-import '../../../core/components/check_box/custom_check_box.dart';
 import '../../../localization/extensions.dart';
 import '../../../product/constants/constants.dart';
 import '../../../product/helpers/helpers.dart';
@@ -227,61 +225,57 @@ class _OptionModalBottomSheetState extends State<OptionModalBottomSheet> {
                 ),
               ),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: 30.w,
-                  height: 30.w,
-                  child: IconButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      if (_showingChildren) {
-                        _goBackToParent();
-                        return;
-                      }
-                      Navigator.pop(context);
-                    },
-                    icon: _showingChildren
-                        ? const Icon(
-                            Icons.arrow_back,
-                          )
-                        : const Icon(
-                            Icons.close,
-                          ),
+            child: SizedBox(
+              height: 30.w,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: SizedBox(
+                      width: 30.w,
+                      height: 30.w,
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: () {
+                          if (_showingChildren) {
+                            _goBackToParent();
+                          } else {
+                            Navigator.pop(context);
+                          }
+                        },
+                        icon: _showingChildren
+                            ? const Icon(Icons.arrow_back)
+                            : const Icon(Icons.close),
+                      ),
+                    ),
                   ),
-                ),
-                AppText.s14w400BdM(
-                  context.translation.location,
-                ).toCenter(),
-                if (_showingChildren)
-                  Builder(
-                    builder: (context) {
-                      return SizedBox(
-                        width: 30.w,
-                        height: 30.w,
-                        child: IconButton(
-                          padding: EdgeInsets.zero,
-                          onPressed: () => _saveAndClose(context),
-                          icon: const Icon(
-                            Icons.check,
-                          ),
-                        ),
-                      );
-                    },
-                  )
-                else
-                  SizedBox(
-                    width: 30.w,
+                  Center(
+                    child: AppText.s14w400BdM(
+                      context.translation.location,
+                    ),
                   ),
-              ],
+                  // if (_showingChildren)
+                  //   Align(
+                  //     alignment: Alignment.centerRight,
+                  //     child: SizedBox(
+                  //       width: 30.w,
+                  //       height: 30.w,
+                  //       child: IconButton(
+                  //         padding: EdgeInsets.zero,
+                  //         onPressed: () => _saveAndClose(context),
+                  //         icon: const Icon(Icons.check),
+                  //       ),
+                  //     ),
+                  //   ),
+                ],
+              ),
             ),
           ),
           Expanded(
             child: PageView.builder(
               controller: _pageController,
-              physics:
-                  const NeverScrollableScrollPhysics(), 
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: 2,
               itemBuilder: (context, pageIndex) {
                 if (pageIndex == 0) {
@@ -318,16 +312,11 @@ class _OptionModalBottomSheetState extends State<OptionModalBottomSheet> {
                             selected: !location.selected,
                           );
                           if (widget.isSingle) {
-                            _addToSingleItem(
-                              updated,
-                              index,
-                            );
+                            _addToSingleItem(updated, index);
+                            _saveAndClose(context);
                             return;
                           }
-                          _addToSelectedItems(
-                            updated,
-                            index,
-                          );
+                          _addToSelectedItems(updated, index);
                         },
                       );
                     },
@@ -350,6 +339,7 @@ class OptionModalSheetTile extends StatelessWidget {
     this.isSelected = false,
     this.isParent = false,
   });
+
   final String title;
   final VoidCallback onTap;
   final bool isSelected;
@@ -362,10 +352,7 @@ class OptionModalSheetTile extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           border: Border(
-            bottom: BorderSide(
-              width: 1.w,
-              color: const Color(0xffDDDDDD),
-            ),
+            bottom: BorderSide(width: 1.w, color: const Color(0xffDDDDDD)),
           ),
         ),
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 18).w,
@@ -377,19 +364,7 @@ class OptionModalSheetTile extends StatelessWidget {
                 fontFamily: StringConstants.roboto,
               ),
             ),
-            if (isSelected) ...[],
-            if (isParent) ...[
-              10.boxW,
-              const Icon(
-                Icons.chevron_right_outlined,
-              ),
-            ] else ...[
-              10.boxW,
-              CustomCheckBox(
-                onTap: onTap,
-                isSelected: isSelected,
-              ),
-            ],
+            if (isParent) const Icon(Icons.chevron_right_outlined),
           ],
         ),
       ),
