@@ -40,6 +40,15 @@ class AppLocalizationsRu extends AppLocalizations {
   String get try_again => 'Попробовать снова';
 
   @override
+  String get nag_iber => 'Отправить жалобу';
+
+  @override
+  String get kabul_iber => 'Принято, мы рассмотрим это сообщение';
+
+  @override
+  String get ugrat => 'Отправить';
+
+  @override
   String get log_in => 'Войти в систему';
 
   @override
@@ -337,6 +346,12 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get dow_et_bn =>
       'Продолжая, я подтверждаю, что предоставленная выше информация является полной и достоверной, а также ';
+
+  @override
+  String get dow_et_bnn => 'Продолжая, я подтверждаю ';
+
+  @override
+  String get phone_number_belgi => 'На ваш номер был отправлен 5-значный код';
 
   @override
   String get dow_et_bn_dowam => ' ознакомился и принимаю';

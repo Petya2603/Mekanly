@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
+import '../../../features/root/view/root_view.dart';
 import '../../../utils/extensions.dart';
 import '../app_text.dart';
 
@@ -44,6 +45,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.title,
   });
   final double appBarHeight;
+  // ignore: library_private_types_in_public_api
   final _AppBarStyle style;
   final String title;
   final List<Widget>? actions;

@@ -12,7 +12,12 @@ class _LoginAppBarWidget extends StatelessWidget {
       elevation: 0,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back, color: Colors.white),
-        onPressed: () => Navigator.of(context).pop(),
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute<Widget>(builder: (context) => RootView()),
+          );
+        },
       ),
       title: AppText.s20w500TtL(
         title,

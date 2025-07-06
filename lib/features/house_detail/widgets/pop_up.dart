@@ -25,7 +25,6 @@ class ClickableBanner extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Header Row
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -53,7 +52,7 @@ class ClickableBanner extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               const Text(
-                'Satyyjy bu bildirşi diňe mekanly.com-da goýandygyny tassyklady.',
+                'Satyjy bu bildirşi diňe mekanly.com-da goýandygyny tassyklady.',
                 style: TextStyle(
                   fontSize: 13,
                   fontFamily: StringConstants.roboto,

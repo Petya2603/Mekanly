@@ -40,11 +40,19 @@ class AppLocalizationsTk extends AppLocalizations {
   String get try_again => 'Täzeden synanyş';
 
   @override
+  String get nag_iber => 'Nägelik ibermek';
+
+  @override
+  String get kabul_iber => 'Kabul edildi, biz bu bildirşi gözden geçireris';
+
+  @override
+  String get ugrat => 'Ugrat';
+
+  @override
   String get log_in => 'Ulgama girmek';
 
   @override
-  String get enter_your_phone_number =>
-      'Ulgama girmek üçin telefon nomeriňizi ýazyň';
+  String get enter_your_phone_number => 'Telefon nomeriňizi ýazyň';
 
   @override
   String get read_and_accepted_terms => 'Düzgünnamany okadym we kabul etdim';
@@ -335,6 +343,12 @@ class AppLocalizationsTk extends AppLocalizations {
   @override
   String get dow_et_bn =>
       'Dowam etmek bilen, ýokarda görkezilen maglumatlaryň doly we dogrydygyny tassyklaýaryn hem-de ';
+
+  @override
+  String get dow_et_bnn => 'Dowam etmek bilen ';
+
+  @override
+  String get phone_number_belgi => 'Nomeriňize 5 belgili kod ugradyldy';
 
   @override
   String get dow_et_bn_dowam => ' okap we kabul edýärin';

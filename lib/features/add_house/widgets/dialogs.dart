@@ -4,6 +4,7 @@ import 'package:gen/gen.dart';
 import '../../../core/components/app_btn.dart';
 import '../../../core/components/app_text.dart';
 import '../../../core/components/loading_indicator.dart';
+import '../../../localization/extensions.dart';
 import '../../../product/constants/constants.dart';
 import '../../../utils/extensions.dart';
 
@@ -54,13 +55,13 @@ class _AskIfAgreedState extends State<AskIfAgreed> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppText.s14w400BdM(
-            'Tassyklama',
+            context.translation.verification,
             fontFamily: StringConstants.roboto,
             fontSize: 15.sp,
           ),
           18.boxH,
           AppText.s14w400BdM(
-            'Siz hakykatdanam şu bildirişi goşmakçymy',
+            context.translation.are_you_sure_you_want_to_add_this_announcement,
             fontFamily: StringConstants.roboto,
             fontSize: 15.sp,
             color: const Color(0xff555555),
@@ -74,7 +75,7 @@ class _AskIfAgreedState extends State<AskIfAgreed> {
                   Navigator.pop(context, false);
                 },
                 child: AppText.s12w400BdS(
-                  'Goýbolsun',
+                  context.translation.cancel,
                   fontSize: 13.sp,
                   fontWeight: FontWeight.w500,
                 ),
@@ -85,7 +86,7 @@ class _AskIfAgreedState extends State<AskIfAgreed> {
                   Navigator.pop(context, true);
                 },
                 child: AppText.s12w400BdS(
-                  'Hawa',
+                  context.translation.yes,
                   fontSize: 13.sp,
                   fontWeight: FontWeight.w500,
                 ),
@@ -160,14 +161,13 @@ class _ToNotifyUserState extends State<ToNotifyUser> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AppText.s14w400BdM(
-              widget.title ?? 'Habarnama',
+              widget.title ?? context.translation.notification,
               fontFamily: StringConstants.roboto,
               fontSize: 15.sp,
             ),
             18.boxH,
             AppText.s14w400BdM(
-              widget.message ??
-                  'Bildiriş ýatda saklanyldy. Moderasiýa edilenden soň bildiriş ähli ulanyjylara görner!',
+              widget.message ?? context.translation.moderation_visible,
               fontFamily: StringConstants.roboto,
               fontSize: 15.sp,
               color: const Color(0xff555555),
@@ -182,7 +182,7 @@ class _ToNotifyUserState extends State<ToNotifyUser> {
                       widget.onCancel!();
                     },
                     child: AppText.s12w400BdS(
-                      widget.cancelText ?? 'Goýbolsun',
+                      widget.cancelText ?? context.translation.cancel,
                       fontSize: 13.sp,
                       fontWeight: FontWeight.w500,
                     ),

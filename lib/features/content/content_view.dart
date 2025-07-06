@@ -287,7 +287,7 @@ class _ContentHouseImageCarouselState extends State<ContentHouseImageCarousel> {
           aspectRatio: 167 / 155,
           child: PageView.builder(
             padEnds: false,
-            itemCount: images.length, //widget.imgUrls?.length,
+            itemCount: images.length,
             controller: _controller,
             onPageChanged: (value) => _pageNotifier.value = value,
             itemBuilder: (context, index) {

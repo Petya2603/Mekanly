@@ -383,7 +383,7 @@ class _BusinessProfileCarouselSliderState
     return Stack(
       children: [
         PageView.builder(
-          itemCount: widget.imgUrls?.length, //widget.imgUrls?.length,
+          itemCount: widget.imgUrls?.length,
           controller: _controller,
           onPageChanged: (value) => _pageNotifier.value = value,
           itemBuilder: (context, index) {

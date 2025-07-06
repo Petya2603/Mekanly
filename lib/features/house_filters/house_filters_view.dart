@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-
 import '../../core/components/app_bar/app_bar.dart';
 import '../../core/components/app_btn.dart';
 import '../../core/components/app_text.dart';
@@ -80,6 +79,7 @@ class _HouseFiltersViewState extends State<HouseFiltersView> {
     super.initState();
   }
 
+  // ignore: lines_longer_than_80_chars
   /// TODOS: should be optimized later, should take these method to the mixin of HouseFiltersView
   void onInit() {
     initValues = const RangeValues(20, 500);
@@ -181,6 +181,7 @@ class _HouseFiltersViewState extends State<HouseFiltersView> {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
+              // ignore: use_full_hex_values_for_flutter_colors
               color: const Color(0xff8f969e80).withValues(alpha: .5),
               blurRadius: 3,
             ),

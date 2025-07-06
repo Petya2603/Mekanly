@@ -14,7 +14,7 @@ class RoundedBlueBorderedChipBtn extends StatefulWidget {
   });
   final VoidCallback onTap;
   final String title;
-  final Widget icon;
+  final SvgGenImage icon;
 
   @override
   State<RoundedBlueBorderedChipBtn> createState() =>
@@ -46,9 +46,12 @@ class _RoundedBlueBorderedChipBtnState
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            4.boxW,
-            widget.icon,
-            4.boxW,
+            3.boxW,
+            widget.icon.svg(
+              package: 'gen',
+              color: isSelected ? ColorName.chipIcon : const Color(0xFF717171),
+            ),
+            3.boxW,
             AppText.s14w400BdM(
               widget.title,
               color: isSelected ? ColorName.chipIcon : const Color(0xFF717171),
@@ -56,17 +59,12 @@ class _RoundedBlueBorderedChipBtnState
               fontWeight: FontWeight.w400,
               fontFamily: StringConstants.roboto,
             ),
-            4.boxW,
-            Align(
-              alignment: Alignment.centerRight,
-              child: Icon(
-                Icons.keyboard_arrow_down,
-                size: 10,
-                color:
-                    isSelected ? ColorName.chipIcon : const Color(0xFF717171),
-              ),
+            3.boxW,
+            Assets.icons.arrow.svg(
+              package: 'gen',
+              color: isSelected ? ColorName.chipIcon : const Color(0xFF717171),
             ),
-            4.boxW,
+            3.boxW,
           ],
         ),
       ),

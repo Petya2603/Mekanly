@@ -15,6 +15,7 @@ class AddHousePayload {
     required this.who,
     required this.area,
     required this.write_comment,
+    required this.exclusive,
     required this.floor_number,
     required this.room_number,
     required this.hashtag,
@@ -33,6 +34,7 @@ class AddHousePayload {
   final bool who;
   final int? area;
   final int write_comment;
+  final int exclusive;
   final int? floor_number;
   final int? room_number;
   final String? hashtag;
@@ -57,7 +59,7 @@ class AddHousePayload {
       'floor_number': floor_number,
       'room_number': room_number,
       'hashtag': hashtag,
-      'exclusive': 0,
+      'exclusive': exclusive,
       'level_number': level_number,
       'property_type_id': property_type_id,
       'repair_type_id': repair_type_id,

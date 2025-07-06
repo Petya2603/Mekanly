@@ -5,6 +5,7 @@ import 'package:gen/gen.dart';
 
 import '../../../../core/components/app_btn.dart';
 import '../../../../core/components/app_text.dart';
+import '../../../../localization/extensions.dart';
 import '../../../../product/base/base_status/base_status.dart';
 import '../../../../product/constants/constants.dart';
 import '../../../../product/helpers/helpers.dart';
@@ -54,7 +55,7 @@ class _OtpViewState extends State<OtpView> {
   @override
   Widget build(BuildContext context) {
     return BaseLoginView(
-      appBarTitle: 'Tassyklamak',
+      appBarTitle: context.translation.verify,
       content: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -72,7 +73,7 @@ class _OtpViewState extends State<OtpView> {
               35.boxH,
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text(
-                  'Telefon belgiňize gelen paroly ýazyň',
+                  context.translation.enter_code,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16.sp,
@@ -97,7 +98,7 @@ class _OtpViewState extends State<OtpView> {
               2.boxH,
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text(
-                  'Nomeriňize 5 belgili kod ugradyldy',
+                  context.translation.phone_number_belgi,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 14.sp,
@@ -191,7 +192,7 @@ class _OtpViewState extends State<OtpView> {
                               );
                               await context.read<OtpCubit>().verify(data);
                             },
-                            text: 'TASSYKLAMAK',
+                            text: context.translation.verify,
                             txtColor: ColorName.white,
                           );
                         },
@@ -207,7 +208,7 @@ class _OtpViewState extends State<OtpView> {
                   return TextBtn(
                     onTap: () {},
                     child: AppText.s14w400BdM(
-                      'Täzeden synanyşmak',
+                      context.translation.try_again,
                       color: !can
                           ? ColorName.addressDate.withOpacity(.5)
                           : ColorName.addressDate,

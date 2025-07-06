@@ -17,7 +17,6 @@ class MainHouseItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Calculate aspect ratio once
     final width = context.mediaQuery.size.width - 40.w;
     final aspect = width / 235;
 
@@ -39,16 +38,14 @@ class MainHouseItem extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               blurRadius: 7,
-              color: Colors.black.withOpacity(0.25),
+              color: Colors.black.withAlpha(64),
             ),
           ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image carousel with badges section
             _buildImageSection(aspect),
-
             Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 10, horizontal: 10).w,
@@ -172,7 +169,6 @@ class MainHouseItem extends StatelessWidget {
           ],
         ),
         //SUTAYDA duzettmeli goruldi gorulmedi
-
         if (house?.possibilities?.isNotEmpty ?? false) ...[
           SizedBox(height: 10.h),
           Row(
@@ -188,10 +184,8 @@ class MainHouseItem extends StatelessWidget {
               Row(
                 children: [
                   // ignore: use_if_null_to_convert_nulls_to_bools
-                  if (house?.hasSeen == true) statusBadge('Görüldi'),
-                  // ignore: use_if_null_to_convert_nulls_to_bools
-                  if (house?.hasSeen == true && house?.contacted == true)
-                    SizedBox(width: 8.w),
+                  if (house?.hasSeen == true && house?.contacted != true)
+                    statusBadge('Görüldi'),
                   // ignore: use_if_null_to_convert_nulls_to_bools
                   if (house?.contacted == true) statusBadge('Habarlaşyldy'),
                 ],
@@ -218,21 +212,43 @@ class MainHouseItem extends StatelessWidget {
         ),
         SizedBox(height: 8.h),
         Row(
+          mainAxisAlignment: house?.exclusive == 1
+              ? MainAxisAlignment.spaceBetween
+              : MainAxisAlignment.start,
           children: [
-            Expanded(
-              child: AppText.s14w400BdM(
-                '${house?.price ?? ''} TMT',
-                fontSize: 15.sp,
-                fontFamily: StringConstants.roboto,
+            if (house?.exclusive == 1)
+              Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  SizedBox(
+                    child: Assets.icons.widgets.svg(package: 'gen'),
+                  ),
+                  Positioned(
+                    top: 0,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      child: const Text(
+                        'Diňe mekanly.com-da',
+                        style: TextStyle(
+                          fontFamily: StringConstants.roboto,
+                          color: Colors.white,
+                          fontSize: 8,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-            SizedBox(
-              width: 14.w,
-              height: 14.w,
-              child: Assets.icons.icVerified.svg(package: 'gen'),
+            SizedBox(width: house?.exclusive == 1 ? 8.w : 0),
+            AppText.s14w400BdM(
+              '${house?.price ?? ''} TMT',
+              fontSize: 15.sp,
+              fontFamily: StringConstants.roboto,
             ),
           ],
-        ),
+        )
       ],
     );
   }

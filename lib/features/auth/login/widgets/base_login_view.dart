@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gen/gen.dart';
-
 import '../../../../core/components/app_bar/app_bar.dart';
 
 class BaseLoginView extends StatelessWidget {

@@ -43,6 +43,7 @@ class HouseEntity with _$HouseEntity {
     String? who,
     int? area,
     int? exclusisive,
+    @JsonKey(name: 'exclusive') int? exclusive,
     String? hashtag,
     @JsonKey(name: 'level_number') int? levelNumber,
     bool? favorited,

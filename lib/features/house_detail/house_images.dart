@@ -92,7 +92,7 @@ class HouseImages extends StatelessWidget {
     );
   }
 
-  void _showAnimatedBottomSheet(BuildContext context) {
+  void  _showAnimatedBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,

@@ -91,6 +91,7 @@ class _AddHouseViewState extends State<AddHouseView> {
   List<CategoryHouse>? currentCategory;
   List<PropertyType>? currentPropertyTypes;
   int canWriteComment = 0;
+  int canExclusive = 0;
   bool acceptedPrivacy = false;
   bool? fromHolder;
   BaseOptionModel? propertyOptionModel;
@@ -594,15 +595,19 @@ class _AddHouseViewState extends State<AddHouseView> {
                       //   onChanged: (value) {},
                       //   value: false,
                       // ),
+
                       TitledSwitcherWidget(
                         padding: EdgeInsets.zero,
                         onChanged: (value) {
                           setState(() {
-                            acceptedPrivacy = value;
+                            setState(() {
+                              canExclusive = value ? 1 : 0;
+                            });
                           });
                         },
+                        showIcon: true,
                         title: context.translation.only_on_mekanly,
-                        accepted: acceptedPrivacy,
+                        accepted: canExclusive == 1,
                       ),
                       10.boxH,
                       TitledSwitcherWidget(
@@ -614,6 +619,7 @@ class _AddHouseViewState extends State<AddHouseView> {
                         },
                         title: context.translation.users_can_write_comments,
                         accepted: canWriteComment == 1,
+                        showIcon: false,
                       ),
                       10.boxH,
                       PrivacyNoticeBox(
@@ -752,6 +758,7 @@ class _AddHouseViewState extends State<AddHouseView> {
       who: false,
       area: int.parse(areaController.text),
       write_comment: canWriteComment,
+      exclusive: canExclusive,
       floor_number:
           floorNumber?.count != null ? int.parse(floorNumber!.count) : null,
       room_number:

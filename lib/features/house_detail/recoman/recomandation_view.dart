@@ -1,0 +1,259 @@
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gen/gen.dart';
+// ignore: depend_on_referenced_packages
+import 'package:provider/provider.dart';
+import '../../../core/components/app_text.dart' show AppText;
+import '../../../remote/repositories/recomandation/recoman_reperizitory.dart';
+
+class RecommendedHousesSection extends StatefulWidget {
+  const RecommendedHousesSection({super.key});
+
+  @override
+  State<RecommendedHousesSection> createState() =>
+      _RecommendedHousesSectionState();
+}
+
+class _RecommendedHousesSectionState extends State<RecommendedHousesSection> {
+  late final RecommendationProvider _provider;
+
+  @override
+  void initState() {
+    super.initState();
+    final dio = Dio();
+    _provider = RecommendationProvider(HouseRepository(dio));
+    _provider.fetchRecommendations();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider.value(
+      value: _provider,
+      child: Consumer<RecommendationProvider>(
+        builder: (context, provider, _) {
+          if (provider.isLoading) {
+            return SizedBox(
+              height: 200.h,
+              child: const Center(child: CircularProgressIndicator()),
+            );
+          }
+
+          if (provider.error != null) {
+            return Padding(
+              padding: EdgeInsets.all(12.w),
+              child: Text('Error: ${provider.error}'),
+            );
+          }
+
+          if (provider.recommendations.isEmpty) {
+            return const SizedBox.shrink();
+          }
+
+          return SizedBox(
+            height:
+                ((MediaQuery.of(context).size.width * 0.35 * 198) / 131) + 12.h,
+            child: ListView.separated(
+              padding: EdgeInsets.symmetric(horizontal: 12.w),
+              scrollDirection: Axis.horizontal,
+              itemCount: provider.recommendations.length,
+              separatorBuilder: (_, __) => SizedBox(width: 12.w),
+              itemBuilder: (context, index) {
+                return HouseCard(house: provider.recommendations[index]);
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class HouseCard extends StatefulWidget {
+  const HouseCard({super.key, required this.house});
+  final HouseEntity house;
+
+  @override
+  State<HouseCard> createState() => _HouseCardState();
+}
+
+class _HouseCardState extends State<HouseCard> {
+  final PageController _controller = PageController(keepPage: false);
+  final ValueNotifier<int> _pageNotifier = ValueNotifier<int>(0);
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width * 0.35;
+    const aspect = 131 / 198;
+
+    return InkWell(
+      onTap: () {},
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: width),
+        child: AspectRatio(
+          aspectRatio: aspect,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(9.r),
+              border: Border.all(width: 1.w, color: const Color(0xFFDDDDDD)),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 3.2,
+                  color: Colors.black.withOpacity(0.1),
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                Flexible(
+                  flex: 65,
+                  child: Stack(
+                    children: [
+                      AspectRatio(
+                        aspectRatio: 131 / 121,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(8.r),
+                            topRight: Radius.circular(8.r),
+                          ),
+                          child: PageView.builder(
+                            controller: _controller,
+                            itemCount: widget.house.images?.length ?? 1,
+                            onPageChanged: (value) =>
+                                _pageNotifier.value = value,
+                            itemBuilder: (context, index) {
+                              // ignore: use_if_null_to_convert_nulls_to_bools
+                              final imgUrl = (widget.house.images?.isNotEmpty ==
+                                      true)
+                                  ? widget
+                                      .house
+                                      .images![
+                                          index % widget.house.images!.length]
+                                      .url
+                                  : null;
+                              return Image.network(
+                                imgUrl ?? '',
+                                fit: BoxFit.cover,
+                                errorBuilder: (_, __, ___) =>
+                                    _buildPlaceholder(),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child:
+                            Assets.icons.icFavoriteDarkFill.svg(package: 'gen'),
+                      ),
+                      if ((widget.house.images?.length ?? 0) > 1)
+                        Positioned(
+                          bottom: 6,
+                          left: 0,
+                          right: 0,
+                          child: ValueListenableBuilder<int>(
+                            valueListenable: _pageNotifier,
+                            builder: (_, page, __) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: List.generate(
+                                  widget.house.images!.length,
+                                  (index) => AnimatedContainer(
+                                    duration: const Duration(milliseconds: 300),
+                                    width: index ==
+                                            (page % widget.house.images!.length)
+                                        ? 6.w
+                                        : 4.w,
+                                    height: index ==
+                                            (page % widget.house.images!.length)
+                                        ? 6.w
+                                        : 4.w,
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 2.w),
+                                    decoration: BoxDecoration(
+                                      color: index ==
+                                              (page %
+                                                  widget.house.images!.length)
+                                          ? Colors.white
+                                          : Colors.white60,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                Flexible(
+                  flex: 38,
+                  child: Container(
+                    margin: const EdgeInsets.only(
+                        left: 5, right: 1, top: 2, bottom: 1),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppText.s14w400BdM(
+                          widget.house.name ?? 'Kwartira',
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12.sp,
+                          color: const Color.fromARGB(255, 34, 34, 34),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        2.boxH,
+                        AppText.s14w400BdM(
+                          'Şu gün ${widget.house.entertime}',
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w400,
+                          color: const Color.fromARGB(255, 117, 117, 117),
+                        ),
+                        2.boxH,
+                        AppText.s14w400BdM(
+                          widget.house.location?.parentName ?? '',
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w400,
+                          color: const Color.fromARGB(255, 117, 117, 117),
+                        ),
+                        2.boxH,
+                        AppText.s14w400BdM(
+                          widget.house.price?.formatPrice() ?? 'TMT',
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
+                          color: const Color.fromARGB(255, 34, 34, 34),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPlaceholder() {
+    return Container(
+      color: Colors.grey[300],
+      child: const Center(child: Icon(Icons.image, color: Colors.grey)),
+    );
+  }
+}
+
+extension Box on num {
+  SizedBox get boxH => SizedBox(height: toDouble().h);
+  SizedBox get boxW => SizedBox(width: toDouble().w);
+}
+
+extension PriceFormatting on String {
+  String formatPrice() {
+    final numValue = double.tryParse(this) ?? 0;
+    return '${numValue.toStringAsFixed(0)} TMT';
+  }
+}

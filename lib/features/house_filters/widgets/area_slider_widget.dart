@@ -58,28 +58,40 @@ class _AreaSliderWidgetState extends State<AreaSliderWidget> {
           ),
           12.boxH,
 
-          RangeSlider(
-            values: _currentValues,
-            min: widget.initValues.start,
-            max: widget.initValues.end,
-            divisions:
-                (widget.initValues.end - widget.initValues.start).toInt(),
-            labels: RangeLabels(
-              '${_currentValues.start.toInt()} m²',
-              _currentValues.end.toInt() >= widget.initValues.end
-                  ? '${widget.initValues.end.toInt()} +m²'
-                  : '${_currentValues.end.toInt()} m²',
+          SliderTheme(
+            data: SliderTheme.of(context).copyWith(
+              rangeThumbShape: const _CustomRangeSliderThumbShape(
+                borderWidth: 3.0,
+                borderColor: Color.fromARGB(255, 58, 139, 207),
+                fillColor: Color.fromARGB(255, 210, 241, 255),
+                enabledThumbRadius: 12.0,
+              ),
             ),
-            onChanged: (RangeValues values) {
-              setState(() {
-                _currentValues = values;
-                _minController.text = '${values.start.toInt()}';
-                _maxController.text = '${values.end.toInt()}';
-              });
-              widget.onChanged(values);
-            },
-            activeColor: const Color.fromARGB(255, 58, 139, 207),
-            inactiveColor: const Color.fromARGB(255, 210, 241, 255),
+            child: RangeSlider(
+              values: _currentValues,
+              min: widget.initValues.start,
+              max: widget.initValues.end,
+              divisions:
+                  (widget.initValues.end - widget.initValues.start).toInt(),
+              labels: RangeLabels(
+                '${_currentValues.start.toInt()} m²',
+                _currentValues.end.toInt() >= widget.initValues.end
+                    ? '${widget.initValues.end.toInt()} +m²'
+                    : '${_currentValues.end.toInt()} m²',
+              ),
+              onChanged: (RangeValues values) {
+                setState(() {
+                  _currentValues = values;
+                  _minController.text = '${values.start.toInt()}';
+                  _maxController.text = '${values.end.toInt()}';
+                });
+                widget.onChanged(values);
+              },
+              activeColor: const Color.fromARGB(255, 58, 139, 207),
+              inactiveColor: const Color.fromARGB(255, 210, 241, 255),
+              overlayColor: MaterialStateProperty.all(
+                  const Color(0xFF3A8BCF).withOpacity(0.2)),
+            ),
           ),
           12.boxH,
 
@@ -219,5 +231,45 @@ class _AreaSliderWidgetState extends State<AreaSliderWidget> {
         ],
       ),
     );
+  }
+}
+
+class _CustomRangeSliderThumbShape extends RoundRangeSliderThumbShape {
+  const _CustomRangeSliderThumbShape({
+    this.borderWidth = 2.0,
+    required this.borderColor,
+    required this.fillColor,
+    super.enabledThumbRadius = 8.0,
+  });
+  final double borderWidth;
+  final Color borderColor;
+  final Color fillColor;
+
+  @override
+  void paint(
+    PaintingContext context,
+    Offset center, {
+    required Animation<double> activationAnimation,
+    required Animation<double> enableAnimation,
+    bool isDiscrete = false,
+    bool isEnabled = false,
+    bool? isOnTop,
+    bool? isPressed,
+    required SliderThemeData sliderTheme,
+    TextDirection? textDirection,
+    Thumb? thumb,
+    double? value,
+  }) {
+    final borderPaint = Paint()
+      ..color = borderColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = borderWidth;
+
+    final fillPaint = Paint()
+      ..color = fillColor
+      ..style = PaintingStyle.fill;
+
+    context.canvas.drawCircle(center, enabledThumbRadius, fillPaint);
+    context.canvas.drawCircle(center, enabledThumbRadius, borderPaint);
   }
 }

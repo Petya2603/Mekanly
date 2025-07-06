@@ -186,7 +186,7 @@ class $AssetsIconsGen {
       const SvgGenImage('assets/icons/ic_empty_house_detail.svg');
 
   /// File path: assets/icons/ic_eye.svg
-  SvgGenImage get icEye => const SvgGenImage('assets/icons/ic_eye.svg');
+  SvgGenImage get icEye => const SvgGenImage('assets/icons/taz_eye.svg');
 
   /// File path: assets/icons/ic_favorite.svg
   SvgGenImage get icFavorite =>
@@ -316,6 +316,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_location_black.svg
   SvgGenImage get icLocationBlack =>
       const SvgGenImage('assets/icons/ic_location_black.svg');
+
+  /// File path: assets/icons/ic_location_black.svg
+  SvgGenImage get arrow => const SvgGenImage('assets/icons/arrow.svg');
 
   /// File path: assets/icons/ic_log_out.svg
   SvgGenImage get icLogOut => const SvgGenImage('assets/icons/ic_log_out.svg');
@@ -484,6 +487,9 @@ class $AssetsIconsGen {
   SvgGenImage get icVerified =>
       const SvgGenImage('assets/icons/ic_verified.svg');
 
+  /// File path: assets/icons/ic_verified.svg
+  SvgGenImage get widgets => const SvgGenImage('assets/icons/widgets.svg');
+
   /// File path: assets/icons/ic_washing_machine.svg
   SvgGenImage get icWashingMachine =>
       const SvgGenImage('assets/icons/ic_washing_machine.svg');
@@ -618,7 +624,9 @@ class $AssetsIconsGen {
         fire,
         close,
         luxx,
-        ot_san
+        ot_san,
+        widgets,
+        arrow
       ];
 }
 

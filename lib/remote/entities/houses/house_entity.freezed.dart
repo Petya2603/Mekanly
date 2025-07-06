@@ -71,6 +71,8 @@ mixin _$HouseEntity {
   String? get who => throw _privateConstructorUsedError;
   int? get area => throw _privateConstructorUsedError;
   int? get exclusisive => throw _privateConstructorUsedError;
+  @JsonKey(name: 'exclusive')
+  int? get exclusive => throw _privateConstructorUsedError;
   String? get hashtag => throw _privateConstructorUsedError;
   @JsonKey(name: 'level_number')
   int? get levelNumber => throw _privateConstructorUsedError;
@@ -139,6 +141,7 @@ abstract class $HouseEntityCopyWith<$Res> {
       String? who,
       int? area,
       int? exclusisive,
+      @JsonKey(name: 'exclusive') int? exclusive,
       String? hashtag,
       @JsonKey(name: 'level_number') int? levelNumber,
       bool? favorited,
@@ -206,6 +209,7 @@ class _$HouseEntityCopyWithImpl<$Res, $Val extends HouseEntity>
     Object? who = freezed,
     Object? area = freezed,
     Object? exclusisive = freezed,
+    Object? exclusive = freezed,
     Object? hashtag = freezed,
     Object? levelNumber = freezed,
     Object? favorited = freezed,
@@ -351,6 +355,10 @@ class _$HouseEntityCopyWithImpl<$Res, $Val extends HouseEntity>
       exclusisive: freezed == exclusisive
           ? _value.exclusisive
           : exclusisive // ignore: cast_nullable_to_non_nullable
+              as int?,
+      exclusive: freezed == exclusive
+          ? _value.exclusive
+          : exclusive // ignore: cast_nullable_to_non_nullable
               as int?,
       hashtag: freezed == hashtag
           ? _value.hashtag
@@ -502,6 +510,7 @@ abstract class _$$HouseEntityImplCopyWith<$Res>
       String? who,
       int? area,
       int? exclusisive,
+      @JsonKey(name: 'exclusive') int? exclusive,
       String? hashtag,
       @JsonKey(name: 'level_number') int? levelNumber,
       bool? favorited,
@@ -571,6 +580,7 @@ class __$$HouseEntityImplCopyWithImpl<$Res>
     Object? who = freezed,
     Object? area = freezed,
     Object? exclusisive = freezed,
+    Object? exclusive = freezed,
     Object? hashtag = freezed,
     Object? levelNumber = freezed,
     Object? favorited = freezed,
@@ -717,6 +727,10 @@ class __$$HouseEntityImplCopyWithImpl<$Res>
           ? _value.exclusisive
           : exclusisive // ignore: cast_nullable_to_non_nullable
               as int?,
+      exclusive: freezed == exclusive
+          ? _value.exclusive
+          : exclusive // ignore: cast_nullable_to_non_nullable
+              as int?,
       hashtag: freezed == hashtag
           ? _value.hashtag
           : hashtag // ignore: cast_nullable_to_non_nullable
@@ -806,6 +820,7 @@ class _$HouseEntityImpl implements _HouseEntity {
       this.who,
       this.area,
       this.exclusisive,
+      @JsonKey(name: 'exclusive') this.exclusive,
       this.hashtag,
       @JsonKey(name: 'level_number') this.levelNumber,
       this.favorited,
@@ -924,6 +939,9 @@ class _$HouseEntityImpl implements _HouseEntity {
   @override
   final int? exclusisive;
   @override
+  @JsonKey(name: 'exclusive')
+  final int? exclusive;
+  @override
   final String? hashtag;
   @override
   @JsonKey(name: 'level_number')
@@ -955,7 +973,7 @@ class _$HouseEntityImpl implements _HouseEntity {
 
   @override
   String toString() {
-    return 'HouseEntity(id: $id, categoryName: $categoryName, location: $location, userId: $userId, username: $username, userPhone: $userPhone, name: $name, description: $description, price: $price, loverPercentage: $loverPercentage, loverPrice: $loverPrice, viewed: $viewed, star: $star, commentCount: $commentCount, roomNumber: $roomNumber, floorNumber: $floorNumber, propertyType: $propertyType, repairType: $repairType, status: $status, luxe: $luxe, luxeStatus: $luxeStatus, luxeExpire: $luxeExpire, vipStatus: $vipStatus, vipExpire: $vipExpire, bronNumber: $bronNumber, images: $images, possibilities: $possibilities, comment: $comment, isComment: $isComment, writeComment: $writeComment, who: $who, area: $area, exclusisive: $exclusisive, hashtag: $hashtag, levelNumber: $levelNumber, favorited: $favorited, liked: $liked, shop: $shop, type: $type, date: $date, updatedAt: $updatedAt, createdAt: $createdAt, contacted: $contacted, hasSeen: $hasSeen, contact: $contact)';
+    return 'HouseEntity(id: $id, categoryName: $categoryName, location: $location, userId: $userId, username: $username, userPhone: $userPhone, name: $name, description: $description, price: $price, loverPercentage: $loverPercentage, loverPrice: $loverPrice, viewed: $viewed, star: $star, commentCount: $commentCount, roomNumber: $roomNumber, floorNumber: $floorNumber, propertyType: $propertyType, repairType: $repairType, status: $status, luxe: $luxe, luxeStatus: $luxeStatus, luxeExpire: $luxeExpire, vipStatus: $vipStatus, vipExpire: $vipExpire, bronNumber: $bronNumber, images: $images, possibilities: $possibilities, comment: $comment, isComment: $isComment, writeComment: $writeComment, who: $who, area: $area, exclusisive: $exclusisive, exclusive: $exclusive, hashtag: $hashtag, levelNumber: $levelNumber, favorited: $favorited, liked: $liked, shop: $shop, type: $type, date: $date, updatedAt: $updatedAt, createdAt: $createdAt, contacted: $contacted, hasSeen: $hasSeen, contact: $contact)';
   }
 
   @override
@@ -1017,6 +1035,8 @@ class _$HouseEntityImpl implements _HouseEntity {
             (identical(other.area, area) || other.area == area) &&
             (identical(other.exclusisive, exclusisive) ||
                 other.exclusisive == exclusisive) &&
+            (identical(other.exclusive, exclusive) ||
+                other.exclusive == exclusive) &&
             (identical(other.hashtag, hashtag) || other.hashtag == hashtag) &&
             (identical(other.levelNumber, levelNumber) ||
                 other.levelNumber == levelNumber) &&
@@ -1073,6 +1093,7 @@ class _$HouseEntityImpl implements _HouseEntity {
         who,
         area,
         exclusisive,
+        exclusive,
         hashtag,
         levelNumber,
         favorited,
@@ -1138,6 +1159,7 @@ abstract class _HouseEntity implements HouseEntity {
       final String? who,
       final int? area,
       final int? exclusisive,
+      @JsonKey(name: 'exclusive') final int? exclusive,
       final String? hashtag,
       @JsonKey(name: 'level_number') final int? levelNumber,
       final bool? favorited,
@@ -1237,6 +1259,9 @@ abstract class _HouseEntity implements HouseEntity {
   int? get area;
   @override
   int? get exclusisive;
+  @override
+  @JsonKey(name: 'exclusive')
+  int? get exclusive;
   @override
   String? get hashtag;
   @override

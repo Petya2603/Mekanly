@@ -13,10 +13,9 @@ import '../widgets/custom_scroll_controller.dart';
 import 'root_view_handler.dart';
 
 class RootView extends StatefulWidget {
-  RootView({Key? key}) : super(key: rootKey);
+  RootView() : super(key: rootKey);
   // ignore: library_private_types_in_public_api
   static final GlobalKey<_RootViewState> rootKey = GlobalKey<_RootViewState>();
-
 
   static const routePath = '/root-view';
   static const routeName = 'root-view';

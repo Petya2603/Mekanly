@@ -158,6 +158,24 @@ abstract class AppLocalizations {
   /// **'Попробовать снова'**
   String get try_again;
 
+  /// No description provided for @nag_iber.
+  ///
+  /// In ru, this message translates to:
+  /// **'Отправить жалобу'**
+  String get nag_iber;
+
+  /// No description provided for @kabul_iber.
+  ///
+  /// In ru, this message translates to:
+  /// **'Принято, мы рассмотрим это сообщение'**
+  String get kabul_iber;
+
+  /// No description provided for @ugrat.
+  ///
+  /// In ru, this message translates to:
+  /// **'Отправить'**
+  String get ugrat;
+
   /// No description provided for @log_in.
   ///
   /// In ru, this message translates to:
@@ -733,6 +751,18 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'Продолжая, я подтверждаю, что предоставленная выше информация является полной и достоверной, а также '**
   String get dow_et_bn;
+
+  /// No description provided for @dow_et_bnn.
+  ///
+  /// In ru, this message translates to:
+  /// **'Продолжая, я подтверждаю '**
+  String get dow_et_bnn;
+
+  /// No description provided for @phone_number_belgi.
+  ///
+  /// In ru, this message translates to:
+  /// **'На ваш номер был отправлен 5-значный код'**
+  String get phone_number_belgi;
 
   /// No description provided for @dow_et_bn_dowam.
   ///

@@ -6,6 +6,7 @@ import 'package:gen/gen.dart';
 import '../../../../core/components/app_btn.dart';
 import '../../../../core/components/app_text.dart';
 import '../../../../core/components/inputs/phone_filed.dart';
+import '../../../../localization/extensions.dart';
 import '../../../../product/base/base_status/base_status.dart';
 import '../../../../product/constants/constants.dart';
 import '../../../../product/helpers/helpers.dart';
@@ -39,7 +40,7 @@ class LoginPhoneNumberView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseLoginView(
-      appBarTitle: 'Ulgama girmek',
+      appBarTitle: context.translation.log_in,
       content: SingleChildScrollView(
         child: Form(
           key: _key,
@@ -58,11 +59,16 @@ class LoginPhoneNumberView extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  AppText.s14w400BdM(
-                    'Telefon nomeriňizi ýazyň',
-                    fontWeight: FontWeight.w500,
-                    fontFamily: StringConstants.roboto,
-                    fontSize: 18.sp,
+                  Expanded(
+                    child: AppText.s14w400BdM(
+                      context.translation.enter_your_phone_number,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: StringConstants.roboto,
+                      fontSize: 18.sp,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ],
               ),
@@ -77,7 +83,7 @@ class LoginPhoneNumberView extends StatelessWidget {
               Wrap(
                 children: [
                   Text(
-                    'Dowam etmek bilen ',
+                    context.translation.dow_et_bnn,
                     style: TextStyle(
                       color: ColorName.black,
                       fontSize: 12.sp,
@@ -97,32 +103,33 @@ class LoginPhoneNumberView extends StatelessWidget {
                       //   ),
                       // );
                     },
-                    child: const Text(
-                      'Ulanyjy ylalaşygyny',
-                      style: TextStyle(color: Colors.blue),
+                    child: Text(
+                      context.translation.user_agreement,
+                      style: const TextStyle(color: Colors.blue),
                     ),
                   ),
-                  Text(' we '),
+                  Text(context.translation.we),
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
+                        // ignore: inference_failure_on_instance_creation
                         MaterialPageRoute(
-                          builder: (context) => const WebViewScreen(
-                            url: 'https://mekanly.com.tm/privacypolicy/tm',
-                            title: 'Düzgünnama',
+                          builder: (context) => WebViewScreen(
+                            url: 'https://mekanly.com.tm/privacypolicy/${Localizations.localeOf(context).languageCode}',
+                            title: context.translation.rules,
                           ),
                         ),
                       );
                     },
-                    child: const Text(
-                      'Gizlinlik syýasatyny',
-                      style: TextStyle(color: Colors.blue),
+                    child: Text(
+                      context.translation.privacy_policy,
+                      style: const TextStyle(color: Colors.blue),
                     ),
                   ),
                   Text(
-                    ' kabul edýärin',
-                    style: TextStyle(fontFamily: StringConstants.roboto),
+                    context.translation.dow_et_bn_dowam,
+                    style: const TextStyle(fontFamily: StringConstants.roboto),
                   ),
                 ],
               ),
@@ -170,10 +177,11 @@ class LoginPhoneNumberView extends StatelessWidget {
                             }
 
                             final phone =
+                                // ignore: lines_longer_than_80_chars
                                 '+993${_phoneController.text.trim().replaceAll(' ', '')}';
                             await context.read<LoginCubit>().login(phone);
                           },
-                          text: 'Dowam et',
+                          text: context.translation.dow_et,
                           txtColor: ColorName.white,
                         );
                       },

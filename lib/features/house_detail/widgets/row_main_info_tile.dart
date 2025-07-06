@@ -16,9 +16,10 @@ class RowMainInfoTile extends StatelessWidget {
     return Row(
       children: [
         SizedBox(
-          height: 20.w,
-          width: 20.w,
-          child: typeOfHouseIcon ?? Assets.icons.icLux.svg(package: 'gen'),
+          height: 14.w,
+          width: 12.923076629638672.w,
+          child: typeOfHouseIcon ??
+              Assets.icons.icCategoryDetail.svg(package: 'gen'),
         ),
         10.boxW,
         Text(
@@ -34,13 +35,9 @@ class RowMainInfoTile extends StatelessWidget {
         _divider(),
         10.boxW,
         SizedBox(
-          height: 20.w,
-          width: 20.w,
-          child: SizedBox(
-            width: 12.w,
-            height: 12.w,
-            child: Assets.icons.icCalendar.svg(package: 'gen'),
-          ),
+          height: 11.373750686645508.w,
+          width: 10.747504234313965.w,
+          child: Assets.icons.icCalendar.svg(package: 'gen'),
         ),
         10.boxW,
         Text(
@@ -56,13 +53,9 @@ class RowMainInfoTile extends StatelessWidget {
         _divider(),
         10.boxW,
         SizedBox(
-          height: 20.w,
-          width: 20.w,
-          child: SizedBox(
-              width: 12.w,
-              height: 12.w,
-              child: Assets.icons.icEye.svg(package: 'gen')),
-        ),
+            height: 12.w,
+            width: 13.561497688293457.w,
+            child: Assets.icons.icEye.svg(package: 'gen')),
         10.boxW,
         Text(
           data?.viewed.toString() ?? '0',

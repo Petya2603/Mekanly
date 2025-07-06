@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:common/common.dart';
 import 'package:dio/dio.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
@@ -18,20 +20,22 @@ import '../../product/constants/constants.dart';
 import '../../product/injection/injector.dart';
 import '../../product/transitions/custom_page_route.dart';
 import '../../remote/entities/house_detail/house_detail_response.dart';
+import '../../remote/repositories/contact/contact_response.dart';
+import '../../utils/abuse/model.dart';
+import '../../utils/abuse/service.dart';
 import '../../utils/extensions.dart';
 import '../../utils/helpers.dart';
 import 'cubit/house_detail_cubit.dart';
 import 'house_images.dart';
+import 'recoman/recomandation_view.dart' show RecommendedHousesSection;
+import 'recoman/recomendation_biznes.dart' show RecommendedHousesSectionBiznes;
 import 'widgets/circled_icon_btn.dart';
 import 'widgets/gradient_bg_container.dart';
 import 'widgets/pop_up.dart';
 import 'widgets/row_main_info_tile.dart';
 
 class HouseDetailRoute {
-  HouseDetailRoute({
-    required this.imgUrl,
-    required this.id,
-  });
+  HouseDetailRoute({required this.imgUrl, required this.id});
 
   final List<String?>? imgUrl;
   final int? id;
@@ -46,13 +50,8 @@ class HouseDetailView extends StatefulWidget {
   static Widget builder(BuildContext context, HouseDetailRoute data) {
     final bloc = injector<HouseDetailCubit>();
     return BlocProvider(
-      create: (context) => bloc
-        ..getHouseDetail(
-          data.id ?? 0,
-        ),
-      child: HouseDetailView(
-        data: data,
-      ),
+      create: (context) => bloc..getHouseDetail(data.id ?? 0),
+      child: HouseDetailView(data: data),
     );
   }
 
@@ -63,7 +62,7 @@ class HouseDetailView extends StatefulWidget {
 }
 
 class _HouseDetailViewState extends State<HouseDetailView> {
-  double _scrollPercentage = 0.0;
+  double _scrollPercentage = 0;
   bool shareLink = false;
   bool shareImage = true;
 
@@ -92,8 +91,10 @@ class _HouseDetailViewState extends State<HouseDetailView> {
     link = 'https://mekanly.com/house/${widget.data.imgUrl}';
   }
 
-  Future<void> shareImagesWithDio(List<String> imageUrls,
-      {String? text}) async {
+  Future<void> shareImagesWithDio(
+    List<String> imageUrls, {
+    String? text,
+  }) async {
     try {
       final tempDir = await getTemporaryDirectory();
       var files = <XFile>[];
@@ -122,7 +123,12 @@ class _HouseDetailViewState extends State<HouseDetailView> {
     }
   }
 
+  final abuseService = AbuseService();
   void _showShareBottomSheet(BuildContext context, List<String> imageUrls) {
+    var shareLink = true;
+    var shareImage = false;
+
+    // ignore: inference_failure_on_function_invocation
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -134,10 +140,6 @@ class _HouseDetailViewState extends State<HouseDetailView> {
         return StatefulBuilder(
           builder: (context, setState) {
             final isRTL = Directionality.of(context) == TextDirection.rtl;
-
-            const double stackWidth = 180;
-            const double imageSize = 140;
-            const baseOffset = (stackWidth - imageSize) / 2;
 
             return Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
@@ -151,86 +153,8 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                       onPressed: () => Navigator.pop(context),
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  Center(
-                    child: SizedBox(
-                      width: stackWidth,
-                      height: stackWidth,
-                      child: Stack(
-                        children: List.generate(
-                          imageUrls.length.clamp(0, 3),
-                          (index) {
-                            final verticalOffset = index * 12.0;
-                            final scale = 1.0 - (index * 0.04);
-                            const offsetAmount = 12.0;
-                            double horizontalOffset;
-                            switch (index) {
-                              case 0:
-                                horizontalOffset = offsetAmount;
-                                break;
-                              case 1:
-                                horizontalOffset = 0;
-                                break;
-                              case 2:
-                                horizontalOffset = -offsetAmount;
-                                break;
-                              default:
-                                horizontalOffset = index * 12.0;
-                            }
-
-                            return TweenAnimationBuilder<double>(
-                              duration:
-                                  Duration(milliseconds: 400 + (index * 100)),
-                              curve: Curves.easeOutBack,
-                              tween: Tween<double>(begin: 0.0, end: 1),
-                              builder: (context, value, child) {
-                                return Positioned(
-                                  left: isRTL
-                                      ? null
-                                      : baseOffset + horizontalOffset,
-                                  right: isRTL
-                                      ? baseOffset + horizontalOffset
-                                      : null,
-                                  top: verticalOffset,
-                                  child: Transform.scale(
-                                    scale: (scale * value).clamp(0.0, 1.0),
-                                    child: Opacity(
-                                      opacity: value.clamp(0.0, 1.0),
-                                      child: Container(
-                                        width: imageSize,
-                                        height: imageSize,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(24),
-                                          border: Border.all(
-                                              color: Colors.white, width: 6),
-                                          boxShadow: const [
-                                            BoxShadow(
-                                              color: Colors.black26,
-                                              blurRadius: 6,
-                                              offset: Offset(2, 2),
-                                            ),
-                                          ],
-                                        ),
-                                        clipBehavior: Clip.hardEdge,
-                                        child: imageUrls[index].isNotEmpty
-                                            ? Image.network(
-                                                imageUrls[index],
-                                                fit: BoxFit.contain,
-                                              )
-                                            : const SizedBox(),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 15),
+                  _AnimatedImageStack(imageUrls: imageUrls, isRTL: isRTL),
                   Text(
                     context.translation.share_with_friends,
                     style: const TextStyle(
@@ -302,7 +226,6 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                       ),
                       onPressed: () async {
                         Navigator.pop(context);
-
                         if (shareLink) {
                           final urlText =
                               imageUrls.where((e) => e.isNotEmpty).join('\n');
@@ -340,10 +263,9 @@ class _HouseDetailViewState extends State<HouseDetailView> {
     );
   }
 
-  void _showReportBottomSheet(BuildContext context) {
-    String? selectedReason;
+  void _showReportBottomSheet(BuildContext context, List<AbuseReason> reasons) {
+    int? selectedReasonId;
 
-    // ignore: inference_failure_on_function_invocation
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -354,56 +276,96 @@ class _HouseDetailViewState extends State<HouseDetailView> {
         return StatefulBuilder(
           builder: (context, setState) {
             return Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      AppText.s14w400BdM(
-                        '',
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
+                      const Icon(Icons.flag,
+                          color: Color.fromARGB(255, 55, 65, 81)),
+                      const SizedBox(width: 8),
+                      Text(
+                        context.translation.nag_iber,
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          fontFamily: StringConstants.roboto,
+                          fontWeight: FontWeight.w500,
+                          color: const Color.fromARGB(255, 55, 65, 81),
+                        ),
                       ),
                       const Spacer(),
-                      IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () => Navigator.pop(context),
+                      GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: const Icon(Icons.close,
+                            color: Color.fromARGB(255, 55, 65, 81)),
                       ),
                     ],
                   ),
-                  const Divider(),
-                  ...[
-                    'Satylan',
-                    'Bildirş hakyk däl',
-                    'Habarlaşyp bolanok',
-                    'Suraty ýok',
-                    'Hakyký eýesi däl',
-                    'Başga sebäp'
-                  ].map((reason) {
-                    return RadioListTile<String>(
-                      title: Text(reason),
-                      value: reason,
-                      groupValue: selectedReason,
-                      onChanged: (value) {
+                  const SizedBox(height: 12),
+                  ...reasons.map((reason) {
+                    return RadioListTile<int>(
+                      title: Text(
+                        reason.description,
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          fontFamily: StringConstants.roboto,
+                          fontWeight: FontWeight.w400,
+                          color: const Color.fromARGB(255, 55, 65, 81),
+                        ),
+                      ),
+                      value: reason.id,
+                      groupValue: selectedReasonId,
+                      activeColor: ColorName.blueish,
+                      onChanged: (val) {
                         setState(() {
-                          selectedReason = value;
+                          selectedReasonId = val;
                         });
                       },
                     );
                   }),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 20),
                   SizedBox(
                     width: double.infinity,
+                    height: 48,
                     child: ElevatedButton(
-                      onPressed: selectedReason == null
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ColorName.blueish,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      onPressed: selectedReasonId == null
                           ? null
-                          : () {
+                          : () async {
                               Navigator.pop(context);
                               _showConfirmationDialog(context);
+
+                              try {
+                                await abuseService.sendReason(
+                                  abuseListId: selectedReasonId!,
+                                  itemId: 110,
+                                  message: reasons
+                                      .firstWhere(
+                                        (e) => e.id == selectedReasonId,
+                                      )
+                                      .description,
+                                  type: 'house',
+                                );
+                              } catch (e) {
+                                debugPrint('POST ERROR: $e');
+                              }
                             },
-                      child: Text(context.translation.send), // Mesela: "Ugrat"
+                      child: Text(
+                        context.translation.ugrat,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14.sp,
+                          fontFamily: StringConstants.roboto,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -420,14 +382,39 @@ class _HouseDetailViewState extends State<HouseDetailView> {
       context: context,
       builder: (BuildContext ctx) {
         return AlertDialog(
-          title: Text(context.translation.notification), // Mesela: "Habarname"
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          title: Text(
+            context.translation.notification,
+            style: const TextStyle(
+              color: Color.fromARGB(255, 34, 34, 34),
+              fontSize: 16,
+            ),
+          ),
           content: Text(
-            'Kabul edildi, biz bu bildirşi gözden geçireris.',
-          ), // "Kabul edildi, biz bu bildirşi gözden geçireris."
+            context.translation.kabul_iber,
+            style: const TextStyle(
+              color: Color.fromARGB(255, 90, 93, 98),
+              fontSize: 14,
+            ),
+          ),
           actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: Text(context.translation.ok), // "OK"
+            Center(
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.blue,
+                  textStyle: const TextStyle(fontSize: 16),
+                ),
+                onPressed: () => Navigator.pop(ctx),
+                child: const Text(
+                  'OK',
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 34, 34, 34),
+                    fontSize: 14,
+                  ),
+                ),
+              ),
             ),
           ],
         );
@@ -451,7 +438,6 @@ class _HouseDetailViewState extends State<HouseDetailView> {
               1.0 - ((currentHeight - minHeight) / (maxHeight - minHeight));
           scrollPercentage = scrollPercentage.clamp(0.0, 1.0);
           return <Widget>[
-            // ImageH
             SliverAppBar(
               pinned: true,
               foregroundColor: Colors.white,
@@ -460,55 +446,70 @@ class _HouseDetailViewState extends State<HouseDetailView> {
               backgroundColor: const Color(0xFF4D8BBF),
               automaticallyImplyLeading: false,
               leading: _scrollPercentage < 0.8
-                  ? Row(children: [
-                      14.boxW,
-                      CircledIconBtn(
-                        icon: Assets.icons.icBack.svg(
-                          package: 'gen',
-                          width: 18,
-                          height: 18,
+                  ? Row(
+                      children: [
+                        14.boxW,
+                        CircledIconBtn(
+                          icon: Assets.icons.icBack.svg(
+                            package: 'gen',
+                            width: 18,
+                            height: 18,
+                          ),
+                          onTap: () => Navigator.pop(context),
                         ),
-                        onTap: () => Navigator.pop(context),
+                      ],
+                    )
+                  : IconButton(
+                      icon: Assets.icons.icBack.svg(
+                        color: Colors.white,
+                        package: 'gen',
+                        width: 25,
+                        height: 25,
                       ),
-                    ])
-                  : null,
-
+                      onPressed: () => Navigator.pop(context),
+                    ),
               actions: [
                 if (_scrollPercentage < 0.8)
-                  Row(children: [
-                    CircledIconBtn(
-                      icon: Assets.icons.icShare.svg(package: 'gen'),
-                      onTap: () {
-                        final rawImageUrl =
-                            widget.data.imgUrl?.toString() ?? '';
+                  Row(
+                    children: [
+                      CircledIconBtn(
+                        icon: Assets.icons.icShare.svg(package: 'gen'),
+                        onTap: () {
+                          final rawImageUrl =
+                              widget.data.imgUrl?.toString() ?? '';
 
-                        List<String> imageUrls;
+                          List<String> imageUrls;
 
-                        if (rawImageUrl.startsWith('[') &&
-                            rawImageUrl.endsWith(']')) {
-                          final cleanStr =
-                              rawImageUrl.substring(1, rawImageUrl.length - 1);
-                          imageUrls =
-                              cleanStr.split(',').map((e) => e.trim()).toList();
-                        } else if (rawImageUrl.isNotEmpty) {
-                          imageUrls = [rawImageUrl];
-                        } else {
-                          imageUrls = [];
-                        }
-                        while (imageUrls.length < 3) {
-                          imageUrls.add('');
-                        }
+                          if (rawImageUrl.startsWith('[') &&
+                              rawImageUrl.endsWith(']')) {
+                            final cleanStr = rawImageUrl.substring(
+                              1,
+                              rawImageUrl.length - 1,
+                            );
+                            imageUrls = cleanStr
+                                .split(',')
+                                .map((e) => e.trim())
+                                .toList();
+                          } else if (rawImageUrl.isNotEmpty) {
+                            imageUrls = [rawImageUrl];
+                          } else {
+                            imageUrls = [];
+                          }
+                          while (imageUrls.length < 3) {
+                            imageUrls.add('');
+                          }
 
-                        _showShareBottomSheet(context, imageUrls);
-                      },
-                    ),
-                    12.boxW,
-                    CircledIconBtn(
-                      icon: Assets.icons.icHeartHouse.svg(package: 'gen'),
-                      onTap: () {},
-                    ),
-                    14.boxW,
-                  ])
+                          _showShareBottomSheet(context, imageUrls);
+                        },
+                      ),
+                      12.boxW,
+                      CircledIconBtn(
+                        icon: Assets.icons.icHeartHouse.svg(package: 'gen'),
+                        onTap: () {},
+                      ),
+                      14.boxW,
+                    ],
+                  )
                 else
                   Row(
                     children: [
@@ -559,7 +560,6 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                     ],
                   ),
               ],
-              //TODO: Bayram it is not good usecase as I see
               flexibleSpace: LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
                   final currentHeight = constraints.biggest.height;
@@ -603,27 +603,17 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                       Align(
                         alignment: Alignment.bottomLeft,
                         child: Container(
-                          padding: const EdgeInsets.only(left: 10, bottom: 5),
+                          padding: const EdgeInsets.only(left: 45, bottom: 15),
                           child: Opacity(
                             opacity: scrollPercentage,
-                            child: Row(children: [
-                              IconButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                icon: const Icon(Icons.arrow_back,
-                                    color: Colors.white),
+                            child: const Text(
+                              'Gyssagly satlyk jay',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
                               ),
-                              SizedBox(width: 5.w),
-                              const Text(
-                                'Gyssagly satlyk jay',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ]),
+                            ),
                           ),
                         ),
                       ),
@@ -650,13 +640,14 @@ class _HouseDetailViewState extends State<HouseDetailView> {
             if (state.status.isFailure) {
               return TryAgainWidget(
                 onTryAgain: () {
-                  context
-                      .read<HouseDetailCubit>()
-                      .getHouseDetail(widget.data.id ?? 0);
+                  context.read<HouseDetailCubit>().getHouseDetail(
+                        widget.data.id ?? 0,
+                      );
                 },
               );
             }
             final house = state.response?.data;
+
             return SingleChildScrollView(
               physics: const NeverScrollableScrollPhysics(),
               child: Column(
@@ -664,20 +655,21 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                 children: [
                   _HeaderInfos(house: house),
                   12.boxH,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12).w,
-                    child: const ClickableBanner(),
-                  ),
+                  if (house?.exclusive == 1)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12).w,
+                      child: const ClickableBanner(),
+                    )
+                  else
+                    const SizedBox.shrink(),
+
                   12.boxH,
                   const _Comments(),
                   12.boxH,
-                  _HouseDetailInfo(
-                    house: house,
-                  ),
+
+                  _HouseDetailInfo(house: house),
                   20.boxH,
-                  _HouseDetailPossibility(
-                    house: house,
-                  ),
+                  _HouseDetailPossibility(house: house),
                   20.boxH,
                   _Description(description: house?.description),
                   20.boxH,
@@ -690,7 +682,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                   //         ? 'https://mekanly.com.tm/${bigBanners?.first.logo ?? ''}'
                   //         : null,
                   //   ),
-                  20.boxH,
+                  // 20.boxH,
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12).w,
                     child: Row(
@@ -699,7 +691,9 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                         8.boxW,
                         GestureDetector(
                           onTap: () {
-                            _showReportBottomSheet(context);
+                            abuseService.getReasons().then((reasons) {
+                              _showReportBottomSheet(context, reasons);
+                            }).catchError((e) {});
                           },
                           child: AppText.s14w400BdM(
                             context.translation.report,
@@ -713,42 +707,35 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                       ],
                     ),
                   ),
+                  20.boxH,
+                  //TODOS: Biznes hasaplar
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12).w,
+                    child: AppText.s14w400BdM(
+                      context.translation.business_accounts,
+                      fontSize: 14.sp,
+                      fontFamily: StringConstants.roboto,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xFF000000),
+                    ),
+                  ),
                   10.boxH,
+                  const RecommendedHousesSectionBiznes(),
+                  20.boxH,
 
-                  // ///TODOS: Bayram will add this later
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 12).w,
-                  //   child: AppText.s14w400BdM(
-                  //     'Başga bildirişler',
-                  //     fontSize: 14.sp,
-                  //     fontFamily: StringConstants.roboto,
-                  //     fontWeight: FontWeight.w400,
-                  //     color: const Color(0xFF000000),
-                  //   ),
-                  // ),
-                  // 8.boxH,
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 12).w,
-                  //   child: SizedBox(
-                  //     width: MediaQuery.of(context).size.width - 12.w,
-                  //     height:
-                  //         ((MediaQuery.of(context).size.width * 0.35 * 198) /
-                  //                 131) +
-                  //             12.h,
-                  //     child: ListView.separated(
-                  //       padding: const EdgeInsets.only(
-                  //         top: 6,
-                  //         bottom: 6,
-                  //         left: 6,
-                  //       ),
-                  //       scrollDirection: Axis.horizontal,
-                  //       itemBuilder: (context, index) =>
-                  //           const NotificationCard(),
-                  //       separatorBuilder: (context, index) => 7.boxW,
-                  //       itemCount: 5,
-                  //     ),
-                  //   ),
-                  // ),
+                  ///TODOS: Bashga bildirisler
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12).w,
+                    child: AppText.s14w400BdM(
+                      context.translation.other_announcements,
+                      fontSize: 14.sp,
+                      fontFamily: StringConstants.roboto,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xFF000000),
+                    ),
+                  ),
+                  10.boxH,
+                  const RecommendedHousesSection(),
                   10.boxH,
                 ],
               ),
@@ -761,11 +748,11 @@ class _HouseDetailViewState extends State<HouseDetailView> {
           final house = state.response?.data;
           return Container(
             padding: const EdgeInsets.all(8).w,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xff8f969e80).withOpacity(.5),
+                  color: Color(0x408f969e),
                   blurRadius: 3,
                 ),
               ],
@@ -776,12 +763,22 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                   flex: 2,
                   child: AppBtn(
                     onTap: () async {
+                      final houseId = house?.id;
+                      final dioInstance = injector<Dio>();
+                      if (houseId != null) {
+                        await HouseRepository(dioInstance).contactHouseOwner(
+                          houseId: houseId,
+                          message: '${context.translation.call} request',
+                        );
+                      }
                       final number = house?.bronNumber?.toString();
                       if (number != null && number.isNotEmpty) {
                         final smsUri = Uri.parse('sms:$number');
                         try {
-                          await launchUrl(smsUri,
-                              mode: LaunchMode.externalApplication);
+                          await launchUrl(
+                            smsUri,
+                            mode: LaunchMode.externalApplication,
+                          );
                         } catch (e) {
                           print('SMS ugradylmady: $e');
                         }
@@ -797,9 +794,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                     bgColor: const Color(0xffE9F7F0),
                     ltIcon: SizedBox(
                       height: 18.w,
-                      child: Assets.icons.sms.svg(
-                        package: 'gen',
-                      ),
+                      child: Assets.icons.sms.svg(package: 'gen'),
                     ),
                   ),
                 ),
@@ -808,18 +803,26 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                   flex: 2,
                   child: AppBtn(
                     onTap: () async {
-                      final number = house?.bronNumber?.toString();
-                      if (number != null && number.isNotEmpty) {
-                        final telUri = Uri.parse('tel:$number');
-                        try {
-                          await launchUrl(telUri,
-                              mode: LaunchMode.externalApplication);
-                        } catch (e) {
-                          print('Jaň edip bolmady: $e');
+                      try {
+                        final houseId = house?.id;
+                        final dioInstance = injector<Dio>();
+                        if (houseId != null) {
+                          await HouseRepository(dioInstance).contactHouseOwner(
+                            houseId: houseId,
+                            message: '${context.translation.call} request',
+                          );
                         }
-                      } else {
-                        print('Nomeri tapylmady.');
-                      }
+                        final number = house?.bronNumber?.toString();
+                        if (number != null && number.isNotEmpty) {
+                          final telUri = Uri.parse('tel:$number');
+                          await launchUrl(
+                            telUri,
+                            mode: LaunchMode.externalApplication,
+                          );
+                        } else {
+                          print('Nomeri tapylmady.');
+                        }
+                      } catch (e) {}
                     },
                     text: context.translation.call,
                     fontSize: 12.sp,
@@ -829,9 +832,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                     bgColor: const Color(0xFFE5EFF0),
                     ltIcon: SizedBox(
                       height: 18.w,
-                      child: Assets.icons.icCalll.svg(
-                        package: 'gen',
-                      ),
+                      child: Assets.icons.icCalll.svg(package: 'gen'),
                     ),
                   ),
                 ),
@@ -892,37 +893,53 @@ class _HouseDetailInfoState extends State<_HouseDetailInfo> {
   List<_HouseInfoGridItem> _items = [];
 
   @override
-  void initState() {
-    super.initState();
-    // Burada context ile işlem yapma
-  }
-
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    // Burada context'i güvenle kullanabilirsin
-    _items = [
-      _HouseInfoGridItem(
-        icon: Assets.icons.icCategoryDetail.svg(package: 'gen'),
-        title: context.translation.section,
-        value: widget.house?.categoryName ?? '',
-      ),
-      _HouseInfoGridItem(
-        icon: Assets.icons.icCall.svg(package: 'gen'),
-        title: context.translation.phone_number,
-        value: widget.house?.bronNumber?.toString() ?? '',
-      ),
-      _HouseInfoGridItem(
-        icon: Assets.icons.icCalendar.svg(package: 'gen'),
-        title: 'Goýlan senesi',
-        value: Helpers.formatDateAsMMDDYYYY(widget.house?.createdAt),
-      ),
-      _HouseInfoGridItem(
-        icon: Assets.icons.icPerson.svg(package: 'gen'),
-        title: context.translation.salesman_type,
-        value: widget.house?.who?.toString() ?? 'Eýesi',
-      ),
+    _items = [];
+
+    if (widget.house?.categoryName != null &&
+        widget.house!.categoryName!.isNotEmpty) {
+      _items.add(
+        _HouseInfoGridItem(
+          icon: Assets.icons.icCategoryDetail.svg(package: 'gen'),
+          title: context.translation.section,
+          value: widget.house!.categoryName!,
+        ),
+      );
+    }
+
+    if (widget.house?.bronNumber != null) {
+      _items.add(
+        _HouseInfoGridItem(
+          icon: Assets.icons.icCall.svg(package: 'gen'),
+          title: context.translation.phone_number,
+          value: widget.house!.bronNumber.toString(),
+        ),
+      );
+    }
+
+    if (widget.house?.createdAt != null) {
+      _items.add(
+        _HouseInfoGridItem(
+          icon: Assets.icons.icCalendar.svg(package: 'gen'),
+          title: 'Goýlan senesi',
+          value: Helpers.formatDateAsMMDDYYYY(widget.house!.createdAt),
+        ),
+      );
+    }
+
+    if (widget.house?.who != null) {
+      _items.add(
+        _HouseInfoGridItem(
+          icon: Assets.icons.icPerson.svg(package: 'gen'),
+          title: context.translation.salesman_type,
+          value: widget.house!.who.toString(),
+        ),
+      );
+    }
+
+    _items.add(
       _HouseInfoGridItem(
         icon: SizedBox(
           width: 24.w,
@@ -932,37 +949,60 @@ class _HouseDetailInfoState extends State<_HouseDetailInfo> {
         title: context.translation.house_type,
         value: 'Elitga',
       ),
-      _HouseInfoGridItem(
-        icon: SizedBox(
-          width: 24.w,
-          height: 24.w,
-          child: Assets.icons.icFloorCount.svg(package: 'gen'),
+    );
+
+    if (widget.house?.roomNumber != null) {
+      _items.add(
+        _HouseInfoGridItem(
+          icon: SizedBox(
+            width: 24.w,
+            height: 24.w,
+            child: Assets.icons.icFloorCount.svg(package: 'gen'),
+          ),
+          title: context.translation.room_number,
+          value: widget.house!.roomNumber.toString(),
         ),
-        title: context.translation.room_number,
-        value: widget.house?.roomNumber?.toString() ?? '',
-      ),
+      );
+    }
+
+    _items.add(
       _HouseInfoGridItem(
         icon: Assets.icons.isremont.svg(package: 'gen'),
         title: context.translation.remont_gorn,
         value: 'Ýewroremont',
       ),
-      _HouseInfoGridItem(
-        icon: Assets.icons.icSquare.svg(package: 'gen'),
-        title: context.translation.total_area,
-        value: widget.house?.area != null ? '${widget.house?.area} m²' : '',
-      ),
-      _HouseInfoGridItem(
-        icon: Assets.icons.icStairsFloor.svg(package: 'gen'),
-        title: context.translation.floor_number,
-        value: widget.house?.floorNumber?.toString() ?? '',
-      ),
-      _HouseInfoGridItem(
-        icon: Assets.icons.icPrice.svg(package: 'gen'),
-        title: context.translation.price,
-        value: widget.house?.price != null ? '${widget.house?.price} TMT' : '',
-        isBold: true,
-      ),
-    ];
+    );
+
+    if (widget.house?.area != null) {
+      _items.add(
+        _HouseInfoGridItem(
+          icon: Assets.icons.icSquare.svg(package: 'gen'),
+          title: context.translation.total_area,
+          value: '${widget.house!.area} m²',
+        ),
+      );
+    }
+
+    if (widget.house?.floorNumber != null) {
+      _items.add(
+        _HouseInfoGridItem(
+          icon: Assets.icons.icStairsFloor.svg(package: 'gen'),
+          title: context.translation.floor_number,
+          value: widget.house!.floorNumber.toString(),
+        ),
+      );
+    }
+
+    if (widget.house?.price != null) {
+      _items.add(
+        _HouseInfoGridItem(
+          icon: Assets.icons.icPrice.svg(package: 'gen'),
+          title: context.translation.price,
+          value: '${widget.house!.price} TMT',
+          isBold: true,
+        ),
+      );
+    }
   }
 
   @override
@@ -1072,10 +1112,7 @@ class _HouseInfoGridItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(
-          color: const Color(0xffDDDDDD),
-          width: 1.w,
-        ),
+        border: Border.all(color: const Color(0xffDDDDDD), width: 1.w),
         borderRadius: BorderRadius.circular(6.w),
         color: Colors.white,
         boxShadow: [
@@ -1093,18 +1130,18 @@ class _HouseInfoGridItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              SizedBox(
-                width: 18.w,
-                height: 18.w,
-                child: icon,
-              ),
+              SizedBox(width: 18.w, height: 18.w, child: icon),
               8.boxW,
-              AppText.s12w400BdS(
-                title,
-                fontFamily: StringConstants.roboto,
-                fontWeight: FontWeight.w500,
-                color: const Color(0xFF222222),
-                fontSize: 13.sp,
+              Expanded(
+                child: AppText.s12w400BdS(
+                  title,
+                  fontFamily: StringConstants.roboto,
+                  fontWeight: FontWeight.w500,
+                  color: const Color(0xFF222222),
+                  fontSize: 13.sp,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),
@@ -1123,9 +1160,7 @@ class _HouseInfoGridItem extends StatelessWidget {
 }
 
 class _HousePossibilityGridItem extends StatelessWidget {
-  const _HousePossibilityGridItem({
-    this.possibility,
-  });
+  const _HousePossibilityGridItem({this.possibility});
 
   final Possibility? possibility;
 
@@ -1175,9 +1210,7 @@ class _Comments extends StatelessWidget {
 }
 
 class _HeaderInfos extends StatelessWidget {
-  const _HeaderInfos({
-    required this.house,
-  });
+  const _HeaderInfos({required this.house});
 
   final HouseData? house;
 
@@ -1201,9 +1234,7 @@ class _HeaderInfos extends StatelessWidget {
             ],
           ),
           16.boxH,
-          RowMainInfoTile(
-            data: house,
-          ),
+          RowMainInfoTile(data: house),
           16.boxH,
           Row(
             children: [
@@ -1227,9 +1258,7 @@ class _HeaderInfos extends StatelessWidget {
 }
 
 class _HouseDetailImgSlider extends StatefulWidget {
-  const _HouseDetailImgSlider({
-    required this.data,
-  });
+  const _HouseDetailImgSlider({required this.data});
 
   final HouseDetailRoute data;
 
@@ -1256,9 +1285,7 @@ class _HouseDetailImgSliderState extends State<_HouseDetailImgSlider> {
                 Navigator.push(
                   context,
                   CustomPageRoute.slide(
-                    HouseImages(
-                      houseImagesUrl: widget.data.imgUrl,
-                    ),
+                    HouseImages(houseImagesUrl: widget.data.imgUrl),
                   ),
                 );
               },
@@ -1305,6 +1332,155 @@ class _HouseDetailImgSliderState extends State<_HouseDetailImgSlider> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _AnimatedImageStack extends StatefulWidget {
+  const _AnimatedImageStack({required this.imageUrls, required this.isRTL});
+  final List<String> imageUrls;
+  final bool isRTL;
+
+  @override
+  State<_AnimatedImageStack> createState() => _AnimatedImageStackState();
+}
+
+class _AnimatedImageStackState extends State<_AnimatedImageStack>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _rotateLeft,
+      _rotateRight,
+      _translateY,
+      _translateX1,
+      _translateX2;
+
+  final double imageSize = 130;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+
+    _rotateLeft = Tween<double>(
+      begin: 0,
+      end: -pi / 18,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    _rotateRight = Tween<double>(
+      begin: 0,
+      end: pi / 18,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    _translateY = Tween<double>(
+      begin: 0,
+      end: -40,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    _translateX1 = Tween<double>(
+      begin: 0,
+      end: -20,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    _translateX2 = Tween<double>(
+      begin: 0,
+      end: 20,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Widget _buildImage(String url) {
+    return Container(
+      width: imageSize,
+      height: imageSize,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.white, width: 4),
+        boxShadow: const [
+          BoxShadow(color: Colors.black26, blurRadius: 6, offset: Offset(2, 2)),
+        ],
+      ),
+      clipBehavior: Clip.hardEdge,
+      child: Image.network(url, fit: BoxFit.contain),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final urls = widget.imageUrls;
+    final count = urls.length.clamp(0, 3);
+
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        if (count == 1) {
+          return Center(child: _buildImage(urls[0]));
+        } else if (count == 2) {
+          return SizedBox(
+            width: imageSize + 40,
+            height: imageSize + 20,
+            child: Stack(
+              children: [
+                Transform.translate(
+                  offset: Offset(_translateX1.value, 0),
+                  child: Transform.rotate(
+                    angle: _rotateLeft.value,
+                    alignment: Alignment.bottomLeft,
+                    child: _buildImage(urls[1]),
+                  ),
+                ),
+                Transform.translate(
+                  offset: Offset(_translateX2.value, 0),
+                  child: Transform.rotate(
+                    angle: _rotateRight.value,
+                    alignment: Alignment.bottomRight,
+                    child: _buildImage(urls[0]),
+                  ),
+                ),
+              ],
+            ),
+          );
+        } else {
+          return SizedBox(
+            width: imageSize + 40,
+            height: imageSize + 40,
+            child: Stack(
+              children: [
+                Transform.translate(
+                  offset: Offset(0, _translateY.value),
+                  child: _buildImage(urls[2]),
+                ),
+                Transform.translate(
+                  offset: Offset(_translateX1.value, 0),
+                  child: Transform.rotate(
+                    angle: _rotateLeft.value,
+                    alignment: Alignment.bottomLeft,
+                    child: _buildImage(urls[1]),
+                  ),
+                ),
+                Transform.translate(
+                  offset: Offset(_translateX2.value, 0),
+                  child: Transform.rotate(
+                    angle: _rotateRight.value,
+                    alignment: Alignment.bottomRight,
+                    child: _buildImage(urls[0]),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+      },
     );
   }
 }

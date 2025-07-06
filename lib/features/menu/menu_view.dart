@@ -78,12 +78,12 @@ class _MenuViewState extends State<MenuView> {
                     },
                     trailingWidget: BlocBuilder<AppCubit, AppState>(
                       builder: (context, state) {
-                        final currentLang = state.locale?.languageCode ?? 'tk';
+                        final currentLang = state.locale?.languageCode ?? 'ru';
                         return Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             AppText.s14w400BdM(
-                              currentLang == 'tk' ? 'Türkmen dili' : 'Rus dili',
+                              currentLang == 'ru' ? 'Rus dili' : 'Türkmen dili',
                               fontWeight: FontWeight.w400,
                               fontFamily: StringConstants.manrope,
                               color: const Color.fromARGB(255, 106, 106, 106),
@@ -226,7 +226,7 @@ Future<void> chooseLang(BuildContext context) async {
                       alignment: Alignment.topLeft,
                       child: AppText.s14w400BdM(
                         context.translation.select_language,
-                        fontSize: 15.sp,
+                        fontSize: 14.sp,
                         fontFamily: StringConstants.roboto,
                         fontWeight: FontWeight.w500,
                         color: const Color(0xFF252525),
@@ -251,15 +251,14 @@ Future<void> chooseLang(BuildContext context) async {
                               selectedLang = value;
                             });
                             appCubit.changeLang(Locale(value));
-                            Future.delayed(const Duration(milliseconds: 100),
-                                () {
-                              Navigator.of(context).pop();
-                            });
+
+                            Navigator.of(context).pop();
+                            RootView.rootKey.currentState?.goToTab(0);
                           },
                           title: AppText.s14w400BdM(
                             'Türkmen dili',
                             color: const Color(0xFF252525),
-                            fontSize: 15.sp,
+                            fontSize: 13.sp,
                             fontWeight: FontWeight.w500,
                             fontFamily: StringConstants.roboto,
                           ),
@@ -279,15 +278,14 @@ Future<void> chooseLang(BuildContext context) async {
                               selectedLang = value;
                               appCubit.changeLang(Locale(value));
                             });
-                            Future.delayed(const Duration(milliseconds: 100),
-                                () {
-                              Navigator.of(context).pop();
-                            });
+
+                            Navigator.of(context).pop();
+                            RootView.rootKey.currentState?.goToTab(0);
                           },
                           title: AppText.s14w400BdM(
                             'Rus dili',
                             color: const Color(0xFF252525),
-                            fontSize: 15.sp,
+                            fontSize: 13.sp,
                             fontWeight: FontWeight.w500,
                             fontFamily: StringConstants.roboto,
                           ),
@@ -305,77 +303,77 @@ Future<void> chooseLang(BuildContext context) async {
   );
 }
 
-void notification(BuildContext context) {
-  // ignore: inference_failure_on_function_invocation
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return Dialog(
-        backgroundColor: Colors.white,
-        alignment: Alignment.center,
-        child: Container(
-          height: MediaQuery.of(context).size.height * 0.25,
-          width: MediaQuery.of(context).size.width * 0.96,
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 15),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: const Color(0xFFFFFFFF),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: AppText.s14w400BdM(
-                  context.translation.notification,
-                  color: const Color(0xFF252525),
-                  fontSize: 15.sp,
-                  fontWeight: FontWeight.w400,
-                  fontFamily: StringConstants.roboto,
-                ),
-              ),
-              10.boxH,
-              AppText.s14w400BdM(
-                context.translation.not_logged_in_push,
-                color: const Color(0xFF252525),
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w400,
-                fontFamily: StringConstants.roboto,
-                softWrap: true,
-              ),
-              8.boxH,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: AppText.s14w400BdM(
-                      context.translation.cancel,
-                      color: const Color(0xFF252525),
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: StringConstants.roboto,
-                    ),
-                  ),
-                  8.boxH,
-                  TextButton(
-                    onPressed: () {},
-                    child: AppText.s14w400BdM(
-                      context.translation.log_in,
-                      color: const Color(0xFF252525),
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: StringConstants.roboto,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      );
-    },
-  );
-}
+// void notification(BuildContext context) {
+//   // ignore: inference_failure_on_function_invocation
+//   showDialog(
+//     context: context,
+//     builder: (BuildContext context) {
+//       return Dialog(
+//         backgroundColor: Colors.white,
+//         alignment: Alignment.center,
+//         child: Container(
+//           height: MediaQuery.of(context).size.height * 0.25,
+//           width: MediaQuery.of(context).size.width * 0.96,
+//           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 15),
+//           decoration: BoxDecoration(
+//             borderRadius: BorderRadius.circular(10),
+//             color: const Color(0xFFFFFFFF),
+//           ),
+//           child: Column(
+//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//             children: [
+//               Align(
+//                 alignment: Alignment.topLeft,
+//                 child: AppText.s14w400BdM(
+//                   context.translation.notification,
+//                   color: const Color(0xFF252525),
+//                   fontSize: 15.sp,
+//                   fontWeight: FontWeight.w400,
+//                   fontFamily: StringConstants.roboto,
+//                 ),
+//               ),
+//               10.boxH,
+//               AppText.s14w400BdM(
+//                 context.translation.not_logged_in_push,
+//                 color: const Color(0xFF252525),
+//                 fontSize: 14.sp,
+//                 fontWeight: FontWeight.w400,
+//                 fontFamily: StringConstants.roboto,
+//                 softWrap: true,
+//               ),
+//               8.boxH,
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.end,
+//                 children: [
+//                   TextButton(
+//                     onPressed: () {
+//                       Navigator.pop(context);
+//                     },
+//                     child: AppText.s14w400BdM(
+//                       context.translation.cancel,
+//                       color: const Color(0xFF252525),
+//                       fontSize: 13.sp,
+//                       fontWeight: FontWeight.w400,
+//                       fontFamily: StringConstants.roboto,
+//                     ),
+//                   ),
+//                   8.boxH,
+//                   TextButton(
+//                     onPressed: () {},
+//                     child: AppText.s14w400BdM(
+//                       context.translation.log_in,
+//                       color: const Color(0xFF252525),
+//                       fontSize: 13.sp,
+//                       fontWeight: FontWeight.w400,
+//                       fontFamily: StringConstants.roboto,
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ],
+//           ),
+//         ),
+//       );
+//     },
+//   );
+// }

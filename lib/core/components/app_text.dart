@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gen/gen.dart';
 
 import '../../utils/extensions.dart';
 
@@ -496,5 +495,5 @@ class AppText extends StatelessWidget {
     );
   }
 
-  static s16w600BdS(String s, {required String fontFamily}) {}
+  static void s16w600BdS(String s, {required String fontFamily}) {}
 }

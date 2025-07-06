@@ -49,7 +49,7 @@ class SubCategoriesCard extends StatelessWidget {
         crossAxisCount: 3,
         mainAxisSpacing: 7.w,
         crossAxisSpacing: 6.w,
-        childAspectRatio: 107.w / 90.w,
+        childAspectRatio: 107.w / 120.w,
       ),
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -208,8 +208,8 @@ class _SubCategoryCard extends StatelessWidget {
                     child: imageUrl.isNotEmpty
                         ? Image.network(
                             imageUrl,
-                            width: 24.w,
-                            height: 24.w,
+                            width: 40.w,
+                            height: 40.w,
                             fit: BoxFit.contain,
                             errorBuilder: (context, error, stackTrace) =>
                                 Icon(Icons.category, size: 24.w),

@@ -151,6 +151,7 @@ class _HousesViewState extends State<HousesView>
                                     );
                                     Navigator.push(
                                       context,
+                                      // ignore: inference_failure_on_function_invocation
                                       CustomPageRoute.slide(
                                         HouseFiltersView(filter: data),
                                       ),
@@ -203,8 +204,7 @@ class _HousesViewState extends State<HousesView>
                                 title: (currentLoc?.nameAll?.isEmpty ?? true)
                                     ? context.translation.location
                                     : currentLoc?.nameAll ?? '',
-                                icon:
-                                    Assets.icons.icLocation.svg(package: 'gen'),
+                                icon: Assets.icons.icLocation,
                               ),
                               6.boxW,
                               RoundedBlueBorderedChipBtn(
@@ -224,8 +224,7 @@ class _HousesViewState extends State<HousesView>
                                     });
                                   }
                                 },
-                                icon:
-                                    Assets.icons.icCategory.svg(package: 'gen'),
+                                icon: Assets.icons.icCategory,
                                 title: (currentCategory?.isEmpty ?? true)
                                     ? context.translation.category
                                     : currentCategory?.nameAll ?? '',
@@ -248,7 +247,7 @@ class _HousesViewState extends State<HousesView>
                                   );
                                 },
                                 title: context.translation.price,
-                                icon: Assets.icons.icCost.svg(package: 'gen'),
+                                icon: Assets.icons.icCost,
                               ),
                             ],
                           ),
@@ -292,7 +291,7 @@ class _HousesViewState extends State<HousesView>
                     child: FloatingActionButton(
                       backgroundColor: const Color(0xff5A8FBB),
                       onPressed: _scrollToTop,
-                      mini: true, // Smaller size for subtlety
+                      mini: true,
                       child: const Icon(
                         Icons.keyboard_arrow_up,
                         color: Colors.white,

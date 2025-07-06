@@ -6,7 +6,5 @@ final class AppConstants {
   static const connectTimeout = Duration(milliseconds: 50000);
   static const receiveTimeout = Duration(milliseconds: 50000);
 
-
-
-  static const String businessProfileImg = 'assets/biznes_profil_tema.webp';
+  static const String businessProfileImg = 'assets/back1.webp';
 }

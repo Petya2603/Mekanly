@@ -1,8 +1,88 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gen/gen.dart';
 import '../../../core/components/app_text.dart';
 import '../../../product/constants/constants.dart';
 import '../../../utils/extensions.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+class MekanlyInfoDialog extends StatelessWidget {
+  const MekanlyInfoDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      backgroundColor: Colors.white,
+      child: Padding(
+        padding: EdgeInsets.all(16.w),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Subtitle
+            Text(
+              'Habarnama',
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 12.h),
+
+            // Description
+            RichText(
+              text: TextSpan(
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: Colors.black,
+                  height: 1.5,
+                ),
+                children: const [
+                  TextSpan(
+                      text: 'Bu funksiya jaýyňyzy ',
+                      style:
+                          TextStyle(color: Color.fromARGB(255, 113, 113, 113))),
+                  TextSpan(
+                    text: 'Dine Mekanly.com-da ',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 113, 113, 113)),
+                  ),
+                  TextSpan(
+                      text:
+                          'platformasynda ýerleşdirýändigiňizi aňladýar. Funksiýany ulanmak bilen, bildirişiňiz her 3 günden bir awtomatiki öňe süýşüriler. Eger-de täze jaý goşulsa, siziň bildirişiňiz aşak süýşer. Bildirişiňiziň başga platformalarda ýerleşdirilendigi barada şikaýat gelse, bu funksiýa awtomatiki öçüriler.',
+                      style:
+                          TextStyle(color: Color.fromARGB(255, 113, 113, 113))),
+                ],
+              ),
+            ),
+            SizedBox(height: 16.h),
+
+            // OK Button
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(
+                  'OK',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 class TitledSwitcherWidget extends StatelessWidget {
   const TitledSwitcherWidget({
@@ -11,11 +91,13 @@ class TitledSwitcherWidget extends StatelessWidget {
     this.accepted = false,
     required this.onChanged,
     this.padding,
+    this.showIcon = false,
   });
   final String title;
   final bool accepted;
   final ValueChanged<bool> onChanged;
   final EdgeInsets? padding;
+  final bool showIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -24,26 +106,42 @@ class TitledSwitcherWidget extends StatelessWidget {
       child: Container(
         padding: padding ?? EdgeInsets.symmetric(horizontal: 16.w),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              child: AppText.s14w400BdM(
+            Row(children: [
+              AppText.s14w400BdM(
                 title,
                 fontSize: 15.sp,
                 fontFamily: StringConstants.roboto,
               ),
-            ),
+              const SizedBox(width: 15),
+              if (showIcon)
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => const MekanlyInfoDialog(),
+                    );
+                  },
+                  child: SizedBox(
+                    width: 18.w,
+                    height: 18.w,
+                    child: Assets.icons.icHash.svg(package: 'gen'),
+                  ),
+                ),
+            ]),
             10.boxW,
             Transform.scale(
               scale: .7,
               child:
-              // Switch(
-              //   value: accepted,
-              //   onChanged: (value) => onChanged.call(!accepted),
-              //   activeTrackColor: const Color(0xFF3A8BCF),
-              // ),
-              CupertinoSwitch(
+                  // Switch(
+                  //   value: accepted,
+                  //   onChanged: (value) => onChanged.call(!accepted),
+                  //   activeTrackColor: const Color(0xFF3A8BCF),
+                  // ),
+                  CupertinoSwitch(
                 value: accepted,
-                activeTrackColor:const Color(0xFF3A8BCF),
+                activeTrackColor: const Color(0xFF3A8BCF),
                 onChanged: (value) => onChanged.call(!accepted),
               ),
             ),
