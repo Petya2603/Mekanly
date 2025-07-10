@@ -973,4 +973,10 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get remont => 'ремонта';
+
+  @override
+  String get jog_giz => 'Скрыть ответы';
+
+  @override
+  String get jog_gor => 'Показать ответы';
 }

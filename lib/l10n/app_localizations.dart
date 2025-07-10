@@ -1975,6 +1975,18 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'ремонта'**
   String get remont;
+
+  /// No description provided for @jog_giz.
+  ///
+  /// In ru, this message translates to:
+  /// **'Скрыть ответы'**
+  String get jog_giz;
+
+  /// No description provided for @jog_gor.
+  ///
+  /// In ru, this message translates to:
+  /// **'Показать ответы'**
+  String get jog_gor;
 }
 
 class _AppLocalizationsDelegate

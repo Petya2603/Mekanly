@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:math';
 
 import 'package:common/common.dart';
@@ -25,10 +26,12 @@ import '../../utils/abuse/model.dart';
 import '../../utils/abuse/service.dart';
 import '../../utils/extensions.dart';
 import '../../utils/helpers.dart';
+import 'commit/commentbottomsheet.dart';
 import 'cubit/house_detail_cubit.dart';
 import 'house_images.dart';
-import 'recoman/recomandation_view.dart' show RecommendedHousesSection;
-import 'recoman/recomendation_biznes.dart' show RecommendedHousesSectionBiznes;
+import 'recoman/recom_house_view.dart' show RecommendedHousesSection;
+
+import 'recoman/recomendation_biznes.dart' show RecommendedBusinesSection;
 import 'widgets/circled_icon_btn.dart';
 import 'widgets/gradient_bg_container.dart';
 import 'widgets/pop_up.dart';
@@ -266,12 +269,14 @@ class _HouseDetailViewState extends State<HouseDetailView> {
   void _showReportBottomSheet(BuildContext context, List<AbuseReason> reasons) {
     int? selectedReasonId;
 
+    // ignore: inference_failure_on_function_invocation
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       isScrollControlled: true,
+      backgroundColor: Colors.white,
       builder: (BuildContext ctx) {
         return StatefulBuilder(
           builder: (context, setState) {
@@ -323,6 +328,10 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                           selectedReasonId = val;
                         });
                       },
+                      controlAffinity: ListTileControlAffinity.trailing,
+                      contentPadding: EdgeInsets.zero,
+                      visualDensity: VisualDensity.compact,
+                      dense: true,
                     );
                   }),
                   const SizedBox(height: 20),
@@ -339,22 +348,24 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                       onPressed: selectedReasonId == null
                           ? null
                           : () async {
-                              Navigator.pop(context);
-                              _showConfirmationDialog(context);
-
                               try {
+                                await showWideDialog(context);
+                                Navigator.pop(context);
+
                                 await abuseService.sendReason(
                                   abuseListId: selectedReasonId!,
-                                  itemId: 110,
+                                  itemId: widget.data.id ?? 0,
                                   message: reasons
                                       .firstWhere(
-                                        (e) => e.id == selectedReasonId,
-                                      )
+                                          (e) => e.id == selectedReasonId)
                                       .description,
                                   type: 'house',
                                 );
+
+                                if (context.mounted) {}
                               } catch (e) {
-                                debugPrint('POST ERROR: $e');
+                                debugPrint('Error: $e');
+                                if (context.mounted) {}
                               }
                             },
                       child: Text(
@@ -377,46 +388,63 @@ class _HouseDetailViewState extends State<HouseDetailView> {
     );
   }
 
-  void _showConfirmationDialog(BuildContext context) {
-    showDialog(
+  Future<void> showWideDialog(BuildContext context) async {
+    await showDialog(
       context: context,
-      builder: (BuildContext ctx) {
-        return AlertDialog(
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          title: Text(
-            context.translation.notification,
-            style: const TextStyle(
-              color: Color.fromARGB(255, 34, 34, 34),
-              fontSize: 16,
-            ),
-          ),
-          content: Text(
-            context.translation.kabul_iber,
-            style: const TextStyle(
-              color: Color.fromARGB(255, 90, 93, 98),
-              fontSize: 14,
-            ),
-          ),
-          actions: [
-            Center(
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.blue,
-                  textStyle: const TextStyle(fontSize: 16),
-                ),
-                onPressed: () => Navigator.pop(ctx),
-                child: const Text(
-                  'OK',
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 34, 34, 34),
-                    fontSize: 14,
+          insetPadding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    context.translation.notification,
+                    style: const TextStyle(
+                      color: Color.fromARGB(255, 34, 34, 34),
+                      fontWeight: FontWeight.w400,
+                      fontSize: 17,
+                    ),
                   ),
                 ),
-              ),
+                const SizedBox(height: 16),
+                Text(
+                  context.translation.kabul_iber,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w400,
+                    color: Color.fromARGB(255, 90, 93, 98),
+                    fontSize: 15,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.blue,
+                      textStyle: const TextStyle(fontSize: 16),
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text(
+                      'OK',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Color.fromARGB(255, 34, 34, 34),
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         );
       },
     );
@@ -424,6 +452,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
 
   @override
   Widget build(BuildContext context) {
+    final houseId = widget.data.id ?? 0;
     final statusBarHeight = MediaQuery.of(context).padding.top;
     final pinnedHeaderHeight = statusBarHeight + kToolbarHeight;
     return Scaffold(
@@ -664,14 +693,19 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                     const SizedBox.shrink(),
 
                   12.boxH,
-                  const _Comments(),
+                  _Comments(
+                    itemId: house!.id ?? 0,
+                    // itemType: house.type ?? 'House',
+                    itemType: 'House',
+                    commentCount: house.commentCount ?? 0,
+                  ),
                   12.boxH,
 
                   _HouseDetailInfo(house: house),
                   20.boxH,
                   _HouseDetailPossibility(house: house),
                   20.boxH,
-                  _Description(description: house?.description),
+                  _Description(description: house.description),
                   20.boxH,
                   // if (bigBanners?.isNotEmpty ?? false)
                   //   AdvCard(
@@ -690,10 +724,16 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                         Assets.icons.icReport.svg(package: 'gen'),
                         8.boxW,
                         GestureDetector(
-                          onTap: () {
-                            abuseService.getReasons().then((reasons) {
-                              _showReportBottomSheet(context, reasons);
-                            }).catchError((e) {});
+                          onTap: () async {
+                            try {
+                              final reasons = await abuseService.getReasons();
+                              if (context.mounted) {
+                                _showReportBottomSheet(context, reasons);
+                              }
+                            } catch (e) {
+                              debugPrint('Error: $e');
+                              if (context.mounted) {}
+                            }
                           },
                           child: AppText.s14w400BdM(
                             context.translation.report,
@@ -720,7 +760,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                     ),
                   ),
                   10.boxH,
-                  const RecommendedHousesSectionBiznes(),
+                  const RecommendedBusinesSection(),
                   20.boxH,
 
                   ///TODOS: Bashga bildirisler
@@ -735,7 +775,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                     ),
                   ),
                   10.boxH,
-                  const RecommendedHousesSection(),
+                  RecommendedHousesSection(houseId: houseId),
                   10.boxH,
                 ],
               ),
@@ -1181,16 +1221,23 @@ class _HousePossibilityGridItem extends StatelessWidget {
 }
 
 class _Comments extends StatelessWidget {
-  const _Comments();
+  const _Comments({
+    required this.itemId,
+    required this.itemType,
+    required this.commentCount,
+  });
+  final int itemId;
+  final String itemType;
+  final int commentCount;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15).w,
       child: AppBtn(
-        onTap: () {},
+        onTap: () => _showCommentsBottomSheet(context),
         fontSize: 13.sp,
-        text: '${context.translation.comments}  (0)',
+        text: '${context.translation.comments} ($commentCount)',
         textColor: const Color(0xff555555),
         ltIcon: SizedBox(
           height: 18.w,
@@ -1204,6 +1251,24 @@ class _Comments extends StatelessWidget {
           ),
         ),
         bgColor: const Color(0xffEEEEEE),
+      ),
+    );
+  }
+
+  void _showCommentsBottomSheet(BuildContext context) {
+    // ignore: inference_failure_on_function_invocation
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => DraggableScrollableSheet(
+        expand: false,
+        initialChildSize: 0.7,
+        maxChildSize: 0.9,
+        builder: (_, controller) => CommentsBottomSheet(
+          itemId: itemId.toString(),
+          itemType: itemType,
+          initialCommentCount: 5,
+        ),
       ),
     );
   }
@@ -1348,11 +1413,11 @@ class _AnimatedImageStack extends StatefulWidget {
 class _AnimatedImageStackState extends State<_AnimatedImageStack>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
-  late final Animation<double> _rotateLeft,
-      _rotateRight,
-      _translateY,
-      _translateX1,
-      _translateX2;
+  late final Animation<double> _rotateLeft;
+  late final Animation<double> _rotateRight;
+  late final Animation<double> _translateY;
+  late final Animation<double> _translateX1;
+  late final Animation<double> _translateX2;
 
   final double imageSize = 130;
 

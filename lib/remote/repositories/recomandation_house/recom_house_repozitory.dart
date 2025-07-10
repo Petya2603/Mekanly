@@ -12,9 +12,6 @@ class HouseEntity {
     this.location,
     this.images,
     this.createdAt,
-    this.logo,
-    this.phone,
-    this.description,
   });
 
   factory HouseEntity.fromJson(Map<String, dynamic> json) {
@@ -25,9 +22,6 @@ class HouseEntity {
       name: json['name']?.toString(),
       price: json['price']?.toString(),
       entertime: json['day_enter_time']?.toString(),
-      logo: json['logo']?.toString(), //
-      phone: json['phone']?.toString(), //
-      description: json['description']?.toString(), //
       location: json['location'] != null
           ? Location.fromJson(json['location'] as Map<String, dynamic>)
           : null,
@@ -48,9 +42,6 @@ class HouseEntity {
   final Location? location;
   final List<HouseImage>? images;
   final DateTime? createdAt;
-  final String? logo; //
-  final String? phone; //
-  final String? description; //
 }
 
 class Location {
@@ -80,11 +71,17 @@ class HouseRepository {
   HouseRepository(this._dio);
   final Dio _dio;
 
-  Future<List<HouseEntity>> getRecommendedHouses({int limit = 5}) async {
+  Future<List<HouseEntity>> getRecommendedHouses({
+    required int houseId,
+    int limit = 5,
+  }) async {
     try {
       final response = await _dio.get(
         'https://mekanly.com.tm/api/v2/houses/recommendations',
-        queryParameters: {'limit': limit},
+        queryParameters: {
+          'house_id': houseId,
+          'limit': limit,
+        },
         options: Options(
           headers: {
             'Accept': 'application/json',
@@ -96,7 +93,6 @@ class HouseRepository {
       );
 
       if (response.statusCode == 200) {
-        // ignore: avoid_dynamic_calls
         final data = response.data['data'] as List;
         return data
             .map((json) => HouseEntity.fromJson(json as Map<String, dynamic>))
@@ -111,24 +107,24 @@ class HouseRepository {
 
 // 3. Provider
 class RecommendationProvider with ChangeNotifier {
+  RecommendationProvider(this._repository);
   final HouseRepository _repository;
   List<HouseEntity> _recommendations = [];
   bool _isLoading = false;
   String? _error;
 
-  RecommendationProvider(this._repository);
-
   List<HouseEntity> get recommendations => _recommendations;
   bool get isLoading => _isLoading;
   String? get error => _error;
 
-  Future<void> fetchRecommendations() async {
+  Future<void> fetchRecommendations({required int houseId}) async {
     _isLoading = true;
     _error = null;
     notifyListeners();
 
     try {
-      _recommendations = await _repository.getRecommendedHouses();
+      _recommendations =
+          await _repository.getRecommendedHouses(houseId: houseId);
     } catch (e) {
       _error = e.toString();
     } finally {

@@ -5,10 +5,13 @@ import 'package:gen/gen.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import '../../../core/components/app_text.dart' show AppText;
-import '../../../remote/repositories/recomandation/recoman_reperizitory.dart';
+import '../../../core/components/loading_indicator.dart';
+import '../../../remote/repositories/recomandation_house/recom_house_repozitory.dart';
 
 class RecommendedHousesSection extends StatefulWidget {
-  const RecommendedHousesSection({super.key});
+  const RecommendedHousesSection({super.key, required this.houseId});
+
+  final int houseId;
 
   @override
   State<RecommendedHousesSection> createState() =>
@@ -23,7 +26,8 @@ class _RecommendedHousesSectionState extends State<RecommendedHousesSection> {
     super.initState();
     final dio = Dio();
     _provider = RecommendationProvider(HouseRepository(dio));
-    _provider.fetchRecommendations();
+
+    _provider.fetchRecommendations(houseId: widget.houseId);
   }
 
   @override
@@ -33,10 +37,9 @@ class _RecommendedHousesSectionState extends State<RecommendedHousesSection> {
       child: Consumer<RecommendationProvider>(
         builder: (context, provider, _) {
           if (provider.isLoading) {
-            return SizedBox(
-              height: 200.h,
-              child: const Center(child: CircularProgressIndicator()),
-            );
+            return Center(
+            child: LoadingIndicator.circle(),
+          );
           }
 
           if (provider.error != null) {
@@ -54,7 +57,7 @@ class _RecommendedHousesSectionState extends State<RecommendedHousesSection> {
             height:
                 ((MediaQuery.of(context).size.width * 0.35 * 198) / 131) + 12.h,
             child: ListView.separated(
-              padding: EdgeInsets.symmetric(horizontal: 12.w),
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
               scrollDirection: Axis.horizontal,
               itemCount: provider.recommendations.length,
               separatorBuilder: (_, __) => SizedBox(width: 12.w),

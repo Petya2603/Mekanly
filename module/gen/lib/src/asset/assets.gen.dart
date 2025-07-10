@@ -142,6 +142,17 @@ class $AssetsIconsGen {
   SvgGenImage get icComment => const SvgGenImage('assets/icons/ic_comment.svg');
 
   /// File path: assets/icons/ic_comment.svg
+  SvgGenImage get icNoComment =>
+      const SvgGenImage('assets/icons/no_comment.svg');
+
+  /// File path: assets/icons/ic_comment.svg
+  SvgGenImage get com => const SvgGenImage('assets/icons/com.svg');
+
+  /// File path: assets/icons/ic_comment.svg
+  SvgGenImage get senCommet =>
+      const SvgGenImage('assets/icons/send_commet.svg');
+
+  /// File path: assets/icons/ic_comment.svg
   SvgGenImage get sms => const SvgGenImage('assets/icons/smss.svg');
 
   /// File path: assets/icons/fire_station.svg
@@ -626,7 +637,10 @@ class $AssetsIconsGen {
         luxx,
         ot_san,
         widgets,
-        arrow
+        arrow,
+        icNoComment,
+        senCommet,
+        com
       ];
 }
 

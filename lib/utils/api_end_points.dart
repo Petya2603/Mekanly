@@ -71,5 +71,5 @@ final class ApiEndpoints {
   static String businessCategoryProfiles(int id) =>
       '/v2/business/categories/$id/profiles';
 
-  static String abuseList = '/v2/abuse/list';
+  static String abuseList = 'api/v2/abuse/list';
 }

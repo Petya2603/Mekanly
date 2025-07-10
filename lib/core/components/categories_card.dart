@@ -5,6 +5,7 @@ import '../../product/constants/constants.dart';
 import '../../remote/entities/business_profile/business_profile_category_entity.dart';
 import '../../utils/extensions.dart';
 import 'app_text.dart';
+import 'sub_category_view.dart/product_view.dart';
 import 'sub_category_view.dart/sub_category_view.dart';
 
 class CategoriesCard extends StatelessWidget {
@@ -56,6 +57,7 @@ class SubCategoriesCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12).w,
       children: subcategories.map((sub) {
         return _SubCategoryCard(
+          id: sub.id,
           title: sub.title ?? '',
           count: '${sub.businessProfiles ?? 0}',
           imageUrl: sub.image ?? '',
@@ -161,66 +163,83 @@ class _CategoryCard extends StatelessWidget {
 
 class _SubCategoryCard extends StatelessWidget {
   const _SubCategoryCard({
+    required this.id,
     required this.title,
     required this.count,
     required this.imageUrl,
   });
+  final int id;
   final String title;
   final String count;
   final String imageUrl;
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: ColorName.lightGrayish,
-        borderRadius: BorderRadius.circular(10).r,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8).w,
-            child: AppText.s10w400LbS(title, color: ColorName.grayMediumDark),
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              6.boxW,
-              Container(
-                margin: const EdgeInsets.only(bottom: 6).w,
-                alignment: Alignment.bottomCenter,
-                padding: count.length < 2
-                    ? const EdgeInsets.all(6).w
-                    : const EdgeInsets.all(4).w,
-                decoration: const BoxDecoration(
-                  color: ColorName.superLightGray,
-                  shape: BoxShape.circle,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          // ignore: inference_failure_on_instance_creation
+          MaterialPageRoute(
+            builder: (context) => ProductListingScreen(
+                // productId: id,
+                // categoryName: title ?? '',
                 ),
-                child: AppText.s10w400LbS(count),
-              ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 8, bottom: 8).w,
-                    child: imageUrl.isNotEmpty
-                        ? Image.network(
-                            imageUrl,
-                            width: 40.w,
-                            height: 40.w,
-                            fit: BoxFit.contain,
-                            errorBuilder: (context, error, stackTrace) =>
-                                Icon(Icons.category, size: 24.w),
-                          )
-                        : Icon(Icons.category, size: 24.w),
+          ),
+        );
+      },
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: ColorName.lightGrayish,
+          borderRadius: BorderRadius.circular(10).r,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 8).w,
+              child: AppText.s10w400LbS(title, color: ColorName.grayMediumDark),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                6.boxW,
+                Container(
+                  margin: const EdgeInsets.only(bottom: 6).w,
+                  alignment: Alignment.bottomCenter,
+                  padding: count.length < 2
+                      ? const EdgeInsets.all(6).w
+                      : const EdgeInsets.all(4).w,
+                  decoration: const BoxDecoration(
+                    color: ColorName.superLightGray,
+                    shape: BoxShape.circle,
+                  ),
+                  child: AppText.s10w400LbS(count),
+                ),
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 8, bottom: 8).w,
+                      child: imageUrl.isNotEmpty
+                          ? Image.network(
+                              imageUrl,
+                              width: 40.w,
+                              height: 40.w,
+                              fit: BoxFit.contain,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Icon(Icons.category, size: 24.w),
+                            )
+                          : Icon(Icons.category, size: 24.w),
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

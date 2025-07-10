@@ -45,8 +45,11 @@ mixin _$BusinessProfileEntity {
   int? get rating => throw _privateConstructorUsedError;
   @JsonKey(name: 'locations')
   dynamic get locations => throw _privateConstructorUsedError;
-  @JsonKey(name: 'phone_numbers')
-  String? get phoneNumbers => throw _privateConstructorUsedError;
+  @JsonKey(
+      name: 'phone_numbers',
+      fromJson: _phoneNumbersFromJson,
+      toJson: _phoneNumbersToJson)
+  List<String>? get phoneNumbers => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_vip')
   int? get isVip => throw _privateConstructorUsedError;
   @JsonKey(name: 'vip_days')
@@ -91,7 +94,11 @@ abstract class $BusinessProfileEntityCopyWith<$Res> {
       @JsonKey(name: 'cover_media') String? coverMedia,
       @JsonKey(name: 'rating') int? rating,
       @JsonKey(name: 'locations') dynamic locations,
-      @JsonKey(name: 'phone_numbers') String? phoneNumbers,
+      @JsonKey(
+          name: 'phone_numbers',
+          fromJson: _phoneNumbersFromJson,
+          toJson: _phoneNumbersToJson)
+      List<String>? phoneNumbers,
       @JsonKey(name: 'is_vip') int? isVip,
       @JsonKey(name: 'vip_days') int? vipDays,
       @JsonKey(name: 'site') String? site,
@@ -192,7 +199,7 @@ class _$BusinessProfileEntityCopyWithImpl<$Res,
       phoneNumbers: freezed == phoneNumbers
           ? _value.phoneNumbers
           : phoneNumbers // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as List<String>?,
       isVip: freezed == isVip
           ? _value.isVip
           : isVip // ignore: cast_nullable_to_non_nullable
@@ -261,7 +268,11 @@ abstract class _$$BusinessProfileEntityImplCopyWith<$Res>
       @JsonKey(name: 'cover_media') String? coverMedia,
       @JsonKey(name: 'rating') int? rating,
       @JsonKey(name: 'locations') dynamic locations,
-      @JsonKey(name: 'phone_numbers') String? phoneNumbers,
+      @JsonKey(
+          name: 'phone_numbers',
+          fromJson: _phoneNumbersFromJson,
+          toJson: _phoneNumbersToJson)
+      List<String>? phoneNumbers,
       @JsonKey(name: 'is_vip') int? isVip,
       @JsonKey(name: 'vip_days') int? vipDays,
       @JsonKey(name: 'site') String? site,
@@ -359,9 +370,9 @@ class __$$BusinessProfileEntityImplCopyWithImpl<$Res>
           : locations // ignore: cast_nullable_to_non_nullable
               as dynamic,
       phoneNumbers: freezed == phoneNumbers
-          ? _value.phoneNumbers
+          ? _value._phoneNumbers
           : phoneNumbers // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as List<String>?,
       isVip: freezed == isVip
           ? _value.isVip
           : isVip // ignore: cast_nullable_to_non_nullable
@@ -410,14 +421,19 @@ class _$BusinessProfileEntityImpl implements _BusinessProfileEntity {
       @JsonKey(name: 'cover_media') this.coverMedia,
       @JsonKey(name: 'rating') this.rating,
       @JsonKey(name: 'locations') this.locations,
-      @JsonKey(name: 'phone_numbers') this.phoneNumbers,
+      @JsonKey(
+          name: 'phone_numbers',
+          fromJson: _phoneNumbersFromJson,
+          toJson: _phoneNumbersToJson)
+      final List<String>? phoneNumbers,
       @JsonKey(name: 'is_vip') this.isVip,
       @JsonKey(name: 'vip_days') this.vipDays,
       @JsonKey(name: 'site') this.site,
       @JsonKey(name: 'messengers') this.messengers,
       @JsonKey(name: 'mail') this.mail,
       @JsonKey(name: 'created_at') this.createdAt,
-      @JsonKey(name: 'updated_at') this.updatedAt});
+      @JsonKey(name: 'updated_at') this.updatedAt})
+      : _phoneNumbers = phoneNumbers;
 
   factory _$BusinessProfileEntityImpl.fromJson(Map<String, dynamic> json) =>
       _$$BusinessProfileEntityImplFromJson(json);
@@ -458,9 +474,20 @@ class _$BusinessProfileEntityImpl implements _BusinessProfileEntity {
   @override
   @JsonKey(name: 'locations')
   final dynamic locations;
+  final List<String>? _phoneNumbers;
   @override
-  @JsonKey(name: 'phone_numbers')
-  final String? phoneNumbers;
+  @JsonKey(
+      name: 'phone_numbers',
+      fromJson: _phoneNumbersFromJson,
+      toJson: _phoneNumbersToJson)
+  List<String>? get phoneNumbers {
+    final value = _phoneNumbers;
+    if (value == null) return null;
+    if (_phoneNumbers is EqualUnmodifiableListView) return _phoneNumbers;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   @JsonKey(name: 'is_vip')
   final int? isVip;
@@ -508,8 +535,8 @@ class _$BusinessProfileEntityImpl implements _BusinessProfileEntity {
                 other.coverMedia == coverMedia) &&
             (identical(other.rating, rating) || other.rating == rating) &&
             const DeepCollectionEquality().equals(other.locations, locations) &&
-            (identical(other.phoneNumbers, phoneNumbers) ||
-                other.phoneNumbers == phoneNumbers) &&
+            const DeepCollectionEquality()
+                .equals(other._phoneNumbers, _phoneNumbers) &&
             (identical(other.isVip, isVip) || other.isVip == isVip) &&
             (identical(other.vipDays, vipDays) || other.vipDays == vipDays) &&
             (identical(other.site, site) || other.site == site) &&
@@ -538,7 +565,7 @@ class _$BusinessProfileEntityImpl implements _BusinessProfileEntity {
         coverMedia,
         rating,
         const DeepCollectionEquality().hash(locations),
-        phoneNumbers,
+        const DeepCollectionEquality().hash(_phoneNumbers),
         isVip,
         vipDays,
         site,
@@ -579,7 +606,11 @@ abstract class _BusinessProfileEntity implements BusinessProfileEntity {
           @JsonKey(name: 'cover_media') final String? coverMedia,
           @JsonKey(name: 'rating') final int? rating,
           @JsonKey(name: 'locations') final dynamic locations,
-          @JsonKey(name: 'phone_numbers') final String? phoneNumbers,
+          @JsonKey(
+              name: 'phone_numbers',
+              fromJson: _phoneNumbersFromJson,
+              toJson: _phoneNumbersToJson)
+          final List<String>? phoneNumbers,
           @JsonKey(name: 'is_vip') final int? isVip,
           @JsonKey(name: 'vip_days') final int? vipDays,
           @JsonKey(name: 'site') final String? site,
@@ -629,8 +660,11 @@ abstract class _BusinessProfileEntity implements BusinessProfileEntity {
   @JsonKey(name: 'locations')
   dynamic get locations;
   @override
-  @JsonKey(name: 'phone_numbers')
-  String? get phoneNumbers;
+  @JsonKey(
+      name: 'phone_numbers',
+      fromJson: _phoneNumbersFromJson,
+      toJson: _phoneNumbersToJson)
+  List<String>? get phoneNumbers;
   @override
   @JsonKey(name: 'is_vip')
   int? get isVip;

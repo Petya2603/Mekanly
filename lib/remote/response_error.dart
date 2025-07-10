@@ -78,6 +78,7 @@ class ResponseError<T> with _$ResponseError<T> implements Exception {
               return ResponseError.badRequest(
                 err?['message'] as String? ?? '',
               );
+
             case 404:
               return const ResponseError.notFound();
             case 409:
@@ -117,7 +118,6 @@ class ResponseError<T> with _$ResponseError<T> implements Exception {
 extension ResponseErrorExtensions on ResponseError<dynamic> {
   String getErrorMessage(BuildContext context) {
     final localization = context.translation;
-
     //TODO: create error module for errors and set value accordingly
     return when<String>(
       noInternetConnection: () => 'No internet connection',

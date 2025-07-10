@@ -970,4 +970,10 @@ class AppLocalizationsTk extends AppLocalizations {
 
   @override
   String get remont => 'Remont';
+
+  @override
+  String get jog_giz => ' Jogaplary gizle';
+
+  @override
+  String get jog_gor => ' Jogaplary gör';
 }

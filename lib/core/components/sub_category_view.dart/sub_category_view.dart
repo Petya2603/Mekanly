@@ -15,6 +15,7 @@ import '../categories_card.dart';
 import '../loading_indicator.dart';
 import '../search_field.dart';
 import '../try_again_widget.dart';
+import 'product_view.dart';
 
 class BusinessProfileViewSubcategory extends StatefulWidget {
   const BusinessProfileViewSubcategory({
@@ -96,7 +97,7 @@ class _BusinessProfileViewState extends State<BusinessProfileViewSubcategory>
                             height: 35.w,
                           ),
                         ),
-                      ),
+                      )
                     ],
                   ),
                 ),
