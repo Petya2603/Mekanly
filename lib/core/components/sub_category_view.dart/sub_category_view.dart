@@ -47,12 +47,6 @@ class _BusinessProfileViewState extends State<BusinessProfileViewSubcategory>
   }
 
   @override
-  void initState() {
-    init();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
@@ -75,7 +69,18 @@ class _BusinessProfileViewState extends State<BusinessProfileViewSubcategory>
             slivers: [
               SliverToBoxAdapter(
                 child: Container(
-                  color: ColorName.main,
+                  decoration: BoxDecoration(
+                    color: ColorName.main,
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color.fromARGB(255, 64, 64, 64)
+                            .withOpacity(0.25),
+                        offset: const Offset(0, -3),
+                        spreadRadius: 1,
+                        blurRadius: 6,
+                      ),
+                    ],
+                  ),
                   padding:
                       EdgeInsets.symmetric(vertical: 14.h, horizontal: 18.w),
                   child: Row(

@@ -108,6 +108,12 @@ class $AssetsIconsGen {
   SvgGenImage get icCalendar =>
       const SvgGenImage('assets/icons/calendar_t.svg');
 
+  /// File path: assets/icons/ic_calendar.svg
+  SvgGenImage get saty => const SvgGenImage('assets/icons/saty.svg');
+
+  /// File path: assets/icons/ic_calendar.svg
+  SvgGenImage get bildir => const SvgGenImage('assets/icons/bildir.svg');
+
   /// File path: assets/icons/ic_call.svg
   SvgGenImage get icCall => const SvgGenImage('assets/icons/ic_call.svg');
 
@@ -217,6 +223,12 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/ic_filter.svg
   SvgGenImage get icFilter => const SvgGenImage('assets/icons/ic_filter.svg');
+
+  /// File path: assets/icons/ic_filter.svg
+  SvgGenImage get imageyok => const SvgGenImage('assets/icons/image_yok.svg');
+
+  /// File path: assets/icons/ic_filter.svg
+  SvgGenImage get onmyok => const SvgGenImage('assets/icons/onmyok.svg');
 
   /// File path: assets/icons/ic_filter.svg
   SvgGenImage get icFilterselected =>
@@ -379,6 +391,17 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_message_send.svg
   SvgGenImage get icMessageSend =>
       const SvgGenImage('assets/icons/ic_message_send.svg');
+
+  SvgGenImage get vip => const SvgGenImage('assets/icons/vipp.svg');
+
+  SvgGenImage get insta => const SvgGenImage('assets/icons/insta.svg');
+
+  SvgGenImage get tiktok => const SvgGenImage('assets/icons/tiktok.svg');
+  SvgGenImage get maill => const SvgGenImage('assets/icons/maillsvg.svg');
+  SvgGenImage get link => const SvgGenImage('assets/icons/link.svg');
+  SvgGenImage get imo => const SvgGenImage('assets/icons/imo.svg');
+
+  SvgGenImage get calicon => const SvgGenImage('assets/icons/calicon.svg');
 
   /// File path: assets/icons/ic_my_business.svg
   SvgGenImage get icMyBusiness =>
@@ -640,7 +663,16 @@ class $AssetsIconsGen {
         arrow,
         icNoComment,
         senCommet,
-        com
+        com,
+        imageyok,
+        vip,
+        onmyok,
+        bildir,
+        saty,
+        calicon,
+        tiktok,
+        maill,
+        insta
       ];
 }
 

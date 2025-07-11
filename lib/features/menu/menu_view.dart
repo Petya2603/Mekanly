@@ -117,7 +117,6 @@ class _MenuViewState extends State<MenuView> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        // ignore: inference_failure_on_instance_creation
                         MaterialPageRoute(
                           builder: (context) => const CommentsView(),
                         ),

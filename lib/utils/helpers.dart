@@ -64,15 +64,11 @@ class Helpers {
     return completer.future;
   }
 
-
-
-
   /// Formats a `DateTime` into "MM/DD/YYYY".
-  static String formatDateAsMMDDYYYY(DateTime? date) {
+  static String formatDate(DateTime? date, {String separator = '.'}) {
     if (date == null) return 'Unknown date';
-    return '${date.month.toString().padLeft(2, '0')}/${date.day.toString().padLeft(2, '0')}/${date.year}';
+    return '${date.month.toString().padLeft(2, '0')}$separator${date.day.toString().padLeft(2, '0')}$separator${date.year}';
   }
-
 }
 
 extension ListUpdate<T> on List<T> {

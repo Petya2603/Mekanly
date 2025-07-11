@@ -1,45 +1,34 @@
+// product_service.dart
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../../entities/business_profile/product_entity.dart';
+import '../../in_memory_token.dart';
+import 'product_model.dart'; // Product, ApiResponse vb. burada tanımlı olmalı
 
 class ProductService {
-  final String baseUrl = 'https://mekanly.com.tm/api/v2';
+  final String baseUrl = 'https://mekanly.com.tm/api/v2/business';
 
-  Future<ProductEntity> getProductById(int productId) async {
-    final response = await http.get(
-      Uri.parse(
-          '$baseUrl/business/category/$productId/products?offset=0&limit=1'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-    );
+  Future<ApiResponse> fetchProductsByCategory(
+    int categoryId, {
+    int offset = 0,
+    int limit = 10,
+  }) async {
+    final url = Uri.parse(
+        '$baseUrl/category/$categoryId/products?offset=$offset&limit=$limit');
 
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      return ProductEntity.fromJson(data['data'][0] as Map<String, dynamic>);
-    } else {
-      throw Exception('Failed to load product');
-    }
-  }
+    final headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${InMemoryToken.instance.token}',
+    };
 
-  Future<List<ProductEntity>> getSimilarProducts(int categoryId) async {
-    final response = await http.get(
-      Uri.parse(
-          '$baseUrl/business/category/$categoryId/products?offset=0&limit=4'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-    );
+    final response = await http.get(url, headers: headers);
 
     if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      return (data['data'] as List)
-          .map((e) => ProductEntity.fromJson(e as Map<String, dynamic>))
-          .toList();
+      final jsonBody = json.decode(response.body) as Map<String, dynamic>;
+      return ApiResponse.fromJson(jsonBody);
     } else {
-      throw Exception('Failed to load similar products');
+      throw Exception('Ürünler yüklenemedi: ${response.statusCode}');
     }
   }
 }

@@ -1,6 +1,4 @@
-import 'dart:ffi';
 import 'dart:math';
-
 import 'package:common/common.dart';
 import 'package:dio/dio.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
@@ -964,7 +962,7 @@ class _HouseDetailInfoState extends State<_HouseDetailInfo> {
         _HouseInfoGridItem(
           icon: Assets.icons.icCalendar.svg(package: 'gen'),
           title: 'Goýlan senesi',
-          value: Helpers.formatDateAsMMDDYYYY(widget.house!.createdAt),
+          value: Helpers.formatDate(DateTime.now()),
         ),
       );
     }

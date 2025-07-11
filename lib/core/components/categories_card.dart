@@ -1,8 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
 import '../../product/constants/constants.dart';
 import '../../remote/entities/business_profile/business_profile_category_entity.dart';
+import '../../remote/repositories/business_profile/product_cubit.dart';
+import '../../remote/repositories/business_profile/product_service.dart';
 import '../../utils/extensions.dart';
 import 'app_text.dart';
 import 'sub_category_view.dart/product_view.dart';
@@ -181,10 +185,10 @@ class _SubCategoryCard extends StatelessWidget {
           context,
           // ignore: inference_failure_on_instance_creation
           MaterialPageRoute(
-            builder: (context) => ProductListingScreen(
-                // productId: id,
-                // categoryName: title ?? '',
-                ),
+            builder: (_) => BlocProvider(
+              create: (_) => ProductCubit(ProductService()),
+              child: ProductListScreen(categoryId: id, title: title),
+            ),
           ),
         );
       },
@@ -224,12 +228,14 @@ class _SubCategoryCard extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 8, bottom: 8).w,
                       child: imageUrl.isNotEmpty
-                          ? Image.network(
-                              imageUrl,
-                              width: 40.w,
-                              height: 40.w,
+                          ? CachedNetworkImage(
+                              imageUrl: imageUrl,
+                              width: 55.w,
+                              height: 50.w,
                               fit: BoxFit.contain,
-                              errorBuilder: (context, error, stackTrace) =>
+                              placeholder: (context, url) =>
+                                  const SizedBox.shrink(),
+                              errorWidget: (context, url, error) =>
                                   Icon(Icons.category, size: 24.w),
                             )
                           : Icon(Icons.category, size: 24.w),

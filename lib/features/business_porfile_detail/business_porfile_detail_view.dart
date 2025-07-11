@@ -7,6 +7,7 @@ import 'package:gen/gen.dart';
 import '../../core/components/app_text.dart';
 import '../../core/components/loading_indicator.dart';
 import '../../core/components/try_again_widget.dart';
+import '../../localization/extensions.dart';
 import '../../product/base/base_status/base_status.dart';
 import '../../product/constants/constants.dart';
 import '../../product/injection/injector.dart';
@@ -107,13 +108,13 @@ class _BusinessProfileDetailViewState extends State<BusinessProfileDetailView> {
                       tabs: [
                         Tab(
                           height: 45,
-                          text: 'Bildirişler',
-                          icon: Assets.icons.icCalendar.svg(package: 'gen'),
+                          text: context.translation.announcements,
+                          icon: Assets.icons.bildir.svg(package: 'gen'),
                         ),
                         Tab(
                           height: 45,
-                          text: 'Satyjy profili',
-                          icon: Assets.icons.icCalendar.svg(package: 'gen'),
+                          text: context.translation.seller_profile,
+                          icon: Assets.icons.saty.svg(package: 'gen'),
                         ),
                       ],
                     ),
@@ -121,26 +122,180 @@ class _BusinessProfileDetailViewState extends State<BusinessProfileDetailView> {
                   ),
                 ];
               },
-              body: Padding(
-                padding: const EdgeInsets.all(6),
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 5,
-                    horizontal: 5,
+              body: TabBarView(
+                children: [
+                  Container(
+                    color: const Color.fromRGBO(246, 251, 253, 1),
+                    child: Column(children: [
+                      // Padding(
+                      //   padding: const EdgeInsets.all(6),
+                      //   child: GridView.count(
+                      //     crossAxisCount: 2,
+                      //     physics: const NeverScrollableScrollPhysics(),
+                      //     padding: const EdgeInsets.symmetric(
+                      //       vertical: 5,
+                      //       horizontal: 5,
+                      //     ),
+                      //     crossAxisSpacing: 8,
+                      //     mainAxisSpacing: 8,
+                      //     shrinkWrap: true,
+                      //     childAspectRatio: 167 / 255,
+                      //     children: const [
+                      //       MainBusinessProfileItem(),
+                      //     ],
+                      //   ),
+                      // ),
+                    ]),
                   ),
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
-                  shrinkWrap: true,
-                  childAspectRatio: 167 / 255,
-                ),
+                  Container(
+                    color: const Color.fromRGBO(246, 251, 253, 1),
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (detail?.locationName != null)
+                            AppText.s14w400BdM(
+                                context.translation.our_location),
+                          8.boxH,
+                          if (detail?.locationParent?.name != null)
+                            Row(
+                              children: [
+                                const Icon(Icons.location_on,
+                                    size: 16, color: Colors.black54),
+                                6.boxW,
+                                AppText.s14w400BdM(
+                                    detail?.locationParent?.name ?? ''),
+                              ],
+                            ),
+                          if (detail?.locationParent != null)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 6),
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.map,
+                                      size: 16, color: Colors.black54),
+                                  6.boxW,
+                                  AppText.s14w400BdM(
+                                      detail!.locationParent!.name ?? ''),
+                                ],
+                              ),
+                            ),
+                          16.boxH,
+                          AppText.s14w400BdM(
+                            context.translation.for_contact,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          8.boxH,
+                          if (detail?.phoneNumbers != null &&
+                              detail!.phoneNumbers!.isNotEmpty) ...[
+                            ...detail.phoneNumbers!.map(
+                              (phone) => Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 4),
+                                child: Row(
+                                  children: [
+                                    Assets.icons.calicon.svg(package: 'gen'),
+                                    const SizedBox(width: 6),
+                                    SelectableText(
+                                      phone,
+                                      style: TextStyle(
+                                        fontSize: 14.sp,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                          if (detail?.socialProfiles != null &&
+                              detail!.socialProfiles!.isNotEmpty) ...[
+                            10.boxH,
+                            ...detail.socialProfiles!.map(
+                              (profile) => Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      _getSocialIconWidget(profile.platform),
+                                      10.boxW,
+                                      AppText.s14w400BdM(profile.url ?? ''),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8),
+                                ],
+                              ),
+                            ),
+                          ],
+                          8.boxH,
+                          if (detail?.site != null) ...[
+                            Row(
+                              children: [
+                                const Icon(Icons.language, size: 16),
+                                6.boxW,
+                                AppText.s14w400BdM(detail!.site!),
+                              ],
+                            ),
+                            8.boxH,
+                          ],
+                          if (detail?.mail != null) ...[
+                            Row(
+                              children: [
+                                Assets.icons.maill.svg(
+                                  package: 'gen',
+                                ),
+                                6.boxW,
+                                AppText.s14w400BdM(detail!.mail!),
+                              ],
+                            ),
+                            8.boxH,
+                          ],
+                          16.boxH,
+                          AppText.s14w400BdM(
+                            context.translation.description,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          8.boxH,
+                          if (detail?.description != null)
+                            AppText.s14w400BdM('• ${detail!.description}'),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
           );
         },
       ),
     );
+  }
+
+  Widget _getSocialIconWidget(String? platform) {
+    switch (platform) {
+      case 'tiktok':
+        return Assets.icons.tiktok.svg(
+          package: 'gen',
+        );
+      case 'instagram':
+        return Assets.icons.insta.svg(
+          package: 'gen',
+        );
+      case 'link':
+        return Assets.icons.link.svg(
+          package: 'gen',
+        );
+      case 'imo':
+        return Assets.icons.imo.svg(
+          package: 'gen',
+        );
+      case 'youtube':
+        return Assets.icons.link.svg(
+          package: 'gen',
+        );
+      default:
+        return const Icon(Icons.link, size: 16, color: Colors.black54);
+    }
   }
 
   SliverPersistentHeaderDelegate buildHeader(BusinessProfileData? detail) {
@@ -164,15 +319,15 @@ class _BusinessProfileDetailViewState extends State<BusinessProfileDetailView> {
         subTitle: detail?.description,
         title: detail?.brand,
       );
+    } else {
+      return CollapsibleLogoHeader(
+        logoUrl: detail?.logo,
+        viewCount: detail?.views,
+        time: DateTime.now(),
+        subTitle: detail?.description,
+        title: detail?.brand,
+      );
     }
-
-    return CollapsibleLogoHeader(
-      logoUrl: detail?.logo,
-      viewCount: detail?.views,
-      time: DateTime.now(),
-      subTitle: detail?.description,
-      title: detail?.brand,
-    );
   }
 }
 
@@ -250,7 +405,7 @@ class _MainBusinessProfileItemState extends State<MainBusinessProfileItem> {
                       child: SizedBox(
                         height: 20.w,
                         width: 20.w,
-                        child: Assets.icons.icLux.svg(package: 'gen'),
+                        child: Assets.icons.vip.svg(package: 'gen'),
                       ),
                     )
                   else
@@ -301,61 +456,61 @@ class _MainBusinessProfileItemState extends State<MainBusinessProfileItem> {
                 ],
               ),
             ),
-            Flexible(
-              flex: 30,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 2,
-                  horizontal: 8,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    4.boxH,
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: AppText.s14w400BdM(
-                        'Kwartira',
-                        //widget.house?.name ?? '',
-                        fontFamily: StringConstants.roboto,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12.sp,
-                        color: const Color(0xFF222222),
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                    //4.boxH,
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: AppText.s14w400BdM(
-                        'Gyssagly satlyk jay',
-                        //widget.house?.description ?? '',
-                        fontFamily: StringConstants.roboto,
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.w400,
-                        softWrap: true,
-                        color: const Color(0xFF757575),
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                    //4.boxH,
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: AppText.s14w400BdM(
-                        '400000 TMT',
-                        //'${widget.house?.price ?? ''} TMT',
-                        fontSize: 12.sp,
-                        fontFamily: StringConstants.roboto,
-                        fontWeight: FontWeight.w400,
-                        color: const Color(0xFF222222),
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                    4.boxH,
-                  ],
-                ),
-              ),
-            ),
+            // Flexible(
+            //   flex: 30,
+            //   child: Padding(
+            //     padding: const EdgeInsets.symmetric(
+            //       vertical: 2,
+            //       horizontal: 8,
+            //     ),
+            //     child: Column(
+            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //       children: [
+            //         4.boxH,
+            //         Align(
+            //           alignment: Alignment.topLeft,
+            //           child: AppText.s14w400BdM(
+            //             'Kwartira',
+            //             //widget.house?.name ?? '',
+            //             fontFamily: StringConstants.roboto,
+            //             fontWeight: FontWeight.w400,
+            //             fontSize: 12.sp,
+            //             color: const Color(0xFF222222),
+            //             textAlign: TextAlign.left,
+            //           ),
+            //         ),
+            //         //4.boxH,
+            //         Align(
+            //           alignment: Alignment.topLeft,
+            //           child: AppText.s14w400BdM(
+            //             'Gyssagly satlyk jay',
+            //             //widget.house?.description ?? '',
+            //             fontFamily: StringConstants.roboto,
+            //             fontSize: 10.sp,
+            //             fontWeight: FontWeight.w400,
+            //             softWrap: true,
+            //             color: const Color(0xFF757575),
+            //             textAlign: TextAlign.left,
+            //           ),
+            //         ),
+            //         //4.boxH,
+            //         Align(
+            //           alignment: Alignment.topLeft,
+            //           child: AppText.s14w400BdM(
+            //             '400000 TMT',
+            //             //'${widget.house?.price ?? ''} TMT',
+            //             fontSize: 12.sp,
+            //             fontFamily: StringConstants.roboto,
+            //             fontWeight: FontWeight.w400,
+            //             color: const Color(0xFF222222),
+            //             textAlign: TextAlign.left,
+            //           ),
+            //         ),
+            //         4.boxH,
+            //       ],
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

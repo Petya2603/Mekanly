@@ -6,11 +6,14 @@ import 'package:intl/intl.dart';
 import '../../../remote/repositories/comment/commet_model.dart';
 import '../../../remote/repositories/comment/commet_service.dart';
 import '../../core/components/app_text.dart';
+import '../../core/components/loading_indicator.dart';
 import '../../localization/extensions.dart';
 import '../../product/constants/constants.dart';
 
 class CommentsView extends StatefulWidget {
-  const CommentsView({super.key});
+  const CommentsView({
+    super.key,
+  });
 
   static const routePath = '/comments-view';
   static const routeName = 'comments-view';
@@ -28,7 +31,8 @@ class _CommentsViewState extends State<CommentsView> {
   final Map<String, bool> _showReplies = {};
   final Map<String, bool> _isEditing = {};
   final Map<String, TextEditingController> _editControllers = {};
-
+  final TextEditingController _commentController = TextEditingController();
+  String? _replyingToCommentId;
   @override
   void initState() {
     super.initState();
@@ -73,6 +77,7 @@ class _CommentsViewState extends State<CommentsView> {
                 ? _buildCommentsList(_commentsForMeFuture)
                 : _buildCommentsList(_myCommentsFuture),
           ),
+          // _buildCommentInput(),
         ],
       ),
     );
@@ -162,7 +167,9 @@ class _CommentsViewState extends State<CommentsView> {
       future: commentsFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+            child: LoadingIndicator.circle(),
+          );
         }
 
         if (snapshot.hasError) {
@@ -214,8 +221,7 @@ class _CommentsViewState extends State<CommentsView> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Assets.icons.icNoComment
-                    .svg(package: 'gen', height: 43.44, width: 46),
+                Assets.icons.com.svg(package: 'gen', height: 43.44, width: 46),
                 const SizedBox(height: 15),
                 Text(
                   context.translation.no_comments,
@@ -258,7 +264,7 @@ class _CommentsViewState extends State<CommentsView> {
     }
 
     return Padding(
-      padding: EdgeInsets.only(left: isReply ? 30 : 0, bottom: 5),
+      padding: EdgeInsets.only(left: isReply ? 10 : 0, bottom: 5),
       child: Container(
         decoration: BoxDecoration(
           color: isReply ? const Color(0xFFF6F6F6) : Colors.transparent,
@@ -276,7 +282,6 @@ class _CommentsViewState extends State<CommentsView> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   comment.user.username,
@@ -298,28 +303,23 @@ class _CommentsViewState extends State<CommentsView> {
                     ),
                   ),
                 if (!isActive)
-                  GestureDetector(
-                    onTap: () {
-                      _toggleDislike(comment.id);
-                    },
-                    child: Text(
-                      context.translation.verifying,
-                      style: TextStyle(
-                        fontFamily: StringConstants.roboto,
-                        fontWeight: FontWeight.w400,
-                        color: const Color.fromARGB(255, 13, 149, 233),
-                        fontSize: 12.sp,
-                      ),
+                  Text(
+                    context.translation.verifying,
+                    style: TextStyle(
+                      fontFamily: StringConstants.roboto,
+                      fontWeight: FontWeight.w400,
+                      color: const Color.fromARGB(255, 13, 149, 233),
+                      fontSize: 12.sp,
                     ),
                   ),
                 if (!isActive)
                   PopupMenuButton<String>(
-                    elevation: 0.25,
                     icon: Assets.icons.icDotsVertical.svg(package: 'gen'),
                     color: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4).r,
                       side: BorderSide(
+                        // ignore: deprecated_member_use
                         color: Colors.black.withOpacity(0.2),
                       ),
                     ),
@@ -350,19 +350,19 @@ class _CommentsViewState extends State<CommentsView> {
                       ),
                     ],
                     onSelected: (value) {
-                      if (value == 'delete') {
-                        _deleteComment(comment.userid);
-                      } else if (value == 'edit') {
+                      if (value == 'edit') {
                         setState(() {
                           _isEditing[comment.id] = true;
+                          _commentController.text = comment.content;
                         });
+                        _commentFocusNode.requestFocus();
+                      } else if (value == 'delete') {
+                        _deleteComment(comment.id);
                       }
                     },
                   ),
               ],
             ),
-            const SizedBox(height: 4),
-
             Text(
               comment.content,
               style: TextStyle(
@@ -387,24 +387,33 @@ class _CommentsViewState extends State<CommentsView> {
                       color: const Color.fromARGB(255, 106, 106, 106),
                     ),
                   ),
-                  // const SizedBox(width: 12),
-                  // if (!isOwner && !isReply)
-                  //   GestureDetector(
-                  //     onTap: () => _replyToComment(comment.id),
-                  //     child: Assets.icons.icChat.svg(
-                  //       package: 'gen',
-                  //       height: 13,
-                  //       width: 12,
-                  //     ),
-                  //   ),
                 ]),
                 const SizedBox(width: 12),
                 const Spacer(),
                 Row(
                   children: [
                     IconButton(
-                      onPressed: () => _toggleLike(comment.id),
-                      icon: comment.userReaction == 'like'
+                      onPressed: () async {
+                        final wasLiked = comment.userReaction == 1;
+
+                        setState(() {
+                          if (wasLiked) {
+                            comment.userReaction = null;
+                          } else {
+                            comment.userReaction = 1;
+                          }
+                        });
+
+                        try {
+                          await _commentService.sendReaction(
+                            model: 'UserComment',
+                            modelId: comment.id,
+                            type: wasLiked ? 'remove' : 'like',
+                          );
+                          _loadComments();
+                        } catch (e) {}
+                      },
+                      icon: comment.userReaction == 1
                           ? Assets.icons.icSelectedLike
                               .svg(width: 20, height: 20, package: 'gen')
                           : Assets.icons.icLike.svg(
@@ -413,56 +422,49 @@ class _CommentsViewState extends State<CommentsView> {
                               package: 'gen',
                               color: const Color.fromARGB(255, 140, 140, 140),
                             ),
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
                     ),
-                    Text(
-                      '${comment.likeCount}',
-                      style: const TextStyle(fontSize: 10),
-                    ),
+                    Text('${comment.likeCount}',
+                        style: const TextStyle(fontSize: 10)),
                     const SizedBox(width: 12),
                     IconButton(
-                      onPressed: () {},
-                      icon: comment.userReaction == 'dislike'
+                      onPressed: () async {
+                        final wasDisliked = comment.userReaction == -1;
+
+                        setState(() {
+                          if (wasDisliked) {
+                            comment.userReaction = null;
+                          } else {
+                            comment.userReaction = -1;
+                          }
+                        });
+
+                        try {
+                          await _commentService.sendReaction(
+                            model: 'UserComment',
+                            modelId: comment.id,
+                            type: wasDisliked ? 'remove' : 'dislike',
+                          );
+                          _loadComments();
+                        } catch (e) {
+                          setState(() {});
+                        }
+                      },
+                      icon: comment.userReaction == -1
                           ? Assets.icons.icSelectedDislike
                               .svg(width: 20, height: 20, package: 'gen')
                           : Assets.icons.icDislike.svg(
                               width: 20,
                               height: 20,
                               package: 'gen',
-                              color: const Color.fromARGB(255, 140, 140, 140)),
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
+                              color: const Color.fromARGB(255, 140, 140, 140),
+                            ),
                     ),
-                    Text(
-                      '${comment.dislikeCount}',
-                      style: const TextStyle(fontSize: 10),
-                    ),
+                    Text('${comment.dislikeCount}',
+                        style: const TextStyle(fontSize: 10)),
                   ],
-                ),
+                )
               ],
             ),
-            // if (!isReply && hasReplies)
-            //   GestureDetector(
-            //     onTap: () {
-            //       setState(() {
-            //         _showReplies[comment.id] =
-            //             !(_showReplies[comment.id] ?? false);
-            //       });
-            //     },
-            //     child: Text(
-            //       (_showReplies[comment.id] ?? false)
-            //           ? context.translation.jog_giz
-            //           : '${context.translation.jog_gor} (${comment.replies.length})',
-            //       style: TextStyle(
-            //         color: (_showReplies[comment.id] ?? false)
-            //             ? Colors.grey
-            //             : const Color.fromARGB(255, 113, 113, 113),
-            //         fontSize: 12.sp,
-            //         fontWeight: FontWeight.w400,
-            //       ),
-            //     ),
-            //   ),
             if (hasReplies && (_showReplies[comment.id] ?? false))
               Padding(
                 padding: const EdgeInsets.only(top: 8),
@@ -480,7 +482,7 @@ class _CommentsViewState extends State<CommentsView> {
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
-        padding: const EdgeInsets.only(right: 8.0, top: 4),
+        padding: const EdgeInsets.only(right: 8, top: 4),
         child: Container(
           width: MediaQuery.of(context).size.width * 0.8,
           decoration: BoxDecoration(
@@ -600,20 +602,6 @@ class _CommentsViewState extends State<CommentsView> {
     );
   }
 
-  Future<void> _toggleLike(String commentId) async {
-    try {
-      await _commentService.toggleLike(commentId);
-      _loadComments();
-    } catch (e) {}
-  }
-
-  Future<void> _toggleDislike(String commentId) async {
-    try {
-      // await _commentService.toggleDislike(commentId);
-      _loadComments();
-    } catch (e) {}
-  }
-
   Future<void> _deleteComment(String commentId) async {
     try {
       await _commentService.deleteComment(commentId);
@@ -621,45 +609,23 @@ class _CommentsViewState extends State<CommentsView> {
     } catch (e) {}
   }
 
-  void _editComment(Comment comment) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        final controller = TextEditingController(text: comment.content);
-        return AlertDialog(
-          title: const Text('Edit Comment'),
-          content: TextField(
-            controller: controller,
-            maxLines: 3,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () async {
-                try {
-                  await _commentService.updateComment(
-                    commentId: comment.id.toString(),
-                    comment: controller.text,
-                  );
-                  _loadComments();
-                  Navigator.pop(context);
-                } catch (e) {}
-              },
-              child: const Text('Save'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  Future<void> _submitComment() async {
+    final text = _commentController.text.trim();
+    if (text.isEmpty || _replyingToCommentId == null) return;
 
-  void _replyToComment(String commentId) {
-    setState(() {
-      _commentFocusNode.requestFocus();
-    });
+    // ignore: use_if_null_to_convert_nulls_to_bools
+    if (_isEditing[_replyingToCommentId] == true) {
+      await _updateCommentContent(_replyingToCommentId!, text);
+
+      setState(() {
+        _isEditing.remove(_replyingToCommentId);
+        _editControllers.remove(_replyingToCommentId);
+        _replyingToCommentId = null;
+        _commentController.clear();
+      });
+
+      _loadComments();
+    }
   }
 
   Future<void> _updateCommentContent(
@@ -671,25 +637,8 @@ class _CommentsViewState extends State<CommentsView> {
         commentId: commentId,
         comment: newContent,
       );
-      _loadComments();
+
+      // ignore: empty_catches
     } catch (e) {}
-  }
-
-  void _saveEdit(String commentId) {
-    final newContent = _editControllers[commentId]?.text ?? '';
-    if (newContent.isNotEmpty) {
-      _updateCommentContent(commentId, newContent);
-    }
-    setState(() {
-      _isEditing.remove(commentId);
-      _editControllers.remove(commentId);
-    });
-  }
-
-  void _cancelEdit(String commentId) {
-    setState(() {
-      _isEditing.remove(commentId);
-      _editControllers.remove(commentId);
-    });
   }
 }

@@ -100,6 +100,165 @@ class _AddHouseViewState extends State<AddHouseView> {
   List<HouseFloorCount>? floorCounts;
   List<HouseFloorCount>? roomCounts;
   List<HouseFloorCount>? levelCounts;
+  String? _hashtags;
+
+  void _showHashtagDialog(BuildContext context) {
+    final hashtagController = TextEditingController();
+    final tempHashtags = <String>[];
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          insetPadding: EdgeInsets.all(20.w),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(16.w),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    context.translation.hashtag_push,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                      color: const Color.fromARGB(255, 34, 34, 34),
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  TextField(
+                    controller: hashtagController,
+                    decoration: InputDecoration(
+                      hintText: context.translation.hashtag,
+                      hintStyle: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.grey[600],
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                        borderSide: BorderSide(color: Colors.grey[300]!),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 12.w,
+                        vertical: 10.h,
+                      ),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          Icons.add_circle,
+                          color: ColorName.blueish,
+                          size: 24.r,
+                        ),
+                        onPressed: () {
+                          if (hashtagController.text.trim().isNotEmpty &&
+                              tempHashtags.length < 5) {
+                            String hashtag = hashtagController.text.trim();
+                            if (!hashtag.startsWith('#')) {
+                              hashtag = '#$hashtag';
+                            }
+                            tempHashtags.add(hashtag);
+                            hashtagController.clear();
+                            (context as Element).markNeedsBuild();
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 8.h),
+
+                  // Counter
+                  Text(
+                    '${tempHashtags.length}/5',
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color:
+                          tempHashtags.length >= 5 ? Colors.red : Colors.grey,
+                    ),
+                  ),
+                  SizedBox(height: 12.h),
+
+                  // Hashtag chips
+                  if (tempHashtags.isNotEmpty)
+                    Wrap(
+                      spacing: 6.w,
+                      runSpacing: 6.h,
+                      children: tempHashtags.map((hashtag) {
+                        return Chip(
+                          label: Text(
+                            hashtag,
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              color: ColorName.blueish,
+                            ),
+                          ),
+                          backgroundColor: Colors.blue[50],
+                          deleteIcon: Icon(
+                            Icons.close,
+                            size: 16.r,
+                            color: ColorName.blueish,
+                          ),
+                          onDeleted: () {
+                            tempHashtags.remove(hashtag);
+                            (context as Element).markNeedsBuild();
+                          },
+                        );
+                      }).toList(),
+                    ),
+
+                  SizedBox(height: 16.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(
+                          context.translation.cancel,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: ColorName.blueish,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: 8.h,
+                          ),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _hashtags = tempHashtags.join(' ');
+                          });
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          context.translation.send,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   void init(GlobalOptions? options) {
     if (options == null) {
@@ -577,15 +736,18 @@ class _AddHouseViewState extends State<AddHouseView> {
                           children: [
                             Expanded(
                               child: AppText.s12w400BdS(
-                                '#Heşteg',
+                                '#${context.translation.hashtag}',
                                 fontFamily: StringConstants.roboto,
                                 color: const Color(0xff555555),
                               ),
                             ),
-                            SizedBox(
-                              width: 18.w,
-                              height: 18.w,
-                              child: Assets.icons.icHash.svg(package: 'gen'),
+                            GestureDetector(
+                              onTap: () => _showHashtagDialog(context),
+                              child: SizedBox(
+                                width: 18.w,
+                                height: 18.w,
+                                child: Assets.icons.icHash.svg(package: 'gen'),
+                              ),
                             ),
                           ],
                         ),
@@ -626,6 +788,7 @@ class _AddHouseViewState extends State<AddHouseView> {
                         onTermsTap: () {
                           Navigator.push(
                             context,
+                            // ignore: inference_failure_on_instance_creation
                             MaterialPageRoute(
                               builder: (context) => WebViewScreen(
                                 url:
@@ -638,6 +801,7 @@ class _AddHouseViewState extends State<AddHouseView> {
                         onPrivacyTap: () {
                           Navigator.push(
                             context,
+                            // ignore: inference_failure_on_instance_creation
                             MaterialPageRoute(
                               builder: (context) => WebViewScreen(
                                 url:
@@ -763,7 +927,7 @@ class _AddHouseViewState extends State<AddHouseView> {
           floorNumber?.count != null ? int.parse(floorNumber!.count) : null,
       room_number:
           roomNumber?.count != null ? int.parse(roomNumber!.count) : null,
-      hashtag: null,
+      hashtag: _hashtags,
       level_number:
           levelNumber?.count != null ? int.parse(levelNumber!.count) : null,
       property_type_id: propertyTypeId,

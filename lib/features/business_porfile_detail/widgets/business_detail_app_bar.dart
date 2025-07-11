@@ -31,7 +31,7 @@ class CollapsibleImageHeader implements SliverPersistentHeaderDelegate {
   double get maxExtent => 335;
 
   @override
-  double get minExtent => kToolbarHeight.w + 20.w;
+  double get minExtent => kToolbarHeight.w + 58.w;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
@@ -101,7 +101,7 @@ class CollapsibleImageHeader implements SliverPersistentHeaderDelegate {
                           ),
                           4.boxW,
                           AppText.s12w400BdS(
-                            Helpers.formatDateAsMMDDYYYY(time),
+                            Helpers.formatDate(DateTime.now()),
                           ),
                           6.boxW,
                           SizedBox(
@@ -138,7 +138,7 @@ class CollapsibleImageHeader implements SliverPersistentHeaderDelegate {
           child: AppBar(
             surfaceTintColor: Colors.transparent,
             backgroundColor:
-                currentProgress > .45 ? ColorName.main : Colors.transparent,
+                currentProgress > .40 ? ColorName.main : Colors.transparent,
             elevation: 0,
             foregroundColor: ColorName.main,
             leading: IconButton(
@@ -159,7 +159,7 @@ class CollapsibleImageHeader implements SliverPersistentHeaderDelegate {
                         imageUrl: logoUrl,
                         size: const Size(36, 36),
                       ),
-                      6.boxW,
+                      10.boxW,
                       AppText.s14w400BdM(
                         title ?? '',
                         color: Colors.white,
@@ -214,7 +214,7 @@ class CollapsibleLogoHeader implements SliverPersistentHeaderDelegate {
   double get maxExtent => 335;
 
   @override
-  double get minExtent => kToolbarHeight.w + 20.w;
+  double get minExtent => kToolbarHeight.w + 58.w;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
@@ -254,7 +254,7 @@ class CollapsibleLogoHeader implements SliverPersistentHeaderDelegate {
                     children: [
                       AdvLogo(
                         imageUrl: logoUrl,
-                        size: const Size(100, 100),
+                        size: const Size(90, 90),
                       ),
                       6.boxH,
                       AppText.s14w400BdM(title ?? ''),
@@ -263,19 +263,23 @@ class CollapsibleLogoHeader implements SliverPersistentHeaderDelegate {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: 16,
-                            width: 16,
+                            height: 14,
+                            width: 14,
                             child: Assets.icons.icCalendar.svg(package: 'gen'),
                           ),
-                          4.boxW,
+                          6.boxW,
                           AppText.s12w400BdS(
-                            Helpers.formatDateAsMMDDYYYY(time),
+                            Helpers.formatDate(DateTime.now()),
+                          ),
+                          8.boxW,
+                          SizedBox(
+                            height: 14,
+                            width: 14,
+                            child: Assets.icons.icEye.svg(package: 'gen'),
                           ),
                           6.boxW,
-                          SizedBox(
-                            height: 16,
-                            width: 16,
-                            child: Assets.icons.icEye.svg(package: 'gen'),
+                          AppText.s12w400BdS(
+                            viewCount?.toString() ?? '',
                           ),
                         ],
                       ),
@@ -300,7 +304,7 @@ class CollapsibleLogoHeader implements SliverPersistentHeaderDelegate {
           child: AppBar(
             surfaceTintColor: Colors.transparent,
             backgroundColor:
-                currentProgress > .45 ? Colors.white : Colors.transparent,
+                currentProgress > .45 ? ColorName.main : Colors.transparent,
             elevation: 0,
             foregroundColor: Colors.white,
             leading: IconButton(
@@ -359,6 +363,7 @@ class CollapsibleVideoHeader implements SliverPersistentHeaderDelegate {
     this.logoUrl,
     this.time,
     this.viewCount,
+    this.locationName,
   });
 
   final String? title;
@@ -367,12 +372,13 @@ class CollapsibleVideoHeader implements SliverPersistentHeaderDelegate {
   final int? viewCount;
   final String? logoUrl;
   final String? videoUrl;
+  final String? locationName;
 
   @override
   double get maxExtent => 335;
 
   @override
-  double get minExtent => kToolbarHeight + 20;
+  double get minExtent => kToolbarHeight + 58;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
@@ -503,7 +509,7 @@ class CollapsibleVideoHeader implements SliverPersistentHeaderDelegate {
                   Row(
                     children: [
                       const Icon(Icons.calendar_today, size: 14),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: 8),
                       Text(
                         _formatDate(time),
                         style:
@@ -511,7 +517,7 @@ class CollapsibleVideoHeader implements SliverPersistentHeaderDelegate {
                       ),
                       const SizedBox(width: 12),
                       const Icon(Icons.visibility, size: 14),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: 8),
                       Text(
                         '${viewCount ?? 0} views',
                         style:
@@ -544,7 +550,7 @@ class CollapsibleVideoHeader implements SliverPersistentHeaderDelegate {
     return AppBar(
       surfaceTintColor: Colors.transparent,
       backgroundColor:
-          currentProgress > 0.45 ? const Color(0xFF6200EA) : Colors.transparent,
+          currentProgress > .45 ? ColorName.main : Colors.transparent,
       elevation: 0,
       leading: IconButton(
         onPressed: () => Navigator.of(context).pop(),
@@ -625,11 +631,11 @@ class AdvLogo extends StatelessWidget {
       height: size.height,
       decoration: BoxDecoration(
         color: Colors.grey[300],
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(50),
       ),
       child: imageUrl != null && imageUrl!.isNotEmpty
           ? ClipRRect(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(50),
               child: Image.network(
                 imageUrl!,
                 fit: BoxFit.cover,

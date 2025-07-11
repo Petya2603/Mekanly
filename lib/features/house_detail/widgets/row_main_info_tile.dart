@@ -41,7 +41,7 @@ class RowMainInfoTile extends StatelessWidget {
         ),
         10.boxW,
         Text(
-          Helpers.formatDateAsMMDDYYYY(data?.updatedAt),
+          Helpers.formatDate(DateTime.now()),
           style: TextStyle(
             fontSize: 12.sp,
             fontWeight: FontWeight.w400,
