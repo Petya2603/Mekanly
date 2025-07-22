@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$HomeState {
+// ignore: strict_raw_type
   BaseStatus<dynamic> get status => throw _privateConstructorUsedError;
   List<BannerEntity>? get smallBanners => throw _privateConstructorUsedError;
   List<BannerEntity>? get bigBanners => throw _privateConstructorUsedError;
@@ -163,6 +164,7 @@ class _$HomeStateImpl extends _HomeState {
         _topAds = topAds,
         super._();
 
+// ignore: strict_raw_type
   @override
   @JsonKey()
   final BaseStatus<dynamic> status;
@@ -239,6 +241,7 @@ abstract class _HomeState extends HomeState {
       final List<TopAdsEntity>? topAds}) = _$HomeStateImpl;
   const _HomeState._() : super._();
 
+// ignore: strict_raw_type
   @override
   BaseStatus<dynamic> get status;
   @override

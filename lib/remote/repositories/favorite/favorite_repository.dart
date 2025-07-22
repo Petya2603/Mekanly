@@ -58,7 +58,7 @@ class FavoriteService {
     required int offset,
   }) async {
     try {
-      final response = await _dio.post(
+      final response = await _dio.get(
         '/api/v2/user/favorites',
         data: {
           'type': type,
@@ -71,8 +71,7 @@ class FavoriteService {
       );
 
       if (response.statusCode == 200) {
-        return response.data
-            as Map<String, dynamic>; // Return the complete response
+        return response.data as Map<String, dynamic>;
       } else {
         final message =
             response.data['message']?.toString() ?? 'Favoriler getirilemedi.';

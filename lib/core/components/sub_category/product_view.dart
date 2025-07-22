@@ -28,7 +28,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   final FavoriteService favoriteService = FavoriteService();
 
-  late bool isFavorite;
   @override
   void initState() {
     super.initState();
@@ -59,6 +58,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
   }
 
   Widget _buildProductItem(Product product) {
+    print('Product ID: ${product.id}, Favorited: ${product.favorited}');
     final pageController = PageController();
     final pageNotifier = ValueNotifier<int>(0);
 
@@ -66,12 +66,12 @@ class _ProductListScreenState extends State<ProductListScreen> {
       try {
         await favoriteService.toggleFavorite(
           favoritableId: product.id,
-          favoritableType: 'ShopProduct',
+          favoritableType: 'Shop',
         );
-
-        setState(() {
-          isFavorite = !isFavorite;
-        });
+        context.read<ProductCubit>().updateProductFavoriteStatus(
+              product.id,
+              !product.favorited,
+            );
         // ignore: empty_catches
       } catch (e) {}
     }
@@ -215,15 +215,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
             onTap: toggleFavoriteItem,
             child: Container(
               child: product.favorited
-                  ? Assets.icons.icFavoriteSelected.svg(
+                  ? Assets.icons.saylanan.svg(
                       package: 'gen',
-                      width: 24.r,
-                      height: 24.r,
                     )
                   : Assets.icons.icFavoriteDarkFill.svg(
                       package: 'gen',
-                      width: 24.r,
-                      height: 24.r,
                     ),
             ),
           ),
@@ -325,6 +321,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                       boxShadow: [
                         BoxShadow(
                           color: const Color.fromARGB(255, 64, 64, 64)
+                              // ignore: deprecated_member_use
                               .withOpacity(0.25),
                           offset: const Offset(0, -3),
                           spreadRadius: 1,
@@ -369,14 +366,13 @@ class _ProductListScreenState extends State<ProductListScreen> {
                       (context, index) {
                         if (index < state.products.length) {
                           return _buildProductItem(state.products[index]);
-                        } else {
-                          return Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(16.r),
-                              child: const CircularProgressIndicator(),
-                            ),
-                          );
                         }
+                        return Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(16.r),
+                            child: const CircularProgressIndicator(),
+                          ),
+                        );
                       },
                       childCount:
                           state.products.length + (state.hasMore ? 1 : 0),

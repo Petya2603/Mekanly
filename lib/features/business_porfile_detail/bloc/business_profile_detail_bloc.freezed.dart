@@ -233,6 +233,7 @@ abstract class _Init implements BusinessProfileDetailEvent {
 
 /// @nodoc
 mixin _$BusinessProfileDetailState {
+// ignore: inference_failure_on_instance_creation, strict_raw_type
   BaseStatus<dynamic> get status => throw _privateConstructorUsedError;
   BusinessProfileDetailResponse? get response =>
       throw _privateConstructorUsedError;
@@ -371,6 +372,7 @@ class _$BusinessProfileDetailStateImpl extends _BusinessProfileDetailState {
       {this.status = const BaseStatus.initial(), this.response})
       : super._();
 
+// ignore: inference_failure_on_instance_creation, strict_raw_type
   @override
   @JsonKey()
   final BaseStatus<dynamic> status;
@@ -412,6 +414,7 @@ abstract class _BusinessProfileDetailState extends BusinessProfileDetailState {
       _$BusinessProfileDetailStateImpl;
   const _BusinessProfileDetailState._() : super._();
 
+// ignore: inference_failure_on_instance_creation, strict_raw_type
   @override
   BaseStatus<dynamic> get status;
   @override

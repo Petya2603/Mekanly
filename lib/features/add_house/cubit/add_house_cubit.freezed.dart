@@ -16,8 +16,11 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$AddHouseState {
-  BaseStatus<dynamic> get status => throw _privateConstructorUsedError;
-  BaseStatus<dynamic> get pickImageStatus => throw _privateConstructorUsedError;
+// ignore: strict_raw_type
+  BaseStatus<dynamic> get status =>
+      throw _privateConstructorUsedError; // ignore: strict_raw_type
+  BaseStatus<dynamic> get pickImageStatus =>
+      throw _privateConstructorUsedError; // ignore: strict_raw_type
   BaseStatus<dynamic> get addHouseStatus => throw _privateConstructorUsedError;
   List<ImageItem>? get pickedImages => throw _privateConstructorUsedError;
   GlobalOptions? get options => throw _privateConstructorUsedError;
@@ -219,12 +222,15 @@ class _$AddHouseStateImpl extends _AddHouseState {
       : _pickedImages = pickedImages,
         super._();
 
+// ignore: strict_raw_type
   @override
   @JsonKey()
   final BaseStatus<dynamic> status;
+// ignore: strict_raw_type
   @override
   @JsonKey()
   final BaseStatus<dynamic> pickImageStatus;
+// ignore: strict_raw_type
   @override
   @JsonKey()
   final BaseStatus<dynamic> addHouseStatus;
@@ -288,10 +294,11 @@ abstract class _AddHouseState extends AddHouseState {
       final GlobalOptions? options}) = _$AddHouseStateImpl;
   const _AddHouseState._() : super._();
 
+// ignore: strict_raw_type
   @override
-  BaseStatus<dynamic> get status;
+  BaseStatus<dynamic> get status; // ignore: strict_raw_type
   @override
-  BaseStatus<dynamic> get pickImageStatus;
+  BaseStatus<dynamic> get pickImageStatus; // ignore: strict_raw_type
   @override
   BaseStatus<dynamic> get addHouseStatus;
   @override

@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$OtpState {
+// ignore: inference_failure_on_instance_creation, strict_raw_type
   BaseStatus<dynamic> get status => throw _privateConstructorUsedError;
   OtpSuccessEntity? get response => throw _privateConstructorUsedError;
 
@@ -144,6 +145,7 @@ class _$OtpStateImpl extends _OtpState {
       {this.status = const BaseStatus.initial(), this.response})
       : super._();
 
+// ignore: inference_failure_on_instance_creation, strict_raw_type
   @override
   @JsonKey()
   final BaseStatus<dynamic> status;
@@ -183,6 +185,7 @@ abstract class _OtpState extends OtpState {
       final OtpSuccessEntity? response}) = _$OtpStateImpl;
   const _OtpState._() : super._();
 
+// ignore: inference_failure_on_instance_creation, strict_raw_type
   @override
   BaseStatus<dynamic> get status;
   @override

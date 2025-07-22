@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$HouseDetailState {
+// ignore: inference_failure_on_instance_creation, strict_raw_type
   BaseStatus<dynamic> get status => throw _privateConstructorUsedError;
   HouseDetailResponse? get response => throw _privateConstructorUsedError;
 
@@ -145,6 +146,7 @@ class _$HouseDetailStateImpl extends _HouseDetailState {
       {this.status = const BaseStatus.initial(), this.response})
       : super._();
 
+// ignore: inference_failure_on_instance_creation, strict_raw_type
   @override
   @JsonKey()
   final BaseStatus<dynamic> status;
@@ -185,6 +187,7 @@ abstract class _HouseDetailState extends HouseDetailState {
       final HouseDetailResponse? response}) = _$HouseDetailStateImpl;
   const _HouseDetailState._() : super._();
 
+// ignore: inference_failure_on_instance_creation, strict_raw_type
   @override
   BaseStatus<dynamic> get status;
   @override

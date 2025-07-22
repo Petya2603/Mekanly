@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$LoginState {
+// ignore: inference_failure_on_instance_creation, strict_raw_type
   BaseStatus<dynamic> get status => throw _privateConstructorUsedError;
   LoginSuccessEntity? get response => throw _privateConstructorUsedError;
 
@@ -145,6 +146,7 @@ class _$LoginStateImpl extends _LoginState {
       {this.status = const BaseStatus.initial(), this.response})
       : super._();
 
+// ignore: inference_failure_on_instance_creation, strict_raw_type
   @override
   @JsonKey()
   final BaseStatus<dynamic> status;
@@ -184,6 +186,7 @@ abstract class _LoginState extends LoginState {
       final LoginSuccessEntity? response}) = _$LoginStateImpl;
   const _LoginState._() : super._();
 
+// ignore: inference_failure_on_instance_creation, strict_raw_type
   @override
   BaseStatus<dynamic> get status;
   @override

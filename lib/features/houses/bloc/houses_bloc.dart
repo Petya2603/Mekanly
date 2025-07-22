@@ -23,9 +23,24 @@ class HousesBloc extends BaseBloc<HousesEvent, HousesState> {
     on<_GetFilters>(_onGetFilters);
     on<_Filter>(_onApplyFilter);
     on<_LoadMore>(_onLoadMore);
+    on<_UpdateHouseFavoriteStatus>(_onUpdateHouseFavoriteStatus);
   }
 
   final HousesRepository _housesRepository;
+
+  FutureOr<void> _onUpdateHouseFavoriteStatus(
+    _UpdateHouseFavoriteStatus event,
+    Emitter<HousesState> emit,
+  ) async {
+    final currentHouses = List<HouseEntity>.from(state.houses);
+    final updatedHouses = currentHouses.map((house) {
+      if (house.id == event.houseId) {
+        return house.copyWith(favorited: event.isFavorite);
+      }
+      return house;
+    }).toList();
+    emit(state.copyWith(houses: updatedHouses));
+  }
   FutureOr<void> _onLoadMore(
     _LoadMore event,
     Emitter<HousesState> emit,

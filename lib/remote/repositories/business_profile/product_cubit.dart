@@ -60,4 +60,17 @@ class ProductCubit extends Cubit<ProductState> {
       _isFetching = false;
     }
   }
+
+  void updateProductFavoriteStatus(int productId, bool isFavorite) {
+    if (state is ProductLoaded) {
+      final currentProducts = (state as ProductLoaded).products;
+      final updatedProducts = currentProducts.map((product) {
+        if (product.id == productId) {
+          return product.copyWith(favorited: isFavorite);
+        }
+        return product;
+      }).toList();
+      emit(ProductLoaded(updatedProducts, hasMore: (state as ProductLoaded).hasMore));
+    }
+  }
 }

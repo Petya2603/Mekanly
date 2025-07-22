@@ -22,6 +22,8 @@ mixin _$HousesEvent {
     required TResult Function(List<HouseEntity>? houses) getFilter,
     required TResult Function(GlobalOptions filter) filter,
     required TResult Function() loadMore,
+    required TResult Function(int houseId, bool isFavorite)
+        updateHouseFavoriteStatus,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -30,6 +32,7 @@ mixin _$HousesEvent {
     TResult? Function(List<HouseEntity>? houses)? getFilter,
     TResult? Function(GlobalOptions filter)? filter,
     TResult? Function()? loadMore,
+    TResult? Function(int houseId, bool isFavorite)? updateHouseFavoriteStatus,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -38,6 +41,7 @@ mixin _$HousesEvent {
     TResult Function(List<HouseEntity>? houses)? getFilter,
     TResult Function(GlobalOptions filter)? filter,
     TResult Function()? loadMore,
+    TResult Function(int houseId, bool isFavorite)? updateHouseFavoriteStatus,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -47,6 +51,8 @@ mixin _$HousesEvent {
     required TResult Function(_GetFilters value) getFilter,
     required TResult Function(_Filter value) filter,
     required TResult Function(_LoadMore value) loadMore,
+    required TResult Function(_UpdateHouseFavoriteStatus value)
+        updateHouseFavoriteStatus,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -55,6 +61,8 @@ mixin _$HousesEvent {
     TResult? Function(_GetFilters value)? getFilter,
     TResult? Function(_Filter value)? filter,
     TResult? Function(_LoadMore value)? loadMore,
+    TResult? Function(_UpdateHouseFavoriteStatus value)?
+        updateHouseFavoriteStatus,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -63,6 +71,8 @@ mixin _$HousesEvent {
     TResult Function(_GetFilters value)? getFilter,
     TResult Function(_Filter value)? filter,
     TResult Function(_LoadMore value)? loadMore,
+    TResult Function(_UpdateHouseFavoriteStatus value)?
+        updateHouseFavoriteStatus,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -134,6 +144,8 @@ class _$RefreshImpl implements _Refresh {
     required TResult Function(List<HouseEntity>? houses) getFilter,
     required TResult Function(GlobalOptions filter) filter,
     required TResult Function() loadMore,
+    required TResult Function(int houseId, bool isFavorite)
+        updateHouseFavoriteStatus,
   }) {
     return refresh();
   }
@@ -145,6 +157,7 @@ class _$RefreshImpl implements _Refresh {
     TResult? Function(List<HouseEntity>? houses)? getFilter,
     TResult? Function(GlobalOptions filter)? filter,
     TResult? Function()? loadMore,
+    TResult? Function(int houseId, bool isFavorite)? updateHouseFavoriteStatus,
   }) {
     return refresh?.call();
   }
@@ -156,6 +169,7 @@ class _$RefreshImpl implements _Refresh {
     TResult Function(List<HouseEntity>? houses)? getFilter,
     TResult Function(GlobalOptions filter)? filter,
     TResult Function()? loadMore,
+    TResult Function(int houseId, bool isFavorite)? updateHouseFavoriteStatus,
     required TResult orElse(),
   }) {
     if (refresh != null) {
@@ -171,6 +185,8 @@ class _$RefreshImpl implements _Refresh {
     required TResult Function(_GetFilters value) getFilter,
     required TResult Function(_Filter value) filter,
     required TResult Function(_LoadMore value) loadMore,
+    required TResult Function(_UpdateHouseFavoriteStatus value)
+        updateHouseFavoriteStatus,
   }) {
     return refresh(this);
   }
@@ -182,6 +198,8 @@ class _$RefreshImpl implements _Refresh {
     TResult? Function(_GetFilters value)? getFilter,
     TResult? Function(_Filter value)? filter,
     TResult? Function(_LoadMore value)? loadMore,
+    TResult? Function(_UpdateHouseFavoriteStatus value)?
+        updateHouseFavoriteStatus,
   }) {
     return refresh?.call(this);
   }
@@ -193,6 +211,8 @@ class _$RefreshImpl implements _Refresh {
     TResult Function(_GetFilters value)? getFilter,
     TResult Function(_Filter value)? filter,
     TResult Function(_LoadMore value)? loadMore,
+    TResult Function(_UpdateHouseFavoriteStatus value)?
+        updateHouseFavoriteStatus,
     required TResult orElse(),
   }) {
     if (refresh != null) {
@@ -286,6 +306,8 @@ class _$GetFiltersImpl implements _GetFilters {
     required TResult Function(List<HouseEntity>? houses) getFilter,
     required TResult Function(GlobalOptions filter) filter,
     required TResult Function() loadMore,
+    required TResult Function(int houseId, bool isFavorite)
+        updateHouseFavoriteStatus,
   }) {
     return getFilter(houses);
   }
@@ -297,6 +319,7 @@ class _$GetFiltersImpl implements _GetFilters {
     TResult? Function(List<HouseEntity>? houses)? getFilter,
     TResult? Function(GlobalOptions filter)? filter,
     TResult? Function()? loadMore,
+    TResult? Function(int houseId, bool isFavorite)? updateHouseFavoriteStatus,
   }) {
     return getFilter?.call(houses);
   }
@@ -308,6 +331,7 @@ class _$GetFiltersImpl implements _GetFilters {
     TResult Function(List<HouseEntity>? houses)? getFilter,
     TResult Function(GlobalOptions filter)? filter,
     TResult Function()? loadMore,
+    TResult Function(int houseId, bool isFavorite)? updateHouseFavoriteStatus,
     required TResult orElse(),
   }) {
     if (getFilter != null) {
@@ -323,6 +347,8 @@ class _$GetFiltersImpl implements _GetFilters {
     required TResult Function(_GetFilters value) getFilter,
     required TResult Function(_Filter value) filter,
     required TResult Function(_LoadMore value) loadMore,
+    required TResult Function(_UpdateHouseFavoriteStatus value)
+        updateHouseFavoriteStatus,
   }) {
     return getFilter(this);
   }
@@ -334,6 +360,8 @@ class _$GetFiltersImpl implements _GetFilters {
     TResult? Function(_GetFilters value)? getFilter,
     TResult? Function(_Filter value)? filter,
     TResult? Function(_LoadMore value)? loadMore,
+    TResult? Function(_UpdateHouseFavoriteStatus value)?
+        updateHouseFavoriteStatus,
   }) {
     return getFilter?.call(this);
   }
@@ -345,6 +373,8 @@ class _$GetFiltersImpl implements _GetFilters {
     TResult Function(_GetFilters value)? getFilter,
     TResult Function(_Filter value)? filter,
     TResult Function(_LoadMore value)? loadMore,
+    TResult Function(_UpdateHouseFavoriteStatus value)?
+        updateHouseFavoriteStatus,
     required TResult orElse(),
   }) {
     if (getFilter != null) {
@@ -450,6 +480,8 @@ class _$FilterImpl implements _Filter {
     required TResult Function(List<HouseEntity>? houses) getFilter,
     required TResult Function(GlobalOptions filter) filter,
     required TResult Function() loadMore,
+    required TResult Function(int houseId, bool isFavorite)
+        updateHouseFavoriteStatus,
   }) {
     return filter(this.filter);
   }
@@ -461,6 +493,7 @@ class _$FilterImpl implements _Filter {
     TResult? Function(List<HouseEntity>? houses)? getFilter,
     TResult? Function(GlobalOptions filter)? filter,
     TResult? Function()? loadMore,
+    TResult? Function(int houseId, bool isFavorite)? updateHouseFavoriteStatus,
   }) {
     return filter?.call(this.filter);
   }
@@ -472,6 +505,7 @@ class _$FilterImpl implements _Filter {
     TResult Function(List<HouseEntity>? houses)? getFilter,
     TResult Function(GlobalOptions filter)? filter,
     TResult Function()? loadMore,
+    TResult Function(int houseId, bool isFavorite)? updateHouseFavoriteStatus,
     required TResult orElse(),
   }) {
     if (filter != null) {
@@ -487,6 +521,8 @@ class _$FilterImpl implements _Filter {
     required TResult Function(_GetFilters value) getFilter,
     required TResult Function(_Filter value) filter,
     required TResult Function(_LoadMore value) loadMore,
+    required TResult Function(_UpdateHouseFavoriteStatus value)
+        updateHouseFavoriteStatus,
   }) {
     return filter(this);
   }
@@ -498,6 +534,8 @@ class _$FilterImpl implements _Filter {
     TResult? Function(_GetFilters value)? getFilter,
     TResult? Function(_Filter value)? filter,
     TResult? Function(_LoadMore value)? loadMore,
+    TResult? Function(_UpdateHouseFavoriteStatus value)?
+        updateHouseFavoriteStatus,
   }) {
     return filter?.call(this);
   }
@@ -509,6 +547,8 @@ class _$FilterImpl implements _Filter {
     TResult Function(_GetFilters value)? getFilter,
     TResult Function(_Filter value)? filter,
     TResult Function(_LoadMore value)? loadMore,
+    TResult Function(_UpdateHouseFavoriteStatus value)?
+        updateHouseFavoriteStatus,
     required TResult orElse(),
   }) {
     if (filter != null) {
@@ -575,6 +615,8 @@ class _$LoadMoreImpl implements _LoadMore {
     required TResult Function(List<HouseEntity>? houses) getFilter,
     required TResult Function(GlobalOptions filter) filter,
     required TResult Function() loadMore,
+    required TResult Function(int houseId, bool isFavorite)
+        updateHouseFavoriteStatus,
   }) {
     return loadMore();
   }
@@ -586,6 +628,7 @@ class _$LoadMoreImpl implements _LoadMore {
     TResult? Function(List<HouseEntity>? houses)? getFilter,
     TResult? Function(GlobalOptions filter)? filter,
     TResult? Function()? loadMore,
+    TResult? Function(int houseId, bool isFavorite)? updateHouseFavoriteStatus,
   }) {
     return loadMore?.call();
   }
@@ -597,6 +640,7 @@ class _$LoadMoreImpl implements _LoadMore {
     TResult Function(List<HouseEntity>? houses)? getFilter,
     TResult Function(GlobalOptions filter)? filter,
     TResult Function()? loadMore,
+    TResult Function(int houseId, bool isFavorite)? updateHouseFavoriteStatus,
     required TResult orElse(),
   }) {
     if (loadMore != null) {
@@ -612,6 +656,8 @@ class _$LoadMoreImpl implements _LoadMore {
     required TResult Function(_GetFilters value) getFilter,
     required TResult Function(_Filter value) filter,
     required TResult Function(_LoadMore value) loadMore,
+    required TResult Function(_UpdateHouseFavoriteStatus value)
+        updateHouseFavoriteStatus,
   }) {
     return loadMore(this);
   }
@@ -623,6 +669,8 @@ class _$LoadMoreImpl implements _LoadMore {
     TResult? Function(_GetFilters value)? getFilter,
     TResult? Function(_Filter value)? filter,
     TResult? Function(_LoadMore value)? loadMore,
+    TResult? Function(_UpdateHouseFavoriteStatus value)?
+        updateHouseFavoriteStatus,
   }) {
     return loadMore?.call(this);
   }
@@ -634,6 +682,8 @@ class _$LoadMoreImpl implements _LoadMore {
     TResult Function(_GetFilters value)? getFilter,
     TResult Function(_Filter value)? filter,
     TResult Function(_LoadMore value)? loadMore,
+    TResult Function(_UpdateHouseFavoriteStatus value)?
+        updateHouseFavoriteStatus,
     required TResult orElse(),
   }) {
     if (loadMore != null) {
@@ -648,7 +698,185 @@ abstract class _LoadMore implements HousesEvent {
 }
 
 /// @nodoc
+abstract class _$$UpdateHouseFavoriteStatusImplCopyWith<$Res> {
+  factory _$$UpdateHouseFavoriteStatusImplCopyWith(
+          _$UpdateHouseFavoriteStatusImpl value,
+          $Res Function(_$UpdateHouseFavoriteStatusImpl) then) =
+      __$$UpdateHouseFavoriteStatusImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({int houseId, bool isFavorite});
+}
+
+/// @nodoc
+class __$$UpdateHouseFavoriteStatusImplCopyWithImpl<$Res>
+    extends _$HousesEventCopyWithImpl<$Res, _$UpdateHouseFavoriteStatusImpl>
+    implements _$$UpdateHouseFavoriteStatusImplCopyWith<$Res> {
+  __$$UpdateHouseFavoriteStatusImplCopyWithImpl(
+      _$UpdateHouseFavoriteStatusImpl _value,
+      $Res Function(_$UpdateHouseFavoriteStatusImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of HousesEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? houseId = null,
+    Object? isFavorite = null,
+  }) {
+    return _then(_$UpdateHouseFavoriteStatusImpl(
+      null == houseId
+          ? _value.houseId
+          : houseId // ignore: cast_nullable_to_non_nullable
+              as int,
+      null == isFavorite
+          ? _value.isFavorite
+          : isFavorite // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$UpdateHouseFavoriteStatusImpl implements _UpdateHouseFavoriteStatus {
+  const _$UpdateHouseFavoriteStatusImpl(this.houseId, this.isFavorite);
+
+  @override
+  final int houseId;
+  @override
+  final bool isFavorite;
+
+  @override
+  String toString() {
+    return 'HousesEvent.updateHouseFavoriteStatus(houseId: $houseId, isFavorite: $isFavorite)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$UpdateHouseFavoriteStatusImpl &&
+            (identical(other.houseId, houseId) || other.houseId == houseId) &&
+            (identical(other.isFavorite, isFavorite) ||
+                other.isFavorite == isFavorite));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, houseId, isFavorite);
+
+  /// Create a copy of HousesEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$UpdateHouseFavoriteStatusImplCopyWith<_$UpdateHouseFavoriteStatusImpl>
+      get copyWith => __$$UpdateHouseFavoriteStatusImplCopyWithImpl<
+          _$UpdateHouseFavoriteStatusImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() refresh,
+    required TResult Function(List<HouseEntity>? houses) getFilter,
+    required TResult Function(GlobalOptions filter) filter,
+    required TResult Function() loadMore,
+    required TResult Function(int houseId, bool isFavorite)
+        updateHouseFavoriteStatus,
+  }) {
+    return updateHouseFavoriteStatus(houseId, isFavorite);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? refresh,
+    TResult? Function(List<HouseEntity>? houses)? getFilter,
+    TResult? Function(GlobalOptions filter)? filter,
+    TResult? Function()? loadMore,
+    TResult? Function(int houseId, bool isFavorite)? updateHouseFavoriteStatus,
+  }) {
+    return updateHouseFavoriteStatus?.call(houseId, isFavorite);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? refresh,
+    TResult Function(List<HouseEntity>? houses)? getFilter,
+    TResult Function(GlobalOptions filter)? filter,
+    TResult Function()? loadMore,
+    TResult Function(int houseId, bool isFavorite)? updateHouseFavoriteStatus,
+    required TResult orElse(),
+  }) {
+    if (updateHouseFavoriteStatus != null) {
+      return updateHouseFavoriteStatus(houseId, isFavorite);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Refresh value) refresh,
+    required TResult Function(_GetFilters value) getFilter,
+    required TResult Function(_Filter value) filter,
+    required TResult Function(_LoadMore value) loadMore,
+    required TResult Function(_UpdateHouseFavoriteStatus value)
+        updateHouseFavoriteStatus,
+  }) {
+    return updateHouseFavoriteStatus(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Refresh value)? refresh,
+    TResult? Function(_GetFilters value)? getFilter,
+    TResult? Function(_Filter value)? filter,
+    TResult? Function(_LoadMore value)? loadMore,
+    TResult? Function(_UpdateHouseFavoriteStatus value)?
+        updateHouseFavoriteStatus,
+  }) {
+    return updateHouseFavoriteStatus?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Refresh value)? refresh,
+    TResult Function(_GetFilters value)? getFilter,
+    TResult Function(_Filter value)? filter,
+    TResult Function(_LoadMore value)? loadMore,
+    TResult Function(_UpdateHouseFavoriteStatus value)?
+        updateHouseFavoriteStatus,
+    required TResult orElse(),
+  }) {
+    if (updateHouseFavoriteStatus != null) {
+      return updateHouseFavoriteStatus(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _UpdateHouseFavoriteStatus implements HousesEvent {
+  const factory _UpdateHouseFavoriteStatus(
+          final int houseId, final bool isFavorite) =
+      _$UpdateHouseFavoriteStatusImpl;
+
+  int get houseId;
+  bool get isFavorite;
+
+  /// Create a copy of HousesEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$UpdateHouseFavoriteStatusImplCopyWith<_$UpdateHouseFavoriteStatusImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$HousesState {
+// ignore: strict_raw_type
   BaseStatus<dynamic> get status => throw _privateConstructorUsedError;
   List<HouseEntity> get houses => throw _privateConstructorUsedError;
   GlobalOptionsResponse? get globalOptions =>
@@ -841,6 +1069,7 @@ class _$HousesStateImpl extends _HousesState {
       : _houses = houses,
         super._();
 
+// ignore: strict_raw_type
   @override
   @JsonKey()
   final BaseStatus<dynamic> status;
@@ -917,6 +1146,7 @@ abstract class _HousesState extends HousesState {
       final bool hasMorePages}) = _$HousesStateImpl;
   const _HousesState._() : super._();
 
+// ignore: strict_raw_type
   @override
   BaseStatus<dynamic> get status;
   @override

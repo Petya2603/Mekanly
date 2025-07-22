@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$BusinessProfileState {
+// ignore: strict_raw_type
   BaseStatus<dynamic> get status => throw _privateConstructorUsedError;
   BusinessProfilesResponse? get response => throw _privateConstructorUsedError;
   BusinessProfileCategoryResponse? get categoryResponse =>
@@ -184,6 +185,7 @@ class _$BusinessProfileStateImpl extends _BusinessProfileState {
       this.categoryResponse})
       : super._();
 
+// ignore: strict_raw_type
   @override
   @JsonKey()
   final BaseStatus<dynamic> status;
@@ -232,6 +234,7 @@ abstract class _BusinessProfileState extends BusinessProfileState {
       _$BusinessProfileStateImpl;
   const _BusinessProfileState._() : super._();
 
+// ignore: strict_raw_type
   @override
   BaseStatus<dynamic> get status;
   @override

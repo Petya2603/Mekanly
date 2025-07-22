@@ -409,7 +409,8 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                                   itemId: widget.data.id ?? 0,
                                   message: reasons
                                       .firstWhere(
-                                          (e) => e.id == selectedReasonId,)
+                                        (e) => e.id == selectedReasonId,
+                                      )
                                       .description,
                                   type: 'house',
                                 );
@@ -881,10 +882,9 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                             smsUri,
                             mode: LaunchMode.externalApplication,
                           );
-                        // ignore: empty_catches
-                        } catch (e) {
-                        }
-                      } 
+                          // ignore: empty_catches
+                        } catch (e) {}
+                      }
                     },
                     fontSize: 12.sp,
                     textColor: const Color(0xFF009688),
@@ -919,8 +919,9 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                             telUri,
                             mode: LaunchMode.externalApplication,
                           );
-                        } 
-                      // ignore: empty_catches
+                        } else {
+                          print('Nomeri tapylmady.');
+                        }
                       } catch (e) {}
                     },
                     text: context.translation.call,
@@ -1283,10 +1284,11 @@ class _HousePossibilityGridItem extends StatelessWidget {
 }
 
 class _Comments extends StatelessWidget {
-  const _Comments(
-      {required this.itemId,
-      required this.itemType,
-      required this.commentCount,});
+  const _Comments({
+    required this.itemId,
+    required this.itemType,
+    required this.commentCount,
+  });
   final int itemId;
   final String itemType;
   final int commentCount;

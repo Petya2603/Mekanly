@@ -51,6 +51,8 @@ class _FavoritesViewState extends State<FavoritesView> {
         offset: offset,
       );
 
+      print('Favorites API Response for $type: $response');
+
       setState(() {
         favorites = response['data'] as List<dynamic>;
         totalFavorites = int.tryParse(response['total'].toString()) ?? 0;
@@ -101,11 +103,9 @@ class _FavoritesViewState extends State<FavoritesView> {
             child: isLoading
                 ? LoadingIndicator.circle()
                 : errorMessage != null
-                    ? _buildEmptyState(message: errorMessage)
+                    ? _buildEmptyState()
                     : favorites.isEmpty
-                        ? _buildEmptyState(
-                            message: context.translation
-                                .no_announcements_in_my_favorites_section)
+                        ? _buildEmptyState()
                         : ListView.builder(
                             padding: EdgeInsets.only(top: 4.h),
                             itemCount: favorites.length,
@@ -124,25 +124,38 @@ class _FavoritesViewState extends State<FavoritesView> {
                                   price: (fav['price'] != null)
                                       ? double.tryParse(fav['price'].toString())
                                       : null,
-                                  imageUrl: (fav['images'] != null)
-                                      ? fav['images'][0]['url'] as String?
+                                  // ignore: lines_longer_than_80_chars
+                                  imageUrl: (fav['images'] != null &&
+                                          (fav['images'] as List).isNotEmpty)
+                                      // ignore: lines_longer_than_80_chars, avoid_dynamic_calls
+                                      ? (fav['images'][0] as Map<String,
+                                          dynamic>)['original'] as String?
                                       : null,
                                   locationName:
+                                      // ignore: avoid_dynamic_calls
                                       fav['location']?['name']?.toString(),
+                                  // ignore: avoid_dynamic_calls
                                   locationParent: fav['location']
                                           ?['parent_name']
                                       ?.toString(),
                                   categoryName:
+                                      // ignore: avoid_dynamic_calls
                                       fav['category_name']?.toString(),
+                                  // ignore: avoid_dynamic_calls
                                   roomNumber: fav['room_number']?.toString(),
+                                  // ignore: avoid_dynamic_calls
                                   floorNumber: fav['floor_number']?.toString(),
                                   propertyType:
+                                      // ignore: avoid_dynamic_calls
                                       fav['property_type']?['name']?.toString(),
                                   repairType:
+                                      // ignore: avoid_dynamic_calls
                                       fav['repair_type']?['name']?.toString(),
                                   viewed: fav['viewed']?.toString(),
                                   commentCount:
+                                      // ignore: avoid_dynamic_calls
                                       fav['comment_count']?.toString(),
+                                  // ignore: avoid_dynamic_calls
                                   isLuxe: fav['luxe'] as bool? ?? false,
                                   isVip: fav['vip_status'] as bool? ?? false,
                                   bronNumber: fav['bron_number']?.toString(),
@@ -190,7 +203,7 @@ class _FavoritesViewState extends State<FavoritesView> {
     );
   }
 
-  Widget _buildEmptyState({String? message}) {
+  Widget _buildEmptyState() {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -198,8 +211,7 @@ class _FavoritesViewState extends State<FavoritesView> {
           Assets.icons.favview.svg(package: 'gen'),
           6.boxH,
           AppText.s14w400BdM(
-            message ??
-                context.translation.no_announcements_in_my_favorites_section,
+            context.translation.no_announcements_in_my_favorites_section,
             fontFamily: StringConstants.roboto,
             fontSize: 16.sp,
             fontWeight: FontWeight.w400,

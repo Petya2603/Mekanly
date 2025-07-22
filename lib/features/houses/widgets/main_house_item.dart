@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
 
@@ -10,6 +11,7 @@ import '../../../remote/entities/houses/house_entity.dart';
 import '../../../remote/repositories/favorite/favorite_repository.dart';
 import '../../../utils/extensions.dart';
 import '../../house_detail/house_detail_view.dart';
+import '../bloc/houses_bloc.dart';
 
 class MainHouseItem extends StatefulWidget {
   const MainHouseItem({
@@ -19,6 +21,7 @@ class MainHouseItem extends StatefulWidget {
   });
 
   final HouseEntity? house;
+  // ignore: avoid_positional_boolean_parameters
   final void Function(bool isAdded)? onFavoriteChanged;
 
   @override
@@ -28,12 +31,11 @@ class MainHouseItem extends StatefulWidget {
 class _MainHouseItemState extends State<MainHouseItem> {
   final FavoriteService favoriteService = FavoriteService();
 
-  late bool isFavorite;
+  
 
   @override
   void initState() {
     super.initState();
-    isFavorite = widget.house?.favorited ?? false;
   }
 
   Future<void> toggleFavoriteItem() async {
@@ -42,10 +44,12 @@ class _MainHouseItemState extends State<MainHouseItem> {
         favoritableId: widget.house?.id ?? 0,
         favoritableType: getFavoritableType(widget.house?.type),
       );
-
-      setState(() {
-        isFavorite = !isFavorite;
-      });
+      context.read<HousesBloc>().add(
+            HousesEvent.updateHouseFavoriteStatus(
+              widget.house?.id ?? 0,
+              !(widget.house?.favorited ?? false),
+            ),
+          );
     } catch (e) {
       print('Toggle failed: $e');
     }
@@ -257,12 +261,11 @@ class _MainHouseItemState extends State<MainHouseItem> {
           child: GestureDetector(
             onTap: () {
               toggleFavoriteItem();
-              widget.onFavoriteChanged?.call(!isFavorite);
             },
             child: SizedBox(
               height: 24,
               width: 24,
-              child: isFavorite
+              child: (widget.house?.favorited ?? false)
                   ? Assets.icons.saylanan.svg(package: 'gen')
                   : Assets.icons.icFavoriteDarkFill.svg(
                       package: 'gen',
@@ -456,12 +459,7 @@ class _MainHouseItemState extends State<MainHouseItem> {
         ),
         buildPriceText(widget.house!),
 
-        // AppText.s14w400BdM(
-        //   '${house?.price ?? ''} TMT',
-        //   fontSize: 15.sp,
-        //   fontFamily: StringConstants.roboto,
-        // ),
-      ],
+            ],
     );
   }
 }

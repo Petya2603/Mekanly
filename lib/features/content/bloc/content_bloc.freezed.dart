@@ -171,6 +171,7 @@ abstract class _Init implements ContentEvent {
 
 /// @nodoc
 mixin _$ContentState {
+// ignore: inference_failure_on_instance_creation, strict_raw_type
   BaseStatus<dynamic> get status => throw _privateConstructorUsedError;
   GlobalOptions? get globalOptions => throw _privateConstructorUsedError;
   List<UserHouse>? get userHouses => throw _privateConstructorUsedError;
@@ -336,6 +337,7 @@ class _$ContentStateImpl extends _ContentState {
         _productCategories = productCategories,
         super._();
 
+// ignore: inference_failure_on_instance_creation, strict_raw_type
   @override
   @JsonKey()
   final BaseStatus<dynamic> status;
@@ -406,6 +408,7 @@ abstract class _ContentState extends ContentState {
       final List<UserProductCategory>? productCategories}) = _$ContentStateImpl;
   const _ContentState._() : super._();
 
+// ignore: inference_failure_on_instance_creation, strict_raw_type
   @override
   BaseStatus<dynamic> get status;
   @override

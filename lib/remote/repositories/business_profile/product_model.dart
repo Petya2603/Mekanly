@@ -1,5 +1,4 @@
 class Product {
-
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
       id: int.tryParse(json['id'].toString()) ?? 0,
@@ -7,7 +6,7 @@ class Product {
       description: json['description']?.toString() ?? '',
       price: double.tryParse(json['price']?.toString() ?? ''),
       status: json['status']?.toString() ?? 'pending',
-      favorited: json['favorited'] == true,
+      favorited: json['favorite'] == true,
       expire: json['expire']?.toString(),
       phone: json['phone']?.toString(),
       who: json['who']?.toString(),
@@ -87,7 +86,62 @@ class Product {
   final String locationName;
 
   final Shop? shop;
+
+  Product copyWith({
+    int? id,
+    String? name,
+    String? description,
+    double? price,
+    String? status,
+    bool? favorited,
+    String? expire,
+    String? phone,
+    String? who,
+    double? delivery,
+    int? comment,
+    double? loverPercentage,
+    double? loverPrice,
+    bool? vip,
+    int? exclusive,
+    String? hashtag,
+    List<ProductImage>? images,
+    DateTime? createdAt,
+    int? userId,
+    String? userName,
+    String? userPhone,
+    int? locationId,
+    String? locationName,
+    Shop? shop,
+  }) {
+    return Product(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      price: price ?? this.price,
+      status: status ?? this.status,
+      favorited: favorited ?? this.favorited,
+      expire: expire ?? this.expire,
+      phone: phone ?? this.phone,
+      who: who ?? this.who,
+      delivery: delivery ?? this.delivery,
+      comment: comment ?? this.comment,
+      loverPercentage: loverPercentage ?? this.loverPercentage,
+      loverPrice: loverPrice ?? this.loverPrice,
+      vip: vip ?? this.vip,
+      exclusive: exclusive ?? this.exclusive,
+      hashtag: hashtag ?? this.hashtag,
+      images: images ?? this.images,
+      createdAt: createdAt ?? this.createdAt,
+      userId: userId ?? this.userId,
+      userName: userName ?? this.userName,
+      userPhone: userPhone ?? this.userPhone,
+      locationId: locationId ?? this.locationId,
+      locationName: locationName ?? this.locationName,
+      shop: shop ?? this.shop,
+    );
+  }
 }
+
 
 class ProductImage {
 
