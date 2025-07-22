@@ -19,8 +19,16 @@ class HouseEntity with _$HouseEntity {
     String? name,
     String? description,
     String? price,
-    @JsonKey(name: 'lover_percentage') String? loverPercentage,
-    @JsonKey(name: 'lover_price') String? loverPrice,
+    @JsonKey(
+      name: 'lover_percentage',
+      fromJson: _stringToInt,
+    )
+    int? loverPercentage,
+    @JsonKey(
+      name: 'lover_price',
+      fromJson: _stringToInt,
+    )
+    int? loverPrice,
     int? viewed,
     String? star,
     @JsonKey(name: 'comment_count') int? commentCount,
@@ -56,6 +64,7 @@ class HouseEntity with _$HouseEntity {
     @JsonKey(name: 'contacted') bool? contacted,
     @JsonKey(name: 'has_seen') bool? hasSeen,
     bool? contact,
+    @JsonKey(name: 'is_owner') bool? isOwner,
   }) = _HouseEntity;
 
   factory HouseEntity.fromJson(Map<String, dynamic> json) =>
@@ -156,40 +165,115 @@ class PossibilityEntity with _$PossibilityEntity {
       _$PossibilityEntityFromJson(json);
 }
 
+// extension PossibilityIcon on PossibilityEntity {
+//   Widget buildIcon() {
+//     final lowerName = name?.toLowerCase();
+//     switch (name) {
+//       case 'Wi-Fi':
+//         return SmallIconWrapper(
+//           icon: Assets.icons.icConnection.svg(package: 'gen'),
+//         );
+//       case 'washer':
+//         return SmallIconWrapper(
+//           icon: Assets.icons.icWashingMachine.svg(package: 'gen'),
+//         );
+
+//       case 'tv':
+//         return SmallIconWrapper(
+//           icon: Assets.icons.icTv.svg(package: 'gen'),
+//         );
+//       case 'kitchen':
+//         return SmallIconWrapper(
+//           icon: Assets.icons.icDishes.svg(package: 'gen'),
+//         );
+//       case 'shower':
+//         return SmallIconWrapper(
+//           icon: Assets.icons.icShower.svg(package: 'gen'),
+//         );
+//       case 'fridge':
+//         return SmallIconWrapper(
+//           icon: Assets.icons.icRefrigerator.svg(package: 'gen'),
+//         );
+//       case 'conditioner':
+//       case 'wardrobe':
+//       case 'bed':
+//       case 'hot':
+//       default:
+//         return const SizedBox.shrink();
+//     }
+//   }
+// }
 extension PossibilityIcon on PossibilityEntity {
   Widget buildIcon() {
-    switch (name) {
-      case 'wifi':
-        return SmallIconWrapper(
-          icon: Assets.icons.icConnection.svg(package: 'gen'),
-        );
-      case 'washer':
-        return SmallIconWrapper(
-          icon: Assets.icons.icWashingMachine.svg(package: 'gen'),
-        );
+    final lowerName = name?.toLowerCase();
 
-      case 'tv':
-        return SmallIconWrapper(
-          icon: Assets.icons.icTv.svg(package: 'gen'),
-        );
-      case 'kitchen':
-        return SmallIconWrapper(
-          icon: Assets.icons.icDishes.svg(package: 'gen'),
-        );
-      case 'shower':
-        return SmallIconWrapper(
-          icon: Assets.icons.icShower.svg(package: 'gen'),
-        );
-      case 'fridge':
-        return SmallIconWrapper(
-          icon: Assets.icons.icRefrigerator.svg(package: 'gen'),
-        );
-      case 'conditioner':
-      case 'wardrobe':
-      case 'bed':
-      case 'hot':
-      default:
-        return const SizedBox.shrink();
+    if (_matches(lowerName!, ['Wi-fi', 'wifi', 'интернет'])) {
+      return SmallIconWrapper(
+        icon: Assets.icons.icConnection.svg(package: 'gen'),
+      );
+    } else if (_matches(
+        lowerName, ['washer', 'стиральная машина', 'Kir ýuwýan maşyn'])) {
+      return SmallIconWrapper(
+        icon: Assets.icons.icWashingMachine.svg(package: 'gen'),
+      );
+    } else if (_matches(lowerName, ['Televizor', 'телевизор', 'Telewizor'])) {
+      return SmallIconWrapper(
+        icon: Assets.icons.icTv.svg(package: 'gen'),
+      );
+    } else if (_matches(lowerName, ['kitchen', 'кухня', 'Aşhana'])) {
+      return SmallIconWrapper(
+        icon: Assets.icons.icDishes.svg(package: 'gen'),
+      );
+    } else if (_matches(lowerName, ['shower', 'душ', 'Duş'])) {
+      return SmallIconWrapper(
+        icon: Assets.icons.icShower.svg(package: 'gen'),
+      );
+    } else if (_matches(lowerName, ['Sowadyjy', 'Holodilnik', 'Холодильник'])) {
+      return SmallIconWrapper(
+        icon: Assets.icons.icRefrigerator.svg(package: 'gen'),
+      );
+      // ignore: lines_longer_than_80_chars
+    } else if (_matches(
+      lowerName,
+      ['conditioner', 'кондиционер', 'Kondisioner'],
+    )) {
+      return SmallIconWrapper(
+        icon: Assets.icons.conditioner.svg(package: 'gen'),
+      );
+    } else if (_matches(lowerName, ['Şkaf', 'шкаф', 'Mebel-şkaf'])) {
+      return SmallIconWrapper(
+        icon: Assets.icons.skaf.svg(package: 'gen'),
+      );
+    } else if (_matches(lowerName, ['Krowat', 'кровать'])) {
+      return SmallIconWrapper(
+        icon: Assets.icons.krowat.svg(package: 'gen'),
+      );
+    } else if (_matches(lowerName, ['hot', 'Gyzgyn suw', 'горячая вода'])) {
+      return SmallIconWrapper(
+        icon: Assets.icons.gyzgynsuw.svg(package: 'gen'),
+      );
+    } else if (_matches(lowerName, ['Aşhana mebeli', 'Кухонная мебель'])) {
+      return SmallIconWrapper(
+        icon: Assets.icons.icKitchenFurniture.svg(package: 'gen'),
+      );
+    } else if (_matches(lowerName, ['Mangal', 'Мангал'])) {
+      return SmallIconWrapper(
+        icon: Assets.icons.icBbq.svg(package: 'gen'),
+      );
     }
+
+    // Eşleşme yoksa boş bırak
+    return const SizedBox.shrink();
   }
+
+  bool _matches(String value, List<String> options) {
+    return options.any((element) => value.contains(element.toLowerCase()));
+  }
+}
+
+int? _stringToInt(dynamic value) {
+  if (value == null) return null;
+  if (value is int) return value;
+  if (value is String) return int.tryParse(value);
+  return null;
 }

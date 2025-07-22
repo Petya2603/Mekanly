@@ -21,11 +21,7 @@ class CommentService {
                 return handler.next(options);
               },
             ),
-            LogInterceptor(
-              request: true,
-              requestHeader: true,
-              responseHeader: true,
-            ),
+            LogInterceptor(),
           ]);
   final Dio _dio;
 
@@ -67,6 +63,7 @@ class CommentService {
           if (parentId != null) 'parent_id': parentId,
         },
       );
+      // ignore: avoid_dynamic_calls
       return Comment.fromJson(response.data['data'] as Map<String, dynamic>);
     } on DioException catch (e) {
       throw Exception('Failed to add comment: ${e.message}');
@@ -122,7 +119,7 @@ class CommentService {
     } on DioException catch (e) {
       if (e.response?.statusCode == 403) {
         throw Exception(
-          // ignore: lines_longer_than_80_chars
+          // ignore: lines_longer_than_80_chars, avoid_dynamic_calls
           'Permission denied: ${e.response?.data['message'] ?? 'You do not have rights to delete this comment'}',
         );
       }

@@ -95,7 +95,7 @@ class ColorName {
   static const Color loginAppBarBg2 = Color(0x2669FF66);
 
   /// Color: #4277A3
-  static const Color main = Color(0xFF4277A3);
+  static const Color main = Color.fromARGB(255, 3, 94, 173);
 
   /// Color: #5792E7
   static const Color notifyCheck = Color(0xFF5792E7);

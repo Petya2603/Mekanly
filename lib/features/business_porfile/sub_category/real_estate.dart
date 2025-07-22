@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
 
 import '../../../core/components/app_text.dart';
-import '../../../core/components/search_field.dart';
+import '../../../core/components/search_field_house.dart';
 import '../../../product/constants/constants.dart';
 
 class RealEstate extends StatelessWidget {
@@ -31,7 +31,10 @@ class RealEstate extends StatelessWidget {
       ),
       body: Column(
         children: [
-          SearchField(onTap: () {}),
+          SearchField(
+            onSearchTap: () {},
+            onClearTap: () {},
+          ),
         ],
       ),
     );

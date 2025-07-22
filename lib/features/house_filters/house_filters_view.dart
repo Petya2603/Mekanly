@@ -443,7 +443,7 @@ class _HouseFiltersViewState extends State<HouseFiltersView> {
               isOwner: fromHolder,
               onChanged: (value) {
                 setState(() {
-                  fromHolder = value;
+                  fromHolder = value!;
                 });
               },
             ),

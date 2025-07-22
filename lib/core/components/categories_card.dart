@@ -9,8 +9,8 @@ import '../../remote/repositories/business_profile/product_cubit.dart';
 import '../../remote/repositories/business_profile/product_service.dart';
 import '../../utils/extensions.dart';
 import 'app_text.dart';
-import 'sub_category_view.dart/product_view.dart';
-import 'sub_category_view.dart/sub_category_view.dart';
+import 'sub_category/product_view.dart';
+import 'sub_category/sub_category_view.dart';
 
 class CategoriesCard extends StatelessWidget {
   const CategoriesCard({super.key, this.categories});
@@ -95,23 +95,24 @@ class _CategoryCard extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) => Scaffold(
                 appBar: AppBar(
-                    backgroundColor: ColorName.main,
-                    leading: IconButton(
-                        onPressed: () => Navigator.pop(context),
-                        icon: const Icon(
-                          Icons.arrow_back,
-                          color: Color.fromARGB(255, 248, 248, 248),
-                        )),
-                    centerTitle: true,
-                    title: Text(
-                      title,
-                      style: const TextStyle(
-                        color: Color.fromARGB(255, 248, 248, 248),
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: StringConstants.roboto,
-                      ),
-                    )),
+                  backgroundColor: ColorName.main,
+                  leading: IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: Color.fromARGB(255, 248, 248, 248),
+                    ),
+                  ),
+                  title: Text(
+                    title,
+                    style: const TextStyle(
+                      color: Color.fromARGB(255, 248, 248, 248),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                      fontFamily: StringConstants.roboto,
+                    ),
+                  ),
+                ),
                 body: BusinessProfileViewSubcategory(
                   subcategories: category.subcategories!,
                 ),
@@ -187,7 +188,7 @@ class _SubCategoryCard extends StatelessWidget {
           MaterialPageRoute(
             builder: (_) => BlocProvider(
               create: (_) => ProductCubit(ProductService()),
-              child: ProductListScreen(categoryId: id, title: title),
+              child: ProductListScreen(categoryId: id, title: title,),
             ),
           ),
         );

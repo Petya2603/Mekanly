@@ -72,7 +72,8 @@ class _MenuViewState extends State<MenuView> {
                     isAuthNeeded: false,
                     icon: Assets.icons.icLang.svg(
                         package: 'gen',
-                        color: const Color.fromARGB(255, 34, 34, 34)),
+                        // ignore: deprecated_member_use
+                        color: const Color.fromARGB(255, 34, 34, 34),),
                     onTap: () {
                       chooseLang(context);
                     },
@@ -103,7 +104,8 @@ class _MenuViewState extends State<MenuView> {
                     title: context.translation.favorites,
                     icon: Assets.icons.icFavoriteNew.svg(
                         package: 'gen',
-                        color: const Color.fromARGB(255, 34, 34, 34)),
+                        // ignore: deprecated_member_use
+                        color: const Color.fromARGB(255, 34, 34, 34),),
                     onTap: () {
                       RootView.rootKey.currentState?.goToTab(3);
                     },
@@ -117,6 +119,7 @@ class _MenuViewState extends State<MenuView> {
                     onTap: () {
                       Navigator.push(
                         context,
+                        // ignore: inference_failure_on_instance_creation
                         MaterialPageRoute(
                           builder: (context) => const CommentsView(),
                         ),
@@ -144,7 +147,8 @@ class _MenuViewState extends State<MenuView> {
                     title: context.translation.contact,
                     icon: Assets.icons.icContactUs.svg(
                         package: 'gen',
-                        color: const Color.fromARGB(255, 34, 34, 34)),
+                        // ignore: deprecated_member_use
+                        color: const Color.fromARGB(255, 34, 34, 34),),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -160,7 +164,8 @@ class _MenuViewState extends State<MenuView> {
                     title: context.translation.about_us,
                     icon: Assets.icons.icHelp.svg(
                         package: 'gen',
-                        color: const Color.fromARGB(255, 34, 34, 34)),
+                        // ignore: deprecated_member_use
+                        color: const Color.fromARGB(255, 34, 34, 34),),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -181,7 +186,8 @@ class _MenuViewState extends State<MenuView> {
                     title: context.translation.log_out,
                     icon: Assets.icons.icLogOut.svg(
                         package: 'gen',
-                        color: const Color.fromARGB(255, 34, 34, 34)),
+                        // ignore: deprecated_member_use
+                        color: const Color.fromARGB(255, 34, 34, 34),),
                     onTap: () {
                       // context.read<AuthCubit>().logOut();
                     },
@@ -190,15 +196,16 @@ class _MenuViewState extends State<MenuView> {
               ),
             ),
           );
-        });
+        },);
   }
 }
 
 /// TODOS: Bayram ayyr beyle edilenok!!! -> ChooseLang.show() seyle, please
 Future<void> chooseLang(BuildContext context) async {
   final appCubit = context.read<AppCubit>();
-  var selectedLang = appCubit.state.locale?.languageCode ?? 'tk';
+  var selectedLang = appCubit.state.locale?.languageCode ?? 'ru';
 
+  // ignore: inference_failure_on_function_invocation
   await showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -301,78 +308,3 @@ Future<void> chooseLang(BuildContext context) async {
     },
   );
 }
-
-// void notification(BuildContext context) {
-//   // ignore: inference_failure_on_function_invocation
-//   showDialog(
-//     context: context,
-//     builder: (BuildContext context) {
-//       return Dialog(
-//         backgroundColor: Colors.white,
-//         alignment: Alignment.center,
-//         child: Container(
-//           height: MediaQuery.of(context).size.height * 0.25,
-//           width: MediaQuery.of(context).size.width * 0.96,
-//           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 15),
-//           decoration: BoxDecoration(
-//             borderRadius: BorderRadius.circular(10),
-//             color: const Color(0xFFFFFFFF),
-//           ),
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             children: [
-//               Align(
-//                 alignment: Alignment.topLeft,
-//                 child: AppText.s14w400BdM(
-//                   context.translation.notification,
-//                   color: const Color(0xFF252525),
-//                   fontSize: 15.sp,
-//                   fontWeight: FontWeight.w400,
-//                   fontFamily: StringConstants.roboto,
-//                 ),
-//               ),
-//               10.boxH,
-//               AppText.s14w400BdM(
-//                 context.translation.not_logged_in_push,
-//                 color: const Color(0xFF252525),
-//                 fontSize: 14.sp,
-//                 fontWeight: FontWeight.w400,
-//                 fontFamily: StringConstants.roboto,
-//                 softWrap: true,
-//               ),
-//               8.boxH,
-//               Row(
-//                 mainAxisAlignment: MainAxisAlignment.end,
-//                 children: [
-//                   TextButton(
-//                     onPressed: () {
-//                       Navigator.pop(context);
-//                     },
-//                     child: AppText.s14w400BdM(
-//                       context.translation.cancel,
-//                       color: const Color(0xFF252525),
-//                       fontSize: 13.sp,
-//                       fontWeight: FontWeight.w400,
-//                       fontFamily: StringConstants.roboto,
-//                     ),
-//                   ),
-//                   8.boxH,
-//                   TextButton(
-//                     onPressed: () {},
-//                     child: AppText.s14w400BdM(
-//                       context.translation.log_in,
-//                       color: const Color(0xFF252525),
-//                       fontSize: 13.sp,
-//                       fontWeight: FontWeight.w400,
-//                       fontFamily: StringConstants.roboto,
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ],
-//           ),
-//         ),
-//       );
-//     },
-//   );
-// }

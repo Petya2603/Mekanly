@@ -2,8 +2,6 @@ import 'package:common/common.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-
-import '../../../app/router_config.dart';
 import '../../../fcm_service.dart';
 import '../../../product/base/bloc/base_bloc.dart';
 import '../../../product/local/config_preference.dart';

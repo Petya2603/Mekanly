@@ -1,3 +1,305 @@
+// import 'package:flutter/material.dart';
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'package:gen/gen.dart';
+// import '../../../core/components/app_btn.dart';
+// import '../../../core/components/app_text.dart';
+// import '../../../core/components/loading_indicator.dart';
+// import '../../../localization/extensions.dart';
+// import '../../../product/constants/constants.dart';
+// import '../../../utils/extensions.dart';
+
+// class BaseRoundedDialogContainer extends StatelessWidget {
+//   const BaseRoundedDialogContainer({super.key, required this.child});
+//   final Widget child;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Dialog(
+//       shape: RoundedRectangleBorder(
+//         borderRadius: BorderRadius.circular(10).r,
+//       ),
+//       clipBehavior: Clip.hardEdge,
+//       child: Container(
+//         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 18),
+//         decoration: BoxDecoration(
+//           borderRadius: BorderRadius.circular(10).r,
+//           color: ColorName.white,
+//         ),
+//         child: child,
+//       ),
+//     );
+//   }
+// }
+
+// class AskIfAgreed extends StatefulWidget {
+//   const AskIfAgreed({super.key});
+
+//   static Future<bool?> show(BuildContext context) async {
+//     return showDialog<bool?>(
+//       context: context,
+//       barrierColor: Colors.black54,
+//       builder: (context) => const AskIfAgreed(),
+//     );
+//   }
+
+//   @override
+//   State<AskIfAgreed> createState() => _AskIfAgreedState();
+// }
+
+// class _AskIfAgreedState extends State<AskIfAgreed> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return BaseRoundedDialogContainer(
+//       child: Column(
+//         mainAxisSize: MainAxisSize.min,
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           AppText.s14w400BdM(
+//             context.translation.verification,
+//             fontFamily: StringConstants.roboto,
+//             fontSize: 15.sp,
+//           ),
+//           18.boxH,
+//           AppText.s14w400BdM(
+//             context.translation.are_you_sure_you_want_to_add_this_announcement,
+//             fontFamily: StringConstants.roboto,
+//             fontSize: 15.sp,
+//             color: const Color(0xff555555),
+//           ),
+//           8.boxH,
+//           Row(
+//             mainAxisAlignment: MainAxisAlignment.end,
+//             children: [
+//               TextBtn(
+//                 onTap: () {
+//                   Navigator.pop(context, false);
+//                 },
+//                 child: AppText.s12w400BdS(
+//                   context.translation.cancel,
+//                   fontSize: 13.sp,
+//                   fontWeight: FontWeight.w500,
+//                 ),
+//               ),
+//               14.boxW,
+//               TextBtn(
+//                 onTap: () {
+//                   Navigator.pop(context, true);
+//                 },
+//                 child: AppText.s12w400BdS(
+//                   context.translation.yes,
+//                   fontSize: 13.sp,
+//                   fontWeight: FontWeight.w500,
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// class ToNotifyUser extends StatefulWidget {
+//   const ToNotifyUser({
+//     super.key,
+//     this.title,
+//     this.message,
+//     this.onOk,
+//     this.onCancel,
+//     this.okText,
+//     this.cancelText,
+//   });
+
+//   final String? title;
+//   final String? message;
+//   final String? okText;
+//   final String? cancelText;
+//   final VoidCallback? onOk;
+//   final VoidCallback? onCancel;
+
+//   static Future<bool?> show(
+//     BuildContext context, {
+//     String? title,
+//     String? message,
+//     VoidCallback? onOk,
+//     VoidCallback? onCancel,
+//     String? okText,
+//     String? cancelText,
+//   }) async {
+//     return showDialog<bool?>(
+//       context: context,
+//       barrierColor: Colors.black54,
+//       barrierDismissible: false,
+//       builder: (context) => ToNotifyUser(
+//         title: title,
+//         message: message,
+//         onOk: onOk,
+//         onCancel: onCancel,
+//         cancelText: cancelText,
+//         okText: okText,
+//       ),
+//     );
+//   }
+
+//   @override
+//   State<ToNotifyUser> createState() => _ToNotifyUserState();
+// }
+
+// class _ToNotifyUserState extends State<ToNotifyUser> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return WillPopScope(
+//       onWillPop: () async {
+//         if (Navigator.canPop(context)) {
+//           Navigator.pop(context);
+//         }
+//         return Future.value(false);
+//       },
+//       child: BaseRoundedDialogContainer(
+//         child: Column(
+//           mainAxisSize: MainAxisSize.min,
+//           children: [
+//             Center(
+//               child: Assets.icons.ustun.svg(
+//                 package: 'gen',
+//               ),
+//             ),
+//             12.boxH,
+//             AppText.s14w400BdM(
+//               widget.title ?? context.translation.successfully_completed,
+//               fontFamily: StringConstants.roboto,
+//               fontWeight: FontWeight.w500,
+//               color: const Color.fromARGB(255, 85, 85, 85),
+//               fontSize: 16.sp,
+//             ),
+//             12.boxH,
+//             AppText.s14w400BdM(
+//               widget.message ?? context.translation.moderation_visible,
+//               fontFamily: StringConstants.roboto,
+//               fontSize: 12.sp,
+//               color: const Color(0xff555555),
+//             ),
+//             12.boxH,
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: [
+//                 if (widget.onCancel != null) ...[
+//                   TextBtn(
+//                     onTap: () {
+//                       widget.onCancel!();
+//                     },
+//                     child: AppText.s12w400BdS(
+//                       widget.cancelText ?? context.translation.cancel,
+//                       fontSize: 13.sp,
+//                       fontWeight: FontWeight.w500,
+//                     ),
+//                   ),
+//                   14.boxW,
+//                 ],
+//                 // TextBtn(
+//                 //   onTap: () {
+//                 //     if (widget.onOk != null) {
+//                 //       widget.onOk!();
+//                 //       return;
+//                 //     }
+//                 //     Navigator.pop(context, true);
+//                 //   },
+//                 //   child: AppText.s12w400BdS(
+//                 //     widget.okText ?? 'OK',
+//                 //     fontSize: 13.sp,
+//                 //     fontWeight: FontWeight.w500,
+//                 //   ),
+//                 // ),
+//                 Center(
+//                   child: ElevatedButton(
+//                     onPressed: () {
+//                       if (widget.onOk != null) {
+//                         widget.onOk!();
+//                         return;
+//                       }
+//                       Navigator.pop(context, true);
+//                     },
+//                     style: ElevatedButton.styleFrom(
+//                       backgroundColor: const Color.fromARGB(255, 229, 246, 254),
+//                       shape: RoundedRectangleBorder(
+//                         borderRadius: BorderRadius.circular(42),
+//                       ),
+//                       padding: EdgeInsets.symmetric(
+//                         horizontal: 75.w,
+//                         vertical: 12.h,
+//                       ),
+//                       elevation: 0,
+//                     ),
+//                     child: AppText.s14w400BdM(
+//                       widget.okText ?? context.translation.dow_et,
+//                       fontSize: 15.sp,
+//                       fontWeight: FontWeight.w700,
+//                       color: ColorName.blueish,
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// class TitledLoadingDialog extends StatefulWidget {
+//   const TitledLoadingDialog({super.key});
+
+//   static Future<bool?> show(BuildContext context) async {
+//     return showDialog<bool?>(
+//       context: context,
+//       barrierDismissible: false,
+//       barrierColor: Colors.black54,
+//       builder: (context) => const TitledLoadingDialog(),
+//     );
+//   }
+
+//   @override
+//   State<TitledLoadingDialog> createState() => _TitledLoadingDialogState();
+// }
+
+// class _TitledLoadingDialogState extends State<TitledLoadingDialog> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return WillPopScope(
+//       onWillPop: () {
+//         return Future.value(false);
+//       },
+//       child: BaseRoundedDialogContainer(
+//         child: Column(
+//           mainAxisSize: MainAxisSize.min,
+//           children: [
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               children: [
+//                 GestureDetector(
+//                   onTap: () => Navigator.pop(context),
+//                   child: AppText.s14w400BdM(
+//                     'Az wagt garaşyň',
+//                     fontFamily: StringConstants.roboto,
+//                     fontSize: 15.sp,
+//                   ),
+//                 ),
+//                 18.boxW,
+//                 SizedBox(
+//                   height: 30.w,
+//                   child: LoadingIndicator.circle(
+//                     color: ColorName.black,
+//                   ),
+//                 ).toCenter(),
+//               ],
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
@@ -236,31 +538,28 @@ class _TitledLoadingDialogState extends State<TitledLoadingDialog> {
         return Future.value(false);
       },
       child: BaseRoundedDialogContainer(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: AppText.s14w400BdM(
-                    'Az wagt garaşyň',
-                    fontFamily: StringConstants.roboto,
-                    fontSize: 15.sp,
-                  ),
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: AppText.s14w400BdM(
+                  'Az wagt garaşyň',
+                  fontFamily: StringConstants.roboto,
+                  fontSize: 15.sp,
                 ),
-                18.boxW,
-                SizedBox(
-                  height: 30.w,
-                  child: LoadingIndicator.circle(
-                    color: ColorName.black,
-                  ),
-                ).toCenter(),
-              ],
-            ),
-          ],
-        ),
+              ),
+              18.boxW,
+              SizedBox(
+                height: 30.w,
+                child: LoadingIndicator.circle(
+                  color: ColorName.black,
+                ),
+              ).toCenter(),
+            ],
+          ),
+        ]),
       ),
     );
   }

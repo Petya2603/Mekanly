@@ -104,10 +104,12 @@ class _AddHouseViewState extends State<AddHouseView> {
 
   void _showHashtagDialog(BuildContext context) {
     final hashtagController = TextEditingController();
-    final tempHashtags = <String>[];
-
+    final tempHashtags =
+        _hashtags?.split(' ').where((tag) => tag.isNotEmpty).toList() ?? [];
+    // ignore: inference_failure_on_function_invocation
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         return Dialog(
           backgroundColor: Colors.white,
@@ -156,7 +158,7 @@ class _AddHouseViewState extends State<AddHouseView> {
                         onPressed: () {
                           if (hashtagController.text.trim().isNotEmpty &&
                               tempHashtags.length < 5) {
-                            String hashtag = hashtagController.text.trim();
+                            var hashtag = hashtagController.text.trim();
                             if (!hashtag.startsWith('#')) {
                               hashtag = '#$hashtag';
                             }
@@ -167,6 +169,20 @@ class _AddHouseViewState extends State<AddHouseView> {
                         },
                       ),
                     ),
+                    onChanged: (text) {
+                      if (text.endsWith(' ')) {
+                        if (hashtagController.text.trim().isNotEmpty &&
+                            tempHashtags.length < 5) {
+                          var hashtag = hashtagController.text.trim();
+                          if (!hashtag.startsWith('#')) {
+                            hashtag = '#$hashtag';
+                          }
+                          tempHashtags.add(hashtag);
+                          hashtagController.clear();
+                          (context as Element).markNeedsBuild();
+                        }
+                      }
+                    },
                   ),
                   SizedBox(height: 8.h),
 
@@ -660,7 +676,7 @@ class _AddHouseViewState extends State<AddHouseView> {
                       ),
                       10.boxH,
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           AppText.s14w400BdM(
                             context.translation.area,
@@ -668,24 +684,28 @@ class _AddHouseViewState extends State<AddHouseView> {
                             fontFamily: StringConstants.roboto,
                           ),
                           6.boxW,
-                          SizedBox(
-                            width: 100.w,
-                            child: AppInput(
-                              controller: areaController,
-                              type: TextInputType.number,
-                            ),
-                          ),
-                          6.boxW,
-                          AppText.s14w400BdM(
-                            'm²',
-                            fontSize: 16.sp,
-                            fontFamily: StringConstants.roboto,
-                          ),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                SizedBox(
+                                  width: 100.w,
+                                  child: AppInput(
+                                    controller: areaController,
+                                    type: TextInputType.number,
+                                  ),
+                                ),
+                                6.boxW,
+                                AppText.s14w400BdM(
+                                  'm²',
+                                  fontSize: 16.sp,
+                                  fontFamily: StringConstants.roboto,
+                                ),
+                              ]),
                         ],
                       ),
                       5.boxH,
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           AppText.s14w400BdM(
                             context.translation.price,
@@ -693,32 +713,40 @@ class _AddHouseViewState extends State<AddHouseView> {
                             fontFamily: StringConstants.roboto,
                           ),
                           6.boxW,
-                          SizedBox(
-                            width: 100.w,
-                            child: AppInput(
-                              type: TextInputType.number,
-                              controller: priceController,
-                            ),
-                          ),
-                          6.boxW,
-                          AppText.s14w400BdM(
-                            'TMT',
-                            fontSize: 16.sp,
-                            fontFamily: StringConstants.roboto,
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 100.w,
+                                child: AppInput(
+                                  type: TextInputType.number,
+                                  controller: priceController,
+                                ),
+                              ),
+                              6.boxW,
+                              AppText.s14w400BdM(
+                                'TMT',
+                                fontSize: 16.sp,
+                                fontFamily: StringConstants.roboto,
+                              ),
+                            ],
                           ),
                         ],
                       ),
                       5.boxH,
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          AppText.s14w400BdM(
-                            context.translation.your_phone_number,
-                            fontSize: 16.sp,
-                            fontFamily: StringConstants.roboto,
+                          Expanded(
+                            flex: 5,
+                            child: AppText.s14w400BdM(
+                              context.translation.your_phone_number,
+                              fontSize: 16.sp,
+                              fontFamily: StringConstants.roboto,
+                            ),
                           ),
                           12.boxW,
                           Expanded(
+                            flex: 4,
                             child: PhoneFiled(
                               controller: phoneController,
                             ),
@@ -736,7 +764,9 @@ class _AddHouseViewState extends State<AddHouseView> {
                           children: [
                             Expanded(
                               child: AppText.s12w400BdS(
-                                '#${context.translation.hashtag}',
+                                _hashtags?.isEmpty ?? true
+                                    ? '#${context.translation.hashtag}'
+                                    : _hashtags!,
                                 fontFamily: StringConstants.roboto,
                                 color: const Color(0xff555555),
                               ),
@@ -781,7 +811,6 @@ class _AddHouseViewState extends State<AddHouseView> {
                         },
                         title: context.translation.users_can_write_comments,
                         accepted: canWriteComment == 1,
-                        showIcon: false,
                       ),
                       10.boxH,
                       PrivacyNoticeBox(
@@ -810,6 +839,11 @@ class _AddHouseViewState extends State<AddHouseView> {
                               ),
                             ),
                           );
+                        },
+                        onPrivacyAccepted: (value) {
+                          setState(() {
+                            acceptedPrivacy = value;
+                          });
                         },
                       ),
                       24.boxH,
@@ -927,7 +961,7 @@ class _AddHouseViewState extends State<AddHouseView> {
           floorNumber?.count != null ? int.parse(floorNumber!.count) : null,
       room_number:
           roomNumber?.count != null ? int.parse(roomNumber!.count) : null,
-      hashtag: _hashtags,
+      hashtag: _hashtags!.isNotEmpty ? _hashtags : null,
       level_number:
           levelNumber?.count != null ? int.parse(levelNumber!.count) : null,
       property_type_id: propertyTypeId,
@@ -951,19 +985,22 @@ class _AddHouseViewState extends State<AddHouseView> {
 
 class ImageItem with EquatableMixin {
   ImageItem({
-    required this.image,
+    this.image,
+    this.imageUrl,
     required this.progress,
     required this.isComplete,
-  });
-  final XFile image;
+  }) : assert(image != null || imageUrl != null, 'Either image or imageUrl must be provided');
+  final XFile? image;
+  final String? imageUrl;
   final double progress;
   final bool isComplete;
 
   @override
-  List<Object?> get props => [image, progress, isComplete];
+  List<Object?> get props => [image, imageUrl, progress, isComplete];
 
   ImageItem copyWith({
     XFile? image,
+    String? imageUrl,
     double? progress,
     bool? isComplete,
   }) {
@@ -971,6 +1008,7 @@ class ImageItem with EquatableMixin {
       progress: progress ?? this.progress,
       isComplete: isComplete ?? this.isComplete,
       image: image ?? this.image,
+      imageUrl: imageUrl ?? this.imageUrl,
     );
   }
 }

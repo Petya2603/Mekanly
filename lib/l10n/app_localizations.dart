@@ -740,11 +740,59 @@ abstract class AppLocalizations {
   /// **'Пользователи могут писать комментарии'**
   String get users_can_write_comments;
 
+  /// No description provided for @are_you_sure_you_want_to_delete_this_announcement.
+  ///
+  /// In ru, this message translates to:
+  /// **'Вы действительно хотите удалить это объявление?'**
+  String get are_you_sure_you_want_to_delete_this_announcement;
+
+  /// No description provided for @are_you_sure_you_want_to_move_this_announcement.
+  ///
+  /// In ru, this message translates to:
+  /// **'Вы действительно хотите поднять это объявление вверх?'**
+  String get are_you_sure_you_want_to_move_this_announcement;
+
+  /// No description provided for @are_you_sure_you_want_to_price_this_announcement.
+  ///
+  /// In ru, this message translates to:
+  /// **'Вы уверены, что хотите снизить цену на это объявление?'**
+  String get are_you_sure_you_want_to_price_this_announcement;
+
+  /// No description provided for @are_you_sure_you_want_to_price_this_lux.
+  ///
+  /// In ru, this message translates to:
+  /// **'Вы действительно хотите сделать это объявление LUXE?'**
+  String get are_you_sure_you_want_to_price_this_lux;
+
+  /// No description provided for @are_you_sure_you_want_to_price_this_vip.
+  ///
+  /// In ru, this message translates to:
+  /// **'Вы действительно хотите сделать это объявление VIP?'**
+  String get are_you_sure_you_want_to_price_this_vip;
+
+  /// No description provided for @bank_kart_sayla.
+  ///
+  /// In ru, this message translates to:
+  /// **'Выберите банковскую карту'**
+  String get bank_kart_sayla;
+
+  /// No description provided for @bank_toleg.
+  ///
+  /// In ru, this message translates to:
+  /// **'Страница оплаты'**
+  String get bank_toleg;
+
   /// No description provided for @dow_et.
   ///
   /// In ru, this message translates to:
   /// **'Продолжить'**
   String get dow_et;
+
+  /// No description provided for @edit1.
+  ///
+  /// In ru, this message translates to:
+  /// **'Настройки'**
+  String get edit1;
 
   /// No description provided for @dow_et_bn.
   ///

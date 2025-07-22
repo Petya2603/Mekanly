@@ -44,6 +44,8 @@ class MekanlyApp extends StatefulWidget {
   State<MekanlyApp> createState() => _MekanlyAppState();
 }
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 class _MekanlyAppState extends State<MekanlyApp> {
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,7 @@ class _MekanlyAppState extends State<MekanlyApp> {
             return KeyedSubtree(
               key: state.key,
               child: MaterialApp(
+                navigatorKey: navigatorKey,
                 locale: const Locale('ru'),
                 localeResolutionCallback: (locale, supportedLocales) {
                   if (locale == null) return const Locale('ru');

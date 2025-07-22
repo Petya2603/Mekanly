@@ -10,7 +10,10 @@ import '../../utils/extensions.dart';
 import 'app_text.dart';
 
 class BusinessProfileCard extends StatelessWidget {
-  const BusinessProfileCard({super.key, this.profile});
+  const BusinessProfileCard({
+    super.key,
+    this.profile,
+  });
 
   final BusinessProfileEntity? profile;
 
@@ -18,13 +21,14 @@ class BusinessProfileCard extends StatelessWidget {
   Widget build(BuildContext context) {
     if (profile == null || profile?.id == null) return const SizedBox.shrink();
     final brand = profile?.brand ?? '';
-    final desc = profile?.description?.tk ?? '';
+    final desc = profile?.briefDescription ?? '';
+    final count = profile?.productCount ?? '';
     final logoUrl = profile?.logo ?? '';
-
     return InkWell(
       onTap: () {
         Navigator.push(
           context,
+          // ignore: inference_failure_on_function_invocation
           CustomPageRoute.slide(
             BusinessProfileDetailView.builder(context, profile!.id!),
           ),
@@ -84,7 +88,7 @@ class BusinessProfileCard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 15,
-                    vertical: 12,
+                    vertical: 8,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,6 +104,29 @@ class BusinessProfileCard extends StatelessWidget {
                         color: const Color(0xff717171),
                         fontFamily: StringConstants.roboto,
                         maxLines: 2,
+                      ),
+                      8.boxH,
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: const Color.fromARGB(255, 221, 221, 221),
+                          ),
+                          borderRadius: BorderRadius.circular(3),
+                          color: Colors.white,
+                        ),
+                        child: Text(
+                          'Bildiriş ($count)',
+                          style: const TextStyle(
+                            fontSize: 9,
+                            fontFamily: StringConstants.roboto,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff717171),
+                          ),
+                        ),
                       ),
                     ],
                   ),

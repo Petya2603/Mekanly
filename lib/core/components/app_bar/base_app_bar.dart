@@ -19,7 +19,7 @@ class _BaseAppBarWidget extends StatelessWidget {
         ],
       ),
       child: AppBar(
-        centerTitle: true,
+        // centerTitle: true,
         backgroundColor: ColorName.main,
         elevation: 0,
         actions: actions,
@@ -31,8 +31,6 @@ class _BaseAppBarWidget extends StatelessWidget {
             }
           },
           child: SizedBox(
-            height: 24.w,
-            width: 24.w,
             child: Assets.icons.icBack.svg(
               package: 'gen',
               colorFilter: const ColorFilter.mode(
@@ -44,9 +42,9 @@ class _BaseAppBarWidget extends StatelessWidget {
         ),
         title: AppText.s16w400BdL(
           title,
-          fontSize: 16.sp,
+          fontSize: 18.sp,
           color: Colors.white,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w400,
         ),
       ),
     );

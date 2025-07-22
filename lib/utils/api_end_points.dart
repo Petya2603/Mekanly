@@ -48,6 +48,13 @@ final class ApiEndpoints {
     return '/v2/filter?$current&offset=$page&limit=$limit';
   }
 
+  static String searchHouses({
+    int limit = 10,
+    int page = 0,
+    required String searchQuery,
+  }) =>
+      '/v2/search/$page/$limit';
+
   static String businessCategories = '/v2/business/categories';
   static String businessProfile(int id) => '/v2/business/profile/$id';
   static String businessProfileProducts({

@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
+
 import '../../../core/components/app_text.dart';
 import '../../../product/constants/constants.dart';
 import '../../../utils/extensions.dart';
-import 'package:flutter/material.dart';
 
 class MekanlyInfoDialog extends StatelessWidget {
   const MekanlyInfoDialog({super.key});
@@ -44,7 +45,8 @@ class MekanlyInfoDialog extends StatelessWidget {
                   TextSpan(
                       text: 'Bu funksiya jaýyňyzy ',
                       style:
-                          TextStyle(color: Color.fromARGB(255, 113, 113, 113))),
+                          // ignore: lines_longer_than_80_chars
+                          TextStyle(color: Color.fromARGB(255, 113, 113, 113),),),
                   TextSpan(
                     text: 'Dine Mekanly.com-da ',
                     style: TextStyle(
@@ -106,38 +108,43 @@ class TitledSwitcherWidget extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(children: [
-              AppText.s14w400BdM(
-                title,
-                fontSize: 15.sp,
-                fontFamily: StringConstants.roboto,
-              ),
-              const SizedBox(width: 15),
-              if (showIcon)
-                GestureDetector(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => const MekanlyInfoDialog(),
-                    );
-                  },
-                  child: SizedBox(
-                    width: 18.w,
-                    height: 18.w,
-                    child: Assets.icons.icHash.svg(package: 'gen'),
+            Expanded(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: AppText.s14w400BdM(
+                      title,
+                      fontSize: 15.sp,
+                      fontFamily: StringConstants.roboto,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-            ]),
+                  if (showIcon) ...[
+                    const SizedBox(width: 8),
+                    GestureDetector(
+                      onTap: () {
+                        // ignore: inference_failure_on_function_invocation
+                        showDialog(
+                          context: context,
+                          builder: (context) => const MekanlyInfoDialog(),
+                        );
+                      },
+                      child: SizedBox(
+                        width: 18.w,
+                        height: 18.w,
+                        child: Assets.icons.icHash.svg(package: 'gen'),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
             10.boxW,
             Transform.scale(
-              scale: .7,
-              child:
-                  // Switch(
-                  //   value: accepted,
-                  //   onChanged: (value) => onChanged.call(!accepted),
-                  //   activeTrackColor: const Color(0xFF3A8BCF),
-                  // ),
-                  CupertinoSwitch(
+              scale: 0.7,
+              child: CupertinoSwitch(
                 value: accepted,
                 activeTrackColor: const Color(0xFF3A8BCF),
                 onChanged: (value) => onChanged.call(!accepted),

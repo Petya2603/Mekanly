@@ -120,6 +120,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_call.svg
   SvgGenImage get icCalll => const SvgGenImage('assets/icons/is_calll.svg');
 
+  /// File path: assets/icons/ic_call.svg
+  SvgGenImage get sazlama => const SvgGenImage('assets/icons/sazlama.svg');
+
   /// File path: assets/icons/ic_camera.svg
   SvgGenImage get icCamera => const SvgGenImage('assets/icons/ic_camera.svg');
 
@@ -160,6 +163,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/ic_comment.svg
   SvgGenImage get sms => const SvgGenImage('assets/icons/smss.svg');
+
+  /// File path: assets/icons/ic_comment.svg
+  SvgGenImage get deletee => const SvgGenImage('assets/icons/deletee.svg');
 
   /// File path: assets/icons/fire_station.svg
   SvgGenImage get fire => const SvgGenImage('assets/icons/fire_station.svg');
@@ -209,6 +215,14 @@ class $AssetsIconsGen {
   SvgGenImage get icFavorite =>
       const SvgGenImage('assets/icons/ic_favorite.svg');
 
+  /// File path: assets/icons/ic_favorite.svg hiczatyok
+  SvgGenImage get favview => const SvgGenImage('assets/icons/favview.svg');
+
+  /// File path: assets/icons/ic_favorite.svg
+  SvgGenImage get hiczatyok => const SvgGenImage('assets/icons/hiczatyok.svg');
+
+  SvgGenImage get favbizpr => const SvgGenImage('assets/icons/favbizpr.svg');
+
   /// File path: assets/icons/ic_favorite_dark_fill.svg
   SvgGenImage get icFavoriteDarkFill =>
       const SvgGenImage('assets/icons/ic_favorite_dark_fill.svg');
@@ -233,6 +247,15 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_filter.svg
   SvgGenImage get icFilterselected =>
       const SvgGenImage('assets/icons/filtr_selected.svg');
+
+  /// File path: assets/icons/ic_filter.svg
+  SvgGenImage get saga => const SvgGenImage('assets/icons/saga.svg');
+
+  /// File path: assets/icons/ic_filter.svg
+  SvgGenImage get yokaryk => const SvgGenImage('assets/icons/yokaryk.svg');
+
+  /// File path: assets/icons/ic_filter.svg
+  SvgGenImage get favsag => const SvgGenImage('assets/icons/favsag.svg');
 
   /// File path: assets/icons/ic_fire_in_app.svg
   SvgGenImage get icFireInApp =>
@@ -269,9 +292,24 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_heart.svg
   SvgGenImage get icHeart => const SvgGenImage('assets/icons/ic_heart.svg');
 
-  /// File path: assets/icons/ic_heart_house.svg
+  /// File path: assets/icons/ic_heart.svg
+  SvgGenImage get saylanan => const SvgGenImage('assets/icons/saylanan.svg');
+
+  /// File path: assets/icons/ic_heart.svg
+  SvgGenImage get editt => const SvgGenImage('assets/icons/editt.svg');
+
+  /// File path: assets/icons/ic_heart_house.svg saylanancircle
   SvgGenImage get icHeartHouse =>
       const SvgGenImage('assets/icons/ic_heart_house.svg');
+
+  /// File path: assets/icons/ic_heart_house.svg saylanancircle
+  SvgGenImage get icifav => const SvgGenImage('assets/icons/icifav.svg');
+
+  /// File path: assets/icons/ic_heart_house.svg saylanancircle
+  SvgGenImage get tazefav => const SvgGenImage('assets/icons/tazfav.svg');
+
+  SvgGenImage get saylanancircle =>
+      const SvgGenImage('assets/icons/saylanancircle.svg');
 
   /// File path: assets/icons/ic_heat_water.svg
   SvgGenImage get icHeatWater =>
@@ -350,6 +388,9 @@ class $AssetsIconsGen {
   AssetGenImage get icLogoAppbar =>
       const AssetGenImage('assets/icons/ic_logo_appbar.png');
 
+  AssetGenImage get icLogoAppbarnew =>
+      const AssetGenImage('assets/icons/ic_logo_appbar_new.png');
+
   /// File path: assets/icons/ic_logo_login.svg
   SvgGenImage get icLogoLogin =>
       const SvgGenImage('assets/icons/ic_logo_login.svg');
@@ -392,7 +433,11 @@ class $AssetsIconsGen {
   SvgGenImage get icMessageSend =>
       const SvgGenImage('assets/icons/ic_message_send.svg');
 
-  SvgGenImage get vip => const SvgGenImage('assets/icons/vipp.svg');
+  SvgGenImage get vip => const SvgGenImage('assets/icons/vipt.svg');
+
+  SvgGenImage get luxee => const SvgGenImage('assets/icons/luxee.svg');
+
+  SvgGenImage get ustun => const SvgGenImage('assets/icons/ustun.svg');
 
   SvgGenImage get insta => const SvgGenImage('assets/icons/insta.svg');
 
@@ -414,9 +459,15 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_notif.svg
   SvgGenImage get icNotif => const SvgGenImage('assets/icons/ic_notif.svg');
 
+  /// File path: assets/icons/ic_notif.svg
+  SvgGenImage get applogo => const SvgGenImage('assets/icons/applogo.svg');
+
   /// File path: assets/icons/ic_other_chanderiler_grid_view.svg
   SvgGenImage get icOtherChanderilerGridView =>
       const SvgGenImage('assets/icons/ic_other_chanderiler_grid_view.svg');
+
+  /// File path: assets/icons/ic_other_chanderiler_grid_view.svg
+  SvgGenImage get logoo => const SvgGenImage('assets/icons/logoo.svg');
 
   /// File path: assets/icons/ic_other_equipment_grid_view.webp
   AssetGenImage get icOtherEquipmentGridView =>
@@ -453,8 +504,18 @@ class $AssetsIconsGen {
   SvgGenImage get icRefrigerator =>
       const SvgGenImage('assets/icons/ic_refrigerator.svg');
 
+  SvgGenImage get conditioner =>
+      const SvgGenImage('assets/icons/conditioner.svg');
+
+  SvgGenImage get skaf => const SvgGenImage('assets/icons/skaf.svg');
+
+  SvgGenImage get krowat => const SvgGenImage('assets/icons/krowat.svg');
+
   /// File path: assets/icons/ic_remove.svg
   SvgGenImage get icRemove => const SvgGenImage('assets/icons/ic_remove.svg');
+
+  /// File path: assets/icons/ic_remove.svg
+  SvgGenImage get gyzgynsuw => const SvgGenImage('assets/icons/gyzgynsuw.svg');
 
   /// File path: assets/icons/ic_report.svg
   SvgGenImage get icReport => const SvgGenImage('assets/icons/ic_report.svg');
@@ -469,6 +530,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_search_dark.svg
   SvgGenImage get icSearchDark =>
       const SvgGenImage('assets/icons/ic_search_dark.svg');
+
+  /// File path: assets/icons/ic_search_dark.svg
+  SvgGenImage get silbuton => const SvgGenImage('assets/icons/silbuton.svg');
 
   /// File path: assets/icons/ic_search_house.svg
   SvgGenImage get icSearchHouse =>
@@ -488,6 +552,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/ic_share.svg
   SvgGenImage get icShare => const SvgGenImage('assets/icons/ic_share.svg');
+
+  /// File path: assets/icons/ic_share.svg
+  SvgGenImage get sharetaze => const SvgGenImage('assets/icons/sharetaze.svg');
 
   /// File path: assets/icons/ic_share_home.svg
   SvgGenImage get icShareHome =>
@@ -605,6 +672,7 @@ class $AssetsIconsGen {
         icLocationBlack,
         icLogOut,
         icLogoAppbar,
+        icLogoAppbarnew,
         icLogoLogin,
         icLux,
         icLyustraMain,
@@ -672,7 +740,29 @@ class $AssetsIconsGen {
         calicon,
         tiktok,
         maill,
-        insta
+        insta,
+        ustun,
+        sazlama,
+        deletee,
+        sharetaze,
+        editt,
+        luxee,
+        yokaryk,
+        applogo,
+        logoo,
+        conditioner,
+        skaf,
+        gyzgynsuw,
+        favbizpr,
+        saylanan,
+        saylanancircle,
+        icifav,
+        tazefav,
+        favview,
+        saga,
+        favsag,
+        hiczatyok,
+        silbuton
       ];
 }
 

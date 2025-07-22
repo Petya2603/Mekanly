@@ -3,14 +3,31 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../localization/extensions.dart';
 import '../../../product/constants/constants.dart';
 import '../../../utils/extensions.dart';
-import '../../house_filters/widgets/price_selector_bottom_sheet.dart';
+import '../../house_filters/widgets/price_selector_bottom_sheet_filter.dart';
 
-class BottomPriceSelectorSheet extends StatelessWidget {
+class BottomPriceSelectorSheet extends StatefulWidget {
   const BottomPriceSelectorSheet({super.key});
+
+  @override
+  State<BottomPriceSelectorSheet> createState() =>
+      _BottomPriceSelectorSheetState();
+}
+
+class _BottomPriceSelectorSheetState extends State<BottomPriceSelectorSheet> {
+  final TextEditingController minPriceController = TextEditingController();
+  final TextEditingController maxPriceController = TextEditingController();
+
+  @override
+  void dispose() {
+    minPriceController.dispose();
+    maxPriceController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsetsGeometry.only(
+      padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom + 15.h,
       ),
       child: Container(
@@ -18,28 +35,18 @@ class BottomPriceSelectorSheet extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
-        padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 16.w),
+        padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 8.w),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              width: 40.w,
-              height: 4.h,
-              decoration: BoxDecoration(
-                color: Colors.grey[400],
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            16.boxH,
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Align(
-                child: IconButton(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
                   icon: const Icon(Icons.close),
-                  onPressed: () => Navigator.pop(context, 'manuel'),
+                  onPressed: () => Navigator.pop(context),
                 ),
-              ),
-              Align(
-                child: Text(
+                Text(
                   context.translation.price,
                   style: TextStyle(
                     fontSize: 16.sp,
@@ -47,23 +54,26 @@ class BottomPriceSelectorSheet extends StatelessWidget {
                     fontFamily: StringConstants.roboto,
                   ),
                 ),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: Text(
-                  context.translation.clean,
-                  style: const TextStyle(
-                    color: Color(0xff3A8BCF),
-                    fontWeight: FontWeight.w500,
-                    fontFamily: StringConstants.roboto,
+                TextButton(
+                  onPressed: () {
+                    minPriceController.clear();
+                    maxPriceController.clear();
+                  },
+                  child: Text(
+                    context.translation.clean,
+                    style: const TextStyle(
+                      color: Color(0xff3A8BCF),
+                      fontWeight: FontWeight.w500,
+                      fontFamily: StringConstants.roboto,
+                    ),
                   ),
                 ),
-              ),
-            ]),
+              ],
+            ),
             20.boxH,
-            BottomPriceSelectorSheett(
-              minPriceController: TextEditingController(),
-              maxPriceController: TextEditingController(),
+            BottomPriceSelectorSheettFilter(
+              minPriceController: minPriceController,
+              maxPriceController: maxPriceController,
             ),
             24.boxH,
             SizedBox(
@@ -77,7 +87,10 @@ class BottomPriceSelectorSheet extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pop(context, {
+                    'min': int.tryParse(minPriceController.text),
+                    'max': int.tryParse(maxPriceController.text),
+                  });
                 },
                 child: Text(
                   context.translation.verification,

@@ -98,6 +98,50 @@ Future<BaseOptionModel?> showModalOptions(
   );
 }
 
+Future<BaseOptionModel?> showModalOptionss(
+  BuildContext context, {
+  required String text,
+  required BaseOptionModel model,
+  List<OptionsPossibility>? initialSelections, // Correct type here
+  bool isSingle = false,
+}) async {
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarIconBrightness: Brightness.dark,
+    ),
+  );
+
+  return showDialog<BaseOptionModel?>(
+    context: context,
+    barrierColor: Colors.black54,
+    builder: (context) {
+      // Merge existing selections with initial selections
+      final currentSelections = model.selectedPossibilities ?? [];
+      final allSelections = [
+        ...currentSelections.whereType<OptionsPossibility>(),
+        ...initialSelections ?? [],
+      ];
+
+      // Remove duplicates
+      final uniqueSelections = <int, OptionsPossibility>{};
+      for (final p in allSelections) {
+        uniqueSelections[p.id] = p;
+            }
+
+      return Dialog(
+        shape: const RoundedRectangleBorder(),
+        clipBehavior: Clip.hardEdge,
+        child: OptionModalDialogWidget(
+          model: model.copyWith(
+            selectedPossibilities: uniqueSelections.values.toList(),
+          ),
+          isSingle: isSingle,
+        ),
+      );
+    },
+  );
+}
+
 class OptionModalDialogWidget extends StatefulWidget {
   const OptionModalDialogWidget({
     super.key,
@@ -583,6 +627,44 @@ class _RepairTypeChip extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class OptionChipWidgett extends StatelessWidget {
+
+  const OptionChipWidgett({
+    super.key,
+    required this.title,
+    this.icon,
+    this.selected = false,
+  });
+  final String title;
+  final Widget? icon;
+  final bool selected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: selected ? Colors.blue.shade100 : Colors.grey.shade200,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: selected ? Colors.blue : Colors.grey,
+          width: 1.5,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) ...[
+            icon!,
+            const SizedBox(width: 6),
+          ],
+          Text(title),
+        ],
       ),
     );
   }

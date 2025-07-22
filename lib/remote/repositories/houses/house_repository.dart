@@ -71,6 +71,26 @@ class HousesRepository {
         .catchError(_onErrorFilter);
   }
 
+  Future<Either<ResponseError<dynamic>, HouseResponse>> searchHouses({
+    int limit = 10,
+    int page = 0,
+    required String searchQuery,
+  }) async {
+    return _client
+        .post(
+          ApiEndpoints.searchHouses(
+            limit: limit,
+            page: page,
+            searchQuery: searchQuery,
+          ),
+          data: {
+            "search": searchQuery,
+          },
+        )
+        .then(_onResHouses)
+        .catchError(_onErrorHouses);
+  }
+
   Either<ResponseError<dynamic>, List<HouseEntity>> _onResFilter(
     Response<dynamic>? res,
   ) {

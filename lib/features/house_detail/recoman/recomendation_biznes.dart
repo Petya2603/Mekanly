@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import '../../../core/components/loading_indicator.dart';
+import '../../../product/constants/constants.dart';
 import '../../../remote/repositories/recom_business/recom_bis_repozitory.dart'
     show BusinesEntity, BusinesRepository, RecommendationProviderBusines;
 
@@ -130,9 +131,10 @@ class BusinessCard extends StatelessWidget {
           Text(
             title.toUpperCase(),
             style: TextStyle(
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w400,
               fontSize: 11.sp,
               color: const Color.fromARGB(255, 40, 40, 40),
+              fontFamily: StringConstants.roboto,
             ),
             textAlign: TextAlign.center,
             maxLines: 2,
@@ -142,8 +144,9 @@ class BusinessCard extends StatelessWidget {
           Text(
             description,
             style: TextStyle(
-              fontSize: 9.sp,
+              fontSize: 10.sp,
               color: const Color.fromARGB(255, 86, 86, 86),
+              fontFamily: StringConstants.roboto,
             ),
             textAlign: TextAlign.center,
             maxLines: 3,
@@ -153,9 +156,10 @@ class BusinessCard extends StatelessWidget {
           Text(
             phone,
             style: TextStyle(
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w400,
               fontSize: 10.sp,
-              color: Colors.black87,
+              color: const Color.fromARGB(255, 34, 34, 34),
+              fontFamily: StringConstants.roboto,
             ),
             maxLines: 1,
           ),

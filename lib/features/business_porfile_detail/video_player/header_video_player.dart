@@ -49,7 +49,6 @@ class HeaderVideoPlayer extends StatefulWidget {
 class _HeaderVideoPlayerState extends State<HeaderVideoPlayer> {
   late VideoPlayerController _controller;
   bool _isInited = false;
-  bool _hasError = false;
 
   @override
   void initState() {
@@ -61,7 +60,6 @@ class _HeaderVideoPlayerState extends State<HeaderVideoPlayer> {
       });
     }).catchError((e) {
       setState(() {
-        _hasError = true;
       });
     });
     super.initState();

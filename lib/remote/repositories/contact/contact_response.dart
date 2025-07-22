@@ -40,4 +40,24 @@ class HouseRepository {
       rethrow;
     }
   }
+
+  // Future<void> deleteHouse(int houseId) async {
+  //   final token = InMemoryToken.instance.token;
+  //   if (token == null) throw Exception("Token not found");
+
+  //   final response = await _dio.delete(
+  //     '/v2/houses/houses/$houseId/delete',
+  //     options: Options(
+  //       headers: {
+  //         'Authorization': 'Bearer $token',
+  //         'Accept': 'application/json',
+  //         'Content-Type': 'application/json',
+  //       },
+  //     ),
+  //   );
+
+  //   if (response.statusCode != 200) {
+  //     throw Exception("Failed to delete house");
+  //   }
+  // }
 }

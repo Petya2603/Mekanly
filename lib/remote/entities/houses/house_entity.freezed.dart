@@ -32,10 +32,10 @@ mixin _$HouseEntity {
   String? get name => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String? get price => throw _privateConstructorUsedError;
-  @JsonKey(name: 'lover_percentage')
-  String? get loverPercentage => throw _privateConstructorUsedError;
-  @JsonKey(name: 'lover_price')
-  String? get loverPrice => throw _privateConstructorUsedError;
+  @JsonKey(name: 'lover_percentage', fromJson: _stringToInt)
+  int? get loverPercentage => throw _privateConstructorUsedError;
+  @JsonKey(name: 'lover_price', fromJson: _stringToInt)
+  int? get loverPrice => throw _privateConstructorUsedError;
   int? get viewed => throw _privateConstructorUsedError;
   String? get star => throw _privateConstructorUsedError;
   @JsonKey(name: 'comment_count')
@@ -90,6 +90,8 @@ mixin _$HouseEntity {
   @JsonKey(name: 'has_seen')
   bool? get hasSeen => throw _privateConstructorUsedError;
   bool? get contact => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_owner')
+  bool? get isOwner => throw _privateConstructorUsedError;
 
   /// Serializes this HouseEntity to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -117,8 +119,9 @@ abstract class $HouseEntityCopyWith<$Res> {
       String? name,
       String? description,
       String? price,
-      @JsonKey(name: 'lover_percentage') String? loverPercentage,
-      @JsonKey(name: 'lover_price') String? loverPrice,
+      @JsonKey(name: 'lover_percentage', fromJson: _stringToInt)
+      int? loverPercentage,
+      @JsonKey(name: 'lover_price', fromJson: _stringToInt) int? loverPrice,
       int? viewed,
       String? star,
       @JsonKey(name: 'comment_count') int? commentCount,
@@ -153,7 +156,8 @@ abstract class $HouseEntityCopyWith<$Res> {
       @JsonKey(name: 'created_at') String? createdAt,
       @JsonKey(name: 'contacted') bool? contacted,
       @JsonKey(name: 'has_seen') bool? hasSeen,
-      bool? contact});
+      bool? contact,
+      @JsonKey(name: 'is_owner') bool? isOwner});
 
   $LocationEntityCopyWith<$Res>? get location;
   $PropertyTypeEntityCopyWith<$Res>? get propertyType;
@@ -222,6 +226,7 @@ class _$HouseEntityCopyWithImpl<$Res, $Val extends HouseEntity>
     Object? contacted = freezed,
     Object? hasSeen = freezed,
     Object? contact = freezed,
+    Object? isOwner = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -263,11 +268,11 @@ class _$HouseEntityCopyWithImpl<$Res, $Val extends HouseEntity>
       loverPercentage: freezed == loverPercentage
           ? _value.loverPercentage
           : loverPercentage // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       loverPrice: freezed == loverPrice
           ? _value.loverPrice
           : loverPrice // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       viewed: freezed == viewed
           ? _value.viewed
           : viewed // ignore: cast_nullable_to_non_nullable
@@ -408,6 +413,10 @@ class _$HouseEntityCopyWithImpl<$Res, $Val extends HouseEntity>
           ? _value.contact
           : contact // ignore: cast_nullable_to_non_nullable
               as bool?,
+      isOwner: freezed == isOwner
+          ? _value.isOwner
+          : isOwner // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ) as $Val);
   }
 
@@ -486,8 +495,9 @@ abstract class _$$HouseEntityImplCopyWith<$Res>
       String? name,
       String? description,
       String? price,
-      @JsonKey(name: 'lover_percentage') String? loverPercentage,
-      @JsonKey(name: 'lover_price') String? loverPrice,
+      @JsonKey(name: 'lover_percentage', fromJson: _stringToInt)
+      int? loverPercentage,
+      @JsonKey(name: 'lover_price', fromJson: _stringToInt) int? loverPrice,
       int? viewed,
       String? star,
       @JsonKey(name: 'comment_count') int? commentCount,
@@ -522,7 +532,8 @@ abstract class _$$HouseEntityImplCopyWith<$Res>
       @JsonKey(name: 'created_at') String? createdAt,
       @JsonKey(name: 'contacted') bool? contacted,
       @JsonKey(name: 'has_seen') bool? hasSeen,
-      bool? contact});
+      bool? contact,
+      @JsonKey(name: 'is_owner') bool? isOwner});
 
   @override
   $LocationEntityCopyWith<$Res>? get location;
@@ -593,6 +604,7 @@ class __$$HouseEntityImplCopyWithImpl<$Res>
     Object? contacted = freezed,
     Object? hasSeen = freezed,
     Object? contact = freezed,
+    Object? isOwner = freezed,
   }) {
     return _then(_$HouseEntityImpl(
       id: freezed == id
@@ -634,11 +646,11 @@ class __$$HouseEntityImplCopyWithImpl<$Res>
       loverPercentage: freezed == loverPercentage
           ? _value.loverPercentage
           : loverPercentage // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       loverPrice: freezed == loverPrice
           ? _value.loverPrice
           : loverPrice // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       viewed: freezed == viewed
           ? _value.viewed
           : viewed // ignore: cast_nullable_to_non_nullable
@@ -779,6 +791,10 @@ class __$$HouseEntityImplCopyWithImpl<$Res>
           ? _value.contact
           : contact // ignore: cast_nullable_to_non_nullable
               as bool?,
+      isOwner: freezed == isOwner
+          ? _value.isOwner
+          : isOwner // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -796,8 +812,9 @@ class _$HouseEntityImpl implements _HouseEntity {
       this.name,
       this.description,
       this.price,
-      @JsonKey(name: 'lover_percentage') this.loverPercentage,
-      @JsonKey(name: 'lover_price') this.loverPrice,
+      @JsonKey(name: 'lover_percentage', fromJson: _stringToInt)
+      this.loverPercentage,
+      @JsonKey(name: 'lover_price', fromJson: _stringToInt) this.loverPrice,
       this.viewed,
       this.star,
       @JsonKey(name: 'comment_count') this.commentCount,
@@ -832,7 +849,8 @@ class _$HouseEntityImpl implements _HouseEntity {
       @JsonKey(name: 'created_at') this.createdAt,
       @JsonKey(name: 'contacted') this.contacted,
       @JsonKey(name: 'has_seen') this.hasSeen,
-      this.contact})
+      this.contact,
+      @JsonKey(name: 'is_owner') this.isOwner})
       : _images = images,
         _possibilities = possibilities;
 
@@ -861,11 +879,11 @@ class _$HouseEntityImpl implements _HouseEntity {
   @override
   final String? price;
   @override
-  @JsonKey(name: 'lover_percentage')
-  final String? loverPercentage;
+  @JsonKey(name: 'lover_percentage', fromJson: _stringToInt)
+  final int? loverPercentage;
   @override
-  @JsonKey(name: 'lover_price')
-  final String? loverPrice;
+  @JsonKey(name: 'lover_price', fromJson: _stringToInt)
+  final int? loverPrice;
   @override
   final int? viewed;
   @override
@@ -970,10 +988,13 @@ class _$HouseEntityImpl implements _HouseEntity {
   final bool? hasSeen;
   @override
   final bool? contact;
+  @override
+  @JsonKey(name: 'is_owner')
+  final bool? isOwner;
 
   @override
   String toString() {
-    return 'HouseEntity(id: $id, categoryName: $categoryName, location: $location, userId: $userId, username: $username, userPhone: $userPhone, name: $name, description: $description, price: $price, loverPercentage: $loverPercentage, loverPrice: $loverPrice, viewed: $viewed, star: $star, commentCount: $commentCount, roomNumber: $roomNumber, floorNumber: $floorNumber, propertyType: $propertyType, repairType: $repairType, status: $status, luxe: $luxe, luxeStatus: $luxeStatus, luxeExpire: $luxeExpire, vipStatus: $vipStatus, vipExpire: $vipExpire, bronNumber: $bronNumber, images: $images, possibilities: $possibilities, comment: $comment, isComment: $isComment, writeComment: $writeComment, who: $who, area: $area, exclusisive: $exclusisive, exclusive: $exclusive, hashtag: $hashtag, levelNumber: $levelNumber, favorited: $favorited, liked: $liked, shop: $shop, type: $type, date: $date, updatedAt: $updatedAt, createdAt: $createdAt, contacted: $contacted, hasSeen: $hasSeen, contact: $contact)';
+    return 'HouseEntity(id: $id, categoryName: $categoryName, location: $location, userId: $userId, username: $username, userPhone: $userPhone, name: $name, description: $description, price: $price, loverPercentage: $loverPercentage, loverPrice: $loverPrice, viewed: $viewed, star: $star, commentCount: $commentCount, roomNumber: $roomNumber, floorNumber: $floorNumber, propertyType: $propertyType, repairType: $repairType, status: $status, luxe: $luxe, luxeStatus: $luxeStatus, luxeExpire: $luxeExpire, vipStatus: $vipStatus, vipExpire: $vipExpire, bronNumber: $bronNumber, images: $images, possibilities: $possibilities, comment: $comment, isComment: $isComment, writeComment: $writeComment, who: $who, area: $area, exclusisive: $exclusisive, exclusive: $exclusive, hashtag: $hashtag, levelNumber: $levelNumber, favorited: $favorited, liked: $liked, shop: $shop, type: $type, date: $date, updatedAt: $updatedAt, createdAt: $createdAt, contacted: $contacted, hasSeen: $hasSeen, contact: $contact, isOwner: $isOwner)';
   }
 
   @override
@@ -1053,7 +1074,8 @@ class _$HouseEntityImpl implements _HouseEntity {
             (identical(other.contacted, contacted) ||
                 other.contacted == contacted) &&
             (identical(other.hasSeen, hasSeen) || other.hasSeen == hasSeen) &&
-            (identical(other.contact, contact) || other.contact == contact));
+            (identical(other.contact, contact) || other.contact == contact) &&
+            (identical(other.isOwner, isOwner) || other.isOwner == isOwner));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1105,7 +1127,8 @@ class _$HouseEntityImpl implements _HouseEntity {
         createdAt,
         contacted,
         hasSeen,
-        contact
+        contact,
+        isOwner
       ]);
 
   /// Create a copy of HouseEntity
@@ -1135,8 +1158,10 @@ abstract class _HouseEntity implements HouseEntity {
       final String? name,
       final String? description,
       final String? price,
-      @JsonKey(name: 'lover_percentage') final String? loverPercentage,
-      @JsonKey(name: 'lover_price') final String? loverPrice,
+      @JsonKey(name: 'lover_percentage', fromJson: _stringToInt)
+      final int? loverPercentage,
+      @JsonKey(name: 'lover_price', fromJson: _stringToInt)
+      final int? loverPrice,
       final int? viewed,
       final String? star,
       @JsonKey(name: 'comment_count') final int? commentCount,
@@ -1171,7 +1196,8 @@ abstract class _HouseEntity implements HouseEntity {
       @JsonKey(name: 'created_at') final String? createdAt,
       @JsonKey(name: 'contacted') final bool? contacted,
       @JsonKey(name: 'has_seen') final bool? hasSeen,
-      final bool? contact}) = _$HouseEntityImpl;
+      final bool? contact,
+      @JsonKey(name: 'is_owner') final bool? isOwner}) = _$HouseEntityImpl;
 
   factory _HouseEntity.fromJson(Map<String, dynamic> json) =
       _$HouseEntityImpl.fromJson;
@@ -1198,11 +1224,11 @@ abstract class _HouseEntity implements HouseEntity {
   @override
   String? get price;
   @override
-  @JsonKey(name: 'lover_percentage')
-  String? get loverPercentage;
+  @JsonKey(name: 'lover_percentage', fromJson: _stringToInt)
+  int? get loverPercentage;
   @override
-  @JsonKey(name: 'lover_price')
-  String? get loverPrice;
+  @JsonKey(name: 'lover_price', fromJson: _stringToInt)
+  int? get loverPrice;
   @override
   int? get viewed;
   @override
@@ -1291,6 +1317,9 @@ abstract class _HouseEntity implements HouseEntity {
   bool? get hasSeen;
   @override
   bool? get contact;
+  @override
+  @JsonKey(name: 'is_owner')
+  bool? get isOwner;
 
   /// Create a copy of HouseEntity
   /// with the given fields replaced by the non-null parameter values.

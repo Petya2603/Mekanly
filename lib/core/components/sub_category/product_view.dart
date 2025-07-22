@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-import 'package:intl/intl.dart';
 import '../../../localization/extensions.dart';
 import '../../../product/constants/constants.dart';
 import '../../../remote/repositories/business_profile/product_cubit.dart';
 import '../../../remote/repositories/business_profile/product_model.dart';
-import '../search_field.dart';
+import '../../../remote/repositories/favorite/favorite_repository.dart';
+import '../search_field_business.dart';
 
 class ProductListScreen extends StatefulWidget {
   const ProductListScreen({
@@ -25,11 +25,14 @@ class ProductListScreen extends StatefulWidget {
 
 class _ProductListScreenState extends State<ProductListScreen> {
   final ScrollController _scrollController = ScrollController();
-  final TextEditingController _searchController = TextEditingController();
 
+  final FavoriteService favoriteService = FavoriteService();
+
+  late bool isFavorite;
   @override
   void initState() {
     super.initState();
+
     _loadInitialData();
     _scrollController.addListener(_scrollListener);
   }
@@ -51,13 +54,27 @@ class _ProductListScreenState extends State<ProductListScreen> {
   @override
   void dispose() {
     _scrollController.dispose();
-    _searchController.dispose();
+
     super.dispose();
   }
 
   Widget _buildProductItem(Product product) {
     final pageController = PageController();
     final pageNotifier = ValueNotifier<int>(0);
+
+    Future<void> toggleFavoriteItem() async {
+      try {
+        await favoriteService.toggleFavorite(
+          favoritableId: product.id,
+          favoritableType: 'ShopProduct',
+        );
+
+        setState(() {
+          isFavorite = !isFavorite;
+        });
+        // ignore: empty_catches
+      } catch (e) {}
+    }
 
     return Stack(
       children: [
@@ -69,6 +86,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
             borderRadius: BorderRadius.circular(8.r),
             boxShadow: [
               BoxShadow(
+                // ignore: deprecated_member_use
                 color: Colors.black.withOpacity(0.1),
                 blurRadius: 6.r,
                 offset: Offset(0, 2.h),
@@ -78,7 +96,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image Carousel
               Expanded(
                 flex: 6,
                 child: ClipRRect(
@@ -191,14 +208,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
             ],
           ),
         ),
-        // Favorite Button
         Positioned(
           top: 8.w,
           right: 8.w,
           child: GestureDetector(
-            onTap: () {
-              // Toggle favorite
-            },
+            onTap: toggleFavoriteItem,
             child: Container(
               child: product.favorited
                   ? Assets.icons.icFavoriteSelected.svg(
@@ -260,7 +274,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 10),
-            child: Assets.icons.icFavorite.svg(
+            child: Assets.icons.favbizpr.svg(
               package: 'gen',
             ),
           ),
@@ -270,11 +284,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
           style: const TextStyle(
             color: Color.fromARGB(255, 248, 248, 248),
             fontSize: 18,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w400,
             fontFamily: StringConstants.roboto,
           ),
         ),
-        centerTitle: false,
       ),
       body: BlocBuilder<ProductCubit, ProductState>(
         builder: (context, state) {
@@ -328,8 +341,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
                         Expanded(
                           child: Padding(
                             padding: EdgeInsets.only(right: 10.w),
-                            child: SearchField(
-                              onTap: () {},
+                            child: SearchFieldBusiness(
+                              onSearchTap: () {},
+                              onClearTap: () {},
                             ),
                           ),
                         ),

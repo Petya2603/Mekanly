@@ -6,6 +6,7 @@ import 'package:gen/gen.dart';
 import 'package:provider/provider.dart';
 import '../../../core/components/app_text.dart' show AppText;
 import '../../../core/components/loading_indicator.dart';
+import '../../../product/constants/constants.dart';
 import '../../../remote/repositories/recomandation_house/recom_house_repozitory.dart';
 
 class RecommendedHousesSection extends StatefulWidget {
@@ -38,8 +39,8 @@ class _RecommendedHousesSectionState extends State<RecommendedHousesSection> {
         builder: (context, provider, _) {
           if (provider.isLoading) {
             return Center(
-            child: LoadingIndicator.circle(),
-          );
+              child: LoadingIndicator.circle(),
+            );
           }
 
           if (provider.error != null) {
@@ -108,6 +109,7 @@ class _HouseCardState extends State<HouseCard> {
               ],
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Flexible(
                   flex: 65,
@@ -193,20 +195,24 @@ class _HouseCardState extends State<HouseCard> {
                   ),
                 ),
                 Flexible(
-                  flex: 38,
+                  flex: 42,
                   child: Container(
                     margin: const EdgeInsets.only(
-                        left: 5, right: 1, top: 2, bottom: 1),
+                      left: 8,
+                      right: 1,
+                      top: 8,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         AppText.s14w400BdM(
                           widget.house.name ?? 'Kwartira',
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w400,
                           fontSize: 12.sp,
                           color: const Color.fromARGB(255, 34, 34, 34),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
+                          fontFamily: StringConstants.roboto,
                         ),
                         2.boxH,
                         AppText.s14w400BdM(
@@ -214,6 +220,7 @@ class _HouseCardState extends State<HouseCard> {
                           fontSize: 10.sp,
                           fontWeight: FontWeight.w400,
                           color: const Color.fromARGB(255, 117, 117, 117),
+                          fontFamily: StringConstants.roboto,
                         ),
                         2.boxH,
                         AppText.s14w400BdM(
@@ -221,13 +228,15 @@ class _HouseCardState extends State<HouseCard> {
                           fontSize: 10.sp,
                           fontWeight: FontWeight.w400,
                           color: const Color.fromARGB(255, 117, 117, 117),
+                          fontFamily: StringConstants.roboto,
                         ),
                         2.boxH,
                         AppText.s14w400BdM(
                           widget.house.price?.formatPrice() ?? 'TMT',
                           fontSize: 12.sp,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w400,
                           color: const Color.fromARGB(255, 34, 34, 34),
+                          fontFamily: StringConstants.roboto,
                         ),
                       ],
                     ),

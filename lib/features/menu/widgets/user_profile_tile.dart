@@ -57,6 +57,7 @@ class UserProfileTile extends StatelessWidget {
                             onTap: () {
                               Navigator.push(
                                 context,
+                                // ignore: inference_failure_on_function_invocation
                                 CustomPageRoute.slide(
                                   LoginPhoneNumberView.builder(context),
                                 ),

@@ -5,7 +5,6 @@ import '../../../core/components/app_text.dart';
 import '../../../localization/extensions.dart';
 import '../../../product/helpers/helpers.dart';
 import '../../../remote/entities/global_options/global_options.dart';
-import '../../../utils/extensions.dart';
 import 'option_locations_modal_sheet.dart';
 
 class OptionCategoryModalBottomSheet extends StatefulWidget {
@@ -51,14 +50,6 @@ class _OptionCategoryModalBottomSheetState
     _currentCategories = List.of(widget.categories);
   }
 
-  void _closeAndSelectCtg() {
-    final isEmpty = checkIfEmpty();
-    if (isEmpty) return;
-
-    if (Navigator.canPop(context)) {
-      Navigator.pop(context, _currentCategories);
-    }
-  }
 
   bool checkIfEmpty() {
     final isEmpty = _currentCategories.getAllSelected?.isEmpty;
@@ -70,27 +61,14 @@ class _OptionCategoryModalBottomSheetState
     return isEmpty ?? true;
   }
 
-  void _addToSelectedItems(CategoryHouse ctg, int index) {
-    _currentCategories = List<CategoryHouse>.from(_currentCategories).update(
-      index,
-      ctg,
-    );
-    setState(() {});
-  }
 
-  void _addSingle(CategoryHouse ctg, int index) {
-    _currentCategories = List<CategoryHouse>.from(_currentCategories)
-        .map((c) => c.copyWith(selected: false))
-        .toList();
-    _addToSelectedItems(ctg, index);
-  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(12).r),
+        borderRadius: BorderRadius.vertical(top: const Radius.circular(12).r),
       ),
       constraints: BoxConstraints(maxHeight: 1.sh * 0.6),
       child: Column(
@@ -144,17 +122,29 @@ class _OptionCategoryModalBottomSheetState
               itemCount: _currentCategories.length,
               itemBuilder: (context, index) {
                 final ctg = _currentCategories[index];
+
                 return OptionModalSheetTile(
                   title: ctg.name,
                   isSelected: ctg.selected,
                   onTap: () {
                     final updated = ctg.copyWith(selected: !ctg.selected);
+
+                    final updatedList =
+                        List<CategoryHouse>.from(_currentCategories);
+                    updatedList[index] = updated;
+
+                   
                     if (widget.isSingle) {
-                      _addSingle(updated, index);
-                      _closeAndSelectCtg();
-                    } else {
-                      _addToSelectedItems(updated, index);
+                      for (var i = 0; i < updatedList.length; i++) {
+                        if (i != index) {
+                          updatedList[i] =
+                              updatedList[i].copyWith(selected: false);
+                        }
+                      }
                     }
+
+                 
+                    Navigator.pop(context, updatedList);
                   },
                 );
               },

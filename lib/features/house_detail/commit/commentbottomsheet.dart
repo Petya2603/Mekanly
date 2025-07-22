@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
-import '../../../core/components/loading_indicator.dart';
 import '../../../localization/extensions.dart';
 import '../../../product/constants/constants.dart';
 import '../../../remote/repositories/comment/commet_model.dart';
@@ -105,9 +104,7 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
       future: _commentsFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: LoadingIndicator.circle(),
-          );
+          return const SizedBox.shrink();
         }
 
         if (snapshot.hasError) {
@@ -261,64 +258,69 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
                     ),
                   ),
                 if (!isActive)
-                  Text(
-                    context.translation.verifying,
-                    style: TextStyle(
-                      fontFamily: StringConstants.roboto,
-                      fontWeight: FontWeight.w400,
-                      color: const Color.fromARGB(255, 13, 149, 233),
-                      fontSize: 12.sp,
-                    ),
-                  ),
-                if (!isActive)
-                  PopupMenuButton<String>(
-                    icon: Assets.icons.icDotsVertical.svg(package: 'gen'),
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4).r,
-                      side: BorderSide(
-                        // ignore: deprecated_member_use
-                        color: Colors.black.withOpacity(0.2),
-                      ),
-                    ),
-                    itemBuilder: (context) => [
-                      PopupMenuItem<String>(
-                        value: 'delete',
-                        child: Text(
-                          context.translation.delete,
-                          style: TextStyle(
-                            fontSize: 11.sp,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: StringConstants.roboto,
-                            color: Colors.black,
-                          ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        context.translation.verifying,
+                        style: TextStyle(
+                          fontFamily: StringConstants.roboto,
+                          fontWeight: FontWeight.w400,
+                          color: const Color.fromARGB(255, 13, 149, 233),
+                          fontSize: 12.sp,
                         ),
                       ),
-                      PopupMenuItem<String>(
-                        value: 'edit',
-                        child: Text(
-                          context.translation.edit,
-                          style: TextStyle(
-                            fontSize: 11.sp,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: StringConstants.roboto,
-                            color: Colors.black,
+                      if (!isActive)
+                        PopupMenuButton<String>(
+                          icon: Assets.icons.icDotsVertical.svg(package: 'gen'),
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4).r,
+                            side: BorderSide(
+                              // ignore: deprecated_member_use
+                              color: Colors.black.withOpacity(0.2),
+                            ),
                           ),
+                          itemBuilder: (context) => [
+                            PopupMenuItem<String>(
+                              value: 'delete',
+                              child: Text(
+                                context.translation.delete,
+                                style: TextStyle(
+                                  fontSize: 11.sp,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: StringConstants.roboto,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            PopupMenuItem<String>(
+                              value: 'edit',
+                              child: Text(
+                                context.translation.edit,
+                                style: TextStyle(
+                                  fontSize: 11.sp,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: StringConstants.roboto,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          ],
+                          onSelected: (value) {
+                            if (value == 'edit') {
+                              setState(() {
+                                _isEditing[comment.id] = true;
+                                _commentController.text = comment.content;
+                                _replyingToCommentId = comment.id;
+                              });
+                              _commentFocusNode.requestFocus();
+                            } else if (value == 'delete') {
+                              _deleteComment(comment.id);
+                            }
+                          },
                         ),
-                      ),
                     ],
-                    onSelected: (value) {
-                      if (value == 'edit') {
-                        setState(() {
-                          _isEditing[comment.id] = true;
-                          _commentController.text = comment.content;
-                          _replyingToCommentId = comment.id;
-                        });
-                        _commentFocusNode.requestFocus();
-                      } else if (value == 'delete') {
-                        _deleteComment(comment.id);
-                      }
-                    },
                   ),
               ],
             ),
@@ -364,12 +366,21 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
                     IconButton(
                       onPressed: () async {
                         final wasLiked = comment.userReaction == 1;
+                        final previousReaction = comment.userReaction;
+                        final previousLikeCount = comment.likeCount;
+                        final previousDislikeCount = comment.dislikeCount;
 
                         setState(() {
                           if (wasLiked) {
                             comment.userReaction = null;
+                            comment.likeCount--;
                           } else {
+                            if (comment.userReaction == -1) {
+                              // If previously disliked, remove dislike
+                              comment.dislikeCount--;
+                            }
                             comment.userReaction = 1;
+                            comment.likeCount++;
                           }
                         });
 
@@ -379,8 +390,29 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
                             modelId: comment.id,
                             type: wasLiked ? 'remove' : 'like',
                           );
-                          _loadComments();
-                        } catch (e) {}
+                          final updatedComments =
+                              await _commentService.getComments(
+                            id: widget.itemId,
+                            type: widget.itemType,
+                          );
+                          final updatedComment = updatedComments.firstWhere(
+                            (c) => c.id == comment.id,
+                            orElse: () => comment,
+                          );
+                          setState(() {
+                            comment
+                              ..userReaction = updatedComment.userReaction
+                              ..likeCount = updatedComment.likeCount
+                              ..dislikeCount = updatedComment.dislikeCount;
+                          });
+                        } catch (e) {
+                          setState(() {
+                            comment
+                              ..userReaction = previousReaction
+                              ..likeCount = previousLikeCount
+                              ..dislikeCount = previousDislikeCount;
+                          });
+                        }
                       },
                       icon: comment.userReaction == 1
                           ? Assets.icons.icSelectedLike
@@ -392,18 +424,28 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
                               color: const Color.fromARGB(255, 140, 140, 140),
                             ),
                     ),
-                    Text('${comment.likeCount}',
-                        style: const TextStyle(fontSize: 10)),
+                    Text(
+                      '${comment.likeCount}',
+                      style: const TextStyle(fontSize: 10),
+                    ),
                     const SizedBox(width: 12),
                     IconButton(
                       onPressed: () async {
                         final wasDisliked = comment.userReaction == -1;
+                        final previousReaction = comment.userReaction;
+                        final previousLikeCount = comment.likeCount;
+                        final previousDislikeCount = comment.dislikeCount;
 
                         setState(() {
                           if (wasDisliked) {
                             comment.userReaction = null;
+                            comment.dislikeCount--;
                           } else {
+                            if (comment.userReaction == 1) {
+                              comment.likeCount--;
+                            }
                             comment.userReaction = -1;
+                            comment.dislikeCount++;
                           }
                         });
 
@@ -413,9 +455,31 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
                             modelId: comment.id,
                             type: wasDisliked ? 'remove' : 'dislike',
                           );
-                          _loadComments();
+                          final updatedComments =
+                              await _commentService.getComments(
+                            id: widget.itemId,
+                            type: widget.itemType,
+                          );
+
+                          // Find the updated comment in the list
+                          final updatedComment = updatedComments.firstWhere(
+                            (c) => c.id == comment.id,
+                            orElse: () => comment,
+                          );
+
+                          setState(() {
+                            comment
+                              ..userReaction = updatedComment.userReaction
+                              ..likeCount = updatedComment.likeCount
+                              ..dislikeCount = updatedComment.dislikeCount;
+                          });
                         } catch (e) {
-                          setState(() {});
+                          setState(() {
+                            comment
+                              ..userReaction = previousReaction
+                              ..likeCount = previousLikeCount
+                              ..dislikeCount = previousDislikeCount;
+                          });
                         }
                       },
                       icon: comment.userReaction == -1
@@ -494,9 +558,9 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
                   isCollapsed: true,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 8),
                 ),
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Color.fromARGB(255, 96, 96, 96),
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: const Color.fromARGB(255, 96, 96, 96),
                   fontWeight: FontWeight.w400,
                 ),
               ),
@@ -530,21 +594,44 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
           // ignore: use_if_null_to_convert_nulls_to_bools
           _isEditing[_replyingToCommentId] == true) {
         await _updateCommentContent(_replyingToCommentId!, text);
+
+        setState(() {
+          _commentsFuture = _commentsFuture.then((comments) {
+            return comments.map((c) {
+              if (c.id == _replyingToCommentId) {
+                return c.copyWith(content: text);
+              }
+              return c;
+            }).toList();
+          });
+        });
       } else {
-        await _commentService.addComment(
+        final newComment = await _commentService.addComment(
           comment: text,
           commentableId: widget.itemId,
           commentType: widget.itemType,
           parentId: _replyingToCommentId,
         );
+        setState(() {
+          _commentsFuture = _commentsFuture.then((comments) {
+            if (_replyingToCommentId != null) {
+              return comments.map((c) {
+                if (c.id == _replyingToCommentId) {
+                  return c.copyWith(
+                    replies: [...c.replies, newComment],
+                  );
+                }
+                return c;
+              }).toList();
+            } else {
+              return [newComment, ...comments];
+            }
+          });
+        });
       }
 
-      _loadComments();
-
-      // Input'u temizle
       _commentController.clear();
 
-      // Eğer düzenleme modundaysa state'i sıfırla
       if (_replyingToCommentId != null) {
         setState(() {
           _isEditing.remove(_replyingToCommentId);
@@ -574,364 +661,33 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
   Future<void> _deleteComment(String commentId) async {
     try {
       await _commentService.deleteComment(commentId);
-      _loadComments();
-      // ignore: empty_catches
+
+      setState(() {
+        _commentsFuture = _commentsFuture.then((comments) {
+          return comments.where((c) => c.id != commentId).toList();
+        });
+      });
     } catch (e) {}
   }
 
   Future<void> _updateCommentContent(
-    String commentId,
-    String newContent,
-  ) async {
+      String commentId, String newContent) async {
     try {
       await _commentService.updateComment(
         commentId: commentId,
         comment: newContent,
       );
 
-      // ignore: empty_catches
+      setState(() {
+        _commentsFuture = _commentsFuture.then((comments) {
+          return comments.map((c) {
+            if (c.id == commentId) {
+              return c.copyWith(content: newContent);
+            }
+            return c;
+          }).toList();
+        });
+      });
     } catch (e) {}
   }
-// }
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:gen/gen.dart';
-// import 'package:intl/intl.dart';
-// import '../../../core/components/loading_indicator.dart';
-// import '../../../localization/extensions.dart';
-// import '../../../remote/repositories/comment/commet_model.dart';
-// import 'comment_cubit.dart';
-// import 'comment_state.dart';
-
-// class CommentsBottomSheet extends StatefulWidget {
-//   const CommentsBottomSheet({
-//     super.key,
-//     required this.itemId,
-//     required this.itemType,
-//     required this.initialCommentCount,
-//   });
-//   final String itemId;
-//   final String itemType;
-//   final int initialCommentCount;
-
-//   @override
-//   State<CommentsBottomSheet> createState() => _CommentsBottomSheetState();
-// }
-
-// class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
-//   final TextEditingController _commentController = TextEditingController();
-//   final FocusNode _commentFocusNode = FocusNode();
-//   String? _replyingToCommentId;
-//   final Map<String, bool> _showReplies = {};
-//   final Map<String, bool> _isEditing = {};
-//   String formatDate(DateTime date) {
-//     return DateFormat('dd.MM.yyyy, HH:mm').format(date);
-//   }
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     context.read<CommentCubit>().loadComments(
-//           id: widget.itemId,
-//           type: widget.itemType,
-//         );
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<CommentCubit, CommentState>(
-//       builder: (context, state) {
-//         return Container(
-//           padding: EdgeInsets.only(
-//             bottom: MediaQuery.of(context).viewInsets.bottom,
-//           ),
-//           decoration: const BoxDecoration(
-//             color: Colors.white,
-//             borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-//           ),
-//           child: Column(
-//             mainAxisSize: MainAxisSize.min,
-//             children: [
-//               _buildHeader(),
-//               Expanded(child: _buildCommentsList(state)),
-//               _buildCommentInput(),
-//             ],
-//           ),
-//         );
-//       },
-//     );
-//   }
-
-//   Widget _buildHeader() {
-//     return Padding(
-//       padding: const EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
-//       child: Row(
-//         children: [
-//           Text(
-//             context.translation.comments,
-//             style: TextStyle(
-//               fontSize: 15.sp,
-//               fontWeight: FontWeight.w500,
-//               color: const Color.fromARGB(255, 34, 34, 34),
-//             ),
-//           ),
-//           const Spacer(),
-//           IconButton(
-//             icon: const Icon(Icons.close),
-//             onPressed: () => Navigator.pop(context),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-
-//   Widget _buildCommentsList(CommentState state) {
-//     if (state is CommentLoading) {
-//       return Center(child: LoadingIndicator.circle());
-//     } else if (state is CommentError) {
-//       return Center(child: Text(state.message));
-//     } else if (state is CommentLoaded) {
-//       final comments = state.comments;
-//       if (comments.isEmpty) {
-//         return Center(
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               Assets.icons.icNoComment
-//                   .svg(package: 'gen', height: 43.44, width: 46),
-//               const SizedBox(height: 15),
-//               Text(context.translation.no_comments),
-//               const SizedBox(height: 15),
-//               TextButton(
-//                 onPressed: _commentFocusNode.requestFocus,
-//                 child: Text(context.translation.write_comment),
-//               ),
-//             ],
-//           ),
-//         );
-//       }
-
-//       return ListView.builder(
-//         padding: const EdgeInsets.all(16),
-//         itemCount: comments.length,
-//         itemBuilder: (context, index) => _buildCommentItem(comments[index]),
-//       );
-//     } else {
-//       return const SizedBox.shrink();
-//     }
-//   }
-
-//   Widget _buildCommentItem(Comment comment) {
-//     final isReply = comment.parentId != null;
-//     final isOwner = comment.isOwner;
-//     final isActive = comment.status == 'active';
-//     final hasReplies = comment.replies.isNotEmpty;
-
-//     final commentState = context.watch<CommentCubit>().state;
-//     bool isLoading = false;
-//     if (commentState is CommentLoaded) {
-//       isLoading = commentState.loadingCommentIds.contains(comment.id);
-//     }
-
-//     return Padding(
-//       padding: EdgeInsets.only(left: isReply ? 30 : 0, bottom: 5),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             children: [
-//               Text(comment.user.username),
-//               if (isOwner) Text(context.translation.eyesi),
-//               if (!isActive) Text(context.translation.verifying),
-//               if (isOwner)
-//                 PopupMenuButton<String>(
-//                   icon: Assets.icons.icDotsVertical.svg(package: 'gen'),
-//                   itemBuilder: (context) => [
-//                     PopupMenuItem<String>(
-//                       value: 'edit',
-//                       child: Text(context.translation.edit),
-//                     ),
-//                     PopupMenuItem<String>(
-//                       value: 'delete',
-//                       child: Text(context.translation.delete),
-//                     ),
-//                   ],
-//                   onSelected: (value) {
-//                     if (value == 'edit') {
-//                       setState(() {
-//                         _isEditing[comment.id] = true;
-//                         _commentController.text = comment.content;
-//                         _replyingToCommentId = comment.id;
-//                       });
-//                       _commentFocusNode.requestFocus();
-//                     } else if (value == 'delete') {
-//                       context.read<CommentCubit>().deleteComment(
-//                             commentId: comment.id,
-//                             itemId: widget.itemId,
-//                             itemType: widget.itemType,
-//                           );
-//                     }
-//                   },
-//                 ),
-//             ],
-//           ),
-//           Row(
-//             children: [
-//               Expanded(child: Text(comment.content)),
-//               if (isLoading)
-//                 SizedBox(
-//                   width: 16,
-//                   height: 16,
-//                   child: CircularProgressIndicator(strokeWidth: 2),
-//                 ),
-//             ],
-//           ),
-//           Row(
-//             children: [
-//               Text(formatDate(comment.createdAt)),
-//               if (!isOwner && !isReply)
-//                 IconButton(
-//                   icon: Assets.icons.icChat
-//                       .svg(package: 'gen', height: 13, width: 12),
-//                   onPressed: () =>
-//                       setState(() => _replyingToCommentId = comment.id),
-//                 ),
-//               IconButton(
-//                 icon: comment.userReaction == 1
-//                     ? Assets.icons.icSelectedLike
-//                         .svg(width: 20, height: 20, package: 'gen')
-//                     : Assets.icons.icLike
-//                         .svg(width: 20, height: 20, package: 'gen'),
-//                 onPressed: () => context.read<CommentCubit>().reactToComment(
-//                       model: 'UserComment',
-//                       modelId: comment.id,
-//                       type: comment.userReaction == 1 ? 'remove' : 'like',
-//                       itemId: widget.itemId,
-//                       itemType: widget.itemType,
-//                     ),
-//               ),
-//               Text('${comment.likeCount}'),
-//               IconButton(
-//                 icon: comment.userReaction == -1
-//                     ? Assets.icons.icSelectedDislike
-//                         .svg(width: 20, height: 20, package: 'gen')
-//                     : Assets.icons.icDislike
-//                         .svg(width: 20, height: 20, package: 'gen'),
-//                 onPressed: () => context.read<CommentCubit>().reactToComment(
-//                       model: 'UserComment',
-//                       modelId: comment.id,
-//                       type: comment.userReaction == -1 ? 'remove' : 'dislike',
-//                       itemId: widget.itemId,
-//                       itemType: widget.itemType,
-//                     ),
-//               ),
-//               Text('${comment.dislikeCount}'),
-//             ],
-//           ),
-//           if (!isReply && hasReplies)
-//             GestureDetector(
-//               onTap: () => setState(() => _showReplies[comment.id] =
-//                   !(_showReplies[comment.id] ?? false)),
-//               child: Text(
-//                 (_showReplies[comment.id] ?? false)
-//                     ? context.translation.jog_giz
-//                     : '${context.translation.jog_gor} (${comment.replies.length})',
-//               ),
-//             ),
-//           if (hasReplies && (_showReplies[comment.id] ?? false))
-//             Padding(
-//               padding: const EdgeInsets.only(top: 8),
-//               child: Column(
-//                   children: comment.replies.map(_buildCommentItem).toList()),
-//             ),
-//         ],
-//       ),
-//     );
-//   }
-
-//   Widget _buildCommentInput() {
-//     return Padding(
-//       padding: const EdgeInsets.all(16),
-//       child: Container(
-//         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-//         decoration: BoxDecoration(
-//           color: const Color.fromARGB(255, 242, 242, 242),
-//           borderRadius: BorderRadius.circular(32),
-//         ),
-//         child: Row(
-//           children: [
-//             Expanded(
-//               child: TextField(
-//                 controller: _commentController,
-//                 focusNode: _commentFocusNode,
-//                 decoration: InputDecoration(
-//                   hintText: _replyingToCommentId != null
-//                       ? '${context.translation.write_comment}...'
-//                       : context.translation.write_comment,
-//                   border: InputBorder.none,
-//                   enabledBorder: InputBorder.none,
-//                   focusedBorder: InputBorder.none,
-//                   isCollapsed: true,
-//                   contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-//                 ),
-//                 style: const TextStyle(
-//                   fontSize: 12,
-//                   color: Color.fromARGB(255, 96, 96, 96),
-//                   fontWeight: FontWeight.w400,
-//                 ),
-//               ),
-//             ),
-//             GestureDetector(
-//               onTap: _submitComment,
-//               child: Container(
-//                 width: 36,
-//                 height: 36,
-//                 decoration: const BoxDecoration(
-//                   color: Color(0xFF2979FF),
-//                   shape: BoxShape.circle,
-//                 ),
-//                 child: Center(
-//                   child: Assets.icons.senCommet.svg(package: 'gen'),
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-
-//   void _submitComment() {
-//     final text = _commentController.text.trim();
-//     if (text.isEmpty) return;
-
-//     final cubit = context.read<CommentCubit>();
-
-//     if (_replyingToCommentId != null &&
-//         // ignore: use_if_null_to_convert_nulls_to_bools
-//         _isEditing[_replyingToCommentId] == true) {
-//       cubit.updateComment(
-//         commentId: _replyingToCommentId!,
-//         newContent: text,
-//         itemId: widget.itemId,
-//         itemType: widget.itemType,
-//       );
-//       setState(() {
-//         _isEditing.remove(_replyingToCommentId);
-//         _replyingToCommentId = null;
-//       });
-//     } else {
-//       cubit.submitComment(
-//         content: text,
-//         itemId: widget.itemId,
-//         itemType: widget.itemType,
-//         parentId: _replyingToCommentId,
-//       );
-//       _replyingToCommentId = null;
-//     }
-
-//     _commentController.clear();
-//   }
 }

@@ -90,27 +90,29 @@ class CollapsibleImageHeader implements SliverPersistentHeaderDelegate {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      AppText.s14w400BdM(title ?? ''),
+                      AppText.s16w400BdL(title ?? ''),
                       6.boxH,
                       Row(
                         children: [
                           SizedBox(
-                            height: 16,
-                            width: 16,
+                            height: 12,
+                            width: 12,
                             child: Assets.icons.icCalendar.svg(package: 'gen'),
                           ),
                           4.boxW,
                           AppText.s12w400BdS(
+                            color: const Color.fromARGB(255, 71, 71, 71),
                             Helpers.formatDate(DateTime.now()),
                           ),
-                          6.boxW,
+                          8.boxW,
                           SizedBox(
-                            height: 16,
-                            width: 16,
+                            height: 15,
+                            width: 15,
                             child: Assets.icons.icEye.svg(package: 'gen'),
                           ),
                           4.boxW,
                           AppText.s12w400BdS(
+                            color: const Color.fromARGB(255, 71, 71, 71),
                             viewCount?.toString() ?? '',
                           ),
                         ],
@@ -631,11 +633,14 @@ class AdvLogo extends StatelessWidget {
       height: size.height,
       decoration: BoxDecoration(
         color: Colors.grey[300],
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: BorderRadius.circular(70),
+        border: Border.all(
+          color: Colors.white,
+        ),
       ),
       child: imageUrl != null && imageUrl!.isNotEmpty
           ? ClipRRect(
-              borderRadius: BorderRadius.circular(50),
+              borderRadius: BorderRadius.circular(70),
               child: Image.network(
                 imageUrl!,
                 fit: BoxFit.cover,

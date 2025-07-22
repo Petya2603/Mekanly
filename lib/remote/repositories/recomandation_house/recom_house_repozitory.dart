@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import '../../../app/app.dart';
 import '../../in_memory_token.dart';
 
 // 1. Model Classes
@@ -86,6 +87,7 @@ class HouseRepository {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'Accept-Language': navigatorKey.currentContext,
             if (InMemoryToken.instance.token != null)
               'Authorization': 'Bearer ${InMemoryToken.instance.token}',
           },

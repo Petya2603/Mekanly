@@ -33,6 +33,10 @@ mixin _$BusinessProfileEntity {
   String? get status => throw _privateConstructorUsedError;
   @JsonKey(name: 'description')
   BaseTranslationModel? get description => throw _privateConstructorUsedError;
+  @JsonKey(name: 'brief_description')
+  String? get briefDescription => throw _privateConstructorUsedError;
+  @JsonKey(name: 'product_count')
+  int? get productCount => throw _privateConstructorUsedError;
   @JsonKey(name: 'location_id')
   int? get locationId => throw _privateConstructorUsedError;
   @JsonKey(name: 'expire')
@@ -88,6 +92,8 @@ abstract class $BusinessProfileEntityCopyWith<$Res> {
       @JsonKey(name: 'image') String? image,
       @JsonKey(name: 'status') String? status,
       @JsonKey(name: 'description') BaseTranslationModel? description,
+      @JsonKey(name: 'brief_description') String? briefDescription,
+      @JsonKey(name: 'product_count') int? productCount,
       @JsonKey(name: 'location_id') int? locationId,
       @JsonKey(name: 'expire') String? expire,
       @JsonKey(name: 'views') int? views,
@@ -132,6 +138,8 @@ class _$BusinessProfileEntityCopyWithImpl<$Res,
     Object? image = freezed,
     Object? status = freezed,
     Object? description = freezed,
+    Object? briefDescription = freezed,
+    Object? productCount = freezed,
     Object? locationId = freezed,
     Object? expire = freezed,
     Object? views = freezed,
@@ -172,6 +180,14 @@ class _$BusinessProfileEntityCopyWithImpl<$Res,
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as BaseTranslationModel?,
+      briefDescription: freezed == briefDescription
+          ? _value.briefDescription
+          : briefDescription // ignore: cast_nullable_to_non_nullable
+              as String?,
+      productCount: freezed == productCount
+          ? _value.productCount
+          : productCount // ignore: cast_nullable_to_non_nullable
+              as int?,
       locationId: freezed == locationId
           ? _value.locationId
           : locationId // ignore: cast_nullable_to_non_nullable
@@ -262,6 +278,8 @@ abstract class _$$BusinessProfileEntityImplCopyWith<$Res>
       @JsonKey(name: 'image') String? image,
       @JsonKey(name: 'status') String? status,
       @JsonKey(name: 'description') BaseTranslationModel? description,
+      @JsonKey(name: 'brief_description') String? briefDescription,
+      @JsonKey(name: 'product_count') int? productCount,
       @JsonKey(name: 'location_id') int? locationId,
       @JsonKey(name: 'expire') String? expire,
       @JsonKey(name: 'views') int? views,
@@ -305,6 +323,8 @@ class __$$BusinessProfileEntityImplCopyWithImpl<$Res>
     Object? image = freezed,
     Object? status = freezed,
     Object? description = freezed,
+    Object? briefDescription = freezed,
+    Object? productCount = freezed,
     Object? locationId = freezed,
     Object? expire = freezed,
     Object? views = freezed,
@@ -345,6 +365,14 @@ class __$$BusinessProfileEntityImplCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as BaseTranslationModel?,
+      briefDescription: freezed == briefDescription
+          ? _value.briefDescription
+          : briefDescription // ignore: cast_nullable_to_non_nullable
+              as String?,
+      productCount: freezed == productCount
+          ? _value.productCount
+          : productCount // ignore: cast_nullable_to_non_nullable
+              as int?,
       locationId: freezed == locationId
           ? _value.locationId
           : locationId // ignore: cast_nullable_to_non_nullable
@@ -415,6 +443,8 @@ class _$BusinessProfileEntityImpl implements _BusinessProfileEntity {
       @JsonKey(name: 'image') this.image,
       @JsonKey(name: 'status') this.status,
       @JsonKey(name: 'description') this.description,
+      @JsonKey(name: 'brief_description') this.briefDescription,
+      @JsonKey(name: 'product_count') this.productCount,
       @JsonKey(name: 'location_id') this.locationId,
       @JsonKey(name: 'expire') this.expire,
       @JsonKey(name: 'views') this.views,
@@ -456,6 +486,12 @@ class _$BusinessProfileEntityImpl implements _BusinessProfileEntity {
   @override
   @JsonKey(name: 'description')
   final BaseTranslationModel? description;
+  @override
+  @JsonKey(name: 'brief_description')
+  final String? briefDescription;
+  @override
+  @JsonKey(name: 'product_count')
+  final int? productCount;
   @override
   @JsonKey(name: 'location_id')
   final int? locationId;
@@ -512,7 +548,7 @@ class _$BusinessProfileEntityImpl implements _BusinessProfileEntity {
 
   @override
   String toString() {
-    return 'BusinessProfileEntity(id: $id, brand: $brand, logo: $logo, image: $image, status: $status, description: $description, locationId: $locationId, expire: $expire, views: $views, coverMedia: $coverMedia, rating: $rating, locations: $locations, phoneNumbers: $phoneNumbers, isVip: $isVip, vipDays: $vipDays, site: $site, messengers: $messengers, mail: $mail, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'BusinessProfileEntity(id: $id, brand: $brand, logo: $logo, image: $image, status: $status, description: $description, briefDescription: $briefDescription, productCount: $productCount, locationId: $locationId, expire: $expire, views: $views, coverMedia: $coverMedia, rating: $rating, locations: $locations, phoneNumbers: $phoneNumbers, isVip: $isVip, vipDays: $vipDays, site: $site, messengers: $messengers, mail: $mail, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -527,6 +563,10 @@ class _$BusinessProfileEntityImpl implements _BusinessProfileEntity {
             (identical(other.status, status) || other.status == status) &&
             (identical(other.description, description) ||
                 other.description == description) &&
+            (identical(other.briefDescription, briefDescription) ||
+                other.briefDescription == briefDescription) &&
+            (identical(other.productCount, productCount) ||
+                other.productCount == productCount) &&
             (identical(other.locationId, locationId) ||
                 other.locationId == locationId) &&
             (identical(other.expire, expire) || other.expire == expire) &&
@@ -559,6 +599,8 @@ class _$BusinessProfileEntityImpl implements _BusinessProfileEntity {
         image,
         status,
         description,
+        briefDescription,
+        productCount,
         locationId,
         expire,
         views,
@@ -600,6 +642,8 @@ abstract class _BusinessProfileEntity implements BusinessProfileEntity {
           @JsonKey(name: 'image') final String? image,
           @JsonKey(name: 'status') final String? status,
           @JsonKey(name: 'description') final BaseTranslationModel? description,
+          @JsonKey(name: 'brief_description') final String? briefDescription,
+          @JsonKey(name: 'product_count') final int? productCount,
           @JsonKey(name: 'location_id') final int? locationId,
           @JsonKey(name: 'expire') final String? expire,
           @JsonKey(name: 'views') final int? views,
@@ -641,6 +685,12 @@ abstract class _BusinessProfileEntity implements BusinessProfileEntity {
   @override
   @JsonKey(name: 'description')
   BaseTranslationModel? get description;
+  @override
+  @JsonKey(name: 'brief_description')
+  String? get briefDescription;
+  @override
+  @JsonKey(name: 'product_count')
+  int? get productCount;
   @override
   @JsonKey(name: 'location_id')
   int? get locationId;

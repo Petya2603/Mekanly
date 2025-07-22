@@ -71,6 +71,9 @@ class ResponseError<T> with _$ResponseError<T> implements Exception {
             //     ErrorHandler.fromMap(errData).message ?? '',
             //   );
             // Returned when login credentials are invalid.
+            case 302:
+              return const ResponseError.unexpectedError(
+                  'Redirect (302) occurred. Please check login status.');
             case 401:
               return const ResponseError.unauthorized();
             case 402:

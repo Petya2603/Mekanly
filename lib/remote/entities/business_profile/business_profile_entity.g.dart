@@ -18,6 +18,8 @@ _$BusinessProfileEntityImpl _$$BusinessProfileEntityImplFromJson(
           ? null
           : BaseTranslationModel.fromJson(
               json['description'] as Map<String, dynamic>),
+      briefDescription: json['brief_description'] as String?,
+      productCount: (json['product_count'] as num?)?.toInt(),
       locationId: (json['location_id'] as num?)?.toInt(),
       expire: json['expire'] as String?,
       views: (json['views'] as num?)?.toInt(),
@@ -43,6 +45,8 @@ Map<String, dynamic> _$$BusinessProfileEntityImplToJson(
       'image': instance.image,
       'status': instance.status,
       'description': instance.description,
+      'brief_description': instance.briefDescription,
+      'product_count': instance.productCount,
       'location_id': instance.locationId,
       'expire': instance.expire,
       'views': instance.views,

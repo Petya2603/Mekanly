@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gen/gen.dart';
 
-import 'app_text.dart';
 
 class CustomTab extends StatelessWidget {
   const CustomTab({super.key, this.fontSize});

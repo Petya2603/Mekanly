@@ -1,6 +1,8 @@
 import 'package:common/common.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 
+import '../../app/app.dart';
 import '../header.dart';
 import '../in_memory_token.dart';
 
@@ -75,6 +77,10 @@ class HttpHeaderInterceptor extends Interceptor {
       ); // Info log
       options.headers[AppHttpHeaders.authorizationHeader] = 'Bearer $token';
     }
+    final languageCode =
+        Localizations.localeOf(navigatorKey.currentContext!).languageCode;
+
+    options.headers[AppHttpHeaders.acceptLanguageHeader] = languageCode;
 
     handler.next(options);
   }

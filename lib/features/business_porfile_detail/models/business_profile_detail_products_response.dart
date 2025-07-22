@@ -4,11 +4,13 @@ part 'business_profile_detail_products_response.freezed.dart';
 part 'business_profile_detail_products_response.g.dart';
 
 @freezed
+// ignore: lines_longer_than_80_chars
 class BusinessProfileDetailProductsResponse with _$BusinessProfileDetailProductsResponse {
   const factory BusinessProfileDetailProductsResponse({
     List<ProductData>? data,
   }) = _BusinessProfileDetailProductsResponse;
 
+  // ignore: lines_longer_than_80_chars
   factory BusinessProfileDetailProductsResponse.fromJson(Map<String, dynamic> json) =>
       _$BusinessProfileDetailProductsResponseFromJson(json);
 }
@@ -18,6 +20,7 @@ class ProductData with _$ProductData {
   const factory ProductData({
     int? id,
     String? name,
+    // ignore: invalid_annotation_target
     @JsonKey(name: 'comment_count') int? commentCount,
     double? price,
     String? status,
@@ -28,6 +31,7 @@ class ProductData with _$ProductData {
     int? delivery,
     int? comment,
     String? description,
+    // ignore: invalid_annotation_target
     @JsonKey(name: 'lover_percentage') int? loverPercentage,
     @JsonKey(name: 'lover_price') String? loverPrice,
     String? vip,

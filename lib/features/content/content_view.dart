@@ -19,7 +19,7 @@ import 'widgets/content_card_widget.dart';
 
 /// TODOS: can not find enough time to separate components
 
-class ContentView extends StatelessWidget {
+class ContentView extends StatefulWidget {
   const ContentView({super.key});
 
   static const routePath = '/content-view';
@@ -34,17 +34,20 @@ class ContentView extends StatelessWidget {
   }
 
   @override
+  State<ContentView> createState() => _ContentViewState();
+}
+
+class _ContentViewState extends State<ContentView> {
+  String? _selectedCategoryTitle;
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF4D8BBF),
+        backgroundColor: ColorName.main,
         leading: IconButton(
-          onPressed: () {
-            if (Navigator.canPop(context)) {
-              Navigator.pop(context);
-            }
-          },
+          onPressed: () => Navigator.maybePop(context),
           icon: Assets.icons.icBackImage.svg(package: 'gen'),
         ),
         title: AppText.s14w400BdM(
@@ -53,57 +56,43 @@ class ContentView extends StatelessWidget {
           color: Colors.white,
           fontFamily: StringConstants.roboto,
         ),
-        centerTitle: true,
       ),
       floatingActionButton: BlocBuilder<ContentBloc, ContentState>(
         builder: (context, state) {
           final options = state.globalOptions;
-          if (options == null) {
-            return const SizedBox();
-          }
+          if (options == null) return const SizedBox();
+
           return FloatingActionButton(
             backgroundColor: const Color(0xFF0A7CCA),
-            foregroundColor: const Color(0xFF0A7CCA),
-            elevation: 0,
             shape: const CircleBorder(),
             onPressed: () async {
               final isAdded = await Navigator.push<bool?>(
                 context,
-                CustomPageRoute.slide(
-                  AddHouseView.builder(context, options),
-                ),
+                CustomPageRoute.slide(AddHouseView.builder(context, options)),
               );
-
-              if ((isAdded ?? false) && context.mounted) {
-                {
-                  context.read<ContentBloc>().add(const ContentEvent.init());
-                }
+              // ignore: use_if_null_to_convert_nulls_to_bools
+              if (isAdded == true && context.mounted) {
+                context.read<ContentBloc>().add(const ContentEvent.init());
               }
             },
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
+            child: const Icon(Icons.add, color: Colors.white),
           );
         },
       ),
-      body: BlocConsumer<ContentBloc, ContentState>(
-        listener: (context, state) {},
+      body: BlocBuilder<ContentBloc, ContentState>(
         builder: (context, state) {
-          if (state.status.isLoading) {
-            return LoadingIndicator.circle();
-          }
-
+          if (state.status.isLoading) return LoadingIndicator.circle();
           if (state.status.isFailure) {
             return TryAgainWidget(
-              onTryAgain: () {
-                context.read<ContentBloc>().add(const ContentEvent.init());
-              },
+              onTryAgain: () =>
+                  context.read<ContentBloc>().add(const ContentEvent.init()),
             );
           }
+
           final categories = state.productCategories;
-          final houses = state.userHouses;
-          if (houses == null || houses.isEmpty) {
+          final allHouses = state.userHouses;
+
+          if (allHouses == null || allHouses.isEmpty) {
             return Center(
               child: AppText.s14w400BdM(
                 context.translation.no_commentss,
@@ -113,23 +102,33 @@ class ContentView extends StatelessWidget {
             );
           }
 
+          final filteredHouses = _selectedCategoryTitle == null
+              ? allHouses
+              : allHouses
+                  .where(
+                      (house) => house.categoryName == _selectedCategoryTitle)
+                  .toList();
+
           return Column(
             children: [
               8.boxH,
               Container(
-                constraints: BoxConstraints(
-                  maxHeight: 30.h,
-                ),
+                constraints: BoxConstraints(maxHeight: 30.h),
                 child: ContentButtons(
                   categories: categories,
+                  selectedCategoryTitle: _selectedCategoryTitle,
+                  onCategorySelected: (title) {
+                    setState(() {
+                      _selectedCategoryTitle =
+                          _selectedCategoryTitle == title ? null : title;
+                    });
+                  },
                 ),
               ),
               10.boxH,
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: GridView.builder(
                     primary: false,
                     padding: const EdgeInsets.fromLTRB(2, 0, 2, 24).w,
@@ -140,17 +139,25 @@ class ContentView extends StatelessWidget {
                       childAspectRatio: 167 / 223,
                       crossAxisCount: 2,
                     ),
-                    itemCount: houses.length,
+                    itemCount: filteredHouses.length,
                     itemBuilder: (context, index) {
-                      final house = houses[index];
+                      final house = filteredHouses[index];
+
                       final images = house.images?.map((m) => m.url).toList();
                       return ContentCardWidget(
+                        id: house.id!,
                         description: house.description,
                         title: house.name,
                         imgUrls: images ?? [],
                         price: house.price,
                         status: house.statusText,
                         statusColor: house.statusColor,
+                        type: house.type,
+                        onDeleted: () {
+                          context
+                              .read<ContentBloc>()
+                              .add(const ContentEvent.init());
+                        },
                       );
                     },
                   ),
@@ -164,70 +171,76 @@ class ContentView extends StatelessWidget {
   }
 }
 
-/// TODOS: can not find enough time to separate components
-
-class ContentButtons extends StatefulWidget {
-  const ContentButtons({super.key, this.categories});
+class ContentButtons extends StatelessWidget {
+  const ContentButtons({
+    super.key,
+    this.categories,
+    this.selectedCategoryTitle,
+    this.onCategorySelected,
+  });
 
   final List<UserProductCategory>? categories;
+  final String? selectedCategoryTitle;
+  // ignore: inference_failure_on_function_return_type
+  final Function(String)? onCategorySelected;
 
-  @override
-  State<ContentButtons> createState() => _ContentButtonsState();
-}
-
-class _ContentButtonsState extends State<ContentButtons> {
   @override
   Widget build(BuildContext context) {
-    final categories = widget.categories ?? [];
+    final categories = this.categories ?? [];
     return ListView.separated(
       padding: const EdgeInsets.symmetric(horizontal: 8).w,
       separatorBuilder: (context, index) => 8.boxW,
       scrollDirection: Axis.horizontal,
-      itemCount: categories.length,
-      itemBuilder: (BuildContext context, int index) =>
-          RoundedBlueBorderedButton(
-        text: categories[index].title ?? '',
-      ),
+      itemCount: categories.length + 1,
+      itemBuilder: (context, index) {
+        if (index == 0) {
+          return RoundedBlueBorderedButton(
+            // text: context.translation.all,
+            text: 'Ählisi',
+            isSelected: selectedCategoryTitle == null,
+            onTap: () => onCategorySelected?.call(''),
+          );
+        }
+        final category = categories[index - 1];
+        return RoundedBlueBorderedButton(
+          text: category.title ?? '',
+          isSelected: selectedCategoryTitle == category.title,
+          onTap: () => onCategorySelected?.call(category.title ?? ''),
+        );
+      },
     );
   }
 }
 
-class RoundedBlueBorderedButton extends StatefulWidget {
-  const RoundedBlueBorderedButton({super.key, required this.text});
+class RoundedBlueBorderedButton extends StatelessWidget {
+  const RoundedBlueBorderedButton({
+    super.key,
+    required this.text,
+    required this.isSelected,
+    required this.onTap,
+  });
+
   final String text;
+  final bool isSelected;
+  final VoidCallback onTap;
 
-  @override
-  State<RoundedBlueBorderedButton> createState() =>
-      _RoundedBlueBorderedButtonState();
-}
-
-class _RoundedBlueBorderedButtonState extends State<RoundedBlueBorderedButton> {
-  bool _isSelected = false;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          _isSelected = !_isSelected;
-        });
-      },
+      onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8).r,
-          color:
-              _isSelected ? const Color(0xFF3A8BCF) : const Color(0xFFF3F5F6),
+          color: isSelected ? ColorName.main : const Color(0xFFF3F5F6),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 22,
-            vertical: 8,
-          ).w,
+          padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 8).w,
           child: AppText.s14w400BdM(
-            widget.text,
+            text,
             fontFamily: StringConstants.roboto,
             fontWeight: FontWeight.w400,
             fontSize: 12.sp,
-            color: _isSelected ? Colors.white : const Color(0xFF555555),
+            color: isSelected ? Colors.white : const Color(0xFF555555),
           ),
         ),
       ),

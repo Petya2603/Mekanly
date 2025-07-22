@@ -29,9 +29,10 @@ class UserBusinessProfileTile extends StatelessWidget {
               onTap: () {
                 final id = user?.shopId;
                 if (id != null) {
-                  // context.push(UserBusinessProfileView.routePath, extra: id);
+                 
                   Navigator.push(
                     context,
+                    // ignore: inference_failure_on_function_invocation
                     CustomPageRoute.slide(
                       UserBusinessProfileView(id: id),
                     ),

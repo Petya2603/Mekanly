@@ -48,7 +48,6 @@ class _AreaSliderWidgetState extends State<AreaSliderWidget> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16).w,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Title
           AppText.s14w400BdM(
@@ -61,10 +60,10 @@ class _AreaSliderWidgetState extends State<AreaSliderWidget> {
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
               rangeThumbShape: const _CustomRangeSliderThumbShape(
-                borderWidth: 3.0,
+                borderWidth: 3,
                 borderColor: Color.fromARGB(255, 58, 139, 207),
                 fillColor: Color.fromARGB(255, 210, 241, 255),
-                enabledThumbRadius: 12.0,
+                enabledThumbRadius: 12,
               ),
             ),
             child: RangeSlider(
@@ -116,18 +115,42 @@ class _AreaSliderWidgetState extends State<AreaSliderWidget> {
                       child: Row(
                         children: [
                           Expanded(
+                              child: Theme(
+                            data: Theme.of(context).copyWith(
+                              textSelectionTheme: const TextSelectionThemeData(
+                                selectionColor: Color(0x553A8BCF),
+                                selectionHandleColor: Color(0xFF3A8BCF),
+                              ),
+                            ),
                             child: TextField(
                               controller: _minController,
                               keyboardType: TextInputType.number,
+                              cursorColor: const Color(0xFF3A8BCF),
                               decoration: const InputDecoration(
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
                                 border: InputBorder.none,
                                 contentPadding:
                                     EdgeInsets.symmetric(horizontal: 12),
+                                suffixText: 'm²',
+                                suffixStyle: TextStyle(
+                                  fontSize: 14,
+                                  color: Color.fromARGB(255, 34, 34, 34),
+                                ),
+                                focusedBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Color(0xFF3A8BCF), width: 1),
+                                ),
+                                enabledBorder: const UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey, width: 1),
+                                ),
+                                isCollapsed: true,
                               ),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 14.sp,
-                                color: Colors.black,
+                                color: const Color.fromARGB(255, 34, 34, 34),
                                 fontWeight: FontWeight.w500,
                               ),
                               onChanged: (value) {
@@ -145,17 +168,7 @@ class _AreaSliderWidgetState extends State<AreaSliderWidget> {
                                 }
                               },
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8).w,
-                            child: Text(
-                              'm²',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                color: const Color(0xff6A6A6A),
-                              ),
-                            ),
-                          ),
+                          )),
                         ],
                       ),
                     ),
@@ -180,18 +193,40 @@ class _AreaSliderWidgetState extends State<AreaSliderWidget> {
                       child: Row(
                         children: [
                           Expanded(
+                              child: Theme(
+                            data: Theme.of(context).copyWith(
+                              textSelectionTheme: const TextSelectionThemeData(
+                                selectionColor: Color(0x553A8BCF),
+                                selectionHandleColor: Color(0xFF3A8BCF),
+                              ),
+                            ),
                             child: TextField(
                               controller: _maxController,
                               keyboardType: TextInputType.number,
+                              cursorColor: const Color(0xFF3A8BCF),
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 contentPadding:
                                     EdgeInsets.symmetric(horizontal: 12),
+                                isCollapsed: true,
+                                suffixText: 'm²',
+                                suffixStyle: TextStyle(
+                                  fontSize: 14,
+                                  color: Color.fromARGB(255, 34, 34, 34),
+                                ),
+                                focusedBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Color(0xFF3A8BCF), width: 1),
+                                ),
+                                enabledBorder: const UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey, width: 1),
+                                ),
                               ),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 14.sp,
-                                color: Colors.black,
+                                color: const Color.fromARGB(255, 34, 34, 34),
                                 fontWeight: FontWeight.w500,
                               ),
                               onChanged: (value) {
@@ -209,17 +244,7 @@ class _AreaSliderWidgetState extends State<AreaSliderWidget> {
                                 }
                               },
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8).w,
-                            child: Text(
-                              'm²',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                color: const Color(0xff6A6A6A),
-                              ),
-                            ),
-                          ),
+                          )),
                         ],
                       ),
                     ),

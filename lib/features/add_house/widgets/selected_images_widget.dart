@@ -39,14 +39,21 @@ class SelectedImagesWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(5).r,
                     color: Colors.black12,
                   ),
-                  child: Image.file(
-                    File(
-                      item.image.path,
-                    ),
-                    fit: BoxFit.cover,
-                    width: 128.w,
-                    height: 126.w,
-                  ),
+                  child: item.imageUrl != null
+                      ? Image.network(
+                          item.imageUrl!,
+                          fit: BoxFit.cover,
+                          width: 128.w,
+                          height: 126.w,
+                        )
+                      : Image.file(
+                          File(
+                            item.image!.path,
+                          ),
+                          fit: BoxFit.cover,
+                          width: 128.w,
+                          height: 126.w,
+                        ),
                 ),
               ),
               if (index == 0)

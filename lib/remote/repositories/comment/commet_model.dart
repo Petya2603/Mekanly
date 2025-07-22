@@ -40,7 +40,7 @@ class Comment {
     return Comment(
       id: json['id']?.toString() ?? '',
       userid: json['user_id']?.toString() ?? '',
-      author: json['author']?.toString() ?? 'Anonim',
+      author: json['author']?.toString() ?? 'Eýesi',
       authorId: json['author_id']?.toString() ?? '',
       content: json['comment']?.toString() ?? '',
       createdAt: parseDate(json['created_at']),

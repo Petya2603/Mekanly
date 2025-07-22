@@ -36,6 +36,8 @@ _$HouseDataImpl _$$HouseDataImplFromJson(Map<String, dynamic> json) =>
       description: json['description'] as String?,
       reason: json['reason'] as String?,
       price: json['price'] as String?,
+      lowerPrice: json['lower_price'] as String?,
+      lowerPercentage: (json['lower_percentage'] as num?)?.toInt(),
       commentCount: (json['comment_count'] as num?)?.toInt(),
       viewed: (json['viewed'] as num?)?.toInt(),
       star: (json['star'] as num?)?.toDouble(),
@@ -62,13 +64,19 @@ _$HouseDataImpl _$$HouseDataImplFromJson(Map<String, dynamic> json) =>
       writeComment: (json['write_comment'] as num?)?.toInt(),
       who: json['who'] as String?,
       area: (json['area'] as num?)?.toInt(),
-      exclusisive: (json['exclusisive'] as num?)?.toInt(),
       exclusive: (json['exclusive'] as num?)?.toInt(),
       hashtag: json['hashtag'] as String?,
       levelNumber: (json['level_number'] as num?)?.toInt(),
       liked: json['liked'] as bool?,
       shop: json['shop'] as String?,
       type: json['type'] as String?,
+      propertyType: json['property_type'] == null
+          ? null
+          : PropertyType.fromJson(
+              json['property_type'] as Map<String, dynamic>),
+      repairType: json['repair_type'] == null
+          ? null
+          : RepairType.fromJson(json['repair_type'] as Map<String, dynamic>),
       updatedAt: json['updated_at'] == null
           ? null
           : DateTime.parse(json['updated_at'] as String),
@@ -76,6 +84,7 @@ _$HouseDataImpl _$$HouseDataImplFromJson(Map<String, dynamic> json) =>
           ? null
           : DateTime.parse(json['created_at'] as String),
       banner: json['banner'] as String?,
+      isOwner: json['is_owner'] as bool?,
     );
 
 Map<String, dynamic> _$$HouseDataImplToJson(_$HouseDataImpl instance) =>
@@ -90,6 +99,8 @@ Map<String, dynamic> _$$HouseDataImplToJson(_$HouseDataImpl instance) =>
       'description': instance.description,
       'reason': instance.reason,
       'price': instance.price,
+      'lower_price': instance.lowerPrice,
+      'lower_percentage': instance.lowerPercentage,
       'comment_count': instance.commentCount,
       'viewed': instance.viewed,
       'star': instance.star,
@@ -108,16 +119,18 @@ Map<String, dynamic> _$$HouseDataImplToJson(_$HouseDataImpl instance) =>
       'write_comment': instance.writeComment,
       'who': instance.who,
       'area': instance.area,
-      'exclusisive': instance.exclusisive,
       'exclusive': instance.exclusive,
       'hashtag': instance.hashtag,
       'level_number': instance.levelNumber,
       'liked': instance.liked,
       'shop': instance.shop,
       'type': instance.type,
+      'property_type': instance.propertyType,
+      'repair_type': instance.repairType,
       'updated_at': instance.updatedAt?.toIso8601String(),
       'created_at': instance.createdAt?.toIso8601String(),
       'banner': instance.banner,
+      'is_owner': instance.isOwner,
     };
 
 _$LocationImpl _$$LocationImplFromJson(Map<String, dynamic> json) =>

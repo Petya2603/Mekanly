@@ -37,7 +37,7 @@ class _SplashViewState extends State<SplashView> {
     return Scaffold(
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
-          ///TODO: Used hard code here should be optimzed later
+          // ignore: flutter_style_todos
           if (state is AuthCheckingDone) {
             final smallBanners = state.smallBanners;
             final bigBanners = state.bigBanners;
@@ -50,7 +50,7 @@ class _SplashViewState extends State<SplashView> {
             Navigator.pushAndRemoveUntil(
               context,
               CustomPageRoute.slide(
-                 RootView(),
+                RootView(),
               ),
               (r) => false,
             );

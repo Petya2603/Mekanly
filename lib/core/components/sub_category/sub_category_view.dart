@@ -13,9 +13,8 @@ import '../app_text.dart';
 import '../buisnes_profile_card.dart';
 import '../categories_card.dart';
 import '../loading_indicator.dart';
-import '../search_field.dart';
+import '../search_field_house.dart';
 import '../try_again_widget.dart';
-import 'product_view.dart';
 
 class BusinessProfileViewSubcategory extends StatefulWidget {
   const BusinessProfileViewSubcategory({
@@ -89,7 +88,8 @@ class _BusinessProfileViewState extends State<BusinessProfileViewSubcategory>
                         child: Padding(
                           padding: EdgeInsets.only(right: 10.w),
                           child: SearchField(
-                            onTap: () {},
+                            onSearchTap: () {},
+                            onClearTap: () {},
                           ),
                         ),
                       ),

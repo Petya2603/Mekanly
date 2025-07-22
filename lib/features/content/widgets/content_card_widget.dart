@@ -4,25 +4,37 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/components/app_text.dart';
 import '../../../product/constants/constants.dart';
+import '../../../product/transitions/custom_page_route.dart';
 import '../../../utils/extensions.dart';
+import '../../house_detail/house_detail_view_owner.dart';
 import '../content_view.dart';
 
 class ContentCardWidget extends StatefulWidget {
   const ContentCardWidget({
     super.key,
+    required this.id,
     this.imgUrls,
     this.title,
     this.description,
     this.price,
     this.status,
     this.statusColor,
+    this.favorited,
+    this.type,
+    required this.onDeleted,
   });
+  final int id;
   final List<String?>? imgUrls;
   final String? title;
   final String? description;
   final String? price;
   final String? status;
   final Color? statusColor;
+  final String? type;
+
+  final VoidCallback onDeleted;
+
+  final bool? favorited;
 
   @override
   State<ContentCardWidget> createState() => _ContentCardWidgetState();
@@ -32,7 +44,31 @@ class _ContentCardWidgetState extends State<ContentCardWidget> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        final data = HouseDetailOwnerRoute(
+          type: widget.type,
+          imgUrl: widget.imgUrls,
+          id: widget.id,
+          status: widget.status,
+          favorited: widget.favorited,
+        );
+        Navigator.push(
+          context,
+          // ignore: inference_failure_on_function_invocation
+          CustomPageRoute.slide(
+            HouseDetailViewOwner.builder(
+              context,
+              data,
+              status: widget.status,
+              type: widget.type,
+            ),
+          ),
+        ).then((value) {
+          if (value == true) {
+            widget.onDeleted();
+          }
+        });
+      },
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8).r,
@@ -40,6 +76,7 @@ class _ContentCardWidgetState extends State<ContentCardWidget> {
           boxShadow: [
             BoxShadow(
               blurRadius: 3.2,
+              // ignore: deprecated_member_use
               color: const Color(0xFF000000).withOpacity(0.25),
             ),
           ],
@@ -153,7 +190,7 @@ class _ContentCardWidgetState extends State<ContentCardWidget> {
               ),
               4.boxW,
               AppText.s14w400BdM(
-                status ?? '',
+                status,
                 fontSize: 10.sp,
                 fontWeight: FontWeight.w400,
                 fontFamily: StringConstants.roboto,

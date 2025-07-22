@@ -1,56 +1,4 @@
 class Product {
-  final int id;
-  final String name;
-  final String description;
-  final double? price;
-  final String status;
-  final bool favorited;
-  final String? expire;
-  final String? phone;
-  final String? who;
-  final double? delivery;
-  final int? comment;
-  final double? loverPercentage;
-  final double? loverPrice;
-  final bool? vip;
-  final int? exclusive;
-  final String? hashtag;
-  final List<ProductImage> images;
-  final DateTime createdAt;
-  final int userId;
-  final String userName;
-  final String userPhone;
-  final int locationId;
-  final String locationName;
-
-  final Shop? shop;
-
-  Product({
-    required this.id,
-    required this.name,
-    required this.description,
-    this.price,
-    required this.status,
-    required this.favorited,
-    this.expire,
-    this.phone,
-    this.who,
-    this.delivery,
-    this.comment,
-    this.loverPercentage,
-    this.loverPrice,
-    this.vip,
-    this.exclusive,
-    this.hashtag,
-    required this.images,
-    required this.createdAt,
-    required this.userId,
-    required this.userName,
-    required this.userPhone,
-    required this.locationId,
-    required this.locationName,
-    this.shop,
-  });
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
@@ -87,14 +35,61 @@ class Product {
           : null,
     );
   }
+
+  Product({
+    required this.id,
+    required this.name,
+    required this.description,
+    this.price,
+    required this.status,
+    required this.favorited,
+    this.expire,
+    this.phone,
+    this.who,
+    this.delivery,
+    this.comment,
+    this.loverPercentage,
+    this.loverPrice,
+    this.vip,
+    this.exclusive,
+    this.hashtag,
+    required this.images,
+    required this.createdAt,
+    required this.userId,
+    required this.userName,
+    required this.userPhone,
+    required this.locationId,
+    required this.locationName,
+    this.shop,
+  });
+  final int id;
+  final String name;
+  final String description;
+  final double? price;
+  final String status;
+  final bool favorited;
+  final String? expire;
+  final String? phone;
+  final String? who;
+  final double? delivery;
+  final int? comment;
+  final double? loverPercentage;
+  final double? loverPrice;
+  final bool? vip;
+  final int? exclusive;
+  final String? hashtag;
+  final List<ProductImage> images;
+  final DateTime createdAt;
+  final int userId;
+  final String userName;
+  final String userPhone;
+  final int locationId;
+  final String locationName;
+
+  final Shop? shop;
 }
 
 class ProductImage {
-  final int id;
-  final String path;
-  final String original;
-  final String thumbnail;
-  final String watermark;
 
   ProductImage({
     required this.id,
@@ -113,12 +108,14 @@ class ProductImage {
       watermark: json['watermark']?.toString() ?? '',
     );
   }
+  final int id;
+  final String path;
+  final String original;
+  final String thumbnail;
+  final String watermark;
 }
 
 class ProductCategory {
-  final int id;
-  final String title;
-  final String parent;
 
   ProductCategory({
     required this.id,
@@ -135,24 +132,12 @@ class ProductCategory {
           '',
     );
   }
+  final int id;
+  final String title;
+  final String parent;
 }
 
 class Shop {
-  final int id;
-  final String brand;
-  final String? logo;
-  final String? image;
-  final String? description;
-  final String? briefDescription;
-  final int views;
-  final String? coverMedia;
-  final List<String> phoneNumbers;
-  final bool vipStatus;
-  final String? site;
-  final String? mail;
-  final List<SocialProfile> socialProfiles;
-  final List<String> location;
-  final int productCount;
 
   Shop({
     required this.id,
@@ -197,12 +182,24 @@ class Shop {
       productCount: int.tryParse(json['product_count']?.toString() ?? '0') ?? 0,
     );
   }
+  final int id;
+  final String brand;
+  final String? logo;
+  final String? image;
+  final String? description;
+  final String? briefDescription;
+  final int views;
+  final String? coverMedia;
+  final List<String> phoneNumbers;
+  final bool vipStatus;
+  final String? site;
+  final String? mail;
+  final List<SocialProfile> socialProfiles;
+  final List<String> location;
+  final int productCount;
 }
 
 class SocialProfile {
-  final int sociableId;
-  final String platform;
-  final String url;
 
   SocialProfile({
     required this.sociableId,
@@ -217,12 +214,12 @@ class SocialProfile {
       url: json['url']?.toString() ?? '',
     );
   }
+  final int sociableId;
+  final String platform;
+  final String url;
 }
 
 class ApiResponse {
-  final bool status;
-  final String message;
-  final List<Product> data;
 
   ApiResponse({
     required this.status,
@@ -240,4 +237,7 @@ class ApiResponse {
           [],
     );
   }
+  final bool status;
+  final String message;
+  final List<Product> data;
 }

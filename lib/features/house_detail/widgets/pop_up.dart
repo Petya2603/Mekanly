@@ -1,3 +1,5 @@
+// ignore_for_file: inference_failure_on_function_invocation
+
 import 'package:flutter/material.dart';
 import 'package:gen/gen.dart';
 
@@ -30,6 +32,7 @@ class ClickableBanner extends StatelessWidget {
                 children: [
                   Assets.icons.fire.svg(
                     package: 'gen',
+                    // ignore: deprecated_member_use
                     color: const Color.fromARGB(255, 55, 65, 81),
                   ),
                   const SizedBox(width: 8),
@@ -52,6 +55,7 @@ class ClickableBanner extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               const Text(
+                // ignore: lines_longer_than_80_chars
                 'Satyjy bu bildirşi diňe mekanly.com-da goýandygyny tassyklady.',
                 style: TextStyle(
                   fontSize: 13,
@@ -114,7 +118,7 @@ class ClickableBanner extends StatelessWidget {
               ],
             ),
             const Icon(Icons.info,
-                color: Color.fromARGB(255, 243, 191, 1), size: 20),
+                color: Color.fromARGB(255, 243, 191, 1), size: 20,),
           ],
         ),
       ),

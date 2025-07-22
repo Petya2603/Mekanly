@@ -338,7 +338,36 @@ class AppLocalizationsTk extends AppLocalizations {
   String get users_can_write_comments => 'Ulanyjylar teswir ýazyp bilýärler';
 
   @override
+  String get are_you_sure_you_want_to_delete_this_announcement =>
+      'Siz hakykatdanam şu bildirişi aýyrmakçymy?';
+
+  @override
+  String get are_you_sure_you_want_to_move_this_announcement =>
+      'Siz bu bildirişi hakykatdanam arzanlatmakçymy?';
+
+  @override
+  String get are_you_sure_you_want_to_price_this_announcement =>
+      'Siz bu bildirişi hakykatdanam öňe süýşürmekçimi?';
+
+  @override
+  String get are_you_sure_you_want_to_price_this_lux =>
+      'Siz bu bildirişi hakykatdanam LUXE derejeli etmekçimi?';
+
+  @override
+  String get are_you_sure_you_want_to_price_this_vip =>
+      'Siz bu bildirişi hakykatdanam VIP etmekçimi?';
+
+  @override
+  String get bank_kart_sayla => 'Bank karty saýla';
+
+  @override
+  String get bank_toleg => 'Töleg sahypasy';
+
+  @override
   String get dow_et => 'Dowam et';
+
+  @override
+  String get edit1 => 'Sazlamalar';
 
   @override
   String get dow_et_bn =>
@@ -524,14 +553,14 @@ class AppLocalizationsTk extends AppLocalizations {
 
   @override
   String get make_discount_description =>
-      'Arzanladyşy bildirişi goşanyňyzdan soň 5 günden bir gezek amala aşyryp bilersiňiz. Arzanladylan bildiriş bir gezeklik öňe süýşüriler we täze bildiriş goşulsa ýene-de aşak süýşüp gider.';
+      'Bellenen bahanyň üstünden arzanladyş girizip bilersiňiz. Arzanladyş möçberi görkezilende (% görnüşde) hasaplama awtomatiki ýerine ýetirilýär.';
 
   @override
   String get moving_forward => 'Öňe süýşürmek';
 
   @override
   String get moving_forward_description =>
-      'Jaýyňyz bir gezeklik öňe süýşürilýär we täze jaýlaryň arasynda ýerleşdirilýär. Täze jaý goşulsa, siziň jaýyňyz ýene-de aşak süýşüp gider.';
+      'Bildirişiňiz bir gezeklik täze bildirişleriň arasynda öňe süýşürilýär. Emma täze bildiriş goşulsa, siziňki ýene-de aşak geçip biler.';
 
   @override
   String get make_vip => 'VIP etmek';
@@ -547,7 +576,7 @@ class AppLocalizationsTk extends AppLocalizations {
 
   @override
   String get make_vip_description =>
-      'VIP derejeli jaýlar tiz satylmak mümkinçiligi ýokarydyr. VIP derejeli jaýlar 5 günüň dowamynda ýerini üýtgedip durýar hem-de reňki we görnüşi boýunça tapawutlanýar.';
+      'Bildirişiňiz 5 günläp VIP görnüşde ýerleşdirilýär we ýerini üýtgedip durýar. Reňki we nyşany boýunça tapawutlandyrylýar. VIP derejeli jaýlaryň satylmak mümkinçiligi ýokary bolýar.';
 
   @override
   String get make_luxe => 'LUXE etmek';
@@ -557,7 +586,7 @@ class AppLocalizationsTk extends AppLocalizations {
 
   @override
   String get make_luxe_description =>
-      'LUXE derejeli jaýlar mekanly.com tarapyndan teklip berilýän jaýlardyr we tiz satylmak mümkinçiligi ýokarydyr. LUXE derejeli jaýlar 7 günüň dowamynda günde 2 gezek ýerini üýtgedip durýar hem-de reňki we görnüşi boýunça tapawutlanýar.';
+      'Bildirişiňiz mekanly.com tarapyndan teklip berilýän LUXE derejeli bildirişleriň arasynda görkezilýär. Bu bildiriş 7 günläp ýerini günde 2 gezek üýtgedip, reňki we nyşany boýunça tapawutlandyrylýar. LUXE derejeli jaýlaryň satylmak mümkinçiligi has ýokary bolýar.';
 
   @override
   String get lift_notification => 'Bildirişi öňe süýşürmek';
@@ -604,7 +633,7 @@ class AppLocalizationsTk extends AppLocalizations {
   String get your_imo_page => 'Imo sahypaňyz';
 
   @override
-  String get my_announcements => 'Meniň bildirişlerim';
+  String get my_announcements => 'Bildirişlerim';
 
   @override
   String get about_us => 'Biz barada';

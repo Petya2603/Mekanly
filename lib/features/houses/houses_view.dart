@@ -1,14 +1,17 @@
+import 'dart:async';
 import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
+import '../../core/components/app_text.dart';
 import '../../core/components/loading_indicator.dart';
-import '../../core/components/search_field.dart';
+import '../../core/components/search_field_house.dart';
 import '../../core/components/try_again_widget.dart';
 import '../../localization/extensions.dart';
 import '../../product/base/base_status/base_status.dart';
+import '../../product/constants/constants.dart';
 import '../../product/transitions/custom_page_route.dart';
 import '../../remote/entities/global_options/global_options.dart'
     show CategoryHouse, Location, SubLocations;
@@ -37,28 +40,66 @@ class _HousesViewState extends State<HousesView>
   final ScrollController _scrollController = ScrollController();
   final TextEditingController inArzanController = TextEditingController();
   final TextEditingController inGymmatController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
+  Timer? _debounce;
+
   bool _showScrollToTopButton = false;
+  bool _showClearButton = false;
   List<Location> locations = [];
   List<CategoryHouse> categories = [];
   List<SubLocations>? currentLoc;
   List<CategoryHouse>? currentCategory;
-  bool justShowWithImage = false;
-  bool justShowNewAdded = false;
-  bool fromHolder = false;
 
   @override
   void initState() {
-    BaseLogger.warning(' init houses');
-    init();
-
     super.initState();
-  }
+    BaseLogger.warning('init houses');
 
-  void init() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<HousesBloc>().add(const HousesEvent.refresh());
     });
+
     _scrollController.addListener(_scrollListener);
+    _searchController.addListener(() {
+      setState(() {
+        _showClearButton = _searchController.text.isNotEmpty;
+      });
+    });
+  }
+
+  void _onSearchChanged() {
+    final bloc = context.read<HousesBloc>();
+    final searchText = _searchController.text;
+
+    FocusScope.of(context).unfocus();
+
+    BaseLogger.info('Search query: $searchText');
+    final globalOptions = bloc.state.globalOptions?.data;
+
+    if (globalOptions != null) {
+      final filtered = globalOptions.copyWith(
+        search: searchText,
+      );
+      bloc.add(HousesEvent.filter(filtered));
+    } else {
+      BaseLogger.warning('Global options are null, cannot perform search.');
+    }
+  }
+
+  void _onClearSearch() {
+    _searchController.clear();
+    FocusScope.of(context).unfocus();
+    final bloc = context.read<HousesBloc>();
+    final globalOptions = bloc.state.globalOptions?.data;
+
+    if (globalOptions != null) {
+      final filtered = globalOptions.copyWith(
+        search: '',
+      );
+      bloc.add(HousesEvent.filter(filtered));
+    } else {
+      BaseLogger.warning('Global options are null, cannot perform search.');
+    }
   }
 
   void _scrollListener() {
@@ -79,6 +120,17 @@ class _HousesViewState extends State<HousesView>
         ScrollDirection.forward) {
       _showActionsNotifier.value = true;
     }
+
+    // 👇 P A G I N A T I O N  – en alta ulaşıldığında
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      final bloc = context.read<HousesBloc>();
+      final state = bloc.state;
+
+      if (!state.isPaginating && state.hasMorePages) {
+        bloc.add(const HousesEvent.loadMore());
+      }
+    }
   }
 
   void _scrollToTop() {
@@ -90,12 +142,25 @@ class _HousesViewState extends State<HousesView>
     );
   }
 
+  final ValueNotifier<String?> _favoriteNotification = ValueNotifier(null);
+
+  void _showFavoriteBanner({required bool isAdded}) {
+    _favoriteNotification.value =
+        isAdded ? 'Halanlaryma goşuldy' : 'Halanlarymdan aýryldy';
+
+    Future.delayed(const Duration(seconds: 2), () {
+      _favoriteNotification.value = null;
+    });
+  }
+
   @override
   void dispose() {
     inArzanController.dispose();
     inGymmatController.dispose();
     _scrollController.removeListener(_scrollListener);
     _showActionsNotifier.dispose();
+    _searchController.dispose();
+    _debounce?.cancel();
     super.dispose();
   }
 
@@ -103,10 +168,41 @@ class _HousesViewState extends State<HousesView>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      body: BlocBuilder<HousesBloc, HousesState>(
+      body: BlocConsumer<HousesBloc, HousesState>(
+        listenWhen: (prev, curr) => prev.globalOptions != curr.globalOptions,
+        listener: (context, state) {
+          final options = state.globalOptions?.data;
+          if (options != null && locations.isEmpty && categories.isEmpty) {
+            setState(() {
+              locations = List.of(options.locations);
+              currentLoc = List.of(options.locations.getAllSelected ?? []);
+
+              categories = List.of(options.categoryHouses);
+              currentCategory =
+                  List.of(options.categoryHouses.getAllSelected ?? []);
+
+              inArzanController.text =
+                  options.minPrice != null ? options.minPrice.toString() : '';
+              inGymmatController.text =
+                  options.maxPrice != null ? options.maxPrice.toString() : '';
+            });
+          }
+        },
         builder: (context, state) {
           final filter = state.globalOptions;
           final houses = state.houses;
+          String formatPrice(int? price) {
+            if (price == null) return '-';
+
+            if (price >= 1000000) {
+              // ignore: lines_longer_than_80_chars
+              return '${(price / 1000000).toStringAsFixed(price % 1000000 == 0 ? 0 : 1)} mln';
+            } else if (price >= 1000) {
+              // ignore: lines_longer_than_80_chars
+              return '${(price / 1000).toStringAsFixed(price % 1000 == 0 ? 0 : 1)} müň';
+            }
+            return price.toString();
+          }
 
           return Stack(
             children: [
@@ -120,14 +216,36 @@ class _HousesViewState extends State<HousesView>
                     floating: true,
                     toolbarHeight: 75.w,
                     surfaceTintColor: Colors.white,
-                    elevation: 0,
+                    elevation: 5,
                     backgroundColor: ColorName.main,
-                    shadowColor: Colors.transparent,
+                    // ignore: deprecated_member_use
+                    shadowColor: Colors.black.withOpacity(0.1),
                     foregroundColor: Colors.transparent,
-                    title: Container(
-                      decoration: const BoxDecoration(
-                        color: ColorName.main,
+                    flexibleSpace: Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                            color: const Color.fromARGB(255, 0, 0, 25)
+                                // ignore: deprecated_member_use
+                                .withOpacity(0.02),
+                            width: 2,
+                          ),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color.fromARGB(255, 0, 0, 25)
+                                // ignore: deprecated_member_use
+                                .withOpacity(0.1),
+                            blurRadius: 5,
+                            offset: const Offset(0, 1),
+                          ),
+                        ],
                       ),
+                    ),
+                    title: Container(
+                      // decoration: const BoxDecoration(
+                      //   color: ColorName.main,
+                      // ),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 14,
                         vertical: 12,
@@ -136,122 +254,211 @@ class _HousesViewState extends State<HousesView>
                         children: [
                           Expanded(
                             child: SearchField(
-                              onTap: () {},
+                              controller: _searchController,
+                              onSearchTap: _onSearchChanged,
+                              onClearTap: _onClearSearch,
+                              showClearButton: _showClearButton,
+                              onFieldSubmitted: (_) => _onSearchChanged(),
                             ),
                           ),
                           10.boxW,
-                          BlocBuilder<HousesBloc, HousesState>(
-                            builder: (context, state) {
-                              return GestureDetector(
-                                onTap: () {
-                                  if (filter?.data != null) {
-                                    final data = HouseFilterRoute(
-                                      globalOptions: filter!.data,
-                                      bloc: context.read<HousesBloc>(),
-                                    );
-                                    Navigator.push(
-                                      context,
-                                      // ignore: inference_failure_on_function_invocation
-                                      CustomPageRoute.slide(
-                                        HouseFiltersView(filter: data),
-                                      ),
-                                    );
-                                  }
-                                },
-                                child: SizedBox(
-                                  width: 35.w,
-                                  height: 35.w,
-                                  child: state.hasActiveFilters
-                                      ? Assets.icons.icFilterselected
-                                          .svg(package: 'gen')
-                                      : Assets.icons.icFilter
-                                          .svg(package: 'gen'),
-                                ),
-                              );
+                          GestureDetector(
+                            onTap: () {
+                              if (filter?.data != null) {
+                                final data = HouseFilterRoute(
+                                  globalOptions: filter!.data,
+                                  bloc: context.read<HousesBloc>(),
+                                );
+                                Navigator.push(
+                                  context,
+                                  // ignore: inference_failure_on_function_invocation
+                                  CustomPageRoute.slide(
+                                    HouseFiltersView(filter: data),
+                                  ),
+                                );
+                              }
                             },
-                          )
+                            child: SizedBox(
+                              width: 35.w,
+                              height: 35.w,
+                              child: state.hasActiveFilters
+                                  ? Assets.icons.icFilterselected
+                                      .svg(package: 'gen')
+                                  : Assets.icons.icFilter.svg(package: 'gen'),
+                            ),
+                          ),
                         ],
                       ),
                     ),
                     bottom: PreferredSize(
                       preferredSize: Size.fromHeight(40.w),
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Container(
-                          color: Colors.white,
-                          alignment: Alignment.center,
-                          key: const Key('app_bar_actions'),
-                          padding: const EdgeInsets.fromLTRB(14, 10, 14, 8).w,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              RoundedBlueBorderedChipBtn(
-                                onTap: () async {
-                                  final updated = await OptionModalBottomSheet
-                                      .showOptionModal(
-                                    context,
-                                    locations: locations,
-                                  );
-
-                                  if (updated != null) {
-                                    setState(() {
-                                      locations = List.of(updated);
-                                      currentLoc =
-                                          List.of(updated.getAllSelected ?? []);
-                                    });
-                                  }
-                                },
-                                title: (currentLoc?.nameAll?.isEmpty ?? true)
-                                    ? context.translation.location
-                                    : currentLoc?.nameAll ?? '',
-                                icon: Assets.icons.icLocation,
-                              ),
-                              6.boxW,
-                              RoundedBlueBorderedChipBtn(
-                                onTap: () async {
-                                  final updated =
-                                      await OptionCategoryModalBottomSheet.show(
-                                    context,
-                                    categories: categories,
-                                  );
-
-                                  if (updated != null) {
-                                    setState(() {
-                                      categories =
-                                          List<CategoryHouse>.from(updated);
-                                      currentCategory =
-                                          List.of(updated.getAllSelected ?? []);
-                                    });
-                                  }
-                                },
-                                icon: Assets.icons.icCategory,
-                                title: (currentCategory?.isEmpty ?? true)
-                                    ? context.translation.category
-                                    : currentCategory?.nameAll ?? '',
-                              ),
-                              6.boxW,
-                              RoundedBlueBorderedChipBtn(
-                                onTap: () {
-                                  // ignore: inference_failure_on_function_invocation
-                                  showModalBottomSheet(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    enableDrag: false,
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(24),
-                                      ),
-                                    ),
-                                    builder: (context) =>
-                                        const BottomPriceSelectorSheet(),
-                                  );
-                                },
-                                title: context.translation.price,
-                                icon: Assets.icons.icCost,
-                              ),
-                            ],
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Container(
+                            color: Colors.white,
+                            width: MediaQuery.of(context).size.width,
+                            height: 50.w,
                           ),
-                        ),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Container(
+                              color: Colors.white,
+                              alignment: Alignment.center,
+                              key: const Key('app_bar_actions'),
+                              padding:
+                                  const EdgeInsets.fromLTRB(14, 10, 14, 8).w,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  RoundedBlueBorderedChipBtn(
+                                    onTap: () async {
+                                      final updated =
+                                          await OptionModalBottomSheetGysga
+                                              .showOptionModal(
+                                        context,
+                                        locations: locations,
+                                      );
+
+                                      if (updated != null) {
+                                        setState(() {
+                                          locations = List.of(updated);
+                                          currentLoc = List.of(
+                                            updated.getAllSelected ?? [],
+                                          );
+                                        });
+
+                                        // ignore: use_build_context_synchronously
+                                        final bloc = context.read<HousesBloc>();
+                                        final globalOptions =
+                                            bloc.state.globalOptions?.data;
+
+                                        if (globalOptions != null) {
+                                          final filtered =
+                                              globalOptions.copyWith(
+                                            locations: locations,
+                                            selectedSubLocations: currentLoc,
+                                          );
+                                          bloc.add(
+                                            HousesEvent.filter(
+                                              filtered,
+                                            ),
+                                          );
+                                        }
+                                      }
+                                    },
+                                    title:
+                                        (currentLoc?.nameAll?.isEmpty ?? true)
+                                            ? context.translation.location
+                                            : currentLoc?.nameAll ?? '',
+                                    icon: Assets.icons.icLocation,
+                                    // ignore: use_if_null_to_convert_nulls_to_bools
+                                    isSelected: currentLoc?.isNotEmpty == true,
+                                  ),
+                                  6.boxW,
+                                  RoundedBlueBorderedChipBtn(
+                                    onTap: () async {
+                                      final updated =
+                                          await OptionCategoryModalBottomSheet
+                                              .show(
+                                        context,
+                                        categories: categories,
+                                      );
+
+                                      if (updated != null) {
+                                        setState(() {
+                                          categories =
+                                              List<CategoryHouse>.from(updated);
+                                          currentCategory = List.of(
+                                            updated.getAllSelected ?? [],
+                                          );
+                                        });
+
+                                        // ignore: use_build_context_synchronously
+                                        final bloc = context.read<HousesBloc>();
+                                        final globalOptions =
+                                            bloc.state.globalOptions?.data;
+
+                                        if (globalOptions != null) {
+                                          final filtered =
+                                              globalOptions.copyWith(
+                                            categoryHouses: categories,
+                                            selectedCategoryHouses:
+                                                currentCategory,
+                                          );
+                                          bloc.add(
+                                              HousesEvent.filter(filtered));
+                                        }
+                                      }
+                                    },
+                                    icon: Assets.icons.icCategory,
+                                    title: (currentCategory?.isEmpty ?? true)
+                                        ? context.translation.category
+                                        : currentCategory?.nameAll ?? '',
+                                    // ignore: use_if_null_to_convert_nulls_to_bools
+                                    isSelected:
+                                        // ignore: use_if_null_to_convert_nulls_to_bools
+                                        currentCategory?.isNotEmpty == true,
+                                  ),
+                                  6.boxW,
+                                  RoundedBlueBorderedChipBtn(
+                                    onTap: () async {
+                                      final result = await showModalBottomSheet<
+                                          Map<String, int?>>(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(24),
+                                          ),
+                                        ),
+                                        builder: (context) =>
+                                            const BottomPriceSelectorSheet(),
+                                      );
+
+                                      if (result != null) {
+                                        // ignore: use_build_context_synchronously
+                                        final bloc = context.read<HousesBloc>();
+                                        final globalOptions =
+                                            bloc.state.globalOptions?.data;
+
+                                        final minPrice = result['min'];
+                                        final maxPrice = result['max'];
+
+                                        if (globalOptions != null) {
+                                          final updatedOptions =
+                                              globalOptions.copyWith(
+                                            minPrice: minPrice,
+                                            maxPrice: maxPrice,
+                                          );
+
+                                          bloc.add(
+                                            HousesEvent.filter(updatedOptions),
+                                          );
+                                        }
+                                      }
+                                    },
+                                    title: (state.globalOptions?.data
+                                                    .minPrice !=
+                                                null ||
+                                            state.globalOptions?.data
+                                                    .maxPrice !=
+                                                null)
+                                        // ignore: lines_longer_than_80_chars
+                                        ? '${formatPrice(state.globalOptions?.data.minPrice)} TMT - ${formatPrice(state.globalOptions?.data.maxPrice)} TMT'
+                                        : context.translation.price,
+                                    icon: Assets.icons.icCost,
+                                    isSelected: state
+                                                .globalOptions?.data.minPrice !=
+                                            null ||
+                                        state.globalOptions?.data.maxPrice !=
+                                            null,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -264,19 +471,29 @@ class _HousesViewState extends State<HousesView>
                       child: TryAgainWidget(onTryAgain: () {}),
                     ),
                   if (state.status.isSuccess) ...[
-                    // Main content area
+                    if (houses.isEmpty)
+                      SliverFillRemaining(
+                        child: _buildEmptyState(
+                          context,
+                        ),
+                      )
+                    else
+                      SliverList.separated(
+                        itemBuilder: (context, index) {
+                          final house = houses[index];
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(14, 0, 14, 0).w,
+                            child: MainHouseItem(
+                              house: house,
+                              onFavoriteChanged: (isAdded) =>
+                                  _showFavoriteBanner(isAdded: isAdded),
+                            ),
+                          );
+                        },
+                        separatorBuilder: (context, index) => 5.boxH,
+                        itemCount: houses.length,
+                      ),
                     6.boxH.toSliver,
-                    SliverList.separated(
-                      itemBuilder: (context, index) {
-                        final house = houses?[index];
-                        return Padding(
-                          padding: const EdgeInsets.fromLTRB(14, 0, 14, 0).w,
-                          child: MainHouseItem(house: house),
-                        );
-                      },
-                      separatorBuilder: (context, index) => 5.boxH,
-                      itemCount: houses?.length ?? 0,
-                    ),
                     16.boxH.toSliver,
                   ],
                 ],
@@ -289,16 +506,53 @@ class _HousesViewState extends State<HousesView>
                     opacity: _showScrollToTopButton ? 1.0 : 0.0,
                     duration: const Duration(milliseconds: 300),
                     child: FloatingActionButton(
-                      backgroundColor: const Color(0xff5A8FBB),
-                      onPressed: _scrollToTop,
                       mini: true,
-                      child: const Icon(
-                        Icons.keyboard_arrow_up,
-                        color: Colors.white,
-                      ),
+                      backgroundColor: Colors.transparent,
+                      elevation: 0,
+                      splashColor: Colors.transparent,
+                      highlightElevation: 0,
+                      onPressed: _scrollToTop,
+                      child: Assets.icons.yokaryk.svg(package: 'gen'),
                     ),
                   ),
                 ),
+              // ValueListenableBuilder<String?>(
+              //   valueListenable: _favoriteNotification,
+              //   builder: (context, message, child) {
+              //     return AnimatedPositioned(
+              //       duration: const Duration(milliseconds: 300),
+              //       top: message != null ? 0 : -60.w,
+              //       left: 0,
+              //       right: 0,
+              //       child: Container(
+              //         padding:
+              //             EdgeInsets.symmetric(vertical: 8.w, horizontal: 16.w),
+              //         color: const Color.fromARGB(255, 229, 246, 254),
+              //         child: Row(
+              //           children: [
+              //             Icon(
+              //               message == 'Halanlaryma goşuldy'
+              //                   ? Icons.check_circle
+              //                   : null,
+              //               color: const Color.fromARGB(255, 0, 130, 1),
+              //               size: 20.w,
+              //             ),
+              //             8.boxW,
+              //             Text(
+              //               message ?? '',
+              //               style: TextStyle(
+              //                   color: const Color.fromARGB(255, 85, 85, 85),
+              //                   fontSize: 12.sp,
+              //                   fontWeight: FontWeight.w400),
+              //             ),
+              //             const Spacer(),
+              //             Assets.icons.saga.svg(package: 'gen'),
+              //           ],
+              //         ),
+              //       ),
+              //     );
+              //   },
+              // ),
             ],
           );
         },
@@ -308,4 +562,25 @@ class _HousesViewState extends State<HousesView>
 
   @override
   bool get wantKeepAlive => true;
+}
+
+Widget _buildEmptyState(
+  BuildContext context,
+) {
+  return Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Assets.icons.hiczatyok.svg(package: 'gen'),
+        6.boxH,
+        AppText.s14w400BdM(
+          context.translation.not_found,
+          fontFamily: StringConstants.roboto,
+          fontSize: 16.sp,
+          fontWeight: FontWeight.w400,
+          color: const Color(0xFF6A6A6A),
+        ),
+      ],
+    ),
+  );
 }

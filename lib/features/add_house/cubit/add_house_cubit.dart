@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import '../../../product/base/base_status/base_status.dart';
 import '../../../product/base/bloc/base_bloc.dart';
 import '../../../remote/entities/global_options/global_options.dart';
+import '../../../remote/entities/house_detail/house_detail_response.dart';
 import '../../../remote/repositories/add_house/add_house_repository.dart';
 import '../../../remote/response_error.dart';
 import '../../../utils/extensions.dart';
@@ -123,7 +124,7 @@ class AddHouseCubit extends BaseCubit<AddHouseState> {
   Future<void> addHouse(AddHousePayload data) async {
     emit(state.copyWith(addHouseStatus: const BaseStatus.loading()));
 
-    final image = state.pickedImages?.map((m) => m.image).toList();
+    final image = state.pickedImages?.map((m) => m.image).whereType<XFile>().toList();
 
     final res = await _addHouseRepository.addHouse(
       images: image ?? [],
@@ -141,5 +142,18 @@ class AddHouseCubit extends BaseCubit<AddHouseState> {
         return;
       },
     );
+  }
+
+  void loadExistingImages(List<HouseImage> list) {
+    final existingImageItems = list.map((houseImage) {
+      return ImageItem(
+        imageUrl: houseImage.url,
+        image: null,
+        progress: 1.0,
+        isComplete: true,
+      );
+    }).toList();
+
+    emit(state.copyWith(pickedImages: existingImageItems));
   }
 }

@@ -53,8 +53,9 @@ extension FilterRequest on GlobalOptions {
         (category?.isNotEmpty ?? false) ? 'categories=$category' : null;
     cheapPrice = minPrice != null ? 'cheap_price=$minPrice' : null;
     expensivePrice = maxPrice != null ? 'expensive_price=$maxPrice' : null;
-    smallArea = minArea != 20 ? 'small_area=$minArea' : null;
-    bigArea = maxArea != 500 ? 'big_area=$maxArea' : null;
+    smallArea =
+        (minArea != null && minArea != 20) ? 'small_area=$minArea' : null;
+    bigArea = (maxArea != null && maxArea != 500) ? 'big_area=$maxArea' : null;
 
     final listed = [
       possibilities,
@@ -81,17 +82,3 @@ extension FilterRequest on GlobalOptions {
     return currentFilter;
   }
 }
-
-
-// class FilterRequest {
-
-//   Map<String, dynamic> toMap() {
-//     return <String, dynamic>{
-//      
-//     };
-//   }
-
-  
-// }
-
-

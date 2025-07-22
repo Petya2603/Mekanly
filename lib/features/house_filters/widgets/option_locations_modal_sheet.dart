@@ -187,14 +187,6 @@ class _OptionModalBottomSheetState extends State<OptionModalBottomSheet> {
     setState(() {});
   }
 
-  void _addToSingleItem(SubLocations location, int index) {
-    _currentSubLocations =
-        List<SubLocations>.from(_currentSubLocations).map((l) {
-      return l.copyWith(selected: false);
-    }).toList();
-
-    _addToSelectedItems(location, index);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -288,11 +280,43 @@ class _OptionModalBottomSheetState extends State<OptionModalBottomSheet> {
                         isParent: true,
                         title: location.name,
                         onTap: () {
+                          print('Tapped location: ${location.name}');
                           if (location.children.isNotEmpty) {
-                            _showChildItems(
-                              location,
-                              index,
-                            );
+                            print(
+                                'Location has children, showing child items...');
+                            _showChildItems(location, index);
+                          } else {
+                            print(
+                                'Location has NO children, selecting all by default...');
+
+                            // Önce tüm location'ların çocuklarını temizle (seçimleri kaldır)
+                            final clearedLocations =
+                                _currentLocations.map((loc) {
+                              final clearedChildren = loc.children
+                                  .map((child) =>
+                                      child.copyWith(selected: false))
+                                  .toList();
+                              return loc.copyWith(children: clearedChildren);
+                            }).toList();
+
+                            // Sonra sadece tıklanan location'un çocuklarını seç
+                            final updatedChildren =
+                                location.children.map((sub) {
+                              print('Auto-selecting sublocation: ${sub.name}');
+                              return sub.copyWith(selected: true);
+                            }).toList();
+
+                            final updatedLocation =
+                                location.copyWith(children: updatedChildren);
+
+                            final updatedLocations =
+                                List<Location>.from(clearedLocations);
+                            updatedLocations[index] = updatedLocation;
+
+                            print('Updated location: ${updatedLocation.name}');
+                            print(
+                                'Closing bottom sheet with updated locations...');
+                            Navigator.pop(context, updatedLocations);
                           }
                         },
                       );
@@ -308,20 +332,285 @@ class _OptionModalBottomSheetState extends State<OptionModalBottomSheet> {
                         title: location.name,
                         isSelected: location.selected,
                         onTap: () {
+                          print('Tapped sublocation: ${location.name}');
                           final updated = location.copyWith(
                             selected: !location.selected,
                           );
+                          print('New selected state: ${updated.selected}');
+
                           if (widget.isSingle) {
-                            _addToSingleItem(updated, index);
+                            print(
+                                'Single selection mode active, clearing all others and saving...');
+
+                            _currentSubLocations = _currentSubLocations
+                                .map((l) => l.copyWith(selected: false))
+                                .toList();
+
+                            _addToSelectedItems(updated, index);
+
                             _saveAndClose(context);
                             return;
                           }
+
+                          print(
+                              'Multi selection mode, updating selected item...');
                           _addToSelectedItems(updated, index);
+
+                          Navigator.pop(context, _currentLocations);
                         },
                       );
                     },
                   );
                 }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class OptionModalBottomSheetGysga extends StatefulWidget {
+  const OptionModalBottomSheetGysga({
+    super.key,
+    required this.locations,
+    this.isSingle = false,
+  });
+  final List<Location> locations;
+  final bool isSingle;
+
+  static Future<List<Location>?> showOptionModal(
+    BuildContext context, {
+    required List<Location> locations,
+    bool isSingle = false,
+  }) async {
+    return showModalBottomSheet<List<Location>?>(
+      context: context,
+      builder: (context) {
+        return OptionModalBottomSheet(
+          locations: locations,
+          isSingle: isSingle,
+        );
+      },
+    );
+  }
+
+  @override
+  State<OptionModalBottomSheetGysga> createState() =>
+      _OptionModalBottomSheetStateGysga();
+}
+
+class _OptionModalBottomSheetStateGysga
+    extends State<OptionModalBottomSheetGysga> {
+  final PageController _pageController = PageController();
+  List<Location> _currentLocations = [];
+  bool _showingChildren = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentLocations = List.from(widget.locations);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _showChildItems(Location parent, int index) {
+    setState(() {
+      _showingChildren = true;
+    });
+    _pageController.animateToPage(
+      1,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void _goBackToParent() {
+    _pageController.animateToPage(
+      0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+    setState(() {
+      _showingChildren = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: const Radius.circular(12).r,
+          topRight: const Radius.circular(12).r,
+        ),
+      ),
+      constraints: BoxConstraints(
+        maxHeight: 1.sh * .6,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 10,
+            ).w,
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  width: 1.w,
+                  color: const Color(0xffDDDDDD),
+                ),
+              ),
+            ),
+            child: SizedBox(
+              height: 30.w,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: SizedBox(
+                      width: 30.w,
+                      height: 30.w,
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: () {
+                          if (_showingChildren) {
+                            _goBackToParent();
+                          } else {
+                            Navigator.pop(context);
+                          }
+                        },
+                        icon: _showingChildren
+                            ? const Icon(Icons.arrow_back)
+                            : const Icon(Icons.close),
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: AppText.s14w400BdM(
+                      context.translation.location,
+                    ),
+                  ),
+                  // if (_showingChildren)
+                  //   Align(
+                  //     alignment: Alignment.centerRight,
+                  //     child: SizedBox(
+                  //       width: 30.w,
+                  //       height: 30.w,
+                  //       child: IconButton(
+                  //         padding: EdgeInsets.zero,
+                  //         onPressed: () => _saveAndClose(context),
+                  //         icon: const Icon(Icons.check),
+                  //       ),
+                  //     ),
+                  //   ),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            child: PageView.builder(
+              controller: _pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: 2,
+              itemBuilder: (context, pageIndex) {
+                // Parent items list
+                return ListView.builder(
+                  itemCount: _currentLocations.length,
+                  itemBuilder: (context, index) {
+                    final location = _currentLocations[index];
+                    return OptionModalSheetTile(
+                      isParent: true,
+                      title: location.name,
+                      onTap: () {
+                        print('Tapped location: ${location.name}');
+                        if (location.children.isNotEmpty) {
+                          print(
+                              'Location has children, showing child items...');
+                          _showChildItems(location, index);
+                        } else {
+                          print(
+                              'Location has NO children, selecting all by default...');
+
+                          final clearedLocations = _currentLocations.map((loc) {
+                            final clearedChildren = loc.children
+                                .map((child) => child.copyWith(selected: false))
+                                .toList();
+                            return loc.copyWith(children: clearedChildren);
+                          }).toList();
+
+                          // Sonra sadece tıklanan location'un çocuklarını seç
+                          final updatedChildren = location.children.map((sub) {
+                            print('Auto-selecting sublocation: ${sub.name}');
+                            return sub.copyWith(selected: true);
+                          }).toList();
+
+                          final updatedLocation =
+                              location.copyWith(children: updatedChildren);
+
+                          final updatedLocations =
+                              List<Location>.from(clearedLocations);
+                          updatedLocations[index] = updatedLocation;
+
+                          print('Updated location: ${updatedLocation.name}');
+                          print(
+                              'Closing bottom sheet with updated locations...');
+                          Navigator.pop(context, updatedLocations);
+                        }
+                      },
+                    );
+                  },
+                );
+
+                // else {
+                //   // Child items list
+                //   return ListView.builder(
+                //     itemCount: _currentSubLocations.length,
+                //     itemBuilder: (context, index) {
+                //       final location = _currentSubLocations[index];
+                //       return OptionModalSheetTile(
+                //         title: location.name,
+                //         isSelected: location.selected,
+                //         onTap: () {
+                //           print('Tapped sublocation: ${location.name}');
+                //           final updated = location.copyWith(
+                //             selected: !location.selected,
+                //           );
+                //           print('New selected state: ${updated.selected}');
+
+                //           if (widget.isSingle) {
+                //             print(
+                //                 'Single selection mode active, clearing all others and saving...');
+
+                //             _currentSubLocations = _currentSubLocations
+                //                 .map((l) => l.copyWith(selected: false))
+                //                 .toList();
+
+                //             _addToSelectedItems(updated, index);
+
+                //             _saveAndClose(context);
+                //             return;
+                //           }
+
+                //           print(
+                //               'Multi selection mode, updating selected item...');
+                //           _addToSelectedItems(updated, index);
+
+                //           Navigator.pop(context, _currentLocations);
+                //         },
+                //       );
+                //     },
+                //   );
+                // }
               },
             ),
           ),

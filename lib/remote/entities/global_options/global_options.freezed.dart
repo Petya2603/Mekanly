@@ -221,6 +221,7 @@ mixin _$GlobalOptions {
   bool? get writeComment => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
+  String? get search => throw _privateConstructorUsedError;
   List<HouseFloorCount>? get floorCount => throw _privateConstructorUsedError;
   List<HouseFloorCount>? get roomCount => throw _privateConstructorUsedError;
   List<HouseFloorCount>? get floorCountHouse =>
@@ -282,6 +283,7 @@ abstract class $GlobalOptionsCopyWith<$Res> {
       bool? writeComment,
       String? name,
       String? description,
+      String? search,
       List<HouseFloorCount>? floorCount,
       List<HouseFloorCount>? roomCount,
       List<HouseFloorCount>? floorCountHouse,
@@ -337,6 +339,7 @@ class _$GlobalOptionsCopyWithImpl<$Res, $Val extends GlobalOptions>
     Object? writeComment = freezed,
     Object? name = freezed,
     Object? description = freezed,
+    Object? search = freezed,
     Object? floorCount = freezed,
     Object? roomCount = freezed,
     Object? floorCountHouse = freezed,
@@ -449,6 +452,10 @@ class _$GlobalOptionsCopyWithImpl<$Res, $Val extends GlobalOptions>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
+      search: freezed == search
+          ? _value.search
+          : search // ignore: cast_nullable_to_non_nullable
+              as String?,
       floorCount: freezed == floorCount
           ? _value.floorCount
           : floorCount // ignore: cast_nullable_to_non_nullable
@@ -555,6 +562,7 @@ abstract class _$$GlobalOptionsImplCopyWith<$Res>
       bool? writeComment,
       String? name,
       String? description,
+      String? search,
       List<HouseFloorCount>? floorCount,
       List<HouseFloorCount>? roomCount,
       List<HouseFloorCount>? floorCountHouse,
@@ -610,6 +618,7 @@ class __$$GlobalOptionsImplCopyWithImpl<$Res>
     Object? writeComment = freezed,
     Object? name = freezed,
     Object? description = freezed,
+    Object? search = freezed,
     Object? floorCount = freezed,
     Object? roomCount = freezed,
     Object? floorCountHouse = freezed,
@@ -722,6 +731,10 @@ class __$$GlobalOptionsImplCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
+      search: freezed == search
+          ? _value.search
+          : search // ignore: cast_nullable_to_non_nullable
+              as String?,
       floorCount: freezed == floorCount
           ? _value._floorCount
           : floorCount // ignore: cast_nullable_to_non_nullable
@@ -795,6 +808,7 @@ class _$GlobalOptionsImpl implements _GlobalOptions {
       this.writeComment,
       this.name,
       this.description,
+      this.search,
       final List<HouseFloorCount>? floorCount,
       final List<HouseFloorCount>? roomCount,
       final List<HouseFloorCount>? floorCountHouse,
@@ -961,6 +975,8 @@ class _$GlobalOptionsImpl implements _GlobalOptions {
   final String? name;
   @override
   final String? description;
+  @override
+  final String? search;
   final List<HouseFloorCount>? _floorCount;
   @override
   List<HouseFloorCount>? get floorCount {
@@ -1068,7 +1084,7 @@ class _$GlobalOptionsImpl implements _GlobalOptions {
 
   @override
   String toString() {
-    return 'GlobalOptions(locations: $locations, categoryHouses: $categoryHouses, selectedSubLocations: $selectedSubLocations, selectedLocation: $selectedLocation, selectedCategory: $selectedCategory, selectedCategoryHouses: $selectedCategoryHouses, categoryShops: $categoryShops, possibility: $possibility, propertyType: $propertyType, repairType: $repairType, selectedPossibility: $selectedPossibility, selectedPropertyType: $selectedPropertyType, selectedRepairType: $selectedRepairType, minPrice: $minPrice, maxPrice: $maxPrice, price: $price, minArea: $minArea, maxArea: $maxArea, area: $area, fromHolder: $fromHolder, justShowWithImage: $justShowWithImage, justShowNewAdded: $justShowNewAdded, writeComment: $writeComment, name: $name, description: $description, floorCount: $floorCount, roomCount: $roomCount, floorCountHouse: $floorCountHouse, roomCountHouse: $roomCountHouse, levelCountHouse: $levelCountHouse, selectedRoomCount: $selectedRoomCount, selectedFloorCount: $selectedFloorCount, selectedRoomCountHouse: $selectedRoomCountHouse, selectedFloorCountHouse: $selectedFloorCountHouse, selectedLevelCountHouse: $selectedLevelCountHouse)';
+    return 'GlobalOptions(locations: $locations, categoryHouses: $categoryHouses, selectedSubLocations: $selectedSubLocations, selectedLocation: $selectedLocation, selectedCategory: $selectedCategory, selectedCategoryHouses: $selectedCategoryHouses, categoryShops: $categoryShops, possibility: $possibility, propertyType: $propertyType, repairType: $repairType, selectedPossibility: $selectedPossibility, selectedPropertyType: $selectedPropertyType, selectedRepairType: $selectedRepairType, minPrice: $minPrice, maxPrice: $maxPrice, price: $price, minArea: $minArea, maxArea: $maxArea, area: $area, fromHolder: $fromHolder, justShowWithImage: $justShowWithImage, justShowNewAdded: $justShowNewAdded, writeComment: $writeComment, name: $name, description: $description, search: $search, floorCount: $floorCount, roomCount: $roomCount, floorCountHouse: $floorCountHouse, roomCountHouse: $roomCountHouse, levelCountHouse: $levelCountHouse, selectedRoomCount: $selectedRoomCount, selectedFloorCount: $selectedFloorCount, selectedRoomCountHouse: $selectedRoomCountHouse, selectedFloorCountHouse: $selectedFloorCountHouse, selectedLevelCountHouse: $selectedLevelCountHouse)';
   }
 
   @override
@@ -1121,6 +1137,7 @@ class _$GlobalOptionsImpl implements _GlobalOptions {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.description, description) ||
                 other.description == description) &&
+            (identical(other.search, search) || other.search == search) &&
             const DeepCollectionEquality()
                 .equals(other._floorCount, _floorCount) &&
             const DeepCollectionEquality()
@@ -1172,6 +1189,7 @@ class _$GlobalOptionsImpl implements _GlobalOptions {
         writeComment,
         name,
         description,
+        search,
         const DeepCollectionEquality().hash(_floorCount),
         const DeepCollectionEquality().hash(_roomCount),
         const DeepCollectionEquality().hash(_floorCountHouse),
@@ -1227,6 +1245,7 @@ abstract class _GlobalOptions implements GlobalOptions {
           final bool? writeComment,
           final String? name,
           final String? description,
+          final String? search,
           final List<HouseFloorCount>? floorCount,
           final List<HouseFloorCount>? roomCount,
           final List<HouseFloorCount>? floorCountHouse,
@@ -1292,6 +1311,8 @@ abstract class _GlobalOptions implements GlobalOptions {
   String? get name;
   @override
   String? get description;
+  @override
+  String? get search;
   @override
   List<HouseFloorCount>? get floorCount;
   @override
@@ -3090,8 +3111,8 @@ class _$OptionsPossibilityImpl implements _OptionsPossibility {
       {required this.id,
       required this.name,
       this.selected = false,
-      @JsonKey(name: 'created_at') required this.createdAt,
-      @JsonKey(name: 'updated_at') required this.updatedAt});
+      @JsonKey(name: 'created_at') this.createdAt,
+      @JsonKey(name: 'updated_at') this.updatedAt});
 
   factory _$OptionsPossibilityImpl.fromJson(Map<String, dynamic> json) =>
       _$$OptionsPossibilityImplFromJson(json);
@@ -3157,8 +3178,8 @@ abstract class _OptionsPossibility implements OptionsPossibility {
           {required final int id,
           required final String name,
           final bool selected,
-          @JsonKey(name: 'created_at') required final DateTime? createdAt,
-          @JsonKey(name: 'updated_at') required final DateTime? updatedAt}) =
+          @JsonKey(name: 'created_at') final DateTime? createdAt,
+          @JsonKey(name: 'updated_at') final DateTime? updatedAt}) =
       _$OptionsPossibilityImpl;
 
   factory _OptionsPossibility.fromJson(Map<String, dynamic> json) =

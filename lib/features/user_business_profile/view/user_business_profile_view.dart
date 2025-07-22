@@ -14,6 +14,7 @@ import '../../business_porfile_detail/models/business_profile_detail_products_re
 import '../../business_porfile_detail/models/business_profile_detail_response.dart';
 import '../../business_porfile_detail/models/business_profile_house_products_response.dart';
 import '../../business_porfile_detail/widgets/business_detail_app_bar.dart';
+import '../../content/bloc/content_bloc.dart';
 import '../../content/widgets/content_card_widget.dart';
 import '../bloc/user_business_profile_bloc.dart';
 import '../widgets/categories_chip_horizontal_list_view.dart';
@@ -221,10 +222,14 @@ class _UserBusinessProfileViewState extends State<UserBusinessProfileView>
             final house = houseProducts?[index];
             final images = house?.images?.map((m) => m.url).toList();
             return ContentCardWidget(
-              description: house?.description,
-              title: house?.name,
+              id: house!.id!,
+              description: house.description,
+              title: house.name,
               imgUrls: images ?? [],
-              price: house?.price,
+              price: house.price,
+              onDeleted: () {
+                context.read<ContentBloc>().add(const ContentEvent.init());
+              },
             );
           },
         ),
@@ -248,10 +253,16 @@ class _UserBusinessProfileViewState extends State<UserBusinessProfileView>
           final item = products?[index];
           final images = item?.images?.map((m) => m.path).toList();
           return ContentCardWidget(
-            description: item?.description,
-            title: item?.name,
+            id: item!.id ?? 0,
+            description: item.description,
+            title: item.name,
             imgUrls: images ?? [],
-            price: item?.price.toString(),
+            price: item.price.toString(),
+            onDeleted: () {
+              context
+                  .read<ContentBloc>()
+                  .add(const ContentEvent.init()); // 👈 bu satır kritik
+            },
           );
         },
       ),

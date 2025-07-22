@@ -19,8 +19,8 @@ _$HouseEntityImpl _$$HouseEntityImplFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String?,
       description: json['description'] as String?,
       price: json['price'] as String?,
-      loverPercentage: json['lover_percentage'] as String?,
-      loverPrice: json['lover_price'] as String?,
+      loverPercentage: _stringToInt(json['lover_percentage']),
+      loverPrice: _stringToInt(json['lover_price']),
       viewed: (json['viewed'] as num?)?.toInt(),
       star: json['star'] as String?,
       commentCount: (json['comment_count'] as num?)?.toInt(),
@@ -68,6 +68,7 @@ _$HouseEntityImpl _$$HouseEntityImplFromJson(Map<String, dynamic> json) =>
       contacted: json['contacted'] as bool?,
       hasSeen: json['has_seen'] as bool?,
       contact: json['contact'] as bool?,
+      isOwner: json['is_owner'] as bool?,
     );
 
 Map<String, dynamic> _$$HouseEntityImplToJson(_$HouseEntityImpl instance) =>
@@ -118,6 +119,7 @@ Map<String, dynamic> _$$HouseEntityImplToJson(_$HouseEntityImpl instance) =>
       'contacted': instance.contacted,
       'has_seen': instance.hasSeen,
       'contact': instance.contact,
+      'is_owner': instance.isOwner,
     };
 
 _$LocationEntityImpl _$$LocationEntityImplFromJson(Map<String, dynamic> json) =>

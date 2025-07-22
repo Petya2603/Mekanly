@@ -51,8 +51,6 @@ class NotificationService {
   // Request notification permissions
   Future<void> _requestPermissions() async {
     if (Platform.isIOS) {
-      final settings = await _firebaseMessaging.requestPermission();
-      print('iOS Permission status: ${settings.authorizationStatus}');
     } else if (Platform.isAndroid) {
       await _flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
@@ -108,11 +106,10 @@ class NotificationService {
 
   // Handle foreground messages
   void _handleForegroundMessage(RemoteMessage message) {
-    print('Got a message whilst in the foreground!');
-    print('Message data: ${message.data}');
+    // print('Message data: ${message.data}');
 
     if (message.notification != null) {
-      print('Message also contained a notification: ${message.notification}');
+      // print('Message also contained a notification: ${message.notification}');
       _showLocalNotification(message);
     }
   }
@@ -157,32 +154,20 @@ class NotificationService {
 
   // Handle when user taps on notification
   void _handleMessageOpenedApp(RemoteMessage message) {
-    print('Message opened app: ${message.data}');
     // Navigate to the appropriate screen based on the message data
-    // For example, if the notification has a route payload, navigate to that route
-    final route = message.data.toString();
+
+    message.data.toString();
     // Navigation would happen here
     // You need to implement your own navigation logic based on your app's needs
   }
 
   // For iOS older than 10
-  void _onDidReceiveLocalNotification(
-    int id,
-    String? title,
-    String? body,
-    String? payload,
-  ) {
-    // This is only called for iOS < 10
-    print('Received iOS notification: $title');
-  }
 
   // Handle tap on notification
   void _onDidReceiveNotificationResponse(NotificationResponse response) {
-    print('Notification response received with payload: ${response.payload}');
     // Handle notification tap based on payload
     if (response.payload != null) {
       // Navigation would happen here
-      // You need to implement your own navigation logic based on your app's needs
     }
   }
 

@@ -58,17 +58,19 @@ class TitledSelectorView extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 19).w,
                   decoration: BoxDecoration(
                     color: item.isSelected
-                        ? const Color.fromARGB(255, 34, 34, 34)
-                        : null,
+                        ? const Color.fromARGB(255, 229, 246, 254)
+                        : Colors.white,
                     borderRadius: BorderRadius.circular(100).r,
                     border: Border.all(
                       color: item.isSelected
-                          ? const Color.fromARGB(255, 34, 34, 34)
-                          : const Color(0xffDFDFDF),
+                          ? const Color.fromARGB(255, 229, 246, 254)
+                          : const Color.fromARGB(255, 223, 223, 223),
                     ),
                   ),
                   child: AppText.s14w400BdM(
-                    color: item.isSelected ? const Color(0xffDFDFDF) : null,
+                    color: item.isSelected
+                        ? const Color.fromARGB(255, 58, 139, 207)
+                        : null,
                     item.count,
                     fontFamily: StringConstants.roboto,
                     fontWeight:

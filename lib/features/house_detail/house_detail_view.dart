@@ -20,6 +20,7 @@ import '../../product/injection/injector.dart';
 import '../../product/transitions/custom_page_route.dart';
 import '../../remote/entities/house_detail/house_detail_response.dart';
 import '../../remote/repositories/contact/contact_response.dart';
+import '../../remote/repositories/favorite/favorite_repository.dart';
 import '../../utils/abuse/model.dart';
 import '../../utils/abuse/service.dart';
 import '../../utils/extensions.dart';
@@ -36,27 +37,45 @@ import 'widgets/pop_up.dart';
 import 'widgets/row_main_info_tile.dart';
 
 class HouseDetailRoute {
-  HouseDetailRoute({required this.imgUrl, required this.id});
+  HouseDetailRoute({
+    required this.imgUrl,
+    required this.id,
+    required this.type,
+    required this.favorited,
+    this.status,
+  });
 
   final List<String?>? imgUrl;
   final int? id;
+  final String? status;
+  final String? type;
+  final bool? favorited;
 }
 
 class HouseDetailView extends StatefulWidget {
-  const HouseDetailView({super.key, required this.data});
+  const HouseDetailView({
+    super.key,
+    required this.data,
+    this.status,
+  });
 
   static const routePath = '/house-detail-view';
   static const routeName = 'house-detail-view';
 
-  static Widget builder(BuildContext context, HouseDetailRoute data) {
+  static Widget builder(
+    BuildContext context,
+    HouseDetailRoute data, {
+    String? status,
+  }) {
     final bloc = injector<HouseDetailCubit>();
     return BlocProvider(
       create: (context) => bloc..getHouseDetail(data.id ?? 0),
-      child: HouseDetailView(data: data),
+      child: HouseDetailView(data: data, status: status),
     );
   }
 
   final HouseDetailRoute data;
+  final String? status;
 
   @override
   State<HouseDetailView> createState() => _HouseDetailViewState();
@@ -69,13 +88,15 @@ class _HouseDetailViewState extends State<HouseDetailView> {
 
   late String link;
   late List<String> imageUrls;
+  final FavoriteService favoriteService = FavoriteService();
+
+  late bool isFavorite;
 
   @override
   void initState() {
     super.initState();
-
+    isFavorite = widget.data.favorited ?? false;
     final rawImageUrl = widget.data.imgUrl?.toString() ?? '';
-
     if (rawImageUrl.startsWith('[') && rawImageUrl.endsWith(']')) {
       final cleanStr = rawImageUrl.substring(1, rawImageUrl.length - 1);
       imageUrls = cleanStr.split(',').map((e) => e.trim()).toList();
@@ -92,15 +113,43 @@ class _HouseDetailViewState extends State<HouseDetailView> {
     link = 'https://mekanly.com/house/${widget.data.imgUrl}';
   }
 
+  Future<void> toggleFavoriteItem() async {
+    try {
+      await favoriteService.toggleFavorite(
+        favoritableId: widget.data.id ?? 0,
+        favoritableType: getFavoritableType(widget.data.type),
+      );
+
+      setState(() {
+        isFavorite = !isFavorite;
+      });
+      // ignore: empty_catches
+    } catch (e) {}
+  }
+
+  String getFavoritableType(String? type) {
+    if (type == null) return '';
+    switch (type.toLowerCase()) {
+      case 'house':
+        return 'House';
+      case 'product':
+        return 'Product';
+      case 'shop':
+        return 'Shop';
+      default:
+        return '';
+    }
+  }
+
   Future<void> shareImagesWithDio(
     List<String> imageUrls, {
     String? text,
   }) async {
     try {
       final tempDir = await getTemporaryDirectory();
-      var files = <XFile>[];
+      final files = <XFile>[];
 
-      for (int i = 0; i < imageUrls.length; i++) {
+      for (var i = 0; i < imageUrls.length; i++) {
         final imageUrl = imageUrls[i];
         if (imageUrl.isEmpty) continue;
 
@@ -113,15 +162,14 @@ class _HouseDetailViewState extends State<HouseDetailView> {
       }
 
       if (files.isNotEmpty) {
+        // ignore: deprecated_member_use
         await Share.shareXFiles(files, text: text);
       } else if (text != null) {
+        // ignore: deprecated_member_use
         await Share.share(text);
-      } else {
-        print('surat yok.');
       }
-    } catch (e) {
-      print('Error sharing images: $e');
-    }
+      // ignore: empty_catches
+    } catch (e) {}
   }
 
   final abuseService = AbuseService();
@@ -230,6 +278,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                         if (shareLink) {
                           final urlText =
                               imageUrls.where((e) => e.isNotEmpty).join('\n');
+                          // ignore: deprecated_member_use
                           await Share.share(urlText);
                         }
                         if (shareImage) {
@@ -286,8 +335,10 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.flag,
-                          color: Color.fromARGB(255, 55, 65, 81)),
+                      const Icon(
+                        Icons.flag,
+                        color: Color.fromARGB(255, 55, 65, 81),
+                      ),
                       const SizedBox(width: 8),
                       Text(
                         context.translation.nag_iber,
@@ -301,8 +352,10 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                       const Spacer(),
                       GestureDetector(
                         onTap: () => Navigator.pop(context),
-                        child: const Icon(Icons.close,
-                            color: Color.fromARGB(255, 55, 65, 81)),
+                        child: const Icon(
+                          Icons.close,
+                          color: Color.fromARGB(255, 55, 65, 81),
+                        ),
                       ),
                     ],
                   ),
@@ -348,6 +401,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                           : () async {
                               try {
                                 await showWideDialog(context);
+                                // ignore: use_build_context_synchronously
                                 Navigator.pop(context);
 
                                 await abuseService.sendReason(
@@ -355,7 +409,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                                   itemId: widget.data.id ?? 0,
                                   message: reasons
                                       .firstWhere(
-                                          (e) => e.id == selectedReasonId)
+                                          (e) => e.id == selectedReasonId,)
                                       .description,
                                   type: 'house',
                                 );
@@ -387,6 +441,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
   }
 
   Future<void> showWideDialog(BuildContext context) async {
+    // ignore: inference_failure_on_function_invocation
     await showDialog(
       context: context,
       builder: (context) {
@@ -453,6 +508,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
     final houseId = widget.data.id ?? 0;
     final statusBarHeight = MediaQuery.of(context).padding.top;
     final pinnedHeaderHeight = statusBarHeight + kToolbarHeight;
+
     return Scaffold(
       body: ExtendedNestedScrollView(
         headerSliverBuilder: (BuildContext c, bool f) {
@@ -488,6 +544,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                     )
                   : IconButton(
                       icon: Assets.icons.icBack.svg(
+                        // ignore: deprecated_member_use
                         color: Colors.white,
                         package: 'gen',
                         width: 25,
@@ -531,8 +588,10 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                       ),
                       12.boxW,
                       CircledIconBtn(
-                        icon: Assets.icons.icHeartHouse.svg(package: 'gen'),
-                        onTap: () {},
+                        icon: isFavorite
+                            ? Assets.icons.tazefav.svg(package: 'gen')
+                            : Assets.icons.icHeartHouse.svg(package: 'gen'),
+                        onTap: toggleFavoriteItem,
                       ),
                       14.boxW,
                     ],
@@ -543,6 +602,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                       IconButton(
                         icon: Assets.icons.icShare.svg(
                           package: 'gen',
+                          // ignore: deprecated_member_use
                           color: Colors.white,
                           width: 25,
                           height: 25,
@@ -575,13 +635,20 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                       ),
                       12.boxW,
                       IconButton(
-                        icon: Assets.icons.icHeartHouse.svg(
-                          color: Colors.white,
-                          package: 'gen',
-                          width: 25,
-                          height: 25,
-                        ),
-                        onPressed: () {},
+                        icon: isFavorite
+                            ? Assets.icons.tazefav.svg(
+                                package: 'gen',
+                                width: 25,
+                                height: 25,
+                              )
+                            : Assets.icons.icHeartHouse.svg(
+                                // ignore: deprecated_member_use
+                                color: Colors.white,
+                                package: 'gen',
+                                width: 25,
+                                height: 25,
+                              ),
+                        onPressed: toggleFavoriteItem,
                       ),
                       14.boxW,
                     ],
@@ -618,6 +685,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
+                                // ignore: deprecated_member_use
                                 Colors.black.withOpacity(0.3),
                                 Colors.transparent,
                               ],
@@ -630,7 +698,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                       Align(
                         alignment: Alignment.bottomLeft,
                         child: Container(
-                          padding: const EdgeInsets.only(left: 45, bottom: 15),
+                          padding: const EdgeInsets.only(left: 55, bottom: 15),
                           child: Opacity(
                             opacity: scrollPercentage,
                             child: const Text(
@@ -673,32 +741,29 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                 },
               );
             }
-            final house = state.response?.data;
 
+            final house = state.response?.data;
+            final type = (house?.type == 'house') ? 'House' : 'Product';
             return SingleChildScrollView(
               physics: const NeverScrollableScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _HeaderInfos(house: house),
-                  12.boxH,
+
                   if (house?.exclusive == 1)
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12).w,
                       child: const ClickableBanner(),
-                    )
-                  else
-                    const SizedBox.shrink(),
-
-                  12.boxH,
+                    ),
+                  if (house?.exclusive == 1) 12.boxH,
                   _Comments(
                     itemId: house!.id ?? 0,
                     // itemType: house.type ?? 'House',
-                    itemType: 'House',
+                    itemType: type,
                     commentCount: house.commentCount ?? 0,
                   ),
                   12.boxH,
-
                   _HouseDetailInfo(house: house),
                   20.boxH,
                   _HouseDetailPossibility(house: house),
@@ -760,8 +825,6 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                   10.boxH,
                   const RecommendedBusinesSection(),
                   20.boxH,
-
-                  ///TODOS: Bashga bildirisler
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12).w,
                     child: AppText.s14w400BdM(
@@ -795,6 +858,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                 ),
               ],
             ),
+            // ignore: use_if_null_to_convert_nulls_to_bools
             child: Row(
               children: [
                 Expanded(
@@ -817,12 +881,10 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                             smsUri,
                             mode: LaunchMode.externalApplication,
                           );
+                        // ignore: empty_catches
                         } catch (e) {
-                          print('SMS ugradylmady: $e');
                         }
-                      } else {
-                        print('Nomeri tapylmady.');
-                      }
+                      } 
                     },
                     fontSize: 12.sp,
                     textColor: const Color(0xFF009688),
@@ -857,9 +919,8 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                             telUri,
                             mode: LaunchMode.externalApplication,
                           );
-                        } else {
-                          print('Nomeri tapylmady.');
-                        }
+                        } 
+                      // ignore: empty_catches
                       } catch (e) {}
                     },
                     text: context.translation.call,
@@ -1204,26 +1265,28 @@ class _HousePossibilityGridItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        possibility?.buildIcon ?? const SizedBox(),
-        18.boxW,
-        AppText.s14w400BdM(
-          possibility?.title ?? '',
-          fontFamily: StringConstants.roboto,
-          color: const Color(0xff374151),
-        ),
-      ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          possibility?.buildIcon ?? const SizedBox(),
+          18.boxW,
+          AppText.s14w400BdM(
+            possibility?.title ?? '',
+            fontFamily: StringConstants.roboto,
+            color: const Color(0xff374151),
+          ),
+        ],
+      ),
     );
   }
 }
 
 class _Comments extends StatelessWidget {
-  const _Comments({
-    required this.itemId,
-    required this.itemType,
-    required this.commentCount,
-  });
+  const _Comments(
+      {required this.itemId,
+      required this.itemType,
+      required this.commentCount,});
   final int itemId;
   final String itemType;
   final int commentCount;
@@ -1280,6 +1343,10 @@ class _HeaderInfos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GradientBgContainer(
+      // ignore: use_if_null_to_convert_nulls_to_bools
+      isLux: house?.luxeStatus == true,
+      // ignore: use_if_null_to_convert_nulls_to_bools
+      isVip: house?.vipStatus == true,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1347,8 +1414,14 @@ class _HouseDetailImgSliderState extends State<_HouseDetailImgSlider> {
               onTap: () {
                 Navigator.push(
                   context,
+                  // ignore: inference_failure_on_function_invocation
                   CustomPageRoute.slide(
-                    HouseImages(houseImagesUrl: widget.data.imgUrl),
+                    HouseImages(
+                      houseImagesUrl: widget.data.imgUrl,
+                      houseId: widget.data.id ?? 0,
+                      houseType: widget.data.type ?? 'House',
+                      houseFavorite: widget.data.favorited ?? false,
+                    ),
                   ),
                 );
               },
@@ -1365,8 +1438,8 @@ class _HouseDetailImgSliderState extends State<_HouseDetailImgSlider> {
           left: 10,
           bottom: 10,
           child: SizedBox(
-            height: 20.w,
-            child: Assets.icons.icLogoAppbar.image(package: 'gen'),
+            height: 19.w,
+            child: Assets.icons.icLogoAppbarnew.image(package: 'gen'),
           ),
         ),
         Positioned(
@@ -1473,15 +1546,24 @@ class _AnimatedImageStackState extends State<_AnimatedImageStack>
           BoxShadow(color: Colors.black26, blurRadius: 6, offset: Offset(2, 2)),
         ],
       ),
-      clipBehavior: Clip.hardEdge,
-      child: Image.network(url, fit: BoxFit.contain),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Image.network(
+          url,
+          fit: BoxFit.cover,
+        ),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final urls = widget.imageUrls;
+    final urls =
+        widget.imageUrls.where((url) => url.trim().isNotEmpty).toList();
     final count = urls.length.clamp(0, 3);
+    if (count == 0) {
+      return const SizedBox.shrink();
+    }
 
     return AnimatedBuilder(
       animation: _controller,
@@ -1489,57 +1571,63 @@ class _AnimatedImageStackState extends State<_AnimatedImageStack>
         if (count == 1) {
           return Center(child: _buildImage(urls[0]));
         } else if (count == 2) {
-          return SizedBox(
-            width: imageSize + 40,
-            height: imageSize + 20,
-            child: Stack(
-              children: [
-                Transform.translate(
-                  offset: Offset(_translateX1.value, 0),
-                  child: Transform.rotate(
-                    angle: _rotateLeft.value,
-                    alignment: Alignment.bottomLeft,
-                    child: _buildImage(urls[1]),
+          return Center(
+            child: SizedBox(
+              width: imageSize + 60,
+              height: imageSize + 40,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Transform.translate(
+                    offset: Offset(_translateX1.value, 0),
+                    child: Transform.rotate(
+                      angle: _rotateLeft.value,
+                      alignment: Alignment.bottomLeft,
+                      child: _buildImage(urls[1]),
+                    ),
                   ),
-                ),
-                Transform.translate(
-                  offset: Offset(_translateX2.value, 0),
-                  child: Transform.rotate(
-                    angle: _rotateRight.value,
-                    alignment: Alignment.bottomRight,
-                    child: _buildImage(urls[0]),
+                  Transform.translate(
+                    offset: Offset(_translateX2.value, 0),
+                    child: Transform.rotate(
+                      angle: _rotateRight.value,
+                      alignment: Alignment.bottomRight,
+                      child: _buildImage(urls[0]),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         } else {
-          return SizedBox(
-            width: imageSize + 40,
-            height: imageSize + 40,
-            child: Stack(
-              children: [
-                Transform.translate(
-                  offset: Offset(0, _translateY.value),
-                  child: _buildImage(urls[2]),
-                ),
-                Transform.translate(
-                  offset: Offset(_translateX1.value, 0),
-                  child: Transform.rotate(
-                    angle: _rotateLeft.value,
-                    alignment: Alignment.bottomLeft,
-                    child: _buildImage(urls[1]),
+          return Center(
+            child: SizedBox(
+              width: imageSize + 60,
+              height: imageSize + 60,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Transform.translate(
+                    offset: Offset(0, _translateY.value),
+                    child: _buildImage(urls[2]),
                   ),
-                ),
-                Transform.translate(
-                  offset: Offset(_translateX2.value, 0),
-                  child: Transform.rotate(
-                    angle: _rotateRight.value,
-                    alignment: Alignment.bottomRight,
-                    child: _buildImage(urls[0]),
+                  Transform.translate(
+                    offset: Offset(_translateX1.value, 0),
+                    child: Transform.rotate(
+                      angle: _rotateLeft.value,
+                      alignment: Alignment.bottomLeft,
+                      child: _buildImage(urls[1]),
+                    ),
                   ),
-                ),
-              ],
+                  Transform.translate(
+                    offset: Offset(_translateX2.value, 0),
+                    child: Transform.rotate(
+                      angle: _rotateRight.value,
+                      alignment: Alignment.bottomRight,
+                      child: _buildImage(urls[0]),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         }

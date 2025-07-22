@@ -71,42 +71,56 @@ class _OtpViewState extends State<OtpView> {
                 ),
               ),
               35.boxH,
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Text(
-                  context.translation.enter_code,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: StringConstants.roboto,
-                    color: const Color.fromARGB(255, 25, 105, 227),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                    child: Text(
+                      context.translation.enter_code,
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                      maxLines: 2,
+                      overflow: TextOverflow.visible,
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: StringConstants.roboto,
+                        color: const Color.fromARGB(255, 25, 105, 227),
+                      ),
+                    ),
                   ),
-                ),
-              ]),
+                ],
+              ),
               10.boxH,
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Text(
-                  widget.payload.phone,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontFamily: StringConstants.roboto,
-                    color: const Color.fromARGB(255, 55, 65, 81),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    widget.payload.phone,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontFamily: StringConstants.roboto,
+                      color: const Color.fromARGB(255, 55, 65, 81),
+                    ),
                   ),
-                ),
-              ]),
+                ],
+              ),
               2.boxH,
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Text(
-                  context.translation.phone_number_belgi,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontFamily: StringConstants.roboto,
-                    color: const Color.fromARGB(255, 55, 65, 81),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    context.translation.phone_number_belgi,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontFamily: StringConstants.roboto,
+                      color: const Color.fromARGB(255, 55, 65, 81),
+                    ),
                   ),
-                ),
-              ]),
+                ],
+              ),
               26.boxH,
               PinPutWidget(
                 controller: _controller,
@@ -149,12 +163,9 @@ class _OtpViewState extends State<OtpView> {
                                 context,
                                 'User is logged in',
                               );
-                              // context.pushReplacementNamed(
-                              //   RootView.routeName,
-                              // );
-
                               Navigator.pushAndRemoveUntil(
                                 context,
+                                // ignore: inference_failure_on_function_invocation
                                 CustomPageRoute.slide(RootView()),
                                 (route) => false,
                               );
@@ -210,6 +221,7 @@ class _OtpViewState extends State<OtpView> {
                     child: AppText.s14w400BdM(
                       context.translation.try_again,
                       color: !can
+                          // ignore: deprecated_member_use
                           ? ColorName.addressDate.withOpacity(.5)
                           : ColorName.addressDate,
                       fontWeight: FontWeight.w500,

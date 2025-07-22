@@ -341,7 +341,36 @@ class AppLocalizationsRu extends AppLocalizations {
       'Пользователи могут писать комментарии';
 
   @override
+  String get are_you_sure_you_want_to_delete_this_announcement =>
+      'Вы действительно хотите удалить это объявление?';
+
+  @override
+  String get are_you_sure_you_want_to_move_this_announcement =>
+      'Вы действительно хотите поднять это объявление вверх?';
+
+  @override
+  String get are_you_sure_you_want_to_price_this_announcement =>
+      'Вы уверены, что хотите снизить цену на это объявление?';
+
+  @override
+  String get are_you_sure_you_want_to_price_this_lux =>
+      'Вы действительно хотите сделать это объявление LUXE?';
+
+  @override
+  String get are_you_sure_you_want_to_price_this_vip =>
+      'Вы действительно хотите сделать это объявление VIP?';
+
+  @override
+  String get bank_kart_sayla => 'Выберите банковскую карту';
+
+  @override
+  String get bank_toleg => 'Страница оплаты';
+
+  @override
   String get dow_et => 'Продолжить';
+
+  @override
+  String get edit1 => 'Настройки';
 
   @override
   String get dow_et_bn =>

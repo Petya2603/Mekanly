@@ -5,35 +5,24 @@ import '../../../core/components/app_text.dart';
 import '../../../product/constants/constants.dart';
 import '../../../utils/extensions.dart';
 
-class RoundedBlueBorderedChipBtn extends StatefulWidget {
+class RoundedBlueBorderedChipBtn extends StatelessWidget {
   const RoundedBlueBorderedChipBtn({
     super.key,
     required this.onTap,
     required this.title,
     required this.icon,
+    this.isSelected = false,
   });
+
   final VoidCallback onTap;
   final String title;
   final SvgGenImage icon;
-
-  @override
-  State<RoundedBlueBorderedChipBtn> createState() =>
-      _RoundedBlueBorderedChipBtnState();
-}
-
-class _RoundedBlueBorderedChipBtnState
-    extends State<RoundedBlueBorderedChipBtn> {
-  late bool isSelected = false;
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          isSelected = !isSelected;
-        });
-        widget.onTap();
-      },
+      onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6).w,
         decoration: BoxDecoration(
@@ -44,16 +33,15 @@ class _RoundedBlueBorderedChipBtnState
           ),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             3.boxW,
-            widget.icon.svg(
+            icon.svg(
               package: 'gen',
               color: isSelected ? ColorName.chipIcon : const Color(0xFF717171),
             ),
             3.boxW,
             AppText.s14w400BdM(
-              widget.title,
+              title,
               color: isSelected ? ColorName.chipIcon : const Color(0xFF717171),
               fontSize: 11.sp,
               fontWeight: FontWeight.w400,

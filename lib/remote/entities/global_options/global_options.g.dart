@@ -73,6 +73,7 @@ _$GlobalOptionsImpl _$$GlobalOptionsImplFromJson(Map<String, dynamic> json) =>
       writeComment: json['writeComment'] as bool?,
       name: json['name'] as String?,
       description: json['description'] as String?,
+      search: json['search'] as String?,
       floorCount: (json['floorCount'] as List<dynamic>?)
           ?.map((e) => HouseFloorCount.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -134,6 +135,7 @@ Map<String, dynamic> _$$GlobalOptionsImplToJson(_$GlobalOptionsImpl instance) =>
       'writeComment': instance.writeComment,
       'name': instance.name,
       'description': instance.description,
+      'search': instance.search,
       'floorCount': instance.floorCount,
       'roomCount': instance.roomCount,
       'floorCountHouse': instance.floorCountHouse,

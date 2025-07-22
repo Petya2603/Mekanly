@@ -31,9 +31,7 @@ class BusinessProfileDetailView extends StatefulWidget {
     final bloc = injector<BusinessProfileDetailBloc>();
     return BlocProvider(
       create: (context) => bloc,
-      child: BusinessProfileDetailView(
-        id: id,
-      ),
+      child: BusinessProfileDetailView(id: id),
     );
   }
 
@@ -46,9 +44,9 @@ class _BusinessProfileDetailViewState extends State<BusinessProfileDetailView> {
   @override
   void initState() {
     if (widget.id != null) {
-      context
-          .read<BusinessProfileDetailBloc>()
-          .add(BusinessProfileDetailEvent.init(widget.id!));
+      context.read<BusinessProfileDetailBloc>().add(
+            BusinessProfileDetailEvent.init(widget.id!),
+          );
     }
     super.initState();
   }
@@ -63,9 +61,7 @@ class _BusinessProfileDetailViewState extends State<BusinessProfileDetailView> {
           }
 
           if (state.status.isFailure) {
-            return TryAgainWidget(
-              onTryAgain: () async {},
-            );
+            return TryAgainWidget(onTryAgain: () async {});
           }
           final detail =
               (state.response?.data != null) ? state.response?.data : null;
@@ -92,9 +88,7 @@ class _BusinessProfileDetailViewState extends State<BusinessProfileDetailView> {
                     pinned: true,
                     delegate: buildHeader(detail),
                   ),
-                  SliverToBoxAdapter(
-                    child: 2.boxH,
-                  ),
+                  SliverToBoxAdapter(child: 2.boxH),
                   SliverAppBar(
                     automaticallyImplyLeading: false,
                     pinned: true,
@@ -102,8 +96,9 @@ class _BusinessProfileDetailViewState extends State<BusinessProfileDetailView> {
                     title: TabBar(
                       padding: EdgeInsets.zero,
                       dividerColor: Colors.transparent,
-                      labelStyle:
-                          context.textTheme.bodyMedium?.copyWith(fontSize: 12),
+                      labelStyle: context.textTheme.bodyMedium?.copyWith(
+                        fontSize: 12,
+                      ),
                       indicatorColor: const Color(0xff474747),
                       tabs: [
                         Tab(
@@ -124,30 +119,29 @@ class _BusinessProfileDetailViewState extends State<BusinessProfileDetailView> {
               },
               body: TabBarView(
                 children: [
-                  Container(
-                    color: const Color.fromRGBO(246, 251, 253, 1),
-                    child: Column(children: [
-                      // Padding(
-                      //   padding: const EdgeInsets.all(6),
-                      //   child: GridView.count(
-                      //     crossAxisCount: 2,
-                      //     physics: const NeverScrollableScrollPhysics(),
-                      //     padding: const EdgeInsets.symmetric(
-                      //       vertical: 5,
-                      //       horizontal: 5,
-                      //     ),
-                      //     crossAxisSpacing: 8,
-                      //     mainAxisSpacing: 8,
-                      //     shrinkWrap: true,
-                      //     childAspectRatio: 167 / 255,
-                      //     children: const [
-                      //       MainBusinessProfileItem(),
-                      //     ],
-                      //   ),
-                      // ),
-                    ]),
+                  const ColoredBox(
+                    color: Color.fromRGBO(246, 251, 253, 1),
+
+                    // Padding(
+                    //   padding: const EdgeInsets.all(6),
+                    //   child: GridView.count(
+                    //     crossAxisCount: 2,
+                    //     physics: const NeverScrollableScrollPhysics(),
+                    //     padding: const EdgeInsets.symmetric(
+                    //       vertical: 5,
+                    //       horizontal: 5,
+                    //     ),
+                    //     crossAxisSpacing: 8,
+                    //     mainAxisSpacing: 8,
+                    //     shrinkWrap: true,
+                    //     childAspectRatio: 167 / 255,
+                    //     children: const [
+                    //       MainBusinessProfileItem(),
+                    //     ],
+                    //   ),
+                    // ),
                   ),
-                  Container(
+                  ColoredBox(
                     color: const Color.fromRGBO(246, 251, 253, 1),
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.all(16),
@@ -156,16 +150,21 @@ class _BusinessProfileDetailViewState extends State<BusinessProfileDetailView> {
                         children: [
                           if (detail?.locationName != null)
                             AppText.s14w400BdM(
-                                context.translation.our_location),
+                              context.translation.our_location,
+                            ),
                           8.boxH,
                           if (detail?.locationParent?.name != null)
                             Row(
                               children: [
-                                const Icon(Icons.location_on,
-                                    size: 16, color: Colors.black54),
+                                const Icon(
+                                  Icons.location_on,
+                                  size: 16,
+                                  color: Colors.black54,
+                                ),
                                 6.boxW,
                                 AppText.s14w400BdM(
-                                    detail?.locationParent?.name ?? ''),
+                                  detail?.locationParent?.name ?? '',
+                                ),
                               ],
                             ),
                           if (detail?.locationParent != null)
@@ -173,11 +172,15 @@ class _BusinessProfileDetailViewState extends State<BusinessProfileDetailView> {
                               padding: const EdgeInsets.only(top: 6),
                               child: Row(
                                 children: [
-                                  const Icon(Icons.map,
-                                      size: 16, color: Colors.black54),
+                                  const Icon(
+                                    Icons.map,
+                                    size: 16,
+                                    color: Colors.black54,
+                                  ),
                                   6.boxW,
                                   AppText.s14w400BdM(
-                                      detail!.locationParent!.name ?? ''),
+                                    detail!.locationParent!.name ?? '',
+                                  ),
                                 ],
                               ),
                             ),
@@ -191,8 +194,9 @@ class _BusinessProfileDetailViewState extends State<BusinessProfileDetailView> {
                               detail!.phoneNumbers!.isNotEmpty) ...[
                             ...detail.phoneNumbers!.map(
                               (phone) => Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 4),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 4,
+                                ),
                                 child: Row(
                                   children: [
                                     Assets.icons.calicon.svg(package: 'gen'),
@@ -241,9 +245,7 @@ class _BusinessProfileDetailViewState extends State<BusinessProfileDetailView> {
                           if (detail?.mail != null) ...[
                             Row(
                               children: [
-                                Assets.icons.maill.svg(
-                                  package: 'gen',
-                                ),
+                                Assets.icons.maill.svg(package: 'gen'),
                                 6.boxW,
                                 AppText.s14w400BdM(detail!.mail!),
                               ],
@@ -261,7 +263,7 @@ class _BusinessProfileDetailViewState extends State<BusinessProfileDetailView> {
                         ],
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -274,25 +276,15 @@ class _BusinessProfileDetailViewState extends State<BusinessProfileDetailView> {
   Widget _getSocialIconWidget(String? platform) {
     switch (platform) {
       case 'tiktok':
-        return Assets.icons.tiktok.svg(
-          package: 'gen',
-        );
+        return Assets.icons.tiktok.svg(package: 'gen');
       case 'instagram':
-        return Assets.icons.insta.svg(
-          package: 'gen',
-        );
+        return Assets.icons.insta.svg(package: 'gen');
       case 'link':
-        return Assets.icons.link.svg(
-          package: 'gen',
-        );
+        return Assets.icons.link.svg(package: 'gen');
       case 'imo':
-        return Assets.icons.imo.svg(
-          package: 'gen',
-        );
+        return Assets.icons.imo.svg(package: 'gen');
       case 'youtube':
-        return Assets.icons.link.svg(
-          package: 'gen',
-        );
+        return Assets.icons.link.svg(package: 'gen');
       default:
         return const Icon(Icons.link, size: 16, color: Colors.black54);
     }
@@ -345,39 +337,34 @@ class _MainBusinessProfileItemState extends State<MainBusinessProfileItem> {
   @override
   Widget build(BuildContext context) {
     final width = context.mediaQuery.size.width;
-    //const aspect = 167 / 225;
-    print('width : $width');
     return InkWell(
       onTap: () {
-        // BaseLogger.log(' ID --> ${widget.house?.id}');
         if (widget.house?.id == null) {
           return;
         }
         final imgs = widget.house?.images?.map((e) => e.url).toList();
-        final data = HouseDetailRoute(imgUrl: imgs, id: widget.house!.id);
+        final data = HouseDetailRoute(
+          imgUrl: imgs,
+          id: widget.house!.id,
+          type: widget.house?.type,
+          favorited: widget.house?.favorited,
+        );
         // context.push(HouseDetailView.routePath, extra: data);
         Navigator.push(
           context,
-          CustomPageRoute.slide(
-            HouseDetailView.builder(context, data),
-          ),
+          // ignore: inference_failure_on_function_invocation
+          CustomPageRoute.slide(HouseDetailView.builder(context, data)),
         );
       },
       borderRadius: BorderRadius.circular(11).r,
       child: Container(
         width: width,
         decoration: BoxDecoration(
-          border: Border.all(
-            color: ColorName.notifyShadow,
-            width: 1.w,
-          ),
+          border: Border.all(color: ColorName.notifyShadow, width: 1.w),
           borderRadius: BorderRadius.circular(11).r,
           gradient: isLux
               ? const LinearGradient(
-                  colors: [
-                    Color(0xFFfde89b),
-                    Color(0xFFffffff),
-                  ],
+                  colors: [Color(0xFFfde89b), Color(0xFFffffff)],
                   begin: Alignment.bottomLeft,
                   end: Alignment.bottomRight,
                 )
@@ -416,18 +403,16 @@ class _MainBusinessProfileItemState extends State<MainBusinessProfileItem> {
                     child: SizedBox(
                       height: 20.w,
                       width: 20.w,
-                      child:
-                          Assets.icons.icFavoriteDarkFill.svg(package: 'gen'),
+                      child: Assets.icons.icFavoriteDarkFill.svg(
+                        package: 'gen',
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 4,
-                horizontal: 4,
-              ),
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

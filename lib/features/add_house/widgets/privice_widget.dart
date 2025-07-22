@@ -6,14 +6,15 @@ import 'package:gen/gen.dart';
 import '../../../localization/extensions.dart';
 
 class PrivacyNoticeBox extends StatelessWidget {
-
   const PrivacyNoticeBox({
     super.key,
     required this.onTermsTap,
     required this.onPrivacyTap,
+    required this.onPrivacyAccepted,
   });
   final VoidCallback onTermsTap;
   final VoidCallback onPrivacyTap;
+  final ValueChanged<bool> onPrivacyAccepted;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +53,11 @@ class PrivacyNoticeBox extends StatelessWidget {
                     text: context.translation.privacy_policy,
                     style: const TextStyle(
                         color: Color.fromARGB(255, 13, 149, 233)),
-                    recognizer: TapGestureRecognizer()..onTap = onPrivacyTap,
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        onPrivacyTap();
+                        onPrivacyAccepted(true);
+                      },
                   ),
                   TextSpan(text: context.translation.dow_et_bn_dowam),
                 ],

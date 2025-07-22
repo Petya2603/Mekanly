@@ -21,6 +21,7 @@ mixin _$HousesEvent {
     required TResult Function() refresh,
     required TResult Function(List<HouseEntity>? houses) getFilter,
     required TResult Function(GlobalOptions filter) filter,
+    required TResult Function() loadMore,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -28,6 +29,7 @@ mixin _$HousesEvent {
     TResult? Function()? refresh,
     TResult? Function(List<HouseEntity>? houses)? getFilter,
     TResult? Function(GlobalOptions filter)? filter,
+    TResult? Function()? loadMore,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -35,6 +37,7 @@ mixin _$HousesEvent {
     TResult Function()? refresh,
     TResult Function(List<HouseEntity>? houses)? getFilter,
     TResult Function(GlobalOptions filter)? filter,
+    TResult Function()? loadMore,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -43,6 +46,7 @@ mixin _$HousesEvent {
     required TResult Function(_Refresh value) refresh,
     required TResult Function(_GetFilters value) getFilter,
     required TResult Function(_Filter value) filter,
+    required TResult Function(_LoadMore value) loadMore,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -50,6 +54,7 @@ mixin _$HousesEvent {
     TResult? Function(_Refresh value)? refresh,
     TResult? Function(_GetFilters value)? getFilter,
     TResult? Function(_Filter value)? filter,
+    TResult? Function(_LoadMore value)? loadMore,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -57,6 +62,7 @@ mixin _$HousesEvent {
     TResult Function(_Refresh value)? refresh,
     TResult Function(_GetFilters value)? getFilter,
     TResult Function(_Filter value)? filter,
+    TResult Function(_LoadMore value)? loadMore,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -127,6 +133,7 @@ class _$RefreshImpl implements _Refresh {
     required TResult Function() refresh,
     required TResult Function(List<HouseEntity>? houses) getFilter,
     required TResult Function(GlobalOptions filter) filter,
+    required TResult Function() loadMore,
   }) {
     return refresh();
   }
@@ -137,6 +144,7 @@ class _$RefreshImpl implements _Refresh {
     TResult? Function()? refresh,
     TResult? Function(List<HouseEntity>? houses)? getFilter,
     TResult? Function(GlobalOptions filter)? filter,
+    TResult? Function()? loadMore,
   }) {
     return refresh?.call();
   }
@@ -147,6 +155,7 @@ class _$RefreshImpl implements _Refresh {
     TResult Function()? refresh,
     TResult Function(List<HouseEntity>? houses)? getFilter,
     TResult Function(GlobalOptions filter)? filter,
+    TResult Function()? loadMore,
     required TResult orElse(),
   }) {
     if (refresh != null) {
@@ -161,6 +170,7 @@ class _$RefreshImpl implements _Refresh {
     required TResult Function(_Refresh value) refresh,
     required TResult Function(_GetFilters value) getFilter,
     required TResult Function(_Filter value) filter,
+    required TResult Function(_LoadMore value) loadMore,
   }) {
     return refresh(this);
   }
@@ -171,6 +181,7 @@ class _$RefreshImpl implements _Refresh {
     TResult? Function(_Refresh value)? refresh,
     TResult? Function(_GetFilters value)? getFilter,
     TResult? Function(_Filter value)? filter,
+    TResult? Function(_LoadMore value)? loadMore,
   }) {
     return refresh?.call(this);
   }
@@ -181,6 +192,7 @@ class _$RefreshImpl implements _Refresh {
     TResult Function(_Refresh value)? refresh,
     TResult Function(_GetFilters value)? getFilter,
     TResult Function(_Filter value)? filter,
+    TResult Function(_LoadMore value)? loadMore,
     required TResult orElse(),
   }) {
     if (refresh != null) {
@@ -273,6 +285,7 @@ class _$GetFiltersImpl implements _GetFilters {
     required TResult Function() refresh,
     required TResult Function(List<HouseEntity>? houses) getFilter,
     required TResult Function(GlobalOptions filter) filter,
+    required TResult Function() loadMore,
   }) {
     return getFilter(houses);
   }
@@ -283,6 +296,7 @@ class _$GetFiltersImpl implements _GetFilters {
     TResult? Function()? refresh,
     TResult? Function(List<HouseEntity>? houses)? getFilter,
     TResult? Function(GlobalOptions filter)? filter,
+    TResult? Function()? loadMore,
   }) {
     return getFilter?.call(houses);
   }
@@ -293,6 +307,7 @@ class _$GetFiltersImpl implements _GetFilters {
     TResult Function()? refresh,
     TResult Function(List<HouseEntity>? houses)? getFilter,
     TResult Function(GlobalOptions filter)? filter,
+    TResult Function()? loadMore,
     required TResult orElse(),
   }) {
     if (getFilter != null) {
@@ -307,6 +322,7 @@ class _$GetFiltersImpl implements _GetFilters {
     required TResult Function(_Refresh value) refresh,
     required TResult Function(_GetFilters value) getFilter,
     required TResult Function(_Filter value) filter,
+    required TResult Function(_LoadMore value) loadMore,
   }) {
     return getFilter(this);
   }
@@ -317,6 +333,7 @@ class _$GetFiltersImpl implements _GetFilters {
     TResult? Function(_Refresh value)? refresh,
     TResult? Function(_GetFilters value)? getFilter,
     TResult? Function(_Filter value)? filter,
+    TResult? Function(_LoadMore value)? loadMore,
   }) {
     return getFilter?.call(this);
   }
@@ -327,6 +344,7 @@ class _$GetFiltersImpl implements _GetFilters {
     TResult Function(_Refresh value)? refresh,
     TResult Function(_GetFilters value)? getFilter,
     TResult Function(_Filter value)? filter,
+    TResult Function(_LoadMore value)? loadMore,
     required TResult orElse(),
   }) {
     if (getFilter != null) {
@@ -431,6 +449,7 @@ class _$FilterImpl implements _Filter {
     required TResult Function() refresh,
     required TResult Function(List<HouseEntity>? houses) getFilter,
     required TResult Function(GlobalOptions filter) filter,
+    required TResult Function() loadMore,
   }) {
     return filter(this.filter);
   }
@@ -441,6 +460,7 @@ class _$FilterImpl implements _Filter {
     TResult? Function()? refresh,
     TResult? Function(List<HouseEntity>? houses)? getFilter,
     TResult? Function(GlobalOptions filter)? filter,
+    TResult? Function()? loadMore,
   }) {
     return filter?.call(this.filter);
   }
@@ -451,6 +471,7 @@ class _$FilterImpl implements _Filter {
     TResult Function()? refresh,
     TResult Function(List<HouseEntity>? houses)? getFilter,
     TResult Function(GlobalOptions filter)? filter,
+    TResult Function()? loadMore,
     required TResult orElse(),
   }) {
     if (filter != null) {
@@ -465,6 +486,7 @@ class _$FilterImpl implements _Filter {
     required TResult Function(_Refresh value) refresh,
     required TResult Function(_GetFilters value) getFilter,
     required TResult Function(_Filter value) filter,
+    required TResult Function(_LoadMore value) loadMore,
   }) {
     return filter(this);
   }
@@ -475,6 +497,7 @@ class _$FilterImpl implements _Filter {
     TResult? Function(_Refresh value)? refresh,
     TResult? Function(_GetFilters value)? getFilter,
     TResult? Function(_Filter value)? filter,
+    TResult? Function(_LoadMore value)? loadMore,
   }) {
     return filter?.call(this);
   }
@@ -485,6 +508,7 @@ class _$FilterImpl implements _Filter {
     TResult Function(_Refresh value)? refresh,
     TResult Function(_GetFilters value)? getFilter,
     TResult Function(_Filter value)? filter,
+    TResult Function(_LoadMore value)? loadMore,
     required TResult orElse(),
   }) {
     if (filter != null) {
@@ -507,11 +531,131 @@ abstract class _Filter implements HousesEvent {
 }
 
 /// @nodoc
+abstract class _$$LoadMoreImplCopyWith<$Res> {
+  factory _$$LoadMoreImplCopyWith(
+          _$LoadMoreImpl value, $Res Function(_$LoadMoreImpl) then) =
+      __$$LoadMoreImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$LoadMoreImplCopyWithImpl<$Res>
+    extends _$HousesEventCopyWithImpl<$Res, _$LoadMoreImpl>
+    implements _$$LoadMoreImplCopyWith<$Res> {
+  __$$LoadMoreImplCopyWithImpl(
+      _$LoadMoreImpl _value, $Res Function(_$LoadMoreImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of HousesEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$LoadMoreImpl implements _LoadMore {
+  const _$LoadMoreImpl();
+
+  @override
+  String toString() {
+    return 'HousesEvent.loadMore()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$LoadMoreImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() refresh,
+    required TResult Function(List<HouseEntity>? houses) getFilter,
+    required TResult Function(GlobalOptions filter) filter,
+    required TResult Function() loadMore,
+  }) {
+    return loadMore();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? refresh,
+    TResult? Function(List<HouseEntity>? houses)? getFilter,
+    TResult? Function(GlobalOptions filter)? filter,
+    TResult? Function()? loadMore,
+  }) {
+    return loadMore?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? refresh,
+    TResult Function(List<HouseEntity>? houses)? getFilter,
+    TResult Function(GlobalOptions filter)? filter,
+    TResult Function()? loadMore,
+    required TResult orElse(),
+  }) {
+    if (loadMore != null) {
+      return loadMore();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Refresh value) refresh,
+    required TResult Function(_GetFilters value) getFilter,
+    required TResult Function(_Filter value) filter,
+    required TResult Function(_LoadMore value) loadMore,
+  }) {
+    return loadMore(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Refresh value)? refresh,
+    TResult? Function(_GetFilters value)? getFilter,
+    TResult? Function(_Filter value)? filter,
+    TResult? Function(_LoadMore value)? loadMore,
+  }) {
+    return loadMore?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Refresh value)? refresh,
+    TResult Function(_GetFilters value)? getFilter,
+    TResult Function(_Filter value)? filter,
+    TResult Function(_LoadMore value)? loadMore,
+    required TResult orElse(),
+  }) {
+    if (loadMore != null) {
+      return loadMore(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _LoadMore implements HousesEvent {
+  const factory _LoadMore() = _$LoadMoreImpl;
+}
+
+/// @nodoc
 mixin _$HousesState {
   BaseStatus<dynamic> get status => throw _privateConstructorUsedError;
-  List<HouseEntity>? get houses => throw _privateConstructorUsedError;
+  List<HouseEntity> get houses => throw _privateConstructorUsedError;
   GlobalOptionsResponse? get globalOptions =>
-      throw _privateConstructorUsedError;
+      throw _privateConstructorUsedError; // 👇 Pagination alanları
+  bool get isPaginating => throw _privateConstructorUsedError;
+  int get currentPage => throw _privateConstructorUsedError;
+  bool get hasMorePages => throw _privateConstructorUsedError;
 
   /// Create a copy of HousesState
   /// with the given fields replaced by the non-null parameter values.
@@ -528,8 +672,11 @@ abstract class $HousesStateCopyWith<$Res> {
   @useResult
   $Res call(
       {BaseStatus<dynamic> status,
-      List<HouseEntity>? houses,
-      GlobalOptionsResponse? globalOptions});
+      List<HouseEntity> houses,
+      GlobalOptionsResponse? globalOptions,
+      bool isPaginating,
+      int currentPage,
+      bool hasMorePages});
 
   $BaseStatusCopyWith<dynamic, $Res> get status;
   $GlobalOptionsResponseCopyWith<$Res>? get globalOptions;
@@ -551,22 +698,37 @@ class _$HousesStateCopyWithImpl<$Res, $Val extends HousesState>
   @override
   $Res call({
     Object? status = null,
-    Object? houses = freezed,
+    Object? houses = null,
     Object? globalOptions = freezed,
+    Object? isPaginating = null,
+    Object? currentPage = null,
+    Object? hasMorePages = null,
   }) {
     return _then(_value.copyWith(
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as BaseStatus<dynamic>,
-      houses: freezed == houses
+      houses: null == houses
           ? _value.houses
           : houses // ignore: cast_nullable_to_non_nullable
-              as List<HouseEntity>?,
+              as List<HouseEntity>,
       globalOptions: freezed == globalOptions
           ? _value.globalOptions
           : globalOptions // ignore: cast_nullable_to_non_nullable
               as GlobalOptionsResponse?,
+      isPaginating: null == isPaginating
+          ? _value.isPaginating
+          : isPaginating // ignore: cast_nullable_to_non_nullable
+              as bool,
+      currentPage: null == currentPage
+          ? _value.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int,
+      hasMorePages: null == hasMorePages
+          ? _value.hasMorePages
+          : hasMorePages // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -605,8 +767,11 @@ abstract class _$$HousesStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {BaseStatus<dynamic> status,
-      List<HouseEntity>? houses,
-      GlobalOptionsResponse? globalOptions});
+      List<HouseEntity> houses,
+      GlobalOptionsResponse? globalOptions,
+      bool isPaginating,
+      int currentPage,
+      bool hasMorePages});
 
   @override
   $BaseStatusCopyWith<dynamic, $Res> get status;
@@ -628,22 +793,37 @@ class __$$HousesStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? status = null,
-    Object? houses = freezed,
+    Object? houses = null,
     Object? globalOptions = freezed,
+    Object? isPaginating = null,
+    Object? currentPage = null,
+    Object? hasMorePages = null,
   }) {
     return _then(_$HousesStateImpl(
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as BaseStatus<dynamic>,
-      houses: freezed == houses
+      houses: null == houses
           ? _value._houses
           : houses // ignore: cast_nullable_to_non_nullable
-              as List<HouseEntity>?,
+              as List<HouseEntity>,
       globalOptions: freezed == globalOptions
           ? _value.globalOptions
           : globalOptions // ignore: cast_nullable_to_non_nullable
               as GlobalOptionsResponse?,
+      isPaginating: null == isPaginating
+          ? _value.isPaginating
+          : isPaginating // ignore: cast_nullable_to_non_nullable
+              as bool,
+      currentPage: null == currentPage
+          ? _value.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int,
+      hasMorePages: null == hasMorePages
+          ? _value.hasMorePages
+          : hasMorePages // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -653,30 +833,42 @@ class __$$HousesStateImplCopyWithImpl<$Res>
 class _$HousesStateImpl extends _HousesState {
   const _$HousesStateImpl(
       {this.status = const BaseStatus.initial(),
-      final List<HouseEntity>? houses,
-      this.globalOptions})
+      final List<HouseEntity> houses = const [],
+      this.globalOptions,
+      this.isPaginating = false,
+      this.currentPage = 0,
+      this.hasMorePages = true})
       : _houses = houses,
         super._();
 
   @override
   @JsonKey()
   final BaseStatus<dynamic> status;
-  final List<HouseEntity>? _houses;
+  final List<HouseEntity> _houses;
   @override
-  List<HouseEntity>? get houses {
-    final value = _houses;
-    if (value == null) return null;
+  @JsonKey()
+  List<HouseEntity> get houses {
     if (_houses is EqualUnmodifiableListView) return _houses;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
+    return EqualUnmodifiableListView(_houses);
   }
 
   @override
   final GlobalOptionsResponse? globalOptions;
+// 👇 Pagination alanları
+  @override
+  @JsonKey()
+  final bool isPaginating;
+  @override
+  @JsonKey()
+  final int currentPage;
+  @override
+  @JsonKey()
+  final bool hasMorePages;
 
   @override
   String toString() {
-    return 'HousesState(status: $status, houses: $houses, globalOptions: $globalOptions)';
+    return 'HousesState(status: $status, houses: $houses, globalOptions: $globalOptions, isPaginating: $isPaginating, currentPage: $currentPage, hasMorePages: $hasMorePages)';
   }
 
   @override
@@ -687,12 +879,24 @@ class _$HousesStateImpl extends _HousesState {
             (identical(other.status, status) || other.status == status) &&
             const DeepCollectionEquality().equals(other._houses, _houses) &&
             (identical(other.globalOptions, globalOptions) ||
-                other.globalOptions == globalOptions));
+                other.globalOptions == globalOptions) &&
+            (identical(other.isPaginating, isPaginating) ||
+                other.isPaginating == isPaginating) &&
+            (identical(other.currentPage, currentPage) ||
+                other.currentPage == currentPage) &&
+            (identical(other.hasMorePages, hasMorePages) ||
+                other.hasMorePages == hasMorePages));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status,
-      const DeepCollectionEquality().hash(_houses), globalOptions);
+  int get hashCode => Object.hash(
+      runtimeType,
+      status,
+      const DeepCollectionEquality().hash(_houses),
+      globalOptions,
+      isPaginating,
+      currentPage,
+      hasMorePages);
 
   /// Create a copy of HousesState
   /// with the given fields replaced by the non-null parameter values.
@@ -706,16 +910,25 @@ class _$HousesStateImpl extends _HousesState {
 abstract class _HousesState extends HousesState {
   const factory _HousesState(
       {final BaseStatus<dynamic> status,
-      final List<HouseEntity>? houses,
-      final GlobalOptionsResponse? globalOptions}) = _$HousesStateImpl;
+      final List<HouseEntity> houses,
+      final GlobalOptionsResponse? globalOptions,
+      final bool isPaginating,
+      final int currentPage,
+      final bool hasMorePages}) = _$HousesStateImpl;
   const _HousesState._() : super._();
 
   @override
   BaseStatus<dynamic> get status;
   @override
-  List<HouseEntity>? get houses;
+  List<HouseEntity> get houses;
   @override
-  GlobalOptionsResponse? get globalOptions;
+  GlobalOptionsResponse? get globalOptions; // 👇 Pagination alanları
+  @override
+  bool get isPaginating;
+  @override
+  int get currentPage;
+  @override
+  bool get hasMorePages;
 
   /// Create a copy of HousesState
   /// with the given fields replaced by the non-null parameter values.

@@ -44,6 +44,7 @@ class GlobalOptions with _$GlobalOptions {
     bool? writeComment,
     String? name,
     String? description,
+    String? search,
     List<HouseFloorCount>? floorCount,
     List<HouseFloorCount>? roomCount,
     List<HouseFloorCount>? floorCountHouse,
@@ -157,8 +158,8 @@ class OptionsPossibility with _$OptionsPossibility {
     required int id,
     required String name,
     @Default(false) bool selected,
-    @JsonKey(name: 'created_at') required DateTime? createdAt,
-    @JsonKey(name: 'updated_at') required DateTime? updatedAt,
+    @JsonKey(name: 'created_at') DateTime? createdAt,
+    @JsonKey(name: 'updated_at') DateTime? updatedAt,
   }) = _OptionsPossibility;
 
   factory OptionsPossibility.fromJson(Map<String, dynamic> json) =>
@@ -372,8 +373,6 @@ extension PossibilityTitle on OptionsPossibility {
     }
   }
 }
-
-
 
 
 // {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:gen/gen.dart';
+import 'package:mekanly/remote/entities/global_options/global_options.dart';
 
 import '../../../core/components/small_icon_wrapper.dart';
-
 
 part 'house_detail_response.freezed.dart';
 part 'house_detail_response.g.dart';
@@ -31,6 +31,8 @@ class HouseData with _$HouseData {
     String? description,
     String? reason,
     String? price,
+    @JsonKey(name: 'lower_price') String? lowerPrice, // Added
+    @JsonKey(name: 'lower_percentage') int? lowerPercentage,
     @JsonKey(name: 'comment_count') int? commentCount,
     int? viewed,
     double? star,
@@ -49,16 +51,18 @@ class HouseData with _$HouseData {
     @JsonKey(name: 'write_comment') int? writeComment,
     String? who,
     int? area,
-    int? exclusisive,
     int? exclusive,
     String? hashtag,
     @JsonKey(name: 'level_number') int? levelNumber,
     bool? liked,
     String? shop,
     String? type,
+    @JsonKey(name: 'property_type') PropertyType? propertyType,
+    @JsonKey(name: 'repair_type') RepairType? repairType,
     @JsonKey(name: 'updated_at') DateTime? updatedAt,
     @JsonKey(name: 'created_at') DateTime? createdAt,
     String? banner,
+    @JsonKey(name: 'is_owner') bool? isOwner,
   }) = _HouseData;
 
   factory HouseData.fromJson(Map<String, dynamic> json) =>
@@ -113,7 +117,6 @@ class Possibility with _$Possibility {
   factory Possibility.fromJson(Map<String, dynamic> json) =>
       _$PossibilityFromJson(json);
 }
-
 
 extension PossibilityIcon on Possibility {
   Widget get buildIcon {

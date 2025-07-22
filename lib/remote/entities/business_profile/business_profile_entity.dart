@@ -21,6 +21,9 @@ class BusinessProfileEntity with _$BusinessProfileEntity {
     @JsonKey(name: 'image') String? image,
     @JsonKey(name: 'status') String? status,
     @JsonKey(name: 'description') BaseTranslationModel? description,
+    @JsonKey(name: 'brief_description')
+    String? briefDescription,
+    @JsonKey(name: 'product_count') int? productCount, 
     @JsonKey(name: 'location_id') int? locationId,
     @JsonKey(name: 'expire') String? expire,
     @JsonKey(name: 'views') int? views,

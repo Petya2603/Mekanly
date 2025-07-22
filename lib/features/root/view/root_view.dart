@@ -115,9 +115,8 @@ class _RootViewState extends State<RootView>
                     children: [
                       Expanded(
                         child: SizedBox(
-                          height: 20.w,
-                          child:
-                              Assets.icons.icLogoAppbar.image(package: 'gen'),
+                          // height: 20.w,
+                          child: Assets.icons.logoo.svg(package: 'gen'),
                         ).toLeft(),
                       ),
                       Assets.icons.icNotif.svg(package: 'gen'),
@@ -166,7 +165,7 @@ class _RootViewState extends State<RootView>
               child: InkWell(
                 onTap: () => _onTabSelected(index),
                 child: Container(
-                  padding: const EdgeInsets.only(bottom: 6).w,
+                  padding: const EdgeInsets.only(bottom: 0.2).w,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -181,18 +180,35 @@ class _RootViewState extends State<RootView>
                       ),
                       const SizedBox(height: 4),
                       Flexible(
-                        child: AppText.s12w400BdS(page.label,
-                            fontSize: 9.sp,
-                            textAlign: TextAlign.center,
-                            color: page.index == _currentIndex
-                                ? ColorName.white
-                                : ColorName.cardShadow,
-                            fontWeight: page.index == _currentIndex
-                                ? FontWeight.bold
-                                : FontWeight.w500,
-                            fontFamily: StringConstants.roboto,
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis),
+                        child: AppText.s12w400BdS(
+                          page.label,
+                          fontSize: 9.sp,
+                          textAlign: TextAlign.center,
+                          color: page.index == _currentIndex
+                              ? ColorName.white
+                              : ColorName.cardShadow,
+                          fontWeight: page.index == _currentIndex
+                              ? FontWeight.bold
+                              : FontWeight.w500,
+                          fontFamily: StringConstants.roboto,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        height: 3,
+                        width: 57,
+                        decoration: BoxDecoration(
+                          color: _currentIndex == page.index
+                              ? ColorName.white
+                              : Colors.transparent,
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(9),
+                            topRight: Radius.circular(9),
+                          ),
+                        ),
                       ),
                     ],
                   ),

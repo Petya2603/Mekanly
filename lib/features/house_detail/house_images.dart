@@ -1,7 +1,5 @@
 import 'dart:math' show pi;
-
 import 'package:common/common.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -11,11 +9,63 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../core/components/app_btn.dart';
 import '../../core/components/app_text.dart';
 import '../../product/constants/constants.dart';
+import '../../remote/repositories/favorite/favorite_repository.dart';
 import '../../utils/extensions.dart';
 
-class HouseImages extends StatelessWidget {
-  const HouseImages({super.key, required this.houseImagesUrl});
+class HouseImages extends StatefulWidget {
+  const HouseImages({
+    super.key,
+    required this.houseImagesUrl,
+    required this.houseId,
+    required this.houseType,
+    required this.houseFavorite,
+  });
   final List<String?>? houseImagesUrl;
+  final int houseId;
+  final String houseType;
+  final bool houseFavorite;
+
+  @override
+  State<HouseImages> createState() => _HouseImagesState();
+}
+
+class _HouseImagesState extends State<HouseImages> {
+  final FavoriteService favoriteService = FavoriteService();
+
+  late bool isFavorite;
+  @override
+  void initState() {
+    super.initState();
+    isFavorite = widget.houseFavorite;
+  }
+
+  Future<void> toggleFavoriteItem() async {
+    try {
+      await favoriteService.toggleFavorite(
+        favoritableId: widget.houseId,
+        favoritableType: getFavoritableType(widget.houseType),
+      );
+
+      setState(() {
+        isFavorite = !isFavorite;
+      });
+      // ignore: empty_catches
+    } catch (e) {}
+  }
+
+  String getFavoritableType(String? type) {
+    if (type == null) return '';
+    switch (type.toLowerCase()) {
+      case 'house':
+        return 'House';
+      case 'product':
+        return 'Product';
+      case 'shop':
+        return 'Shop';
+      default:
+        return '';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +92,16 @@ class HouseImages extends StatelessWidget {
               ),
               6.boxW,
               IconButton(
-                onPressed: () {},
-                icon: Assets.icons.icHeart.svg(
-                  package: 'gen',
-                ),
+                onPressed: toggleFavoriteItem,
+                icon: isFavorite
+                    ? Assets.icons.tazefav.svg(
+                        package: 'gen',
+                        width: 25,
+                        height: 25,
+                      )
+                    : Assets.icons.icHeart.svg(
+                        package: 'gen',
+                      ),
               ),
             ],
           ),
@@ -70,7 +126,7 @@ class HouseImages extends StatelessWidget {
                 // ignore: inference_failure_on_instance_creation
                 MaterialPageRoute(
                   builder: (BuildContext context) => ImageScreen(
-                    imagesUrl: houseImagesUrl,
+                    imagesUrl: widget.houseImagesUrl,
                     initialIndex: index + 1,
                   ),
                 ),
@@ -78,7 +134,7 @@ class HouseImages extends StatelessWidget {
             },
             child: LayoutBuilder(
               builder: (context, constraints) => CustomNetworkImage(
-                imageUrl: houseImagesUrl?[index],
+                imageUrl: widget.houseImagesUrl?[index],
                 memCache: CustomMemCache(
                   // height: constraints.maxHeight.toInt(),
                   width: constraints.maxWidth.toInt(),
@@ -86,22 +142,23 @@ class HouseImages extends StatelessWidget {
               ),
             ),
           ),
-          childCount: houseImagesUrl?.length,
+          childCount: widget.houseImagesUrl?.length,
         ),
       ),
     );
   }
 
-  void  _showAnimatedBottomSheet(BuildContext context) {
+  void _showAnimatedBottomSheet(BuildContext context) {
+    // ignore: inference_failure_on_function_invocation
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: const Color(0xFFF5F0EA),
       builder: (context) => _AnimatedContainersSheet(
-        imageUrlFirst: houseImagesUrl?[0],
-        imageUrlSecond: houseImagesUrl?[0],
-        imageUrlThird: houseImagesUrl?[0],
-        imagesNumber: houseImagesUrl?.length ?? 0,
+        imageUrlFirst: widget.houseImagesUrl?[0],
+        imageUrlSecond: widget.houseImagesUrl?[0],
+        imageUrlThird: widget.houseImagesUrl?[0],
+        imagesNumber: widget.houseImagesUrl?.length ?? 0,
       ),
     );
   }
@@ -238,19 +295,8 @@ class _ImageScreenState extends State<ImageScreen> {
 
             // ignore: use_if_null_to_convert_nulls_to_bools
             if (success == true) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Surat ýüklendi")),
-              );
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Surat ýuklenmedi")),
-              );
-            }
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Rugsat berilmedi")),
-            );
-          }
+            } else {}
+          } else {}
         },
         child: Assets.icons.icDownloadImage.svg(package: 'gen'),
       ),
@@ -587,6 +633,7 @@ class _AnimatedContainersSheetState extends State<_AnimatedContainersSheet>
         ),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: Colors.black.withOpacity(0.25),
             blurRadius: 5,
             offset: const Offset(0, 2),

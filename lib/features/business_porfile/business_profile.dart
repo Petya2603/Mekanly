@@ -7,7 +7,7 @@ import '../../core/components/app_text.dart';
 import '../../core/components/buisnes_profile_card.dart';
 import '../../core/components/categories_card.dart';
 import '../../core/components/loading_indicator.dart';
-import '../../core/components/search_field.dart';
+import '../../core/components/search_field_business.dart';
 import '../../core/components/try_again_widget.dart';
 import '../../localization/extensions.dart';
 import '../../product/base/base_status/base_status.dart';
@@ -29,6 +29,11 @@ class BusinessProfileView extends StatefulWidget {
 class _BusinessProfileViewState extends State<BusinessProfileView>
     with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
+  @override
+  void initState() {
+    init();
+    super.initState();
+  }
 
   Future<void> init() async {
     BaseLogger.warning('BusinessProfileView init');
@@ -39,14 +44,11 @@ class _BusinessProfileViewState extends State<BusinessProfileView>
 
   @override
   void didChangeDependencies() {
-    precacheImage(const AssetImage(AppConstants.businessProfileImg), context);
     super.didChangeDependencies();
-  }
-
-  @override
-  void initState() {
-    init();
-    super.initState();
+    precacheImage(
+      const AssetImage(AppConstants.businessProfileImg),
+      context,
+    );
   }
 
   @override
@@ -72,13 +74,38 @@ class _BusinessProfileViewState extends State<BusinessProfileView>
             controller: _scrollController,
             slivers: [
               SliverToBoxAdapter(
-                child: Container(
+                child: Material(
+                  elevation: 5,
+                  // ignore: deprecated_member_use
+                  shadowColor: Colors.black.withOpacity(0.1),
                   color: ColorName.main,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 14, horizontal: 18)
-                          .w,
-                  child: SearchField(
-                    onTap: () {},
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          color: const Color.fromARGB(255, 0, 0, 25)
+                              // ignore: deprecated_member_use
+                              .withOpacity(0.02),
+                          width: 2,
+                        ),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color.fromARGB(255, 0, 0, 25)
+                              // ignore: deprecated_member_use
+                              .withOpacity(0.1),
+                          blurRadius: 5,
+                          offset: const Offset(0, 1),
+                        ),
+                      ],
+                    ),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 14, horizontal: 18)
+                            .w,
+                    child: SearchFieldBusiness(
+                      onSearchTap: () {},
+                      onClearTap: () {},
+                    ),
                   ),
                 ),
               ),

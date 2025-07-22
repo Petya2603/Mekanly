@@ -22,9 +22,45 @@ class HousesBloc extends BaseBloc<HousesEvent, HousesState> {
     on<_Refresh>(_onRefresh);
     on<_GetFilters>(_onGetFilters);
     on<_Filter>(_onApplyFilter);
+    on<_LoadMore>(_onLoadMore);
   }
 
   final HousesRepository _housesRepository;
+  FutureOr<void> _onLoadMore(
+    _LoadMore event,
+    Emitter<HousesState> emit,
+  ) async {
+    if (state.isPaginating || !state.hasMorePages) return;
+
+    emit(state.copyWith(isPaginating: true));
+
+    final nextPage = state.currentPage + 1;
+
+    final result = await _housesRepository.houses(
+      limit: 10,
+      page: nextPage,
+    );
+
+    result.fold(
+      (failure) {
+        emit(state.copyWith(isPaginating: false));
+      },
+      (response) {
+        final newHouses = response.houses ?? [];
+        final allHouses = List<HouseEntity>.from(state.houses)
+          ..addAll(newHouses);
+
+        final hasMore = newHouses.length == 10;
+
+        emit(state.copyWith(
+          houses: allHouses,
+          currentPage: nextPage,
+          hasMorePages: hasMore,
+          isPaginating: false,
+        ));
+      },
+    );
+  }
 
   FutureOr<void> _onRefresh(
     _Refresh event,
@@ -60,7 +96,7 @@ class HousesBloc extends BaseBloc<HousesEvent, HousesState> {
           return emit(
             state.copyWith(
               status: const BaseStatus.success(),
-              houses: houses,
+              houses: houses ?? [],
               globalOptions: data,
             ),
           );
@@ -68,7 +104,7 @@ class HousesBloc extends BaseBloc<HousesEvent, HousesState> {
         return emit(
           state.copyWith(
             status: const BaseStatus.success(),
-            houses: houses,
+            houses: houses ?? [],
           ),
         );
       },
@@ -96,7 +132,7 @@ class HousesBloc extends BaseBloc<HousesEvent, HousesState> {
           state.copyWith(
             status: const BaseStatus.success(),
             globalOptions: updated,
-            houses: event.houses,
+            houses: event.houses ?? [],
           ),
         );
       },
@@ -117,18 +153,38 @@ class HousesBloc extends BaseBloc<HousesEvent, HousesState> {
       ),
     );
 
-    final res = await _housesRepository.filter(filter: event.filter);
-    res.fold(
-      (l) => emit(state.copyWith(status: BaseStatus.failure(l))),
-      (r) {
-        return emit(
-          state.copyWith(
-            status: const BaseStatus.success(),
-            globalOptions: filter,
-            houses: r,
-          ),
-        );
-      },
-    );
+    if (event.filter.search?.isNotEmpty ?? false) {
+      final res = await _housesRepository.searchHouses(
+        searchQuery: event.filter.search!,
+        limit: 10,
+        page: 0,
+      );
+      res.fold(
+        (l) => emit(state.copyWith(status: BaseStatus.failure(l))),
+        (r) {
+          return emit(
+            state.copyWith(
+              status: const BaseStatus.success(),
+              globalOptions: filter,
+              houses: r.houses ?? [],
+            ),
+          );
+        },
+      );
+    } else {
+      final res = await _housesRepository.filter(filter: event.filter);
+      res.fold(
+        (l) => emit(state.copyWith(status: BaseStatus.failure(l))),
+        (r) {
+          return emit(
+            state.copyWith(
+              status: const BaseStatus.success(),
+              globalOptions: filter,
+              houses: r,
+            ),
+          );
+        },
+      );
+    }
   }
 }

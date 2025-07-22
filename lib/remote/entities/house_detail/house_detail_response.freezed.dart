@@ -202,6 +202,10 @@ mixin _$HouseData {
   String? get description => throw _privateConstructorUsedError;
   String? get reason => throw _privateConstructorUsedError;
   String? get price => throw _privateConstructorUsedError;
+  @JsonKey(name: 'lower_price')
+  String? get lowerPrice => throw _privateConstructorUsedError; // Added
+  @JsonKey(name: 'lower_percentage')
+  int? get lowerPercentage => throw _privateConstructorUsedError;
   @JsonKey(name: 'comment_count')
   int? get commentCount => throw _privateConstructorUsedError;
   int? get viewed => throw _privateConstructorUsedError;
@@ -229,7 +233,6 @@ mixin _$HouseData {
   int? get writeComment => throw _privateConstructorUsedError;
   String? get who => throw _privateConstructorUsedError;
   int? get area => throw _privateConstructorUsedError;
-  int? get exclusisive => throw _privateConstructorUsedError;
   int? get exclusive => throw _privateConstructorUsedError;
   String? get hashtag => throw _privateConstructorUsedError;
   @JsonKey(name: 'level_number')
@@ -237,11 +240,17 @@ mixin _$HouseData {
   bool? get liked => throw _privateConstructorUsedError;
   String? get shop => throw _privateConstructorUsedError;
   String? get type => throw _privateConstructorUsedError;
+  @JsonKey(name: 'property_type')
+  PropertyType? get propertyType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'repair_type')
+  RepairType? get repairType => throw _privateConstructorUsedError;
   @JsonKey(name: 'updated_at')
   DateTime? get updatedAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
   DateTime? get createdAt => throw _privateConstructorUsedError;
   String? get banner => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_owner')
+  bool? get isOwner => throw _privateConstructorUsedError;
 
   /// Serializes this HouseData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -269,6 +278,8 @@ abstract class $HouseDataCopyWith<$Res> {
       String? description,
       String? reason,
       String? price,
+      @JsonKey(name: 'lower_price') String? lowerPrice,
+      @JsonKey(name: 'lower_percentage') int? lowerPercentage,
       @JsonKey(name: 'comment_count') int? commentCount,
       int? viewed,
       double? star,
@@ -287,19 +298,23 @@ abstract class $HouseDataCopyWith<$Res> {
       @JsonKey(name: 'write_comment') int? writeComment,
       String? who,
       int? area,
-      int? exclusisive,
       int? exclusive,
       String? hashtag,
       @JsonKey(name: 'level_number') int? levelNumber,
       bool? liked,
       String? shop,
       String? type,
+      @JsonKey(name: 'property_type') PropertyType? propertyType,
+      @JsonKey(name: 'repair_type') RepairType? repairType,
       @JsonKey(name: 'updated_at') DateTime? updatedAt,
       @JsonKey(name: 'created_at') DateTime? createdAt,
-      String? banner});
+      String? banner,
+      @JsonKey(name: 'is_owner') bool? isOwner});
 
   $LocationCopyWith<$Res>? get location;
   $UserCopyWith<$Res>? get user;
+  $PropertyTypeCopyWith<$Res>? get propertyType;
+  $RepairTypeCopyWith<$Res>? get repairType;
 }
 
 /// @nodoc
@@ -327,6 +342,8 @@ class _$HouseDataCopyWithImpl<$Res, $Val extends HouseData>
     Object? description = freezed,
     Object? reason = freezed,
     Object? price = freezed,
+    Object? lowerPrice = freezed,
+    Object? lowerPercentage = freezed,
     Object? commentCount = freezed,
     Object? viewed = freezed,
     Object? star = freezed,
@@ -345,16 +362,18 @@ class _$HouseDataCopyWithImpl<$Res, $Val extends HouseData>
     Object? writeComment = freezed,
     Object? who = freezed,
     Object? area = freezed,
-    Object? exclusisive = freezed,
     Object? exclusive = freezed,
     Object? hashtag = freezed,
     Object? levelNumber = freezed,
     Object? liked = freezed,
     Object? shop = freezed,
     Object? type = freezed,
+    Object? propertyType = freezed,
+    Object? repairType = freezed,
     Object? updatedAt = freezed,
     Object? createdAt = freezed,
     Object? banner = freezed,
+    Object? isOwner = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -397,6 +416,14 @@ class _$HouseDataCopyWithImpl<$Res, $Val extends HouseData>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as String?,
+      lowerPrice: freezed == lowerPrice
+          ? _value.lowerPrice
+          : lowerPrice // ignore: cast_nullable_to_non_nullable
+              as String?,
+      lowerPercentage: freezed == lowerPercentage
+          ? _value.lowerPercentage
+          : lowerPercentage // ignore: cast_nullable_to_non_nullable
+              as int?,
       commentCount: freezed == commentCount
           ? _value.commentCount
           : commentCount // ignore: cast_nullable_to_non_nullable
@@ -469,10 +496,6 @@ class _$HouseDataCopyWithImpl<$Res, $Val extends HouseData>
           ? _value.area
           : area // ignore: cast_nullable_to_non_nullable
               as int?,
-      exclusisive: freezed == exclusisive
-          ? _value.exclusisive
-          : exclusisive // ignore: cast_nullable_to_non_nullable
-              as int?,
       exclusive: freezed == exclusive
           ? _value.exclusive
           : exclusive // ignore: cast_nullable_to_non_nullable
@@ -497,6 +520,14 @@ class _$HouseDataCopyWithImpl<$Res, $Val extends HouseData>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String?,
+      propertyType: freezed == propertyType
+          ? _value.propertyType
+          : propertyType // ignore: cast_nullable_to_non_nullable
+              as PropertyType?,
+      repairType: freezed == repairType
+          ? _value.repairType
+          : repairType // ignore: cast_nullable_to_non_nullable
+              as RepairType?,
       updatedAt: freezed == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -509,6 +540,10 @@ class _$HouseDataCopyWithImpl<$Res, $Val extends HouseData>
           ? _value.banner
           : banner // ignore: cast_nullable_to_non_nullable
               as String?,
+      isOwner: freezed == isOwner
+          ? _value.isOwner
+          : isOwner // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ) as $Val);
   }
 
@@ -539,6 +574,34 @@ class _$HouseDataCopyWithImpl<$Res, $Val extends HouseData>
       return _then(_value.copyWith(user: value) as $Val);
     });
   }
+
+  /// Create a copy of HouseData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PropertyTypeCopyWith<$Res>? get propertyType {
+    if (_value.propertyType == null) {
+      return null;
+    }
+
+    return $PropertyTypeCopyWith<$Res>(_value.propertyType!, (value) {
+      return _then(_value.copyWith(propertyType: value) as $Val);
+    });
+  }
+
+  /// Create a copy of HouseData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $RepairTypeCopyWith<$Res>? get repairType {
+    if (_value.repairType == null) {
+      return null;
+    }
+
+    return $RepairTypeCopyWith<$Res>(_value.repairType!, (value) {
+      return _then(_value.copyWith(repairType: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -560,6 +623,8 @@ abstract class _$$HouseDataImplCopyWith<$Res>
       String? description,
       String? reason,
       String? price,
+      @JsonKey(name: 'lower_price') String? lowerPrice,
+      @JsonKey(name: 'lower_percentage') int? lowerPercentage,
       @JsonKey(name: 'comment_count') int? commentCount,
       int? viewed,
       double? star,
@@ -578,21 +643,27 @@ abstract class _$$HouseDataImplCopyWith<$Res>
       @JsonKey(name: 'write_comment') int? writeComment,
       String? who,
       int? area,
-      int? exclusisive,
       int? exclusive,
       String? hashtag,
       @JsonKey(name: 'level_number') int? levelNumber,
       bool? liked,
       String? shop,
       String? type,
+      @JsonKey(name: 'property_type') PropertyType? propertyType,
+      @JsonKey(name: 'repair_type') RepairType? repairType,
       @JsonKey(name: 'updated_at') DateTime? updatedAt,
       @JsonKey(name: 'created_at') DateTime? createdAt,
-      String? banner});
+      String? banner,
+      @JsonKey(name: 'is_owner') bool? isOwner});
 
   @override
   $LocationCopyWith<$Res>? get location;
   @override
   $UserCopyWith<$Res>? get user;
+  @override
+  $PropertyTypeCopyWith<$Res>? get propertyType;
+  @override
+  $RepairTypeCopyWith<$Res>? get repairType;
 }
 
 /// @nodoc
@@ -618,6 +689,8 @@ class __$$HouseDataImplCopyWithImpl<$Res>
     Object? description = freezed,
     Object? reason = freezed,
     Object? price = freezed,
+    Object? lowerPrice = freezed,
+    Object? lowerPercentage = freezed,
     Object? commentCount = freezed,
     Object? viewed = freezed,
     Object? star = freezed,
@@ -636,16 +709,18 @@ class __$$HouseDataImplCopyWithImpl<$Res>
     Object? writeComment = freezed,
     Object? who = freezed,
     Object? area = freezed,
-    Object? exclusisive = freezed,
     Object? exclusive = freezed,
     Object? hashtag = freezed,
     Object? levelNumber = freezed,
     Object? liked = freezed,
     Object? shop = freezed,
     Object? type = freezed,
+    Object? propertyType = freezed,
+    Object? repairType = freezed,
     Object? updatedAt = freezed,
     Object? createdAt = freezed,
     Object? banner = freezed,
+    Object? isOwner = freezed,
   }) {
     return _then(_$HouseDataImpl(
       id: freezed == id
@@ -688,6 +763,14 @@ class __$$HouseDataImplCopyWithImpl<$Res>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as String?,
+      lowerPrice: freezed == lowerPrice
+          ? _value.lowerPrice
+          : lowerPrice // ignore: cast_nullable_to_non_nullable
+              as String?,
+      lowerPercentage: freezed == lowerPercentage
+          ? _value.lowerPercentage
+          : lowerPercentage // ignore: cast_nullable_to_non_nullable
+              as int?,
       commentCount: freezed == commentCount
           ? _value.commentCount
           : commentCount // ignore: cast_nullable_to_non_nullable
@@ -760,10 +843,6 @@ class __$$HouseDataImplCopyWithImpl<$Res>
           ? _value.area
           : area // ignore: cast_nullable_to_non_nullable
               as int?,
-      exclusisive: freezed == exclusisive
-          ? _value.exclusisive
-          : exclusisive // ignore: cast_nullable_to_non_nullable
-              as int?,
       exclusive: freezed == exclusive
           ? _value.exclusive
           : exclusive // ignore: cast_nullable_to_non_nullable
@@ -788,6 +867,14 @@ class __$$HouseDataImplCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String?,
+      propertyType: freezed == propertyType
+          ? _value.propertyType
+          : propertyType // ignore: cast_nullable_to_non_nullable
+              as PropertyType?,
+      repairType: freezed == repairType
+          ? _value.repairType
+          : repairType // ignore: cast_nullable_to_non_nullable
+              as RepairType?,
       updatedAt: freezed == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -800,6 +887,10 @@ class __$$HouseDataImplCopyWithImpl<$Res>
           ? _value.banner
           : banner // ignore: cast_nullable_to_non_nullable
               as String?,
+      isOwner: freezed == isOwner
+          ? _value.isOwner
+          : isOwner // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -818,6 +909,8 @@ class _$HouseDataImpl implements _HouseData {
       this.description,
       this.reason,
       this.price,
+      @JsonKey(name: 'lower_price') this.lowerPrice,
+      @JsonKey(name: 'lower_percentage') this.lowerPercentage,
       @JsonKey(name: 'comment_count') this.commentCount,
       this.viewed,
       this.star,
@@ -836,16 +929,18 @@ class _$HouseDataImpl implements _HouseData {
       @JsonKey(name: 'write_comment') this.writeComment,
       this.who,
       this.area,
-      this.exclusisive,
       this.exclusive,
       this.hashtag,
       @JsonKey(name: 'level_number') this.levelNumber,
       this.liked,
       this.shop,
       this.type,
+      @JsonKey(name: 'property_type') this.propertyType,
+      @JsonKey(name: 'repair_type') this.repairType,
       @JsonKey(name: 'updated_at') this.updatedAt,
       @JsonKey(name: 'created_at') this.createdAt,
-      this.banner})
+      this.banner,
+      @JsonKey(name: 'is_owner') this.isOwner})
       : _images = images,
         _possibilities = possibilities;
 
@@ -874,6 +969,13 @@ class _$HouseDataImpl implements _HouseData {
   final String? reason;
   @override
   final String? price;
+  @override
+  @JsonKey(name: 'lower_price')
+  final String? lowerPrice;
+// Added
+  @override
+  @JsonKey(name: 'lower_percentage')
+  final int? lowerPercentage;
   @override
   @JsonKey(name: 'comment_count')
   final int? commentCount;
@@ -936,8 +1038,6 @@ class _$HouseDataImpl implements _HouseData {
   @override
   final int? area;
   @override
-  final int? exclusisive;
-  @override
   final int? exclusive;
   @override
   final String? hashtag;
@@ -951,6 +1051,12 @@ class _$HouseDataImpl implements _HouseData {
   @override
   final String? type;
   @override
+  @JsonKey(name: 'property_type')
+  final PropertyType? propertyType;
+  @override
+  @JsonKey(name: 'repair_type')
+  final RepairType? repairType;
+  @override
   @JsonKey(name: 'updated_at')
   final DateTime? updatedAt;
   @override
@@ -958,10 +1064,13 @@ class _$HouseDataImpl implements _HouseData {
   final DateTime? createdAt;
   @override
   final String? banner;
+  @override
+  @JsonKey(name: 'is_owner')
+  final bool? isOwner;
 
   @override
   String toString() {
-    return 'HouseData(id: $id, categoryId: $categoryId, categoryName: $categoryName, location: $location, username: $username, user: $user, name: $name, description: $description, reason: $reason, price: $price, commentCount: $commentCount, viewed: $viewed, star: $star, bronNumber: $bronNumber, roomNumber: $roomNumber, floorNumber: $floorNumber, status: $status, luxe: $luxe, luxeStatus: $luxeStatus, luxeExpire: $luxeExpire, vipStatus: $vipStatus, vipExpire: $vipExpire, images: $images, possibilities: $possibilities, comment: $comment, writeComment: $writeComment, who: $who, area: $area, exclusisive: $exclusisive, exclusive: $exclusive, hashtag: $hashtag, levelNumber: $levelNumber, liked: $liked, shop: $shop, type: $type, updatedAt: $updatedAt, createdAt: $createdAt, banner: $banner)';
+    return 'HouseData(id: $id, categoryId: $categoryId, categoryName: $categoryName, location: $location, username: $username, user: $user, name: $name, description: $description, reason: $reason, price: $price, lowerPrice: $lowerPrice, lowerPercentage: $lowerPercentage, commentCount: $commentCount, viewed: $viewed, star: $star, bronNumber: $bronNumber, roomNumber: $roomNumber, floorNumber: $floorNumber, status: $status, luxe: $luxe, luxeStatus: $luxeStatus, luxeExpire: $luxeExpire, vipStatus: $vipStatus, vipExpire: $vipExpire, images: $images, possibilities: $possibilities, comment: $comment, writeComment: $writeComment, who: $who, area: $area, exclusive: $exclusive, hashtag: $hashtag, levelNumber: $levelNumber, liked: $liked, shop: $shop, type: $type, propertyType: $propertyType, repairType: $repairType, updatedAt: $updatedAt, createdAt: $createdAt, banner: $banner, isOwner: $isOwner)';
   }
 
   @override
@@ -984,6 +1093,10 @@ class _$HouseDataImpl implements _HouseData {
                 other.description == description) &&
             (identical(other.reason, reason) || other.reason == reason) &&
             (identical(other.price, price) || other.price == price) &&
+            (identical(other.lowerPrice, lowerPrice) ||
+                other.lowerPrice == lowerPrice) &&
+            (identical(other.lowerPercentage, lowerPercentage) ||
+                other.lowerPercentage == lowerPercentage) &&
             (identical(other.commentCount, commentCount) ||
                 other.commentCount == commentCount) &&
             (identical(other.viewed, viewed) || other.viewed == viewed) &&
@@ -1012,8 +1125,6 @@ class _$HouseDataImpl implements _HouseData {
                 other.writeComment == writeComment) &&
             (identical(other.who, who) || other.who == who) &&
             (identical(other.area, area) || other.area == area) &&
-            (identical(other.exclusisive, exclusisive) ||
-                other.exclusisive == exclusisive) &&
             (identical(other.exclusive, exclusive) ||
                 other.exclusive == exclusive) &&
             (identical(other.hashtag, hashtag) || other.hashtag == hashtag) &&
@@ -1022,11 +1133,16 @@ class _$HouseDataImpl implements _HouseData {
             (identical(other.liked, liked) || other.liked == liked) &&
             (identical(other.shop, shop) || other.shop == shop) &&
             (identical(other.type, type) || other.type == type) &&
+            (identical(other.propertyType, propertyType) ||
+                other.propertyType == propertyType) &&
+            (identical(other.repairType, repairType) ||
+                other.repairType == repairType) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
-            (identical(other.banner, banner) || other.banner == banner));
+            (identical(other.banner, banner) || other.banner == banner) &&
+            (identical(other.isOwner, isOwner) || other.isOwner == isOwner));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1043,6 +1159,8 @@ class _$HouseDataImpl implements _HouseData {
         description,
         reason,
         price,
+        lowerPrice,
+        lowerPercentage,
         commentCount,
         viewed,
         star,
@@ -1061,16 +1179,18 @@ class _$HouseDataImpl implements _HouseData {
         writeComment,
         who,
         area,
-        exclusisive,
         exclusive,
         hashtag,
         levelNumber,
         liked,
         shop,
         type,
+        propertyType,
+        repairType,
         updatedAt,
         createdAt,
-        banner
+        banner,
+        isOwner
       ]);
 
   /// Create a copy of HouseData
@@ -1101,6 +1221,8 @@ abstract class _HouseData implements HouseData {
       final String? description,
       final String? reason,
       final String? price,
+      @JsonKey(name: 'lower_price') final String? lowerPrice,
+      @JsonKey(name: 'lower_percentage') final int? lowerPercentage,
       @JsonKey(name: 'comment_count') final int? commentCount,
       final int? viewed,
       final double? star,
@@ -1119,16 +1241,18 @@ abstract class _HouseData implements HouseData {
       @JsonKey(name: 'write_comment') final int? writeComment,
       final String? who,
       final int? area,
-      final int? exclusisive,
       final int? exclusive,
       final String? hashtag,
       @JsonKey(name: 'level_number') final int? levelNumber,
       final bool? liked,
       final String? shop,
       final String? type,
+      @JsonKey(name: 'property_type') final PropertyType? propertyType,
+      @JsonKey(name: 'repair_type') final RepairType? repairType,
       @JsonKey(name: 'updated_at') final DateTime? updatedAt,
       @JsonKey(name: 'created_at') final DateTime? createdAt,
-      final String? banner}) = _$HouseDataImpl;
+      final String? banner,
+      @JsonKey(name: 'is_owner') final bool? isOwner}) = _$HouseDataImpl;
 
   factory _HouseData.fromJson(Map<String, dynamic> json) =
       _$HouseDataImpl.fromJson;
@@ -1155,6 +1279,12 @@ abstract class _HouseData implements HouseData {
   String? get reason;
   @override
   String? get price;
+  @override
+  @JsonKey(name: 'lower_price')
+  String? get lowerPrice; // Added
+  @override
+  @JsonKey(name: 'lower_percentage')
+  int? get lowerPercentage;
   @override
   @JsonKey(name: 'comment_count')
   int? get commentCount;
@@ -1201,8 +1331,6 @@ abstract class _HouseData implements HouseData {
   @override
   int? get area;
   @override
-  int? get exclusisive;
-  @override
   int? get exclusive;
   @override
   String? get hashtag;
@@ -1216,6 +1344,12 @@ abstract class _HouseData implements HouseData {
   @override
   String? get type;
   @override
+  @JsonKey(name: 'property_type')
+  PropertyType? get propertyType;
+  @override
+  @JsonKey(name: 'repair_type')
+  RepairType? get repairType;
+  @override
   @JsonKey(name: 'updated_at')
   DateTime? get updatedAt;
   @override
@@ -1223,6 +1357,9 @@ abstract class _HouseData implements HouseData {
   DateTime? get createdAt;
   @override
   String? get banner;
+  @override
+  @JsonKey(name: 'is_owner')
+  bool? get isOwner;
 
   /// Create a copy of HouseData
   /// with the given fields replaced by the non-null parameter values.

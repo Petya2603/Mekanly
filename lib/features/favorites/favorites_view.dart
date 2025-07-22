@@ -2,129 +2,208 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
 import '../../core/components/app_text.dart';
+import '../../core/components/loading_indicator.dart';
 import '../../localization/extensions.dart';
 import '../../product/constants/constants.dart';
+import '../../remote/repositories/favorite/favorite_repository.dart';
 import '../../utils/extensions.dart';
+import 'widgets/fav_card.dart';
 
-class FavoritesView extends StatelessWidget {
+class FavoritesView extends StatefulWidget {
   const FavoritesView({super.key});
 
   static const routePath = '/favorites-view';
   static const routeName = 'favorites-view';
 
   @override
+  State<FavoritesView> createState() => _FavoritesViewState();
+}
+
+class _FavoritesViewState extends State<FavoritesView> {
+  bool isSelected = true;
+  List<dynamic> favorites = [];
+  bool isLoading = false;
+  String? errorMessage;
+  int totalFavorites = 0;
+
+  final FavoriteService favoriteService = FavoriteService();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchFavorites();
+  }
+
+  Future<void> fetchFavorites() async {
+    setState(() {
+      isLoading = true;
+      errorMessage = null;
+    });
+
+    try {
+      final type = isSelected ? 'House' : 'ShopProduct';
+      const limit = 10;
+      const offset = 0;
+
+      final response = await favoriteService.getFavorites(
+        type: type,
+        limit: limit,
+        offset: offset,
+      );
+
+      setState(() {
+        favorites = response['data'] as List<dynamic>;
+        totalFavorites = int.tryParse(response['total'].toString()) ?? 0;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        errorMessage = e.toString();
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const FavoritesButton(),
-          Column(
-            children: [
-              Assets.icons.icFavorite.svg(
-                package: 'gen',
-                width: 52,
-                height: 52,
-                color: const Color(0xFF6A6A6A),
-              ),
-              6.boxH,
-              AppText.s14w400BdM(
-                context.translation.no_announcements_in_my_favorites_section,
-                fontFamily: StringConstants.roboto,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w400,
-                color: const Color(0xFF6A6A6A),
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.only(top: 8, left: 16, right: 16).w,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildToggleButton(
+                  label: context.translation.searchMain,
+                  selected: isSelected,
+                  onTap: () {
+                    setState(() {
+                      isSelected = true;
+                    });
+                    fetchFavorites();
+                  },
+                ),
+                _buildToggleButton(
+                  label: context.translation.business_accounts,
+                  selected: !isSelected,
+                  onTap: () {
+                    setState(() {
+                      isSelected = false;
+                    });
+                    fetchFavorites();
+                  },
+                ),
+              ],
+            ),
           ),
-          Container(),
+          Expanded(
+            child: isLoading
+                ? LoadingIndicator.circle()
+                : errorMessage != null
+                    ? _buildEmptyState(message: errorMessage)
+                    : favorites.isEmpty
+                        ? _buildEmptyState(
+                            message: context.translation
+                                .no_announcements_in_my_favorites_section)
+                        : ListView.builder(
+                            padding: EdgeInsets.only(top: 4.h),
+                            itemCount: favorites.length,
+                            itemBuilder: (context, index) {
+                              final fav = favorites[index];
+
+                              return Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 4.w,
+                                  vertical: 4.h,
+                                ),
+                                child: FavoriteCard(
+                                  id: fav['id'] as int?,
+                                  name: fav['name']?.toString(),
+                                  description: fav['description']?.toString(),
+                                  price: (fav['price'] != null)
+                                      ? double.tryParse(fav['price'].toString())
+                                      : null,
+                                  imageUrl: (fav['images'] != null)
+                                      ? fav['images'][0]['url'] as String?
+                                      : null,
+                                  locationName:
+                                      fav['location']?['name']?.toString(),
+                                  locationParent: fav['location']
+                                          ?['parent_name']
+                                      ?.toString(),
+                                  categoryName:
+                                      fav['category_name']?.toString(),
+                                  roomNumber: fav['room_number']?.toString(),
+                                  floorNumber: fav['floor_number']?.toString(),
+                                  propertyType:
+                                      fav['property_type']?['name']?.toString(),
+                                  repairType:
+                                      fav['repair_type']?['name']?.toString(),
+                                  viewed: fav['viewed']?.toString(),
+                                  commentCount:
+                                      fav['comment_count']?.toString(),
+                                  isLuxe: fav['luxe'] as bool? ?? false,
+                                  isVip: fav['vip_status'] as bool? ?? false,
+                                  bronNumber: fav['bron_number']?.toString(),
+                                  username: fav['username']?.toString(),
+                                  userPhone: fav['user_phone']?.toString(),
+                                ),
+                              );
+                            },
+                          ),
+          ),
         ],
       ),
     );
   }
-}
 
-class FavoritesButton extends StatefulWidget {
-  const FavoritesButton({super.key});
-
-  @override
-  State<FavoritesButton> createState() => _FavoritesButtonState();
-}
-
-class _FavoritesButtonState extends State<FavoritesButton> {
-  bool isSelected = true;
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10).w,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                isSelected = true;
-              });
-            },
-            child: Container(
-              alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width * 0.4,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8).r,
-                border: Border.all(
-                  width: 1.sp,
-                  color: isSelected
-                      ? const Color(0xFFE5F6FE)
-                      : const Color(0xFFEEEEEE),
-                ),
-                color: isSelected ? const Color(0xFFE5F6FE) : null,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6).h,
-                child: AppText.s14w400BdM(
-                  'Emläkler',
-                  fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
-                  fontSize: 12.sp,
-                  fontFamily: StringConstants.roboto,
-                  color: isSelected
-                      ? const Color(0xFF3A8BCF)
-                      : const Color(0xFF6A6A6A),
-                ),
-              ),
-            ),
+  Widget _buildToggleButton({
+    required String label,
+    required bool selected,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        alignment: Alignment.center,
+        width: 0.4.sw,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8).r,
+          border: Border.all(
+            width: 1.sp,
+            color: selected ? const Color(0xFFE5F6FE) : const Color(0xFFEEEEEE),
           ),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                isSelected = false;
-              });
-            },
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.4,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8).r,
-                border: Border.all(
-                  width: 1.sp,
-                  color: !isSelected
-                      ? const Color(0xFFE5F6FE)
-                      : const Color(0xFFEEEEEE),
-                ),
-                color: !isSelected ? const Color(0xFFE5F6FE) : null,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6).h,
-                child: AppText.s14w400BdM(
-                  'Biznes hasaplar',
-                  fontWeight: !isSelected ? FontWeight.w500 : FontWeight.w400,
-                  fontSize: 12.sp,
-                  fontFamily: StringConstants.roboto,
-                  color: !isSelected
-                      ? const Color(0xFF3A8BCF)
-                      : const Color(0xFF6A6A6A),
-                ),
-              ),
-            ),
+          color: selected ? const Color(0xFFE5F6FE) : null,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6).h,
+          child: AppText.s14w400BdM(
+            label,
+            fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
+            fontSize: 12.sp,
+            fontFamily: StringConstants.roboto,
+            color: selected ? const Color(0xFF3A8BCF) : const Color(0xFF6A6A6A),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyState({String? message}) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Assets.icons.favview.svg(package: 'gen'),
+          6.boxH,
+          AppText.s14w400BdM(
+            message ??
+                context.translation.no_announcements_in_my_favorites_section,
+            fontFamily: StringConstants.roboto,
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w400,
+            color: const Color(0xFF6A6A6A),
           ),
         ],
       ),
