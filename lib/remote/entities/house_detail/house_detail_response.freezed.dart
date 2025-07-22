@@ -251,6 +251,7 @@ mixin _$HouseData {
   String? get banner => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_owner')
   bool? get isOwner => throw _privateConstructorUsedError;
+  bool? get favorited => throw _privateConstructorUsedError;
 
   /// Serializes this HouseData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -309,7 +310,8 @@ abstract class $HouseDataCopyWith<$Res> {
       @JsonKey(name: 'updated_at') DateTime? updatedAt,
       @JsonKey(name: 'created_at') DateTime? createdAt,
       String? banner,
-      @JsonKey(name: 'is_owner') bool? isOwner});
+      @JsonKey(name: 'is_owner') bool? isOwner,
+      bool? favorited});
 
   $LocationCopyWith<$Res>? get location;
   $UserCopyWith<$Res>? get user;
@@ -374,6 +376,7 @@ class _$HouseDataCopyWithImpl<$Res, $Val extends HouseData>
     Object? createdAt = freezed,
     Object? banner = freezed,
     Object? isOwner = freezed,
+    Object? favorited = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -544,6 +547,10 @@ class _$HouseDataCopyWithImpl<$Res, $Val extends HouseData>
           ? _value.isOwner
           : isOwner // ignore: cast_nullable_to_non_nullable
               as bool?,
+      favorited: freezed == favorited
+          ? _value.favorited
+          : favorited // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ) as $Val);
   }
 
@@ -654,7 +661,8 @@ abstract class _$$HouseDataImplCopyWith<$Res>
       @JsonKey(name: 'updated_at') DateTime? updatedAt,
       @JsonKey(name: 'created_at') DateTime? createdAt,
       String? banner,
-      @JsonKey(name: 'is_owner') bool? isOwner});
+      @JsonKey(name: 'is_owner') bool? isOwner,
+      bool? favorited});
 
   @override
   $LocationCopyWith<$Res>? get location;
@@ -721,6 +729,7 @@ class __$$HouseDataImplCopyWithImpl<$Res>
     Object? createdAt = freezed,
     Object? banner = freezed,
     Object? isOwner = freezed,
+    Object? favorited = freezed,
   }) {
     return _then(_$HouseDataImpl(
       id: freezed == id
@@ -891,6 +900,10 @@ class __$$HouseDataImplCopyWithImpl<$Res>
           ? _value.isOwner
           : isOwner // ignore: cast_nullable_to_non_nullable
               as bool?,
+      favorited: freezed == favorited
+          ? _value.favorited
+          : favorited // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -940,7 +953,8 @@ class _$HouseDataImpl implements _HouseData {
       @JsonKey(name: 'updated_at') this.updatedAt,
       @JsonKey(name: 'created_at') this.createdAt,
       this.banner,
-      @JsonKey(name: 'is_owner') this.isOwner})
+      @JsonKey(name: 'is_owner') this.isOwner,
+      this.favorited})
       : _images = images,
         _possibilities = possibilities;
 
@@ -1067,10 +1081,12 @@ class _$HouseDataImpl implements _HouseData {
   @override
   @JsonKey(name: 'is_owner')
   final bool? isOwner;
+  @override
+  final bool? favorited;
 
   @override
   String toString() {
-    return 'HouseData(id: $id, categoryId: $categoryId, categoryName: $categoryName, location: $location, username: $username, user: $user, name: $name, description: $description, reason: $reason, price: $price, lowerPrice: $lowerPrice, lowerPercentage: $lowerPercentage, commentCount: $commentCount, viewed: $viewed, star: $star, bronNumber: $bronNumber, roomNumber: $roomNumber, floorNumber: $floorNumber, status: $status, luxe: $luxe, luxeStatus: $luxeStatus, luxeExpire: $luxeExpire, vipStatus: $vipStatus, vipExpire: $vipExpire, images: $images, possibilities: $possibilities, comment: $comment, writeComment: $writeComment, who: $who, area: $area, exclusive: $exclusive, hashtag: $hashtag, levelNumber: $levelNumber, liked: $liked, shop: $shop, type: $type, propertyType: $propertyType, repairType: $repairType, updatedAt: $updatedAt, createdAt: $createdAt, banner: $banner, isOwner: $isOwner)';
+    return 'HouseData(id: $id, categoryId: $categoryId, categoryName: $categoryName, location: $location, username: $username, user: $user, name: $name, description: $description, reason: $reason, price: $price, lowerPrice: $lowerPrice, lowerPercentage: $lowerPercentage, commentCount: $commentCount, viewed: $viewed, star: $star, bronNumber: $bronNumber, roomNumber: $roomNumber, floorNumber: $floorNumber, status: $status, luxe: $luxe, luxeStatus: $luxeStatus, luxeExpire: $luxeExpire, vipStatus: $vipStatus, vipExpire: $vipExpire, images: $images, possibilities: $possibilities, comment: $comment, writeComment: $writeComment, who: $who, area: $area, exclusive: $exclusive, hashtag: $hashtag, levelNumber: $levelNumber, liked: $liked, shop: $shop, type: $type, propertyType: $propertyType, repairType: $repairType, updatedAt: $updatedAt, createdAt: $createdAt, banner: $banner, isOwner: $isOwner, favorited: $favorited)';
   }
 
   @override
@@ -1142,7 +1158,9 @@ class _$HouseDataImpl implements _HouseData {
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.banner, banner) || other.banner == banner) &&
-            (identical(other.isOwner, isOwner) || other.isOwner == isOwner));
+            (identical(other.isOwner, isOwner) || other.isOwner == isOwner) &&
+            (identical(other.favorited, favorited) ||
+                other.favorited == favorited));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1190,7 +1208,8 @@ class _$HouseDataImpl implements _HouseData {
         updatedAt,
         createdAt,
         banner,
-        isOwner
+        isOwner,
+        favorited
       ]);
 
   /// Create a copy of HouseData
@@ -1252,7 +1271,8 @@ abstract class _HouseData implements HouseData {
       @JsonKey(name: 'updated_at') final DateTime? updatedAt,
       @JsonKey(name: 'created_at') final DateTime? createdAt,
       final String? banner,
-      @JsonKey(name: 'is_owner') final bool? isOwner}) = _$HouseDataImpl;
+      @JsonKey(name: 'is_owner') final bool? isOwner,
+      final bool? favorited}) = _$HouseDataImpl;
 
   factory _HouseData.fromJson(Map<String, dynamic> json) =
       _$HouseDataImpl.fromJson;
@@ -1360,6 +1380,8 @@ abstract class _HouseData implements HouseData {
   @override
   @JsonKey(name: 'is_owner')
   bool? get isOwner;
+  @override
+  bool? get favorited;
 
   /// Create a copy of HouseData
   /// with the given fields replaced by the non-null parameter values.

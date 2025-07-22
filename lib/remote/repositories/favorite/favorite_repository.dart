@@ -56,15 +56,21 @@ class FavoriteService {
     required String type,
     required int limit,
     required int offset,
+    int? categoryId,
   }) async {
     try {
+      final queryParameters = {
+        'type': type,
+        'limit': limit.toString(),
+        'offset': offset.toString(),
+      };
+      if (categoryId != null) {
+        queryParameters['category_id'] = categoryId.toString();
+      }
+
       final response = await _dio.get(
         '/api/v2/user/favorites',
-        data: {
-          'type': type,
-          'limit': limit,
-          'offset': offset,
-        },
+        queryParameters: queryParameters,
         options: Options(
           validateStatus: (status) => status != null && status < 500,
         ),

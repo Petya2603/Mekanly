@@ -30,6 +30,7 @@ class ProductCubit extends Cubit<ProductState> {
   bool _isFetching = false;
 
   Future<void> fetchProducts(int categoryId, {bool reset = false}) async {
+    print('ProductCubit: fetchProducts called for categoryId: $categoryId, reset: $reset');
     if (_isFetching) return;
     _isFetching = true;
 
@@ -54,10 +55,13 @@ class ProductCubit extends Cubit<ProductState> {
         List<Product>.from(_allProducts),
         hasMore: products.length == _limit,
       ));
+      print('ProductCubit: Products loaded successfully. Count: ${_allProducts.length}');
     } catch (e) {
+      print('ProductCubit: Error loading products: $e');
       emit(ProductError('Ürünler yüklenemedi: $e'));
     } finally {
       _isFetching = false;
+      print('ProductCubit: _isFetching set to false');
     }
   }
 

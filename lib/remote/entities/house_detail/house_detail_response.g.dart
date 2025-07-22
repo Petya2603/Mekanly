@@ -85,6 +85,7 @@ _$HouseDataImpl _$$HouseDataImplFromJson(Map<String, dynamic> json) =>
           : DateTime.parse(json['created_at'] as String),
       banner: json['banner'] as String?,
       isOwner: json['is_owner'] as bool?,
+      favorited: json['favorited'] as bool?,
     );
 
 Map<String, dynamic> _$$HouseDataImplToJson(_$HouseDataImpl instance) =>
@@ -131,6 +132,7 @@ Map<String, dynamic> _$$HouseDataImplToJson(_$HouseDataImpl instance) =>
       'created_at': instance.createdAt?.toIso8601String(),
       'banner': instance.banner,
       'is_owner': instance.isOwner,
+      'favorited': instance.favorited,
     };
 
 _$LocationImpl _$$LocationImplFromJson(Map<String, dynamic> json) =>

@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
+
+import '../../../features/favorites/widgets/fav_card.dart';
+import '../../../features/house_detail/recoman/recomendation_biznes.dart';
 import '../../../localization/extensions.dart';
 import '../../../product/constants/constants.dart';
 import '../../../remote/repositories/business_profile/product_cubit.dart';
 import '../../../remote/repositories/business_profile/product_model.dart';
 import '../../../remote/repositories/favorite/favorite_repository.dart';
+import '../app_text.dart';
+import '../loading_indicator.dart';
 import '../search_field_business.dart';
 
 class ProductListScreen extends StatefulWidget {
@@ -28,16 +33,47 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   final FavoriteService favoriteService = FavoriteService();
 
+  bool _showFavorites = false;
+  List<dynamic> _favoriteProducts = [];
+  bool _isFavoritesLoading = false;
+  String? _favoritesErrorMessage;
+  bool _isInitialDataLoaded = false;
+
+  void _loadInitialData() {
+    context.read<ProductCubit>().fetchProducts(widget.categoryId);
+  }
+
   @override
   void initState() {
     super.initState();
 
-    _loadInitialData();
     _scrollController.addListener(_scrollListener);
   }
 
-  void _loadInitialData() {
-    context.read<ProductCubit>().fetchProducts(widget.categoryId);
+  Future<void> _fetchFavoriteProducts() async {
+    setState(() {
+      _isFavoritesLoading = true;
+      _favoritesErrorMessage = null;
+    });
+
+    try {
+      final response = await favoriteService.getFavorites(
+        type: 'ShopProduct',
+        limit: 10,
+        offset: 0,
+        categoryId: widget.categoryId,
+      );
+
+      setState(() {
+        _favoriteProducts = response['data'] as List<dynamic>;
+        _isFavoritesLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _favoritesErrorMessage = e.toString();
+        _isFavoritesLoading = false;
+      });
+    }
   }
 
   void _scrollListener() {
@@ -51,6 +87,15 @@ class _ProductListScreenState extends State<ProductListScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_isInitialDataLoaded) {
+      _loadInitialData();
+      _isInitialDataLoaded = true;
+    }
+  }
+
+  @override
   void dispose() {
     _scrollController.dispose();
 
@@ -58,7 +103,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
   }
 
   Widget _buildProductItem(Product product) {
-    print('Product ID: ${product.id}, Favorited: ${product.favorited}');
     final pageController = PageController();
     final pageNotifier = ValueNotifier<int>(0);
 
@@ -66,7 +110,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
       try {
         await favoriteService.toggleFavorite(
           favoritableId: product.id,
-          favoritableType: 'Shop',
+          favoritableType: 'ShopProduct',
         );
         context.read<ProductCubit>().updateProductFavoriteStatus(
               product.id,
@@ -256,6 +300,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('ProductListScreen build: _showFavorites = $_showFavorites');
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 243, 248, 255),
       appBar: AppBar(
@@ -268,10 +313,24 @@ class _ProductListScreenState extends State<ProductListScreen> {
           ),
         ),
         actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 10),
-            child: Assets.icons.favbizpr.svg(
-              package: 'gen',
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _showFavorites = !_showFavorites;
+              });
+              if (_showFavorites) {
+                _fetchFavoriteProducts();
+              }
+            },
+            child: Container(
+              margin: const EdgeInsets.only(right: 10),
+              child: _showFavorites
+                  ? Assets.icons.saylanan.svg(
+                      package: 'gen',
+                    )
+                  : Assets.icons.favbizpr.svg(
+                      package: 'gen',
+                    ),
             ),
           ),
         ],
@@ -288,8 +347,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
       body: BlocBuilder<ProductCubit, ProductState>(
         builder: (context, state) {
           if (state is ProductLoading && state is! ProductLoaded) {
-            return const Center(child: CircularProgressIndicator());
+            print('ProductListScreen: ProductLoading state');
+            return Center(child: LoadingIndicator.circle());
           } else if (state is ProductError) {
+            print('ProductListScreen: ProductError state - ${state.message}');
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -356,35 +417,130 @@ class _ProductListScreenState extends State<ProductListScreen> {
                     ),
                   ),
                 ),
-                SliverPadding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 9.w,
-                    vertical: 9.h,
-                  ),
-                  sliver: SliverGrid(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        if (index < state.products.length) {
-                          return _buildProductItem(state.products[index]);
-                        }
-                        return Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(16.r),
-                            child: const CircularProgressIndicator(),
-                          ),
-                        );
-                      },
-                      childCount:
-                          state.products.length + (state.hasMore ? 1 : 0),
+                if (_showFavorites) ...[
+                  if (_isFavoritesLoading)
+                    SliverToBoxAdapter(
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        child: LoadingIndicator.circle(),
+                      ),
+                    )
+                  else
+                    _favoritesErrorMessage != null
+                        ? SliverToBoxAdapter(
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.7,
+                              child: Center(
+                                child: Text(_favoritesErrorMessage!),
+                              ),
+                            ),
+                          )
+                        : _favoriteProducts.isEmpty
+                            ? SliverToBoxAdapter(
+                                child: Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.7,
+                                  alignment: Alignment.center,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Assets.icons.favview.svg(package: 'gen'),
+                                      6.boxH,
+                                      AppText.s14w400BdM(
+                                        context.translation
+                                            .no_announcements_in_my_favorites_section,
+                                        fontFamily: StringConstants.roboto,
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: const Color(0xFF6A6A6A),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            : SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                  (context, index) {
+                                    final fav = _favoriteProducts[index];
+                                    return Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 4.w,
+                                        vertical: 4.h,
+                                      ),
+                                      child: FavoriteCard(
+                                        id: fav['id'] as int?,
+                                        name: fav['name']?.toString(),
+                                        description:
+                                            fav['description']?.toString(),
+                                        price: (fav['price'] != null)
+                                            ? double.tryParse(
+                                                fav['price'].toString())
+                                            : null,
+                                        imageUrl: (fav['images'] != null &&
+                                                (fav['images'] as List)
+                                                    .isNotEmpty)
+                                            ? (fav['images'][0] as Map<String,
+                                                dynamic>)['original'] as String?
+                                            : null,
+                                        locationName: fav['location']?['name']
+                                            ?.toString(),
+                                        locationParent: fav['location']
+                                                ?['parent_name']
+                                            ?.toString(),
+                                        categoryName:
+                                            fav['category_name']?.toString(),
+                                        roomNumber:
+                                            fav['room_number']?.toString(),
+                                        floorNumber:
+                                            fav['floor_number']?.toString(),
+                                        propertyType: fav['property_type']
+                                                ?['name']
+                                            ?.toString(),
+                                        repairType: fav['repair_type']?['name']
+                                            ?.toString(),
+                                        viewed: fav['viewed']?.toString(),
+                                        commentCount:
+                                            fav['comment_count']?.toString(),
+                                        isLuxe: fav['luxe'] as bool? ?? false,
+                                        isVip:
+                                            fav['vip_status'] as bool? ?? false,
+                                        bronNumber:
+                                            fav['bron_number']?.toString(),
+                                        username: fav['username']?.toString(),
+                                        userPhone:
+                                            fav['user_phone']?.toString(),
+                                      ),
+                                    );
+                                  },
+                                  childCount: _favoriteProducts.length,
+                                ),
+                              ),
+                ] else
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 9.w,
+                      vertical: 9.h,
                     ),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10.w,
-                      mainAxisSpacing: 10.h,
-                      childAspectRatio: 167.w / 225.h,
+                    sliver: SliverGrid(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          if (index < state.products.length) {
+                            return _buildProductItem(state.products[index]);
+                          }
+                          return Center(child: LoadingIndicator.circle());
+                        },
+                        childCount:
+                            state.products.length + (state.hasMore ? 1 : 0),
+                      ),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 10.w,
+                        mainAxisSpacing: 10.h,
+                        childAspectRatio: 167.w / 225.h,
+                      ),
                     ),
                   ),
-                ),
                 SliverToBoxAdapter(child: SizedBox(height: 20.h)),
               ],
             );

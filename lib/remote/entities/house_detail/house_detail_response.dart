@@ -63,6 +63,7 @@ class HouseData with _$HouseData {
     @JsonKey(name: 'created_at') DateTime? createdAt,
     String? banner,
     @JsonKey(name: 'is_owner') bool? isOwner,
+    bool? favorited,
   }) = _HouseData;
 
   factory HouseData.fromJson(Map<String, dynamic> json) =>

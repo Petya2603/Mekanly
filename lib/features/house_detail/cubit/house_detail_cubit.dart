@@ -28,4 +28,11 @@ class HouseDetailCubit extends BaseCubit<HouseDetailState> {
       ),
     );
   }
+
+  void updateHouseFavoriteStatus(bool isFavorite) {
+    if (state.response?.data != null) {
+      final updatedHouse = state.response!.data!.copyWith(favorited: isFavorite);
+      emit(state.copyWith(response: state.response!.copyWith(data: updatedHouse)));
+    }
+  }
 }
