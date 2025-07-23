@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-
-import '../../../features/favorites/widgets/fav_card.dart';
-import '../../../features/house_detail/recoman/recomendation_biznes.dart';
+import '../../../features/favorites/fav_product_view.dart';
 import '../../../localization/extensions.dart';
+import '../../../product/constants/app_colors.dart';
+import '../../../product/constants/app_dimensions.dart';
 import '../../../product/constants/constants.dart';
 import '../../../remote/repositories/business_profile/product_cubit.dart';
-import '../../../remote/repositories/business_profile/product_model.dart';
 import '../../../remote/repositories/favorite/favorite_repository.dart';
-import '../app_text.dart';
 import '../loading_indicator.dart';
-import '../search_field_business.dart';
+import '../product_card.dart';
+import '../product_search_bar.dart';
 
 class ProductListScreen extends StatefulWidget {
   const ProductListScreen({
@@ -33,10 +32,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   final FavoriteService favoriteService = FavoriteService();
 
-  bool _showFavorites = false;
-  List<dynamic> _favoriteProducts = [];
-  bool _isFavoritesLoading = false;
-  String? _favoritesErrorMessage;
   bool _isInitialDataLoaded = false;
 
   void _loadInitialData() {
@@ -48,32 +43,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
     super.initState();
 
     _scrollController.addListener(_scrollListener);
-  }
-
-  Future<void> _fetchFavoriteProducts() async {
-    setState(() {
-      _isFavoritesLoading = true;
-      _favoritesErrorMessage = null;
-    });
-
-    try {
-      final response = await favoriteService.getFavorites(
-        type: 'ShopProduct',
-        limit: 10,
-        offset: 0,
-        categoryId: widget.categoryId,
-      );
-
-      setState(() {
-        _favoriteProducts = response['data'] as List<dynamic>;
-        _isFavoritesLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _favoritesErrorMessage = e.toString();
-        _isFavoritesLoading = false;
-      });
-    }
   }
 
   void _scrollListener() {
@@ -102,242 +71,41 @@ class _ProductListScreenState extends State<ProductListScreen> {
     super.dispose();
   }
 
-  Widget _buildProductItem(Product product) {
-    final pageController = PageController();
-    final pageNotifier = ValueNotifier<int>(0);
-
-    Future<void> toggleFavoriteItem() async {
-      try {
-        await favoriteService.toggleFavorite(
-          favoritableId: product.id,
-          favoritableType: 'ShopProduct',
-        );
-        context.read<ProductCubit>().updateProductFavoriteStatus(
-              product.id,
-              !product.favorited,
-            );
-        // ignore: empty_catches
-      } catch (e) {}
-    }
-
-    return Stack(
-      children: [
-        Container(
-          width: 167.w,
-          height: 225.h,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8.r),
-            boxShadow: [
-              BoxShadow(
-                // ignore: deprecated_member_use
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 6.r,
-                offset: Offset(0, 2.h),
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                flex: 6,
-                child: ClipRRect(
-                  borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(8.r)),
-                  child: product.images.isNotEmpty
-                      ? Stack(
-                          children: [
-                            PageView.builder(
-                              controller: pageController,
-                              itemCount: product.images.length,
-                              onPageChanged: (index) =>
-                                  pageNotifier.value = index,
-                              itemBuilder: (context, index) {
-                                final imgUrl = product.images[index].original;
-                                return Image.network(
-                                  imgUrl,
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                  errorBuilder: (_, __, ___) => Center(
-                                    child: Assets.icons.imageyok.svg(
-                                      package: 'gen',
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            if (product.images.length > 1)
-                              Positioned(
-                                bottom: 6.h,
-                                left: 0,
-                                right: 0,
-                                child: ValueListenableBuilder<int>(
-                                  valueListenable: pageNotifier,
-                                  builder: (_, page, __) {
-                                    return Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: List.generate(
-                                        product.images.length,
-                                        (index) => AnimatedContainer(
-                                          duration:
-                                              const Duration(milliseconds: 300),
-                                          width: page == index ? 8.w : 6.w,
-                                          height: page == index ? 8.w : 6.w,
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 2.w),
-                                          decoration: BoxDecoration(
-                                            color: page == index
-                                                ? Colors.white
-                                                : Colors.white54,
-                                            shape: BoxShape.circle,
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                          ],
-                        )
-                      : Center(
-                          child: Assets.icons.imageyok.svg(
-                            package: 'gen',
-                          ),
-                        ),
-                ),
-              ),
-              // Product Info
-              Padding(
-                padding: EdgeInsets.all(8.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      product.name,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    SizedBox(height: 4.h),
-                    Text(
-                      product.description.isNotEmpty
-                          ? product.description
-                          : 'Gyssagly satiyk kwartira',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Colors.grey[600],
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    SizedBox(height: 6.h),
-                    Text(
-                      // ignore: lines_longer_than_80_chars
-                      '${product.price ?? 0} TMT',
-                      style: TextStyle(
-                        fontSize: 13.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black87,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        Positioned(
-          top: 8.w,
-          right: 8.w,
-          child: GestureDetector(
-            onTap: toggleFavoriteItem,
-            child: Container(
-              child: product.favorited
-                  ? Assets.icons.saylanan.svg(
-                      package: 'gen',
-                    )
-                  : Assets.icons.icFavoriteDarkFill.svg(
-                      package: 'gen',
-                    ),
-            ),
-          ),
-        ),
-        // ignore: use_if_null_to_convert_nulls_to_bools
-        if (product.vip == true || product.exclusive == 1)
-          Positioned(
-            top: 8.w,
-            left: 8.w,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Assets.icons.vip.svg(
-                  package: 'gen',
-                  width: 27.r,
-                  height: 29.r,
-                ),
-                Text(
-                  // ignore: use_if_null_to_convert_nulls_to_bools
-                  product.vip == true ? 'VIP' : 'exclusive',
-                  style: TextStyle(
-                    color: const Color.fromARGB(255, 246, 152, 0),
-                    fontSize: 8.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    print('ProductListScreen build: _showFavorites = $_showFavorites');
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 243, 248, 255),
+      backgroundColor: AppColors.scaffoldBackground,
       appBar: AppBar(
         backgroundColor: ColorName.main,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(
             Icons.arrow_back,
-            color: Color.fromARGB(255, 248, 248, 248),
+            color: AppColors.appBarContent,
           ),
         ),
         actions: [
           GestureDetector(
             onTap: () {
-              setState(() {
-                _showFavorites = !_showFavorites;
-              });
-              if (_showFavorites) {
-                _fetchFavoriteProducts();
-              }
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        FavProductView(categoryId: widget.categoryId)),
+              );
             },
             child: Container(
-              margin: const EdgeInsets.only(right: 10),
-              child: _showFavorites
-                  ? Assets.icons.saylanan.svg(
-                      package: 'gen',
-                    )
-                  : Assets.icons.favbizpr.svg(
-                      package: 'gen',
-                    ),
+              margin: EdgeInsets.only(right: AppDimensions.spacingExtraLarge),
+              child: Assets.icons.favbizpr.svg(
+                package: 'gen',
+              ),
             ),
           ),
         ],
         title: Text(
           widget.title,
           style: const TextStyle(
-            color: Color.fromARGB(255, 248, 248, 248),
+            color: AppColors.appBarContent,
             fontSize: 18,
             fontWeight: FontWeight.w400,
             fontFamily: StringConstants.roboto,
@@ -347,10 +115,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
       body: BlocBuilder<ProductCubit, ProductState>(
         builder: (context, state) {
           if (state is ProductLoading && state is! ProductLoaded) {
-            print('ProductListScreen: ProductLoading state');
             return Center(child: LoadingIndicator.circle());
           } else if (state is ProductError) {
-            print('ProductListScreen: ProductError state - ${state.message}');
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -358,12 +124,12 @@ class _ProductListScreenState extends State<ProductListScreen> {
                   Assets.icons.onmyok.svg(
                     package: 'gen',
                   ),
-                  SizedBox(height: 15.h),
+                  SizedBox(height: AppDimensions.spacingXXL),
                   Text(
                     context.translation.not_found,
                     style: TextStyle(
                       fontSize: 16.sp,
-                      color: const Color(0xFF6A6A6A),
+                      color: AppColors.greyText,
                       fontWeight: FontWeight.w600,
                     ),
                     textAlign: TextAlign.center,
@@ -376,172 +142,58 @@ class _ProductListScreenState extends State<ProductListScreen> {
               controller: _scrollController,
               slivers: [
                 SliverToBoxAdapter(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: ColorName.main,
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color.fromARGB(255, 64, 64, 64)
-                              // ignore: deprecated_member_use
-                              .withOpacity(0.25),
-                          offset: const Offset(0, -3),
-                          spreadRadius: 1,
-                          blurRadius: 6,
-                        ),
-                      ],
+                  child: ProductSearchBar(
+                    onSearchTap: () {},
+                    onClearTap: () {},
+                    onFilterTap: () {},
+                  ),
+                ),
+                SliverPadding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppDimensions.spacingLarge,
+                    vertical: AppDimensions.spacingLarge,
+                  ),
+                  sliver: SliverGrid(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        if (index < state.products.length) {
+                          final product = state.products[index];
+                          return ProductCard(
+                            product: product,
+                            toggleFavoriteItem: () async {
+                              try {
+                                await favoriteService.toggleFavorite(
+                                  favoritableId: product.id,
+                                  favoritableType: 'shop_product',
+                                );
+                                // ignore: use_build_context_synchronously
+                                context
+                                    .read<ProductCubit>()
+                                    .updateProductFavoriteStatus(
+                                      product.id,
+                                      !product.favorited,
+                                    );
+                              } catch (e) {
+                                debugPrint('Error toggling favorite: $e');
+                              }
+                            },
+                          );
+                        }
+                        return Center(child: LoadingIndicator.circle());
+                      },
+                      childCount:
+                          state.products.length + (state.hasMore ? 1 : 0),
                     ),
-                    padding: EdgeInsets.symmetric(
-                      vertical: 14.h,
-                      horizontal: 18.w,
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(right: 10.w),
-                            child: SearchFieldBusiness(
-                              onSearchTap: () {},
-                              onClearTap: () {},
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Assets.icons.icFilter.svg(
-                            package: 'gen',
-                            width: 35.w,
-                            height: 35.w,
-                          ),
-                        ),
-                      ],
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: AppDimensions.spacingExtraLarge,
+                      mainAxisSpacing: AppDimensions.spacingExtraLarge,
+                      childAspectRatio: AppDimensions.productCardAspectRatio,
                     ),
                   ),
                 ),
-                if (_showFavorites) ...[
-                  if (_isFavoritesLoading)
-                    SliverToBoxAdapter(
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: MediaQuery.of(context).size.height * 0.7,
-                        child: LoadingIndicator.circle(),
-                      ),
-                    )
-                  else
-                    _favoritesErrorMessage != null
-                        ? SliverToBoxAdapter(
-                            child: SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.7,
-                              child: Center(
-                                child: Text(_favoritesErrorMessage!),
-                              ),
-                            ),
-                          )
-                        : _favoriteProducts.isEmpty
-                            ? SliverToBoxAdapter(
-                                child: Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.7,
-                                  alignment: Alignment.center,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Assets.icons.favview.svg(package: 'gen'),
-                                      6.boxH,
-                                      AppText.s14w400BdM(
-                                        context.translation
-                                            .no_announcements_in_my_favorites_section,
-                                        fontFamily: StringConstants.roboto,
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w400,
-                                        color: const Color(0xFF6A6A6A),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            : SliverList(
-                                delegate: SliverChildBuilderDelegate(
-                                  (context, index) {
-                                    final fav = _favoriteProducts[index];
-                                    return Padding(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 4.w,
-                                        vertical: 4.h,
-                                      ),
-                                      child: FavoriteCard(
-                                        id: fav['id'] as int?,
-                                        name: fav['name']?.toString(),
-                                        description:
-                                            fav['description']?.toString(),
-                                        price: (fav['price'] != null)
-                                            ? double.tryParse(
-                                                fav['price'].toString())
-                                            : null,
-                                        imageUrl: (fav['images'] != null &&
-                                                (fav['images'] as List)
-                                                    .isNotEmpty)
-                                            ? (fav['images'][0] as Map<String,
-                                                dynamic>)['original'] as String?
-                                            : null,
-                                        locationName: fav['location']?['name']
-                                            ?.toString(),
-                                        locationParent: fav['location']
-                                                ?['parent_name']
-                                            ?.toString(),
-                                        categoryName:
-                                            fav['category_name']?.toString(),
-                                        roomNumber:
-                                            fav['room_number']?.toString(),
-                                        floorNumber:
-                                            fav['floor_number']?.toString(),
-                                        propertyType: fav['property_type']
-                                                ?['name']
-                                            ?.toString(),
-                                        repairType: fav['repair_type']?['name']
-                                            ?.toString(),
-                                        viewed: fav['viewed']?.toString(),
-                                        commentCount:
-                                            fav['comment_count']?.toString(),
-                                        isLuxe: fav['luxe'] as bool? ?? false,
-                                        isVip:
-                                            fav['vip_status'] as bool? ?? false,
-                                        bronNumber:
-                                            fav['bron_number']?.toString(),
-                                        username: fav['username']?.toString(),
-                                        userPhone:
-                                            fav['user_phone']?.toString(),
-                                      ),
-                                    );
-                                  },
-                                  childCount: _favoriteProducts.length,
-                                ),
-                              ),
-                ] else
-                  SliverPadding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 9.w,
-                      vertical: 9.h,
-                    ),
-                    sliver: SliverGrid(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          if (index < state.products.length) {
-                            return _buildProductItem(state.products[index]);
-                          }
-                          return Center(child: LoadingIndicator.circle());
-                        },
-                        childCount:
-                            state.products.length + (state.hasMore ? 1 : 0),
-                      ),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10.w,
-                        mainAxisSpacing: 10.h,
-                        childAspectRatio: 167.w / 225.h,
-                      ),
-                    ),
-                  ),
-                SliverToBoxAdapter(child: SizedBox(height: 20.h)),
+                SliverToBoxAdapter(
+                    child: SizedBox(height: AppDimensions.spacingXXX)),
               ],
             );
           }
