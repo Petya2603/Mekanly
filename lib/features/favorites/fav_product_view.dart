@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-
 import '../../../localization/extensions.dart';
 import '../../../product/constants/app_colors.dart';
-import '../../../product/constants/app_dimensions.dart';
 import '../../../remote/repositories/favorite/favorite_repository.dart';
 import '../../core/components/favorite_products_display.dart';
-import '../../core/components/loading_indicator.dart';
 import '../../product/constants/constants.dart';
 
 class FavProductView extends StatefulWidget {

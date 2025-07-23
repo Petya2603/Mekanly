@@ -6,12 +6,14 @@ import '../../../features/favorites/fav_product_view.dart';
 import '../../../localization/extensions.dart';
 import '../../../product/constants/app_colors.dart';
 import '../../../product/constants/app_dimensions.dart';
+
 import '../../../product/constants/constants.dart';
 import '../../../remote/repositories/business_profile/product_cubit.dart';
 import '../../../remote/repositories/favorite/favorite_repository.dart';
 import '../loading_indicator.dart';
 import '../product_card.dart';
 import '../product_search_bar.dart';
+
 
 class ProductListScreen extends StatefulWidget {
   const ProductListScreen({

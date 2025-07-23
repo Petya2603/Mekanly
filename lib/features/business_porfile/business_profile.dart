@@ -8,10 +8,12 @@ import '../../core/components/buisnes_profile_card.dart';
 import '../../core/components/categories_card.dart';
 import '../../core/components/loading_indicator.dart';
 import '../../core/components/search_field_business.dart';
+import '../../product/constants/constants.dart';
+import '../search/search_view.dart';
 import '../../core/components/try_again_widget.dart';
 import '../../localization/extensions.dart';
 import '../../product/base/base_status/base_status.dart';
-import '../../product/constants/constants.dart';
+
 import '../../utils/constants.dart';
 import '../../utils/extensions.dart';
 import 'cubit/business_profile_cubit.dart';
@@ -103,7 +105,13 @@ class _BusinessProfileViewState extends State<BusinessProfileView>
                         const EdgeInsets.symmetric(vertical: 14, horizontal: 18)
                             .w,
                     child: SearchFieldBusiness(
-                      onSearchTap: () {},
+                      onSearchTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SearchView(),),
+                        );
+                      },
                       onClearTap: () {},
                     ),
                   ),

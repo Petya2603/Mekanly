@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-import 'package:mekanly/product/constants/app_colors.dart';
-import 'package:mekanly/product/constants/app_dimensions.dart';
+import '../../product/constants/app_colors.dart';
+import '../../product/constants/app_dimensions.dart';
 
 import 'search_field_business.dart';
 
@@ -39,13 +38,9 @@ class ProductSearchBar extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: Padding(
-              padding:
-                  EdgeInsets.only(right: AppDimensions.searchBarRightPadding),
-              child: SearchFieldBusiness(
-                onSearchTap: onSearchTap,
-                onClearTap: onClearTap,
-              ),
+            child: SearchFieldBusiness(
+              onSearchTap: onSearchTap,
+              onClearTap: onClearTap,
             ),
           ),
           GestureDetector(

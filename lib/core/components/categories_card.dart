@@ -188,7 +188,10 @@ class _SubCategoryCard extends StatelessWidget {
           MaterialPageRoute(
             builder: (_) => BlocProvider(
               create: (_) => ProductCubit(ProductService()),
-              child: ProductListScreen(categoryId: id, title: title,),
+              child: ProductListScreen(
+                categoryId: id,
+                title: title,
+              ),
             ),
           ),
         );

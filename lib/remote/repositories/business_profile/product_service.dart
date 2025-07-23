@@ -1,6 +1,7 @@
 // product_service.dart
 
 import 'dart:convert';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import '../../in_memory_token.dart';
 import 'product_model.dart'; // Product, ApiResponse vb. burada tanımlı olmalı

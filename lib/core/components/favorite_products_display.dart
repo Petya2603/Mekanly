@@ -70,6 +70,7 @@ class FavoriteProductsDisplay extends StatelessWidget {
         delegate: SliverChildBuilderDelegate(
           (context, index) {
             final fav = favoriteProducts[index];
+
             return Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: AppDimensions.spacingSmall,
