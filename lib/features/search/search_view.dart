@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
 import '../../core/components/loading_indicator.dart';
@@ -10,7 +11,9 @@ import '../../product/constants/app_dimensions.dart';
 import '../../product/constants/constants.dart';
 import '../../remote/header.dart';
 import '../../remote/in_memory_token.dart';
+import '../../remote/repositories/business_profile/product_cubit.dart';
 import '../../remote/repositories/business_profile/product_model.dart';
+import '../../remote/repositories/favorite/favorite_repository.dart';
 import '../../utils/extensions.dart';
 
 class SearchView extends StatefulWidget {
@@ -21,6 +24,7 @@ class SearchView extends StatefulWidget {
 }
 
 class _SearchViewState extends State<SearchView> {
+  final FavoriteService favoriteService = FavoriteService();
   final TextEditingController _searchController = TextEditingController();
   final Dio _dio = Dio(
     BaseOptions(
@@ -93,7 +97,6 @@ class _SearchViewState extends State<SearchView> {
       }
     } on DioException catch (e) {
       setState(() {
-        print('Error: ${e.message}\nResponse: ${e.response?.data}');
         _errorMessage = 'Error: ${e.message}\nResponse: ${e.response?.data}';
       });
     } finally {
@@ -229,7 +232,20 @@ class _SearchViewState extends State<SearchView> {
                         return ProductCard(
                           product: product,
                           toggleFavoriteItem: () async {
-                            debugPrint('Toggle favorite for ${product.name}');
+                            try {
+                              await favoriteService.toggleFavorite(
+                                favoritableId: product.id,
+                                favoritableType: 'Shop',
+                              );
+                              context
+                                  .read<ProductCubit>()
+                                  .updateProductFavoriteStatus(
+                                    product.id,
+                                    !product.favorited,
+                                  );
+                            } catch (e) {
+                              debugPrint('Error toggling favorite: $e');
+                            }
                           },
                         );
                       },

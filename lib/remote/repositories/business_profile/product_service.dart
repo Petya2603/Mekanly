@@ -2,11 +2,16 @@
 
 import 'dart:convert';
 // ignore: depend_on_referenced_packages
+import 'package:dio/src/dio.dart';
 import 'package:http/http.dart' as http;
 import '../../in_memory_token.dart';
 import 'product_model.dart'; // Product, ApiResponse vb. burada tanımlı olmalı
 
+import 'package:injectable/injectable.dart';
+
+@injectable
 class ProductService {
+
   final String baseUrl = 'https://mekanly.com.tm/api/v2/business';
 
   Future<ApiResponse> fetchProductsByCategory(

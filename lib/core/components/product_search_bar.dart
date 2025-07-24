@@ -40,7 +40,6 @@ class ProductSearchBar extends StatelessWidget {
           Expanded(
             child: SearchFieldBusiness(
               onSearchTap: onSearchTap,
-              onClearTap: onClearTap,
             ),
           ),
           GestureDetector(

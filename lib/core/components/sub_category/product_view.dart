@@ -14,7 +14,6 @@ import '../loading_indicator.dart';
 import '../product_card.dart';
 import '../product_search_bar.dart';
 
-
 class ProductListScreen extends StatefulWidget {
   const ProductListScreen({
     super.key,
@@ -166,7 +165,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                               try {
                                 await favoriteService.toggleFavorite(
                                   favoritableId: product.id,
-                                  favoritableType: 'shop_product',
+                                  favoritableType: 'Shop',
                                 );
                                 // ignore: use_build_context_synchronously
                                 context

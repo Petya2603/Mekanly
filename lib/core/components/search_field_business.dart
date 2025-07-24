@@ -13,14 +13,13 @@ class SearchFieldBusiness extends StatelessWidget {
     super.key,
     this.onChanged,
     required this.onSearchTap,
-    required this.onClearTap,
     this.showClearButton = false,
     this.onFieldSubmitted,
   });
 
   final ValueChanged<String>? onChanged;
   final VoidCallback onSearchTap;
-  final VoidCallback onClearTap;
+
   final bool showClearButton;
   final ValueChanged<String>? onFieldSubmitted;
 

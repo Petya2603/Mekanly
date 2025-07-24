@@ -9,6 +9,8 @@ import '../../core/components/categories_card.dart';
 import '../../core/components/loading_indicator.dart';
 import '../../core/components/search_field_business.dart';
 import '../../product/constants/constants.dart';
+import '../../remote/repositories/business_profile/product_cubit.dart';
+import '../../remote/repositories/business_profile/product_service.dart';
 import '../search/search_view.dart';
 import '../../core/components/try_again_widget.dart';
 import '../../localization/extensions.dart';
@@ -109,10 +111,15 @@ class _BusinessProfileViewState extends State<BusinessProfileView>
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const SearchView(),),
+                            builder: (context) => BlocProvider(
+                              // ignore: lines_longer_than_80_chars
+                              create: (context) =>
+                                  ProductCubit(ProductService()),
+                              child: const SearchView(),
+                            ),
+                          ),
                         );
                       },
-                      onClearTap: () {},
                     ),
                   ),
                 ),

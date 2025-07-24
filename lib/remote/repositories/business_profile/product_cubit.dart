@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'product_model.dart';
 import 'product_service.dart';
 
@@ -9,10 +10,9 @@ class ProductInitial extends ProductState {}
 class ProductLoading extends ProductState {}
 
 class ProductLoaded extends ProductState {
+  ProductLoaded(this.products, {this.hasMore = true});
   final List<Product> products;
   final bool hasMore;
-
-  ProductLoaded(this.products, {this.hasMore = true});
 }
 
 class ProductError extends ProductState {
@@ -20,6 +20,7 @@ class ProductError extends ProductState {
   final String message;
 }
 
+@injectable
 class ProductCubit extends Cubit<ProductState> {
   ProductCubit(this._service) : super(ProductInitial());
 
@@ -30,7 +31,8 @@ class ProductCubit extends Cubit<ProductState> {
   bool _isFetching = false;
 
   Future<void> fetchProducts(int categoryId, {bool reset = false}) async {
-    print('ProductCubit: fetchProducts called for categoryId: $categoryId, reset: $reset');
+    print(
+        'ProductCubit: fetchProducts called for categoryId: $categoryId, reset: $reset');
     if (_isFetching) return;
     _isFetching = true;
 
@@ -55,7 +57,8 @@ class ProductCubit extends Cubit<ProductState> {
         List<Product>.from(_allProducts),
         hasMore: products.length == _limit,
       ));
-      print('ProductCubit: Products loaded successfully. Count: ${_allProducts.length}');
+      print(
+          'ProductCubit: Products loaded successfully. Count: ${_allProducts.length}');
     } catch (e) {
       print('ProductCubit: Error loading products: $e');
       emit(ProductError('Ürünler yüklenemedi: $e'));
@@ -65,6 +68,7 @@ class ProductCubit extends Cubit<ProductState> {
     }
   }
 
+  // ignore: avoid_positional_boolean_parameters
   void updateProductFavoriteStatus(int productId, bool isFavorite) {
     if (state is ProductLoaded) {
       final currentProducts = (state as ProductLoaded).products;
@@ -74,7 +78,10 @@ class ProductCubit extends Cubit<ProductState> {
         }
         return product;
       }).toList();
-      emit(ProductLoaded(updatedProducts, hasMore: (state as ProductLoaded).hasMore));
+      emit(ProductLoaded(
+        updatedProducts,
+        hasMore: (state as ProductLoaded).hasMore,
+      ));
     }
   }
 }
