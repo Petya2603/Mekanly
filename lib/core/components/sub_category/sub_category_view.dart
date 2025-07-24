@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
 import '../../../features/business_porfile/cubit/business_profile_cubit.dart';
+import '../../../features/search/search_view.dart';
 import '../../../localization/extensions.dart';
 import '../../../product/base/base_status/base_status.dart';
 import '../../../product/constants/constants.dart';
@@ -13,7 +14,7 @@ import '../app_text.dart';
 import '../buisnes_profile_card.dart';
 import '../categories_card.dart';
 import '../loading_indicator.dart';
-import '../search_field_house.dart';
+import '../search_field_business.dart';
 import '../try_again_widget.dart';
 
 class BusinessProfileViewSubcategory extends StatefulWidget {
@@ -21,10 +22,12 @@ class BusinessProfileViewSubcategory extends StatefulWidget {
     super.key,
     this.subcategories = const [],
     this.categoryName = '',
+    required this.categoryId,
   });
 
   final List<BusinessProfileCategoryEntity> subcategories;
   final String categoryName;
+  final int categoryId;
 
   static const routePath = '/business-profile-view';
   static const routeName = 'business-profile-view';
@@ -87,9 +90,18 @@ class _BusinessProfileViewState extends State<BusinessProfileViewSubcategory>
                       Expanded(
                         child: Padding(
                           padding: EdgeInsets.only(right: 10.w),
-                          child: SearchField(
-                            onSearchTap: () {},
-                            onClearTap: () {},
+                          child: SearchFieldBusiness(
+                            onSearchTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SearchView(
+                                    // ignore: lines_longer_than_80_chars
+                                    categoryIds: [widget.categoryId],
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ),

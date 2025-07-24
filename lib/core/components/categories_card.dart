@@ -115,6 +115,7 @@ class _CategoryCard extends StatelessWidget {
                 ),
                 body: BusinessProfileViewSubcategory(
                   subcategories: category.subcategories!,
+                  categoryId: category.id,
                 ),
               ),
             ),

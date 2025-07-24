@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
+
 import '../../core/components/app_text.dart';
 import '../../core/components/buisnes_profile_card.dart';
 import '../../core/components/categories_card.dart';
 import '../../core/components/loading_indicator.dart';
 import '../../core/components/search_field_business.dart';
-import '../../product/constants/constants.dart';
-import '../../remote/repositories/business_profile/product_cubit.dart';
-import '../../remote/repositories/business_profile/product_service.dart';
-import '../search/search_view.dart';
 import '../../core/components/try_again_widget.dart';
 import '../../localization/extensions.dart';
 import '../../product/base/base_status/base_status.dart';
-
+import '../../product/constants/constants.dart';
+import '../../remote/repositories/business_profile/product_cubit.dart';
+import '../../remote/repositories/business_profile/product_service.dart';
 import '../../utils/constants.dart';
 import '../../utils/extensions.dart';
+import '../search/search_view.dart';
 import 'cubit/business_profile_cubit.dart';
 
 class BusinessProfileView extends StatefulWidget {
@@ -111,12 +111,7 @@ class _BusinessProfileViewState extends State<BusinessProfileView>
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => BlocProvider(
-                              // ignore: lines_longer_than_80_chars
-                              create: (context) =>
-                                  ProductCubit(ProductService()),
-                              child: const SearchView(),
-                            ),
+                            builder: (context) => const SearchView(categoryIds: null),
                           ),
                         );
                       },

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
 import '../../../features/favorites/fav_product_view.dart';
+import '../../../features/search/search_view.dart';
 import '../../../localization/extensions.dart';
 import '../../../product/constants/app_colors.dart';
 import '../../../product/constants/app_dimensions.dart';
@@ -144,9 +145,17 @@ class _ProductListScreenState extends State<ProductListScreen> {
               slivers: [
                 SliverToBoxAdapter(
                   child: ProductSearchBar(
-                    onSearchTap: () {},
-                    onClearTap: () {},
-                    onFilterTap: () {},
+                    onSearchTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SearchView(
+                            // ignore: lines_longer_than_80_chars
+                            categoryIds: [widget.categoryId],
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
                 SliverPadding(

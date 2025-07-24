@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +18,9 @@ import '../../remote/repositories/favorite/favorite_repository.dart';
 import '../../utils/extensions.dart';
 
 class SearchView extends StatefulWidget {
-  const SearchView({super.key});
+  const SearchView({super.key, this.categoryIds});
+
+  final List<int>? categoryIds;
 
   @override
   State<SearchView> createState() => _SearchViewState();
@@ -64,14 +67,22 @@ class _SearchViewState extends State<SearchView> {
       }
 
       // ignore: inference_failure_on_function_invocation
+      final queryParameters = {
+        'search': query,
+        'limit': 10,
+        'offset': 0,
+      };
+
+      if (widget.categoryIds != null && widget.categoryIds!.isNotEmpty) {
+        queryParameters['categories'] = jsonEncode(widget.categoryIds);
+        print('Categories: ${jsonEncode(widget.categoryIds)}');
+      }
+
       final response = await _dio.get(
         '/api/v2/business/filter',
-        queryParameters: {
-          'search': query,
-          'limit': 10,
-          'offset': 0,
-        },
+        queryParameters: queryParameters,
       );
+      ;
 
       if (response.statusCode == 200) {
         List<dynamic> data;

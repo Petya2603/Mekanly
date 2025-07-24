@@ -9,13 +9,9 @@ class ProductSearchBar extends StatelessWidget {
   const ProductSearchBar({
     super.key,
     required this.onSearchTap,
-    required this.onClearTap,
-    required this.onFilterTap,
   });
 
   final VoidCallback onSearchTap;
-  final VoidCallback onClearTap;
-  final VoidCallback onFilterTap;
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +38,8 @@ class ProductSearchBar extends StatelessWidget {
               onSearchTap: onSearchTap,
             ),
           ),
+          const SizedBox(width: 10),
           GestureDetector(
-            onTap: onFilterTap,
             child: Assets.icons.icFilter.svg(
               package: 'gen',
               width: AppDimensions.searchBarFilterIconSize,
