@@ -4,7 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
 import '../../../core/components/app_text.dart';
 import '../../../product/constants/constants.dart';
+import '../../../product/transitions/custom_page_route.dart';
 import '../../../utils/extensions.dart';
+import '../../house_detail/house_detail_view.dart';
 
 class FavoriteCard extends StatelessWidget {
   const FavoriteCard({
@@ -28,6 +30,9 @@ class FavoriteCard extends StatelessWidget {
     this.username,
     this.userPhone,
     this.id,
+    this.images,
+    this.type,
+    this.favorited,
   });
   final int? id;
   final String? name;
@@ -48,24 +53,27 @@ class FavoriteCard extends StatelessWidget {
   final String? bronNumber;
   final String? username;
   final String? userPhone;
+  final List<dynamic>? images;
+  final String? type;
+  final bool? favorited;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         if (id == null) return;
-        // final imgs = widget.house?.images?.map((e) => e.url).toList();
-        // final data = HouseDetailRoute(
-        //   imgUrl: imgs,
-        //   id: widget.house?.id,
-        //   type: widget.house?.type,
-        //   favorited: widget.house?.favorited,
-        // );
-        // Navigator.push(
-        //   context,
-        //   // ignore: inference_failure_on_function_invocation
-        //   CustomPageRoute.slide(HouseDetailView.builder(context, data)),
-        // );
+        final imgs = images?.map((e) => e['original'] as String?).toList();
+        final data = HouseDetailRoute(
+          imgUrl: imgs,
+          id: id,
+          type: type,
+          favorited: favorited,
+        );
+        Navigator.push(
+          context,
+          // ignore: inference_failure_on_function_invocation
+          CustomPageRoute.slide(HouseDetailView.builder(context, data)),
+        );
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8),

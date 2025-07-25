@@ -13,6 +13,7 @@ class HouseEntity {
     this.location,
     this.images,
     this.createdAt,
+    this.favorited,
   });
 
   factory HouseEntity.fromJson(Map<String, dynamic> json) {
@@ -34,6 +35,7 @@ class HouseEntity {
       createdAt: json['created_at'] != null
           ? DateTime.parse(json['created_at'].toString())
           : null,
+      favorited: json['favorited'] as bool?,
     );
   }
   final int id;
@@ -43,6 +45,7 @@ class HouseEntity {
   final Location? location;
   final List<HouseImage>? images;
   final DateTime? createdAt;
+  final bool? favorited;
 }
 
 class Location {

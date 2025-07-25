@@ -31,13 +31,6 @@ class MainHouseItem extends StatefulWidget {
 class _MainHouseItemState extends State<MainHouseItem> {
   final FavoriteService favoriteService = FavoriteService();
 
-  
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   Future<void> toggleFavoriteItem() async {
     try {
       await favoriteService.toggleFavorite(
@@ -259,9 +252,7 @@ class _MainHouseItemState extends State<MainHouseItem> {
           right: 12,
           top: 12,
           child: GestureDetector(
-            onTap: () {
-              toggleFavoriteItem();
-            },
+            onTap: toggleFavoriteItem,
             child: SizedBox(
               height: 24,
               width: 24,
@@ -458,8 +449,7 @@ class _MainHouseItemState extends State<MainHouseItem> {
           ],
         ),
         buildPriceText(widget.house!),
-
-            ],
+      ],
     );
   }
 }

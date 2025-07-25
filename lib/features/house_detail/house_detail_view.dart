@@ -922,6 +922,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                         } else {
                           print('Nomeri tapylmady.');
                         }
+                        // ignore: empty_catches
                       } catch (e) {}
                     },
                     text: context.translation.call,

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,7 +9,11 @@ import 'package:provider/provider.dart';
 import '../../../core/components/app_text.dart' show AppText;
 import '../../../core/components/loading_indicator.dart';
 import '../../../product/constants/constants.dart';
+import '../../../product/transitions/custom_page_route.dart';
+import '../../../remote/repositories/business_profile/product_cubit.dart';
+import '../../../remote/repositories/favorite/favorite_repository.dart';
 import '../../../remote/repositories/recomandation_house/recom_house_repozitory.dart';
+import '../house_detail_view.dart';
 
 class RecommendedHousesSection extends StatefulWidget {
   const RecommendedHousesSection({super.key, required this.houseId});
@@ -84,6 +90,33 @@ class HouseCard extends StatefulWidget {
 class _HouseCardState extends State<HouseCard> {
   final PageController _controller = PageController(keepPage: false);
   final ValueNotifier<int> _pageNotifier = ValueNotifier<int>(0);
+  final FavoriteService favoriteService = FavoriteService();
+  late bool isFavorite;
+
+  @override
+  void initState() {
+    super.initState();
+    isFavorite = widget.house.favorited ?? false;
+  }
+
+  Future<void> toggleFavoriteItem() async {
+    try {
+      await favoriteService.toggleFavorite(
+        favoritableId: widget.house.id,
+        favoritableType: 'House',
+      );
+      setState(() {
+        isFavorite = !isFavorite;
+      });
+
+      context.read<ProductCubit>().updateProductFavoriteStatus(
+            widget.house.id,
+            isFavorite,
+          );
+    } catch (e) {
+      debugPrint('Error toggling favorite: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +124,20 @@ class _HouseCardState extends State<HouseCard> {
     const aspect = 131 / 198;
 
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        final imgs = widget.house.images?.map((e) => e.url).toList();
+        final data = HouseDetailRoute(
+          imgUrl: imgs,
+          id: widget.house.id,
+          type: 'House',
+          favorited: widget.house.favorited,
+        );
+        Navigator.push(
+          context,
+          // ignore: inference_failure_on_function_invocation
+          CustomPageRoute.slide(HouseDetailView.builder(context, data)),
+        );
+      },
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: width),
         child: AspectRatio(
@@ -150,8 +196,13 @@ class _HouseCardState extends State<HouseCard> {
                       Positioned(
                         top: 8,
                         right: 8,
-                        child:
-                            Assets.icons.icFavoriteDarkFill.svg(package: 'gen'),
+                        child: GestureDetector(
+                          onTap: toggleFavoriteItem,
+                          child: isFavorite
+                              ? Assets.icons.tazefav.svg(package: 'gen')
+                              : Assets.icons.icFavoriteDarkFill
+                                  .svg(package: 'gen'),
+                        ),
                       ),
                       if ((widget.house.images?.length ?? 0) > 1)
                         Positioned(

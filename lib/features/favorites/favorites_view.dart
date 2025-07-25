@@ -51,8 +51,6 @@ class _FavoritesViewState extends State<FavoritesView> {
         offset: offset,
       );
 
-      print('Favorites API Response for $type: $response');
-
       setState(() {
         favorites = response['data'] as List<dynamic>;
         totalFavorites = int.tryParse(response['total'].toString()) ?? 0;
@@ -161,6 +159,9 @@ class _FavoritesViewState extends State<FavoritesView> {
                                   bronNumber: fav['bron_number']?.toString(),
                                   username: fav['username']?.toString(),
                                   userPhone: fav['user_phone']?.toString(),
+                                  images: fav['images'] as List<dynamic>?,
+                                  type: fav['type']?.toString(),
+                                  favorited: fav['favorited'] as bool? ?? false,
                                 ),
                               );
                             },
