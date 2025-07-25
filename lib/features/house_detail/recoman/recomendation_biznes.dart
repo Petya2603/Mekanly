@@ -5,8 +5,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../../core/components/loading_indicator.dart';
 import '../../../product/constants/constants.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+// ignore: depend_on_referenced_packages
+import 'package:provider/provider.dart';
+import '../../../core/components/loading_indicator.dart';
+import '../../../product/constants/constants.dart';
+import '../../../product/transitions/custom_page_route.dart';
 import '../../../remote/repositories/recom_business/recom_bis_repozitory.dart'
     show BusinesEntity, BusinesRepository, RecommendationProviderBusines;
+import '../../business_porfile_detail/business_porfile_detail_view.dart';
 
 class RecommendedBusinesSection extends StatefulWidget {
   const RecommendedBusinesSection({super.key});
@@ -77,93 +86,104 @@ class BusinessCard extends StatelessWidget {
         ? house.phoneNumbers!.first
         : '';
 
-    return Container(
-      width: width,
-      decoration: BoxDecoration(
-        color: const Color.fromRGBO(246, 246, 246, 1),
-        borderRadius: BorderRadius.circular(8.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.15),
-            blurRadius: 3,
-            offset: const Offset(0, 2),
-          ),
-        ],
-        border: Border.all(
-          color: Colors.grey.withOpacity(0.1),
-        ),
-      ),
-      padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
-      child: Column(
-        children: [
-          Container(
-            width: 70.w,
-            height: 70.w,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: LinearGradient(
-                colors: [
-                  Color.fromRGBO(56, 76, 255, 1),
-                  Color.fromRGBO(0, 163, 255, 1),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          // ignore: inference_failure_on_function_invocation
+          CustomPageRoute.slide(
+              BusinessProfileDetailView.builder(context, house.id)),
+        );
+      },
+      child: Container(
+        width: width,
+        decoration: BoxDecoration(
+          color: const Color.fromRGBO(246, 246, 246, 1),
+          borderRadius: BorderRadius.circular(8.r),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.15),
+              blurRadius: 3,
+              offset: const Offset(0, 2),
             ),
-            child: Padding(
-              padding: EdgeInsets.all(1.w),
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
+          ],
+          border: Border.all(
+            color: Colors.grey.withOpacity(0.1),
+          ),
+        ),
+        padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
+        child: Column(
+          children: [
+            Container(
+              width: 70.w,
+              height: 70.w,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  colors: [
+                    Color.fromRGBO(56, 76, 255, 1),
+                    Color.fromRGBO(0, 163, 255, 1),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
-                child: ClipOval(
-                  child: Image.network(
-                    logoUrl,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Icon(Icons.image, size: 40.w),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(1.w),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                  child: ClipOval(
+                    child: Image.network(
+                      logoUrl,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) =>
+                          Icon(Icons.image, size: 40.w),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          10.boxH,
-          Text(
-            title.toUpperCase(),
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 11.sp,
-              color: const Color.fromARGB(255, 40, 40, 40),
-              fontFamily: StringConstants.roboto,
+            10.boxH,
+            Text(
+              title.toUpperCase(),
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 11.sp,
+                color: const Color.fromARGB(255, 40, 40, 40),
+                fontFamily: StringConstants.roboto,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-          6.boxH,
-          Text(
-            description,
-            style: TextStyle(
-              fontSize: 10.sp,
-              color: const Color.fromARGB(255, 86, 86, 86),
-              fontFamily: StringConstants.roboto,
+            6.boxH,
+            Text(
+              description,
+              style: TextStyle(
+                fontSize: 10.sp,
+                color: const Color.fromARGB(255, 86, 86, 86),
+                fontFamily: StringConstants.roboto,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
             ),
-            textAlign: TextAlign.center,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-          ),
-          10.boxH,
-          Text(
-            phone,
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 10.sp,
-              color: const Color.fromARGB(255, 34, 34, 34),
-              fontFamily: StringConstants.roboto,
+            10.boxH,
+            Text(
+              phone,
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 10.sp,
+                color: const Color.fromARGB(255, 34, 34, 34),
+                fontFamily: StringConstants.roboto,
+              ),
+              maxLines: 1,
             ),
-            maxLines: 1,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

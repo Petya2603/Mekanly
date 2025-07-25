@@ -2,10 +2,12 @@ import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
+
 import '../../../core/components/app_text.dart';
 import '../../../product/constants/constants.dart';
 import '../../../product/transitions/custom_page_route.dart';
 import '../../../utils/extensions.dart';
+import '../../business_porfile_detail/business_porfile_detail_view.dart';
 import '../../house_detail/house_detail_view.dart';
 
 class FavoriteCard extends StatelessWidget {
@@ -62,18 +64,27 @@ class FavoriteCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (id == null) return;
-        final imgs = images?.map((e) => e['original'] as String?).toList();
-        final data = HouseDetailRoute(
-          imgUrl: imgs,
-          id: id,
-          type: type,
-          favorited: favorited,
-        );
-        Navigator.push(
-          context,
-          // ignore: inference_failure_on_function_invocation
-          CustomPageRoute.slide(HouseDetailView.builder(context, data)),
-        );
+        if (type == 'house') {
+          final imgs = images?.map((e) => e['original'] as String?).toList();
+          final data = HouseDetailRoute(
+            imgUrl: imgs,
+            id: id,
+            type: type,
+            favorited: favorited,
+          );
+          Navigator.push(
+            context,
+            // ignore: inference_failure_on_function_invocation
+            CustomPageRoute.slide(HouseDetailView.builder(context, data)),
+          );
+        } else {
+          Navigator.push(
+            context,
+            // ignore: inference_failure_on_function_invocation
+            CustomPageRoute.slide(
+                BusinessProfileDetailView.builder(context, id!)),
+          );
+        }
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8),
