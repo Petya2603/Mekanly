@@ -82,7 +82,8 @@ class FavoriteCard extends StatelessWidget {
             context,
             // ignore: inference_failure_on_function_invocation
             CustomPageRoute.slide(
-                BusinessProfileDetailView.builder(context, id!)),
+              BusinessProfileDetailView.builder(context, id!),
+            ),
           );
         }
       },
