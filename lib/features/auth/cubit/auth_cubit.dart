@@ -135,7 +135,7 @@ class AuthCubit extends BaseCubit<AuthState> {
     final isCleared = await ConfigPreference.clear();
     if (isCleared) {
       InMemoryToken.instance.token = null;
-      emit(const AuthState.successLogOut());
+      emit(const AuthState.unAuthenticated());
     }
   }
 }

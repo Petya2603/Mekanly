@@ -8,6 +8,11 @@ import '../../product/constants/constants.dart';
 import 'widgets/profile_main_tile.dart';
 import 'widgets/web_view_screen.dart';
 
+
+
+ 
+
+
 class DuzgunnameView extends StatefulWidget {
   const DuzgunnameView({super.key});
 

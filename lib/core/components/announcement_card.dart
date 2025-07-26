@@ -1,23 +1,16 @@
+// ignore_for_file: inference_failure_on_function_invocation
+
 import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
-
+import '../../features/business_porfile_detail/business_porfile_detail_view.dart';
+import '../../features/house_detail/house_detail_view.dart';
 import '../../product/constants/constants.dart';
-import '../../remote/entities/top_ads/top_ads_entity.dart';
-import '../../utils/extensions.dart';
-import 'package:common/common.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gen/gen.dart';
-
-import '../../product/constants/constants.dart';
+import '../../product/transitions/custom_page_route.dart';
 import '../../remote/entities/top_ads/top_ads_entity.dart';
 import '../../utils/extensions.dart';
 import 'app_text.dart';
-import '../../product/transitions/custom_page_route.dart';
-import '../../features/house_detail/house_detail_view.dart';
-import '../../features/business_porfile_detail/business_porfile_detail_view.dart';
 
 class AnnouncementCard extends StatelessWidget {
   const AnnouncementCard({super.key, this.topAds});
@@ -31,10 +24,10 @@ class AnnouncementCard extends StatelessWidget {
         if (topAds?.itemId == null) return;
         if (topAds?.type == 'house') {
           final data = HouseDetailRoute(
-            imgUrl: topAds?.image != null ? [topAds!.image!] : null,
+            imgUrl: topAds?.image != null ? [topAds!.image] : null,
             id: topAds!.itemId,
             type: topAds!.type,
-            favorited: false, // TopAdsEntity does not have favorited field
+            favorited: false,
           );
           Navigator.push(
             context,
@@ -43,7 +36,9 @@ class AnnouncementCard extends StatelessWidget {
         } else {
           Navigator.push(
             context,
-            CustomPageRoute.slide(BusinessProfileDetailView.builder(context, topAds!.itemId!)),
+            CustomPageRoute.slide(
+              BusinessProfileDetailView.builder(context, topAds!.itemId!),
+            ),
           );
         }
       },

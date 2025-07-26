@@ -13,8 +13,6 @@ import '../../core/components/try_again_widget.dart';
 import '../../localization/extensions.dart';
 import '../../product/base/base_status/base_status.dart';
 import '../../product/constants/constants.dart';
-import '../../remote/repositories/business_profile/product_cubit.dart';
-import '../../remote/repositories/business_profile/product_service.dart';
 import '../../utils/constants.dart';
 import '../../utils/extensions.dart';
 import '../search/search_view.dart';
@@ -111,7 +109,8 @@ class _BusinessProfileViewState extends State<BusinessProfileView>
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const SearchView(categoryIds: null),
+                            builder: (context) =>
+                                const SearchView(categoryIds: null),
                           ),
                         );
                       },

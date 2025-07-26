@@ -159,6 +159,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get log_out => 'Выйти из системы';
 
   @override
+  String get log_out_confirm => 'Вы действительно хотите выйти из системы?';
+
+  @override
   String get administrator => 'Администратор';
 
   @override

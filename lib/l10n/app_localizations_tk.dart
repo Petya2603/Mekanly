@@ -155,7 +155,11 @@ class AppLocalizationsTk extends AppLocalizations {
   String get accistant => 'Kömekçi';
 
   @override
-  String get log_out => 'Ulgamdan çykmak ';
+  String get log_out => 'Ulgamdan çykmak';
+
+  @override
+  String get log_out_confirm =>
+      'Siz hakykatdanam ulgamdan çykmak isleýärsiňizmi?';
 
   @override
   String get administrator => 'Administrator';

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gen/gen.dart';
 import '../../../core/components/app_text.dart';
@@ -9,13 +10,12 @@ import '../../favorites/favorites_view.dart';
 import '../../home/home_view.dart';
 import '../../houses/houses_view.dart';
 import '../../menu/menu_view.dart';
+import '../cubit/navigation_cubit.dart';
 import '../widgets/custom_scroll_controller.dart';
 import 'root_view_handler.dart';
 
 class RootView extends StatefulWidget {
-  RootView() : super(key: rootKey);
-  // ignore: library_private_types_in_public_api
-  static final GlobalKey<_RootViewState> rootKey = GlobalKey<_RootViewState>();
+  const RootView({super.key});
 
   static const routePath = '/root-view';
   static const routeName = 'root-view';
@@ -28,10 +28,6 @@ class _RootViewState extends State<RootView>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final CustomScrollController _scrollController = CustomScrollController();
   late TabController _tabController;
-  int _currentIndex = 0;
-  void goToTab(int index) {
-    _tabController.animateTo(index);
-  }
 
   @override
   void initState() {
@@ -40,23 +36,15 @@ class _RootViewState extends State<RootView>
       length: 5,
       vsync: this,
     );
-    _tabController.addListener(() {
-      if (_tabController.indexIsChanging) {
-        _onTabSelected(_tabController.index);
-      }
-    });
   }
 
   @override
   void dispose() {
-    // _scrollController.dispose();
     _tabController.dispose();
     super.dispose();
   }
 
   void _onTabSelected(int index) {
-    if (index == _currentIndex) return;
-
     if (index != 0) {
       _scrollController.animateTo(
         35.w,
@@ -72,88 +60,83 @@ class _RootViewState extends State<RootView>
       );
       _scrollController.appBarVisibility.value = true;
     }
-
-    setState(() {
-      _currentIndex = index;
-    });
-
-    _tabController.animateTo(
-      index,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
+    context.read<NavigationCubit>().changeTab(index);
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final physics = _currentIndex == 0
-        ? const AlwaysScrollableScrollPhysics()
-        : const NeverScrollableScrollPhysics();
-
-    return Scaffold(
-      backgroundColor: ColorName.main,
-      body: Container(
-        color: ColorName.white,
-        margin: EdgeInsets.only(top: context.mediaQuery.padding.top),
-        child: NestedScrollView(
-          physics: physics,
-          controller: _scrollController,
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              CustomSliverAppBar(
-                visibilityNotifier: _scrollController.appBarVisibility,
-                scrollController: _scrollController,
-                backgroundColor: ColorName.main,
-                shadowColor: Colors.black26,
-                height: 35.w,
-                currentTabIndex: _currentIndex,
-                title: Container(
-                  alignment: Alignment.center,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: SizedBox(
-                          // height: 20.w,
-                          child: Assets.icons.logoo.svg(package: 'gen'),
-                        ).toLeft(),
+    return BlocBuilder<NavigationCubit, NavigationState>(
+      builder: (context, state) {
+        final physics = state.index == 0
+            ? const AlwaysScrollableScrollPhysics()
+            : const NeverScrollableScrollPhysics();
+        _tabController.animateTo(state.index);
+        return Scaffold(
+          backgroundColor: ColorName.main,
+          body: Container(
+            color: ColorName.white,
+            margin: EdgeInsets.only(top: context.mediaQuery.padding.top),
+            child: NestedScrollView(
+              physics: physics,
+              controller: _scrollController,
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return [
+                  CustomSliverAppBar(
+                    visibilityNotifier: _scrollController.appBarVisibility,
+                    scrollController: _scrollController,
+                    backgroundColor: ColorName.main,
+                    shadowColor: Colors.black26,
+                    height: 35.w,
+                    currentTabIndex: state.index,
+                    title: Container(
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              // height: 20.w,
+                              child: Assets.icons.logoo.svg(package: 'gen'),
+                            ).toLeft(),
+                          ),
+                          Assets.icons.icNotif.svg(package: 'gen'),
+                        ],
                       ),
-                      Assets.icons.icNotif.svg(package: 'gen'),
-                    ],
+                    ),
+                    bottom: _buildBottomNavigation(state.index),
                   ),
-                ),
-                bottom: _buildBottomNavigation(),
+                ];
+              },
+              body: TabBarView(
+                controller: _tabController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: const [
+                  HomeView(
+                    key: Key('home_view'),
+                  ),
+                  HousesView(
+                    key: Key('houses_view'),
+                  ),
+                  BusinessProfileView(
+                    key: Key('business_profile_view'),
+                  ),
+                  FavoritesView(
+                    key: Key('favorites_view'),
+                  ),
+                  MenuView(
+                    key: Key('menu_view'),
+                  ),
+                ],
               ),
-            ];
-          },
-          body: TabBarView(
-            controller: _tabController,
-            physics: const NeverScrollableScrollPhysics(),
-            children: const [
-              HomeView(
-                key: Key('home_view'),
-              ),
-              HousesView(
-                key: Key('houses_view'),
-              ),
-              BusinessProfileView(
-                key: Key('business_profile_view'),
-              ),
-              FavoritesView(
-                key: Key('favorites_view'),
-              ),
-              MenuView(
-                key: Key('menu_view'),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
-  Widget _buildBottomNavigation() {
+  Widget _buildBottomNavigation(int currentIndex) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8).w,
       child: Row(
@@ -174,7 +157,7 @@ class _RootViewState extends State<RootView>
                         duration: const Duration(milliseconds: 300),
                         width: 20.w,
                         height: 20.w,
-                        child: _currentIndex == page.index
+                        child: currentIndex == page.index
                             ? page.activeIcon.svg(package: 'gen')
                             : page.icon.svg(package: 'gen'),
                       ),
@@ -184,10 +167,10 @@ class _RootViewState extends State<RootView>
                           page.label,
                           fontSize: 9.sp,
                           textAlign: TextAlign.center,
-                          color: page.index == _currentIndex
+                          color: page.index == currentIndex
                               ? ColorName.white
                               : ColorName.cardShadow,
-                          fontWeight: page.index == _currentIndex
+                          fontWeight: page.index == currentIndex
                               ? FontWeight.bold
                               : FontWeight.w500,
                           fontFamily: StringConstants.roboto,
@@ -201,7 +184,7 @@ class _RootViewState extends State<RootView>
                         height: 3,
                         width: 57,
                         decoration: BoxDecoration(
-                          color: _currentIndex == page.index
+                          color: currentIndex == page.index
                               ? ColorName.white
                               : Colors.transparent,
                           borderRadius: const BorderRadius.only(
