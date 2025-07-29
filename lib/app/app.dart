@@ -37,7 +37,6 @@ class MekanlyApp extends StatefulWidget {
         BlocProvider.value(value: homeBloc),
         BlocProvider.value(value: housesBloc),
         BlocProvider.value(value: businessProfileBloc),
-        BlocProvider(create: (context) => NavigationCubit()),
       ],
       child: const MekanlyApp(),
     );
