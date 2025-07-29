@@ -36,6 +36,7 @@ import 'widgets/circled_icon_btn.dart';
 import 'widgets/gradient_bg_container.dart';
 import 'widgets/pop_up.dart';
 import 'widgets/row_main_info_tile.dart';
+import 'widgets/share_bottom_sheet.dart';
 
 class HouseDetailRoute {
   HouseDetailRoute({
@@ -142,177 +143,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
     }
   }
 
-  Future<void> shareImagesWithDio(
-    List<String> imageUrls, {
-    String? text,
-  }) async {
-    try {
-      final tempDir = await getTemporaryDirectory();
-      final files = <XFile>[];
-
-      for (var i = 0; i < imageUrls.length; i++) {
-        final imageUrl = imageUrls[i];
-        if (imageUrl.isEmpty) continue;
-
-        final filePath = '${tempDir.path}/shared_image_$i.jpg';
-
-        final dio = Dio();
-        await dio.download(imageUrl, filePath);
-
-        files.add(XFile(filePath));
-      }
-
-      if (files.isNotEmpty) {
-        // ignore: deprecated_member_use
-        await Share.shareXFiles(files, text: text);
-      } else if (text != null) {
-        // ignore: deprecated_member_use
-        await Share.share(text);
-      }
-      // ignore: empty_catches
-    } catch (e) {}
-  }
-
   final abuseService = AbuseService();
-  void _showShareBottomSheet(BuildContext context, List<String> imageUrls) {
-    var shareLink = true;
-    var shareImage = false;
-
-    // ignore: inference_failure_on_function_invocation
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: const Color.fromARGB(255, 245, 240, 234),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            final isRTL = Directionality.of(context) == TextDirection.rtl;
-
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: IconButton(
-                      icon: Assets.icons.close.svg(package: 'gen'),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  _AnimatedImageStack(imageUrls: imageUrls, isRTL: isRTL),
-                  Text(
-                    context.translation.share_with_friends,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: Color.fromARGB(255, 34, 34, 34),
-                      fontFamily: StringConstants.roboto,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: shareLink,
-                        activeColor: Colors.white,
-                        checkColor: Colors.black,
-                        onChanged: (value) {
-                          setState(() {
-                            shareLink = value!;
-                            if (value) shareImage = false;
-                          });
-                        },
-                      ),
-                      Text(
-                        context.translation.share_link,
-                        style: const TextStyle(
-                          fontFamily: StringConstants.roboto,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                          color: Color.fromARGB(255, 34, 34, 34),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: shareImage,
-                        activeColor: Colors.white,
-                        checkColor: Colors.black,
-                        onChanged: (value) {
-                          setState(() {
-                            shareImage = value!;
-                            if (value) shareLink = false;
-                          });
-                        },
-                      ),
-                      Text(
-                        context.translation.share_photo,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: StringConstants.roboto,
-                          color: Color.fromARGB(255, 34, 34, 34),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 34, 34, 34),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      onPressed: () async {
-                        Navigator.pop(context);
-                        if (shareLink) {
-                          final urlText =
-                              imageUrls.where((e) => e.isNotEmpty).join('\n');
-                          // ignore: deprecated_member_use
-                          await Share.share(urlText);
-                        }
-                        if (shareImage) {
-                          await shareImagesWithDio(imageUrls);
-                        }
-                      },
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.share, color: Colors.white),
-                          const SizedBox(width: 8),
-                          Text(
-                            context.translation.share,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: StringConstants.roboto,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
 
   void _showReportBottomSheet(BuildContext context, List<AbuseReason> reasons) {
     int? selectedReasonId;
@@ -561,31 +392,11 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                       CircledIconBtn(
                         icon: Assets.icons.sharer.svg(package: 'gen'),
                         onTap: () {
-                          final rawImageUrl =
-                              widget.data.imgUrl?.toString() ?? '';
-
-                          List<String> imageUrls;
-
-                          if (rawImageUrl.startsWith('[') &&
-                              rawImageUrl.endsWith(']')) {
-                            final cleanStr = rawImageUrl.substring(
-                              1,
-                              rawImageUrl.length - 1,
-                            );
-                            imageUrls = cleanStr
-                                .split(',')
-                                .map((e) => e.trim())
-                                .toList();
-                          } else if (rawImageUrl.isNotEmpty) {
-                            imageUrls = [rawImageUrl];
-                          } else {
-                            imageUrls = [];
-                          }
-                          while (imageUrls.length < 3) {
-                            imageUrls.add('');
-                          }
-
-                          _showShareBottomSheet(context, imageUrls);
+                          final imageUrls = widget.data.imgUrl
+                                  ?.whereType<String>()
+                                  .toList() ??
+                              [];
+                          ShareBottomSheet.show(context, imageUrls);
                         },
                       ),
                       12.boxW,
@@ -632,7 +443,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                             imageUrls.add('');
                           }
 
-                          _showShareBottomSheet(context, imageUrls);
+                          ShareBottomSheet.show(context, imageUrls);
                         },
                       ),
                       12.boxW,
@@ -1479,170 +1290,6 @@ class _HouseDetailImgSliderState extends State<_HouseDetailImgSlider> {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _AnimatedImageStack extends StatefulWidget {
-  const _AnimatedImageStack({required this.imageUrls, required this.isRTL});
-  final List<String> imageUrls;
-  final bool isRTL;
-
-  @override
-  State<_AnimatedImageStack> createState() => _AnimatedImageStackState();
-}
-
-class _AnimatedImageStackState extends State<_AnimatedImageStack>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-  late final Animation<double> _rotateLeft;
-  late final Animation<double> _rotateRight;
-  late final Animation<double> _translateY;
-  late final Animation<double> _translateX1;
-  late final Animation<double> _translateX2;
-
-  final double imageSize = 130;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 600),
-    );
-
-    _rotateLeft = Tween<double>(
-      begin: 0,
-      end: -pi / 18,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
-
-    _rotateRight = Tween<double>(
-      begin: 0,
-      end: pi / 18,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
-
-    _translateY = Tween<double>(
-      begin: 0,
-      end: -40,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
-
-    _translateX1 = Tween<double>(
-      begin: 0,
-      end: -20,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
-
-    _translateX2 = Tween<double>(
-      begin: 0,
-      end: 20,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
-
-    _controller.forward();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  Widget _buildImage(String url) {
-    return Container(
-      width: imageSize,
-      height: imageSize,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white, width: 4),
-        boxShadow: const [
-          BoxShadow(color: Colors.black26, blurRadius: 6, offset: Offset(2, 2)),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: Image.network(
-          url,
-          fit: BoxFit.cover,
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final urls =
-        widget.imageUrls.where((url) => url.trim().isNotEmpty).toList();
-    final count = urls.length.clamp(0, 3);
-    if (count == 0) {
-      return const SizedBox.shrink();
-    }
-
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
-        if (count == 1) {
-          return Center(child: _buildImage(urls[0]));
-        } else if (count == 2) {
-          return Center(
-            child: SizedBox(
-              width: imageSize + 60,
-              height: imageSize + 40,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Transform.translate(
-                    offset: Offset(_translateX1.value, 0),
-                    child: Transform.rotate(
-                      angle: _rotateLeft.value,
-                      alignment: Alignment.bottomLeft,
-                      child: _buildImage(urls[1]),
-                    ),
-                  ),
-                  Transform.translate(
-                    offset: Offset(_translateX2.value, 0),
-                    child: Transform.rotate(
-                      angle: _rotateRight.value,
-                      alignment: Alignment.bottomRight,
-                      child: _buildImage(urls[0]),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        } else {
-          return Center(
-            child: SizedBox(
-              width: imageSize + 60,
-              height: imageSize + 60,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Transform.translate(
-                    offset: Offset(0, _translateY.value),
-                    child: _buildImage(urls[2]),
-                  ),
-                  Transform.translate(
-                    offset: Offset(_translateX1.value, 0),
-                    child: Transform.rotate(
-                      angle: _rotateLeft.value,
-                      alignment: Alignment.bottomLeft,
-                      child: _buildImage(urls[1]),
-                    ),
-                  ),
-                  Transform.translate(
-                    offset: Offset(_translateX2.value, 0),
-                    child: Transform.rotate(
-                      angle: _rotateRight.value,
-                      alignment: Alignment.bottomRight,
-                      child: _buildImage(urls[0]),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
-      },
     );
   }
 }

@@ -6,7 +6,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:gallery_saver_plus/gallery_saver.dart';
 import 'package:gen/gen.dart';
 import 'package:permission_handler/permission_handler.dart';
-import '../../core/components/app_btn.dart';
+import './widgets/share_bottom_sheet.dart';
 import '../../core/components/app_text.dart';
 import '../../product/constants/constants.dart';
 import '../../remote/repositories/favorite/favorite_repository.dart';
@@ -85,10 +85,10 @@ class _HouseImagesState extends State<HouseImages> {
             children: [
               IconButton(
                 onPressed: () {
-                  _showAnimatedBottomSheet(context);
-                  //shareButton(context);
+                  final imageUrls = widget.houseImagesUrl?.whereType<String>().toList() ?? [];
+                  ShareBottomSheet.show(context, imageUrls);
                 },
-                icon: Assets.icons.icShare.svg(package: 'gen'),
+                icon: Assets.icons.sharer.svg(package: 'gen'),
               ),
               6.boxW,
               IconButton(
@@ -147,21 +147,6 @@ class _HouseImagesState extends State<HouseImages> {
       ),
     );
   }
-
-  void _showAnimatedBottomSheet(BuildContext context) {
-    // ignore: inference_failure_on_function_invocation
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: const Color(0xFFF5F0EA),
-      builder: (context) => _AnimatedContainersSheet(
-        imageUrlFirst: widget.houseImagesUrl?[0],
-        imageUrlSecond: widget.houseImagesUrl?[0],
-        imageUrlThird: widget.houseImagesUrl?[0],
-        imagesNumber: widget.houseImagesUrl?.length ?? 0,
-      ),
-    );
-  }
 }
 
 class ImageScreen extends StatefulWidget {
@@ -201,8 +186,6 @@ class _ImageScreenState extends State<ImageScreen> {
       _rotationAngles[_currentIndex] += pi / 2;
     });
   }
-
-  // final ValueNotif
 
   @override
   Widget build(BuildContext context) {
@@ -293,372 +276,11 @@ class _ImageScreenState extends State<ImageScreen> {
           if (status.isGranted || storageStatus.isGranted) {
             final success = await GallerySaver.saveImage(url);
 
-            // ignore: use_if_null_to_convert_nulls_to_bools
             if (success == true) {
             } else {}
           } else {}
         },
         child: Assets.icons.icDownloadImage.svg(package: 'gen'),
-      ),
-    );
-  }
-}
-
-class _AnimatedContainersSheet extends StatefulWidget {
-  const _AnimatedContainersSheet({
-    required this.imageUrlFirst,
-    required this.imageUrlSecond,
-    required this.imageUrlThird,
-    required this.imagesNumber,
-  });
-
-  final String? imageUrlFirst;
-  final String? imageUrlSecond;
-  final String? imageUrlThird;
-  final int imagesNumber;
-  @override
-  _AnimatedContainersSheetState createState() =>
-      _AnimatedContainersSheetState();
-}
-
-class _AnimatedContainersSheetState extends State<_AnimatedContainersSheet>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _rotationAnim1;
-  late Animation<double> _rotationAnim2;
-  late Animation<double> _translationAnim;
-  late Animation<double> _horizontalTranslationAnim1;
-  late Animation<double> _horizontalTranslationAnim2;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 500),
-      vsync: this,
-    );
-
-    _rotationAnim1 = Tween<double>(
-      begin: 0,
-      end: -pi / 30,
-    ).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeOut,
-      ),
-    );
-
-    _rotationAnim2 = Tween<double>(
-      begin: 0,
-      end: pi / 30,
-    ).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeOut,
-      ),
-    );
-
-    _translationAnim = Tween<double>(
-      begin: 0,
-      end: -20,
-    ).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeOut,
-      ),
-    );
-
-    _horizontalTranslationAnim1 = Tween<double>(
-      begin: 0,
-      end: -10,
-    ).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeOut,
-      ),
-    );
-
-    _horizontalTranslationAnim2 = Tween<double>(
-      begin: 0,
-      end: 10,
-    ).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeOut,
-      ),
-    );
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _controller.forward();
-    });
-  }
-
-  bool isLinkSelected = true;
-  bool isImageSelected = false;
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      height: MediaQuery.of(context).size.height * 0.5,
-      width: MediaQuery.of(context).size.width,
-      child: Stack(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: 40,
-                height: 5,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(2.5),
-                ),
-                margin: const EdgeInsets.only(bottom: 20),
-              ),
-              const SizedBox(height: 25),
-              AnimatedBuilder(
-                animation: _controller,
-                builder: (context, child) {
-                  if (widget.imagesNumber == 1) {
-                    return Center(
-                      child: _buildImageContainer(widget.imageUrlFirst!),
-                    );
-                  } else if (widget.imagesNumber == 2) {
-                    return Stack(
-                      children: [
-                        Transform.translate(
-                          offset: Offset(_horizontalTranslationAnim1.value, 0),
-                          child: Transform.rotate(
-                            angle: _rotationAnim1.value,
-                            alignment: Alignment.bottomLeft,
-                            child: _buildImageContainer(
-                              widget.imageUrlSecond!,
-                            ),
-                          ),
-                        ),
-                        Transform.translate(
-                          offset: Offset(_horizontalTranslationAnim2.value, 0),
-                          child: Transform.rotate(
-                            angle: _rotationAnim2.value,
-                            alignment: Alignment.bottomRight,
-                            child: _buildImageContainer(
-                              widget.imageUrlFirst!,
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  } else {
-                    return Stack(
-                      children: [
-                        Transform.translate(
-                          offset: Offset(0, _translationAnim.value),
-                          child: _buildImageContainer(
-                            widget.imageUrlThird!,
-                          ),
-                        ),
-                        Transform.translate(
-                          offset: Offset(_horizontalTranslationAnim1.value, 0),
-                          child: Transform.rotate(
-                            angle: _rotationAnim1.value,
-                            alignment: Alignment.bottomLeft,
-                            child: _buildImageContainer(
-                              widget.imageUrlSecond!,
-                            ),
-                          ),
-                        ),
-                        Transform.translate(
-                          offset: Offset(_horizontalTranslationAnim2.value, 0),
-                          child: Transform.rotate(
-                            angle: _rotationAnim2.value,
-                            alignment: Alignment.bottomRight,
-                            child: _buildImageContainer(
-                              widget.imageUrlFirst!,
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  }
-                },
-              ),
-              6.boxH,
-              AppText.s14w400BdM(
-                'Halanlaryňy dostlaryň\nbilen paýlaş',
-                fontFamily: StringConstants.roboto,
-                fontWeight: FontWeight.w500,
-                fontSize: 20.sp,
-                color: const Color(0xFF222222),
-                softWrap: true,
-                textAlign: TextAlign.center,
-              ),
-              4.boxH,
-              CheckboxListTile(
-                checkboxShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4).r,
-                ),
-                activeColor: const Color(0xFFFFFFFF),
-                checkColor: const Color(0xFF000000),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4).r,
-                ),
-                side: BorderSide(
-                  color: const Color(0xFFB0B0B0),
-                  width: 1.w,
-                ),
-                title: AppText.s14w400BdM(
-                  'Link paýlaş',
-                  fontFamily: StringConstants.roboto,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16.sp,
-                ),
-                controlAffinity: ListTileControlAffinity.leading,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                visualDensity:
-                    const VisualDensity(horizontal: -4, vertical: -4),
-                value: isLinkSelected,
-                onChanged: (bool? value) {
-                  setState(() {
-                    isLinkSelected = value!;
-                    isImageSelected = !value;
-                  });
-                },
-              ),
-              CheckboxListTile(
-                checkboxShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4).r,
-                ),
-                //activeColor: const Color(0xFF212121),
-                checkColor: const Color(0xFF000000),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4).r,
-                ),
-                side: BorderSide(
-                  color: const Color(0xFFB0B0B0),
-                  width: 1.w,
-                ),
-                title: AppText.s14w400BdM(
-                  'Surat paýlaş',
-                  fontFamily: StringConstants.roboto,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16.sp,
-                ),
-                controlAffinity: ListTileControlAffinity.leading,
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                ),
-                visualDensity:
-                    const VisualDensity(horizontal: -4, vertical: -4),
-                value: isImageSelected,
-                onChanged: (bool? value) {
-                  setState(() {
-                    isImageSelected = value!;
-                    isLinkSelected = !value;
-                  });
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18).w,
-                child: AppBtn(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  text: 'Paýlaşmak',
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: StringConstants.manrope,
-                  textColor: const Color(0xFFFFFFFF),
-                  bgColor: const Color(0xFF222222),
-                  ltIcon: const Icon(
-                    Icons.share,
-                    color: Colors.white,
-                    size: 15,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Positioned(
-            child: IconButton.outlined(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(
-                Icons.clear,
-                color: Colors.grey,
-                size: 18,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildImageContainer(String imageUrl) {
-    return Container(
-      height: 100,
-      width: 100,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16).r,
-        border: Border(
-          right: BorderSide(
-            width: 2.w,
-            color: Colors.white,
-          ),
-          left: BorderSide(
-            width: 2.w,
-            color: Colors.white,
-          ),
-          top: BorderSide(
-            width: 2.w,
-            color: Colors.white,
-          ),
-          bottom: BorderSide(
-            width: 2.w,
-            color: Colors.white,
-          ),
-        ),
-        boxShadow: [
-          BoxShadow(
-            // ignore: deprecated_member_use
-            color: Colors.black.withOpacity(0.25),
-            blurRadius: 5,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: const BorderRadius.horizontal(
-          left: Radius.circular(16),
-          right: Radius.circular(16),
-        ),
-        child: Image.network(
-          imageUrl,
-          height: 100,
-          width: 100,
-          fit: BoxFit.cover,
-          // Use placeholders for better UX
-          loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) return child;
-            return const Center(child: CircularProgressIndicator());
-          },
-          errorBuilder: (context, error, stackTrace) {
-            return const Center(child: Icon(Icons.error));
-          },
-        ),
       ),
     );
   }
