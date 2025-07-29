@@ -618,6 +618,9 @@ class AppLocalizationsTk extends AppLocalizations {
   String get description => 'Düşündirilişi';
 
   @override
+  String get descriptionCopied => 'Beýan göçürildi';
+
+  @override
   String get briefly_describe_yourself => 'Özüňiz barada gysgaça beýan ediň';
 
   @override

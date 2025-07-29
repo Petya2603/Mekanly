@@ -1,4 +1,4 @@
-{ 
+{
   "title": "Mekanly.com",
   "home": "Главная страница",
   "searchMain": "Недвижимость",
@@ -198,6 +198,7 @@
   "delivery_available": "Доставка доступна",
   "delivery_available1": "Услуга доставки доступна",
   "description": "Описание",
+  "descriptionCopied": "Описание скопировано",
   "briefly_describe_yourself": "Кратко опишите себя",
   "fill_contact_information": "Заполните контактную информацию",
   "your_email_address": "Ваш адрес электронной почты",

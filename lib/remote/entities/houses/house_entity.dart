@@ -209,20 +209,20 @@ extension PossibilityIcon on PossibilityEntity {
 
     if (_matches(lowerName!, ['Wi-fi', 'wifi', 'интернет'])) {
       return SmallIconWrapper(
-        icon: Assets.icons.icConnection.svg(package: 'gen'),
+        icon: Assets.icons.wifii.svg(package: 'gen'),
       );
     } else if (_matches(
         lowerName, ['washer', 'стиральная машина', 'Kir ýuwýan maşyn'])) {
       return SmallIconWrapper(
-        icon: Assets.icons.icWashingMachine.svg(package: 'gen'),
+        icon: Assets.icons.kirmasyn.svg(package: 'gen'),
       );
     } else if (_matches(lowerName, ['Televizor', 'телевизор', 'Telewizor'])) {
       return SmallIconWrapper(
-        icon: Assets.icons.icTv.svg(package: 'gen'),
+        icon: Assets.icons.televizorr.svg(package: 'gen'),
       );
     } else if (_matches(lowerName, ['kitchen', 'кухня', 'Aşhana'])) {
       return SmallIconWrapper(
-        icon: Assets.icons.icDishes.svg(package: 'gen'),
+        icon: Assets.icons.ashana.svg(package: 'gen'),
       );
     } else if (_matches(lowerName, ['shower', 'душ', 'Duş'])) {
       return SmallIconWrapper(
@@ -230,7 +230,7 @@ extension PossibilityIcon on PossibilityEntity {
       );
     } else if (_matches(lowerName, ['Sowadyjy', 'Holodilnik', 'Холодильник'])) {
       return SmallIconWrapper(
-        icon: Assets.icons.icRefrigerator.svg(package: 'gen'),
+        icon: Assets.icons.sowadyjy.svg(package: 'gen'),
       );
       // ignore: lines_longer_than_80_chars
     } else if (_matches(
@@ -246,7 +246,7 @@ extension PossibilityIcon on PossibilityEntity {
       );
     } else if (_matches(lowerName, ['Krowat', 'кровать'])) {
       return SmallIconWrapper(
-        icon: Assets.icons.krowat.svg(package: 'gen'),
+        icon: Assets.icons.icSpalny.svg(package: 'gen'),
       );
     } else if (_matches(lowerName, ['hot', 'Gyzgyn suw', 'горячая вода'])) {
       return SmallIconWrapper(

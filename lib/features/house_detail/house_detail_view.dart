@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'dart:math';
 import 'package:common/common.dart';
 import 'package:dio/dio.dart';
@@ -527,7 +528,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
               foregroundColor: Colors.white,
               surfaceTintColor: Colors.white,
               expandedHeight: 320,
-              backgroundColor: const Color(0xFF4D8BBF),
+              backgroundColor: ColorName.main,
               automaticallyImplyLeading: false,
               leading: _scrollPercentage < 0.8
                   ? Row(
@@ -558,7 +559,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                   Row(
                     children: [
                       CircledIconBtn(
-                        icon: Assets.icons.icShare.svg(package: 'gen'),
+                        icon: Assets.icons.sharer.svg(package: 'gen'),
                         onTap: () {
                           final rawImageUrl =
                               widget.data.imgUrl?.toString() ?? '';
@@ -601,7 +602,7 @@ class _HouseDetailViewState extends State<HouseDetailView> {
                   Row(
                     children: [
                       IconButton(
-                        icon: Assets.icons.icShare.svg(
+                        icon: Assets.icons.sharer.svg(
                           package: 'gen',
                           // ignore: deprecated_member_use
                           color: Colors.white,
@@ -955,29 +956,36 @@ class _Description extends StatelessWidget {
     if (description == null) {
       return const SizedBox.shrink();
     }
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10).w,
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10).w,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8).r,
-              color: const Color(0xffF6F6F6),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: AppText.s12w400BdS(
-                    description!,
-                    fontFamily: StringConstants.roboto,
+    return GestureDetector(
+      onLongPress: () {
+        Clipboard.setData(ClipboardData(text: description!));
+        Helpers.showToastCopyy(context, context.translation.descriptionCopied);
+      },
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10).w,
+              padding:
+                  const EdgeInsets.symmetric(vertical: 15, horizontal: 10).w,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8).r,
+                color: const Color(0xffF6F6F6),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: AppText.s12w400BdS(
+                      description!,
+                      fontFamily: StringConstants.roboto,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

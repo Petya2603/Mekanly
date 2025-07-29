@@ -621,6 +621,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get description => 'Описание';
 
   @override
+  String get descriptionCopied => 'Описание скопировано';
+
+  @override
   String get briefly_describe_yourself => 'Кратко опишите себя';
 
   @override

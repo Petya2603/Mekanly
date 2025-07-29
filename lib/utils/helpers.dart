@@ -3,6 +3,12 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gen/gen.dart';
+
+import '../core/components/app_text.dart';
+import '../features/house_detail/recoman/recomendation_biznes.dart';
+import 'toast.dart';
 
 class Helpers {
   Helpers._();
@@ -18,8 +24,6 @@ class Helpers {
     return Color(int.parse(buffer.toString(), radix: 16));
   }
 
-  static const _fetchListDuration = Duration(milliseconds: 500);
-  static const _duration = Duration(milliseconds: 100);
 // const _fetchDuration = Duration(milliseconds: 100);
   // static EventTransformer<T> fetchDroppable<T>({Duration? duration}) {
   //   return (events, mapper) {
@@ -45,7 +49,7 @@ class Helpers {
     late final ImageStreamListener listener;
 
     listener = ImageStreamListener((ImageInfo image, bool sync) {
-      debugPrint("Image ${image.debugLabel} finished loading");
+      debugPrint('Image ${image.debugLabel} finished loading');
       completer.complete();
       stream.removeListener(listener);
     }, onError: (dynamic exception, StackTrace? stackTrace) {
@@ -67,14 +71,39 @@ class Helpers {
   /// Formats a `DateTime` into "MM/DD/YYYY".
   static String formatDate(DateTime? date, {String separator = '.'}) {
     if (date == null) return 'Unknown date';
+    // ignore: lines_longer_than_80_chars
     return '${date.month.toString().padLeft(2, '0')}$separator${date.day.toString().padLeft(2, '0')}$separator${date.year}';
+  }
+
+  static void showToastCopyy(BuildContext context, String descriptionCopied) {
+    ToastUtil.show(
+      context,
+      ToastDecorator(
+        widget: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              height: 14.w,
+              width: 14.w,
+              child: Image.asset('assets/ic_logo_app.png'),
+            ),
+            8.boxW,
+            AppText.s10w400LbS(
+              descriptionCopied,
+              color: ColorName.white,
+            ),
+          ],
+        ),
+        backgroundColor: ColorName.addressDate,
+      ),
+      duration: 4,
+    );
   }
 }
 
 extension ListUpdate<T> on List<T> {
   List<T> update(int pos, T t) {
-    final list = <T>[];
-    list.add(t);
+    final list = <T>[]..add(t);
     replaceRange(pos, pos + 1, list);
     return this;
   }

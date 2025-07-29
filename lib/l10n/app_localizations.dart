@@ -1262,6 +1262,12 @@ abstract class AppLocalizations {
   /// **'Описание'**
   String get description;
 
+  /// No description provided for @descriptionCopied.
+  ///
+  /// In ru, this message translates to:
+  /// **'Описание скопировано'**
+  String get descriptionCopied;
+
   /// No description provided for @briefly_describe_yourself.
   ///
   /// In ru, this message translates to:

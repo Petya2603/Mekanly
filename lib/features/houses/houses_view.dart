@@ -493,6 +493,13 @@ class _HousesViewState extends State<HousesView>
                         separatorBuilder: (context, index) => 5.boxH,
                         itemCount: houses.length,
                       ),
+                    if (state.isPaginating)
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: LoadingIndicator.circle(),
+                        ),
+                      ),
                     6.boxH.toSliver,
                     16.boxH.toSliver,
                   ],

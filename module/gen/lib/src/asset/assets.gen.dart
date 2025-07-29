@@ -178,6 +178,9 @@ class $AssetsIconsGen {
   SvgGenImage get icConnection =>
       const SvgGenImage('assets/icons/ic_connection.svg');
 
+  /// File path: assets/icons/ic_connection.svg
+  SvgGenImage get wifii => const SvgGenImage('assets/icons/wifii.svg');
+
   /// File path: assets/icons/ic_contact_us.svg
   SvgGenImage get icContactUs =>
       const SvgGenImage('assets/icons/ic_contact_us.svg');
@@ -192,6 +195,13 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/ic_dishes.svg
   SvgGenImage get icDishes => const SvgGenImage('assets/icons/ic_dishes.svg');
+
+  /// File path: assets/icons/ic_dishes.svg
+  SvgGenImage get ashana => const SvgGenImage('assets/icons/ashana.svg');
+
+  /// File path: assets/icons/ic_dishes.svg
+  SvgGenImage get televizorr =>
+      const SvgGenImage('assets/icons/televizorr.svg');
 
   /// File path: assets/icons/ic_dislike.svg
   SvgGenImage get icDislike => const SvgGenImage('assets/icons/ic_dislike.svg');
@@ -504,6 +514,9 @@ class $AssetsIconsGen {
   SvgGenImage get icRefrigerator =>
       const SvgGenImage('assets/icons/ic_refrigerator.svg');
 
+  /// File path: assets/icons/ic_refrigerator.svg
+  SvgGenImage get sowadyjy => const SvgGenImage('assets/icons/sowadyjy.svg');
+
   SvgGenImage get conditioner =>
       const SvgGenImage('assets/icons/conditioner.svg');
 
@@ -554,6 +567,9 @@ class $AssetsIconsGen {
   SvgGenImage get icShare => const SvgGenImage('assets/icons/ic_share.svg');
 
   /// File path: assets/icons/ic_share.svg
+  SvgGenImage get sharer => const SvgGenImage('assets/icons/sharer.svg');
+
+  /// File path: assets/icons/ic_share.svg
   SvgGenImage get sharetaze => const SvgGenImage('assets/icons/sharetaze.svg');
 
   /// File path: assets/icons/ic_share_home.svg
@@ -594,6 +610,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_washing_machine.svg
   SvgGenImage get icWashingMachine =>
       const SvgGenImage('assets/icons/ic_washing_machine.svg');
+
+  /// File path: assets/icons/ic_washing_machine.svg
+  SvgGenImage get kirmasyn => const SvgGenImage('assets/icons/kirmasyn.svg');
 
   /// File path: assets/icons/ic_working_desk.svg
   SvgGenImage get icWorkingDesk =>
@@ -762,7 +781,13 @@ class $AssetsIconsGen {
         saga,
         favsag,
         hiczatyok,
-        silbuton
+        silbuton,
+        wifii,
+        kirmasyn,
+        televizorr,
+        sowadyjy,
+        ashana,
+        sharer
       ];
 }
 

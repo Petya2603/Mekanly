@@ -61,6 +61,31 @@ class Helpers {
     );
   }
 
+  static void showToastCopyy(BuildContext context, String title) {
+    return ToastUtil.show(
+      context,
+      ToastDecorator(
+        widget: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              height: 14.w,
+              width: 14.w,
+              child: Image.asset('assets/ic_logo_app.png'),
+            ),
+            8.boxW,
+            AppText.s10w400LbS(
+              title,
+              color: ColorName.white,
+            ),
+          ],
+        ),
+        backgroundColor: ColorName.addressDate,
+      ),
+      duration: 4,
+    );
+  }
+
   static void showToastError(BuildContext context, String title) {
     return ToastUtil.show(
       context,
