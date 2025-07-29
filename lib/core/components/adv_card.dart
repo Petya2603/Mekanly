@@ -11,8 +11,10 @@ class AdvCard extends StatelessWidget {
     super.key,
     this.imgUrl,
     this.logo,
+    this.title,
   });
   final String? imgUrl;
+  final String? title;
   final String? logo;
 
   @override
@@ -78,7 +80,7 @@ class AdvCard extends StatelessWidget {
               bottom: 3,
             ).w,
             child: AppText.s9w400LbM(
-              'reklama',
+              title ?? '',
               color: ColorName.white,
             ),
           ),

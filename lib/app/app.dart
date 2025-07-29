@@ -77,7 +77,8 @@ class _MekanlyAppState extends State<MekanlyApp> {
                   authState.maybeWhen(
                     unAuthenticated: () {
                       navigatorKey.currentState?.pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => SplashView()),
+                        MaterialPageRoute(
+                            builder: (context) => const SplashView()),
                         (route) => false,
                       );
                     },

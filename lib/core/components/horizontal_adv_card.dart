@@ -8,9 +8,17 @@ import 'adv_logo.dart';
 import 'app_text.dart';
 
 class HorizontalAdvCard extends StatelessWidget {
-  const HorizontalAdvCard({super.key, this.imgUrl, this.logo});
+  const HorizontalAdvCard({
+    super.key,
+    this.imgUrl,
+    this.logo,
+    this.title,
+    this.color,
+  });
   final String? imgUrl;
   final String? logo;
+  final String? title;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -60,12 +68,12 @@ class HorizontalAdvCard extends StatelessWidget {
           left: 0,
           right: 0,
           child: Container(
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(5),
                 bottomRight: Radius.circular(5),
               ),
-              color: ColorName.ads1,
+              color: color ?? ColorName.ads1,
             ),
             padding: const EdgeInsets.only(
               left: 7,
@@ -74,7 +82,7 @@ class HorizontalAdvCard extends StatelessWidget {
               bottom: 3,
             ).w,
             child: AppText.s9w400LbM(
-              'reklama',
+              title!,
               color: ColorName.white,
             ),
           ),

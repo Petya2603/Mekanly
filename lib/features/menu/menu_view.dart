@@ -200,6 +200,7 @@ class _MenuViewState extends State<MenuView> {
                         color: const Color.fromARGB(255, 34, 34, 34),
                       ),
                       onTap: () {
+                        // ignore: inference_failure_on_function_invocation
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {

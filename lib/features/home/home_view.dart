@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:common/common.dart';
 import 'package:flutter/material.dart';
@@ -123,6 +122,18 @@ class _HomeViewState extends State<HomeView>
                 itemCount: smallBanners!.length,
                 itemBuilder: (context, index, realIndex) {
                   final banner = smallBanners[index];
+                  final bannerColor = switch (index) {
+                    0 => const Color.fromRGBO(76, 177, 255, 1),
+                    1 => const Color.fromRGBO(99, 164, 255, 1),
+                    2 => const Color.fromRGBO(239, 138, 80, 1),
+                    3 => const Color.fromRGBO(239, 83, 80, 1),
+                    4 => const Color.fromRGBO(86, 174, 198, 1),
+                    5 => const Color.fromRGBO(76, 177, 255, 1),
+                    6 => const Color.fromRGBO(155, 169, 188, 1),
+                    7 => const Color.fromRGBO(93, 202, 133, 1),
+                    _ => ColorName.ads1,
+                  };
+
                   return Padding(
                     padding: const EdgeInsets.only(top: 3, bottom: 3),
                     child: HorizontalAdvCard(
@@ -130,6 +141,8 @@ class _HomeViewState extends State<HomeView>
                       logo: banner.logo != null && banner.logo != 'storage/'
                           ? 'https://mekanly.com.tm/${banner.logo ?? ''}'
                           : null,
+                      title: banner.title ?? '',
+                      color: bannerColor,
                     ),
                   );
                 },
@@ -157,6 +170,8 @@ class _HomeViewState extends State<HomeView>
                         logo: banner.logo != null && banner.logo != 'storage/'
                             ? 'https://mekanly.com.tm/${banner.logo ?? ''}'
                             : null,
+                        title: banner.title ?? '',
+                        // color: bannerColor,
                       ),
                     );
                   },
@@ -165,7 +180,6 @@ class _HomeViewState extends State<HomeView>
                     autoPlay: true,
                     autoPlayInterval: const Duration(seconds: 10),
                     viewportFraction: 1,
-                    enableInfiniteScroll: true,
                     scrollPhysics: const NeverScrollableScrollPhysics(),
                     disableCenter: true,
                   ),
