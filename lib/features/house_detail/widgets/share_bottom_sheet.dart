@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gen/gen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import '../../../core/components/loading_indicator.dart';
 import '../../../localization/extensions.dart';
 import '../../../product/constants/constants.dart';
 import '../../../product/helpers/helpers.dart';
@@ -203,10 +204,11 @@ class _ShareBottomSheetContentState extends State<_ShareBottomSheetContent> {
           ),
         ),
         if (_isLoading)
-          Container(
+          ColoredBox(
+            // ignore: deprecated_member_use
             color: Colors.black.withOpacity(0.5),
-            child: const Center(
-              child: CircularProgressIndicator(),
+            child: Center(
+              child: LoadingIndicator.circle(),
             ),
           ),
       ],

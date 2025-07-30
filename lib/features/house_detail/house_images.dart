@@ -85,10 +85,11 @@ class _HouseImagesState extends State<HouseImages> {
             children: [
               IconButton(
                 onPressed: () {
-                  final imageUrls = widget.houseImagesUrl?.whereType<String>().toList() ?? [];
+                  final imageUrls =
+                      widget.houseImagesUrl?.whereType<String>().toList() ?? [];
                   ShareBottomSheet.show(context, imageUrls);
                 },
-                icon: Assets.icons.sharer.svg(package: 'gen'),
+                icon: Assets.icons.sharer.svg(package: 'gen', height: 23),
               ),
               6.boxW,
               IconButton(
